@@ -1847,7 +1847,7 @@ console.log(sujetoImpuesto, 'Impuesto');
         var list = this.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
         if (list.down('#datos_orden') == undefined) {
             list.createChild('<div id="datos_orden" style="margin-top: -91%; height: 100%; background-color: gray; text-align: center;">' +
-                '<img src="' + localStorage.getItem('imagenorden') + '" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
+                '<img src="' + localStorage.getItem('imagenorden') ? localStorage.getItem('imagenorden') : '' + '" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
                 '<div style="display: table; text-align: left; font-size: 10px; z-index: 0;">' +
                 '<div style="display: table-row;">' +
                 '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Transacción: Orden de Venta</div>' +

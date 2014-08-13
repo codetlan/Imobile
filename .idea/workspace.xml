@@ -18,7 +18,11 @@
     <file path="/.gitignore" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918760784" ignored="false" />
     <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407949487630" ignored="false" />
     <file path="$PROJECT_DIR$/build/testing/APP/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407955683340" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407955683340" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407957995639" ignored="false" />
+    <file path="/Configuracion.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407958191009" ignored="false" />
+    <file path="/Ordenes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407958515672" ignored="false" />
+    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407960454962" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/routes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407960456667" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,15 +42,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="10" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="config.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/phonegap/www/config.xml">
           <provider selected="true" editor-type-id="text-editor">
@@ -56,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/phonegap/www/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -146,32 +141,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Ordenes.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Ordenes.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1755" column="31" selection-start="74276" selection-end="74276" vertical-scroll-proportion="0.0">
+            <state line="1849" column="109" selection-start="77679" selection-end="77679" vertical-scroll-proportion="0.5169492">
               <folding>
-                <marker date="1407955652000" expanded="true" signature="12375:12518" placeholder="{...}" />
-                <marker date="1407955652000" expanded="false" signature="77489:77564" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="77743:77805" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="77840:77859" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="77910:77963" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78031:78104" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78233:78252" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78302:78355" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78468:78541" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78673:78692" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78751:78804" placeholder="..." />
-                <marker date="1407955652000" expanded="false" signature="78917:78990" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="15551:15580" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="15782:15811" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="16025:16054" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="16247:16276" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="77489:77564" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="77717:77751" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="77786:77848" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="77883:77902" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="77953:78006" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="78074:78147" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="78276:78295" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="78345:78398" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="78511:78584" placeholder="..." />
+                <marker date="1407958601000" expanded="true" signature="78716:78735" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="78794:78847" placeholder="..." />
+                <marker date="1407958601000" expanded="false" signature="78960:79033" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.json">
+      <file leaf-file-name="Login.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controller/phone/Login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="7" selection-start="227" selection-end="227" vertical-scroll-proportion="62.125">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Configuracion.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="92" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -205,7 +213,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/resources/sass/app.scss" />
         <option value="$PROJECT_DIR$/phonegap/platforms/android/res/xml/config.xml" />
         <option value="$PROJECT_DIR$/phonegap/platforms/android/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app.js" />
@@ -219,8 +226,9 @@
         <option value="$PROJECT_DIR$/phonegap/platforms/android/build.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
-        <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
         <option value="$PROJECT_DIR$/phonegap/www/app.js" />
+        <option value="$PROJECT_DIR$/app/controller/phone/Configuracion.js" />
+        <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
       </list>
     </option>
   </component>
@@ -284,11 +292,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="phonegap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -302,7 +306,99 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="phonegap" />
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ordenes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -315,7 +411,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SuiteH" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Intrinno/Intrinno" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
   </component>
@@ -349,7 +445,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24068071" sideWeight="0.6712538" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.053484604" sideWeight="0.6712538" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -424,20 +520,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="17" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/phonegap/www/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -569,26 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1755" column="31" selection-start="74276" selection-end="74276" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1407955652000" expanded="true" signature="12375:12518" placeholder="{...}" />
-            <marker date="1407955652000" expanded="false" signature="77489:77564" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="77743:77805" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="77840:77859" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="77910:77963" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78031:78104" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78233:78252" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78302:78355" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78468:78541" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78673:78692" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78751:78804" placeholder="..." />
-            <marker date="1407955652000" expanded="false" signature="78917:78990" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="27" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0">
@@ -600,6 +662,44 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="92" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1849" column="109" selection-start="77679" selection-end="77679" vertical-scroll-proportion="0.5169492">
+          <folding>
+            <marker date="1407958601000" expanded="true" signature="15551:15580" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="15782:15811" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="16025:16054" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="16247:16276" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="77489:77564" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="77717:77751" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="77786:77848" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="77883:77902" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="77953:78006" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="78074:78147" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="78276:78295" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="78345:78398" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="78511:78584" placeholder="..." />
+            <marker date="1407958601000" expanded="true" signature="78716:78735" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="78794:78847" placeholder="..." />
+            <marker date="1407958601000" expanded="false" signature="78960:79033" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

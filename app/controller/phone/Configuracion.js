@@ -25,7 +25,8 @@ Ext.define('APP.controller.phone.Configuracion', {
 
                                 var list = this.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
 
-                                list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'))
+                                list.down('#datos_orden').append('<img src="' + localStorage.getItem('imagenorden') + '" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">');
+                                //list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'))
                             }
                             else{
                                 Ext.Msg.alert("Error","La imagen debe de ser menor de 4 megas");
