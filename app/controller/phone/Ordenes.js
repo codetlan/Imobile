@@ -274,8 +274,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 Ext.getStore('Transacciones').resetCurrentPage();
 
                 store.setParams({
-                    CardCode: idCliente,
-                    CardName: ''
+                    CardCode: idCliente
                 });
 
                 store.load();
@@ -1732,8 +1731,7 @@ Ext.define('APP.controller.phone.Ordenes', {
         store.resetCurrentPage();
         store.setParams({
             Criterio: value,
-            CardCode: idCliente,
-            CardName: ''
+            CardCode: idCliente
         });
 
         store.load();
@@ -1749,8 +1747,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
         store.setParams({
             Criterio: '',
-            CardCode: idCliente,
-            CardName: ''
+            CardCode: idCliente
         });
 
         store.load();
