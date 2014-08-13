@@ -6,14 +6,15 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/packager.json" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407893557333" ignored="false" />
     <file path="/phonegap.local.properties" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407914241005" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/res/values/strings.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915099114" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/CordovaLib/ant-build/AndroidManifest.cordova.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915124366" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/res/values/strings.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/CordovaLib/ant-build/AndroidManifest.cordova.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
     <file path="/app.json" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407912875987" ignored="false" />
     <file path="/Applications/XAMPP/xamppfiles/htdocs/Imobiler/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407914001112" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/res/xml/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915099114" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915099114" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/res/xml/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
     <file path="/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915149529" ignored="false" />
     <file path="/build.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915163258" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/ant-build/AndroidManifest.cordova.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,10 +106,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="config.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="17" selection-start="183" selection-end="183" vertical-scroll-proportion="0.025423728">
+            <state line="2" column="17" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_skin.scss" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build/testing/APP/resources/sass/custom/_skin.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -159,7 +169,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -170,7 +180,79 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="build" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testing" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="APP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="build" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -182,11 +264,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/build/testing/APP/resources" />
       <recent name="$PROJECT_DIR$/phonegap/www/resources" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources" />
       <recent name="$PROJECT_DIR$/app/view" />
-      <recent name="$PROJECT_DIR$/app/store" />
     </key>
   </component>
   <component name="RunManager">
@@ -285,11 +367,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/css/custom/Ext.ux.TouchCalendarSimpleEvents.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="106" selection-start="1520" selection-end="1520" vertical-scroll-proportion="-13.666667" />
@@ -317,7 +394,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="17" selection-start="183" selection-end="183" vertical-scroll-proportion="0.025423728">
+        <state line="2" column="17" selection-start="183" selection-end="183" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -381,6 +458,13 @@
     <entry file="file://$PROJECT_DIR$/phonegap/platforms/android/local.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/testing/APP/resources/sass/custom/_skin.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
