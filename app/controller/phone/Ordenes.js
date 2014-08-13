@@ -307,7 +307,12 @@ Ext.define('APP.controller.phone.Ordenes', {
             codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada,
             codigoMonedaPredeterminada = me.getOpcionesOrden().codigoMonedaPredeterminada,
             tipoCambio = me.getOpcionesOrden().tipoCambio;
-            clienteSeleccionado = new Object({ // Se crea nuevo objeto con los datos numéricos para representarlos en formato de miles.
+
+            if(me.getOpcionesOrden().clienteSeleccionado == undefined){
+                return;
+            }
+
+        var clienteSeleccionado = new Object({ // Se crea nuevo objeto con los datos numéricos para representarlos en formato de miles.
                 LimiteCredito: me.getOpcionesOrden().clienteSeleccionado.LimiteCredito,
                 Saldo: me.getOpcionesOrden().clienteSeleccionado.Saldo
             });
@@ -1142,7 +1147,8 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                     //Se establece precio con descuento
                     preciocondescuento = response.Data[0];
-                    sujetoImpuesto = valores.SujetoImpuesto;
+                    me.getOpcionesOrden().sujetoImpuesto = valores.SujetoImpuesto;
+                    sujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;
                     //Se valida si el producto es sujeto de impuesto
                     if (sujetoImpuesto) {
                         //Se calcula total de impuesto
@@ -1307,9 +1313,9 @@ Ext.define('APP.controller.phone.Ordenes', {
             importe = preciocondescuento,
             sujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto,
             totalDeImpuesto = me.getOpcionesOrden().totalDeImpuesto;
-
+console.log(sujetoImpuesto, 'Impuesto');
         if (sujetoImpuesto) {
-            totalDeImpuesto = preciocondescuento * me.tasaImpuesto / 100;
+            me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;
         }
 
         view.getActiveItem().setValues({

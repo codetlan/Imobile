@@ -17,6 +17,8 @@
     <file path="$PROJECT_DIR$/phonegap/platforms/android/ant-build/AndroidManifest.cordova.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918370434" ignored="false" />
     <file path="/.gitignore" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407918760784" ignored="false" />
     <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407949487630" ignored="false" />
+    <file path="$PROJECT_DIR$/build/testing/APP/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407955683340" ignored="false" />
+    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407955683340" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +56,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/phonegap/www/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -84,8 +86,62 @@
       <file leaf-file-name="Cobranza.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="40" selection-start="4622" selection-end="4622" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="154" column="40" selection-start="4891" selection-end="4891" vertical-scroll-proportion="0.0">
+              <folding>
+                <marker date="1407951644000" expanded="true" signature="137:1617" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="367:1611" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="1426:1456" placeholder="{&quot;tap&quot;: 'onPagar'...}" />
+                <marker date="1407951644000" expanded="true" signature="1456:1606" placeholder="/*...*/" />
+                <marker date="1407951644000" expanded="true" signature="3323:3755" placeholder="{&quot;xtype&quot;: 'facturascontainer'...}" />
+                <marker date="1407951644000" expanded="true" signature="3794:3810" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="4387:4660" placeholder="{&quot;xtype&quot;: 'facturascontainer'...}" />
+                <marker date="1407951644000" expanded="true" signature="5458:5631" placeholder="{&quot;xtype&quot;: 'visualizacioncobranzalist'...}" />
+                <marker date="1407951644000" expanded="true" signature="5644:5703" placeholder="/** Muestra la vista &quot;totalapagarcontainer&quot;. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="6480:6599" placeholder="{&quot;xtype&quot;: 'toolbar'...}" />
+                <marker date="1407951644000" expanded="true" signature="6717:7895" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="6849:6985" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="7901:8000" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="8011:8178" placeholder="/** Responde al evento &quot;tap&quot; del botón &quot;Agregar&quot; de &quot;totalapagarcontainer&quot;. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="8671:9067" placeholder="/** Responde al evento &quot;itemtap&quot; de &quot;formasdepagolist&quot;. Muestra el formulario correspondiente a la forma de pago elegida. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="9310:9532" placeholder="{&quot;xtype&quot;: 'montoapagarform'...}" />
+                <marker date="1407951644000" expanded="true" signature="9675:9894" placeholder="/** Determina la vista del formulario del monto a pagar según la opción de pago que se haya elegido. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="10078:10535" placeholder="[...]" />
+                <marker date="1407951644000" expanded="true" signature="10078:10307" placeholder="{&quot;name&quot;: 'NumeroCheque'...}" />
+                <marker date="1407951644000" expanded="true" signature="10308:10519" placeholder="{&quot;name&quot;: 'Banco'...}" />
+                <marker date="1407951644000" expanded="true" signature="10649:11162" placeholder="[...]" />
+                <marker date="1407951644000" expanded="true" signature="10649:10895" placeholder="{&quot;name&quot;: 'NumeroAutorizacion'...}" />
+                <marker date="1407951644000" expanded="true" signature="10916:11146" placeholder="{&quot;name&quot;: 'NumeroTarjeta'...}" />
+                <marker date="1407951644000" expanded="true" signature="11198:11462" placeholder="/** Responde al evento &quot;tap&quot; del botón &quot;pagar&quot; de &quot;montoapagarform&quot;. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="12902:13048" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13054:13219" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13241:13410" placeholder="/*...*/" />
+                <marker date="1407951644000" expanded="true" signature="13542:13711" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13547:13703" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13747:13831" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13837:14562" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13910:14329" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="13951:14069" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="14075:14312" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="14335:14556" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="14573:14852" placeholder="/** Agrega el pago ingresado al store &quot;Totales&quot; o lo modifica si el pago es editado. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="15718:16079" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="16494:16634" placeholder="/** Actualiza los campos &quot;pagado&quot; y &quot;pendiente&quot; del totalescontainer ...*/" />
+                <marker date="1407951644000" expanded="true" signature="17308:17530" placeholder="/** Valida la vista actual y si es el caso hace visible el botón &quot;Agregar&quot;. ...*/" />
+                <marker date="1407951644000" expanded="true" signature="17814:17854" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="18038:18076" placeholder="/** Termina la cobranza ...*/" />
+                <marker date="1407951644000" expanded="true" signature="18996:24415" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="19094:19623" placeholder="{&quot;Cobranza.Tipo&quot;: 'C'...}" />
+                <marker date="1407951644000" expanded="true" signature="19739:19900" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="19906:20591" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="20037:20581" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="20772:22766" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="21429:21856" placeholder="/*...*/" />
+                <marker date="1407951644000" expanded="true" signature="22955:24400" placeholder="{&quot;callbackKey&quot;: 'callback'...}" />
+                <marker date="1407951644000" expanded="true" signature="23156:23587" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="23593:23810" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="24421:24457" placeholder="{...}" />
+                <marker date="1407951644000" expanded="true" signature="25957:25973" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -93,23 +149,20 @@
       <file leaf-file-name="Ordenes.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1749" column="31" selection-start="73986" selection-end="73986" vertical-scroll-proportion="0.0">
+            <state line="1755" column="31" selection-start="74276" selection-end="74276" vertical-scroll-proportion="0.0">
               <folding>
-                <marker date="1407949591000" expanded="false" signature="15439:15468" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="15670:15699" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="15913:15942" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="16135:16164" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77199:77274" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77453:77515" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77550:77569" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77620:77673" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77741:77814" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="77943:77962" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="78012:78065" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="78178:78251" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="78383:78402" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="78461:78514" placeholder="..." />
-                <marker date="1407949591000" expanded="false" signature="78627:78700" placeholder="..." />
+                <marker date="1407955652000" expanded="true" signature="12375:12518" placeholder="{...}" />
+                <marker date="1407955652000" expanded="false" signature="77489:77564" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="77743:77805" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="77840:77859" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="77910:77963" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78031:78104" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78233:78252" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78302:78355" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78468:78541" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78673:78692" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78751:78804" placeholder="..." />
+                <marker date="1407955652000" expanded="false" signature="78917:78990" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -133,10 +186,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name=".gitignore" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="27" selection-start="75" selection-end="75" vertical-scroll-proportion="0.19329897">
+            <state line="5" column="27" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -167,6 +220,7 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
+        <option value="$PROJECT_DIR$/phonegap/www/app.js" />
       </list>
     </option>
   </component>
@@ -252,64 +306,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="phonegap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="platforms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="phonegap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hooks" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Imobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="phonegap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value=".cordova" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -350,7 +346,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24068071" sideWeight="0.6712538" order="0" side_tool="false" content_ui="combo" />
@@ -498,13 +494,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/phonegap/www/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/phonegap/.cordova/config.json">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -521,37 +510,95 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="40" selection-start="4622" selection-end="4622" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="154" column="40" selection-start="4891" selection-end="4891" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1407951644000" expanded="true" signature="137:1617" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="367:1611" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="1426:1456" placeholder="{&quot;tap&quot;: 'onPagar'...}" />
+            <marker date="1407951644000" expanded="true" signature="1456:1606" placeholder="/*...*/" />
+            <marker date="1407951644000" expanded="true" signature="3323:3755" placeholder="{&quot;xtype&quot;: 'facturascontainer'...}" />
+            <marker date="1407951644000" expanded="true" signature="3794:3810" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="4387:4660" placeholder="{&quot;xtype&quot;: 'facturascontainer'...}" />
+            <marker date="1407951644000" expanded="true" signature="5458:5631" placeholder="{&quot;xtype&quot;: 'visualizacioncobranzalist'...}" />
+            <marker date="1407951644000" expanded="true" signature="5644:5703" placeholder="/** Muestra la vista &quot;totalapagarcontainer&quot;. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="6480:6599" placeholder="{&quot;xtype&quot;: 'toolbar'...}" />
+            <marker date="1407951644000" expanded="true" signature="6717:7895" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="6849:6985" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="7901:8000" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="8011:8178" placeholder="/** Responde al evento &quot;tap&quot; del botón &quot;Agregar&quot; de &quot;totalapagarcontainer&quot;. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="8671:9067" placeholder="/** Responde al evento &quot;itemtap&quot; de &quot;formasdepagolist&quot;. Muestra el formulario correspondiente a la forma de pago elegida. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="9310:9532" placeholder="{&quot;xtype&quot;: 'montoapagarform'...}" />
+            <marker date="1407951644000" expanded="true" signature="9675:9894" placeholder="/** Determina la vista del formulario del monto a pagar según la opción de pago que se haya elegido. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="10078:10535" placeholder="[...]" />
+            <marker date="1407951644000" expanded="true" signature="10078:10307" placeholder="{&quot;name&quot;: 'NumeroCheque'...}" />
+            <marker date="1407951644000" expanded="true" signature="10308:10519" placeholder="{&quot;name&quot;: 'Banco'...}" />
+            <marker date="1407951644000" expanded="true" signature="10649:11162" placeholder="[...]" />
+            <marker date="1407951644000" expanded="true" signature="10649:10895" placeholder="{&quot;name&quot;: 'NumeroAutorizacion'...}" />
+            <marker date="1407951644000" expanded="true" signature="10916:11146" placeholder="{&quot;name&quot;: 'NumeroTarjeta'...}" />
+            <marker date="1407951644000" expanded="true" signature="11198:11462" placeholder="/** Responde al evento &quot;tap&quot; del botón &quot;pagar&quot; de &quot;montoapagarform&quot;. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="12902:13048" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13054:13219" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13241:13410" placeholder="/*...*/" />
+            <marker date="1407951644000" expanded="true" signature="13542:13711" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13547:13703" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13747:13831" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13837:14562" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13910:14329" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="13951:14069" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="14075:14312" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="14335:14556" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="14573:14852" placeholder="/** Agrega el pago ingresado al store &quot;Totales&quot; o lo modifica si el pago es editado. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="15718:16079" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="16494:16634" placeholder="/** Actualiza los campos &quot;pagado&quot; y &quot;pendiente&quot; del totalescontainer ...*/" />
+            <marker date="1407951644000" expanded="true" signature="17308:17530" placeholder="/** Valida la vista actual y si es el caso hace visible el botón &quot;Agregar&quot;. ...*/" />
+            <marker date="1407951644000" expanded="true" signature="17814:17854" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="18038:18076" placeholder="/** Termina la cobranza ...*/" />
+            <marker date="1407951644000" expanded="true" signature="18996:24415" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="19094:19623" placeholder="{&quot;Cobranza.Tipo&quot;: 'C'...}" />
+            <marker date="1407951644000" expanded="true" signature="19739:19900" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="19906:20591" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="20037:20581" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="20772:22766" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="21429:21856" placeholder="/*...*/" />
+            <marker date="1407951644000" expanded="true" signature="22955:24400" placeholder="{&quot;callbackKey&quot;: 'callback'...}" />
+            <marker date="1407951644000" expanded="true" signature="23156:23587" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="23593:23810" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="24421:24457" placeholder="{...}" />
+            <marker date="1407951644000" expanded="true" signature="25957:25973" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1749" column="31" selection-start="73986" selection-end="73986" vertical-scroll-proportion="0.0">
+        <state line="1755" column="31" selection-start="74276" selection-end="74276" vertical-scroll-proportion="0.0">
           <folding>
-            <marker date="1407949591000" expanded="false" signature="15439:15468" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="15670:15699" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="15913:15942" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="16135:16164" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77199:77274" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77453:77515" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77550:77569" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77620:77673" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77741:77814" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="77943:77962" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="78012:78065" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="78178:78251" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="78383:78402" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="78461:78514" placeholder="..." />
-            <marker date="1407949591000" expanded="false" signature="78627:78700" placeholder="..." />
+            <marker date="1407955652000" expanded="true" signature="12375:12518" placeholder="{...}" />
+            <marker date="1407955652000" expanded="false" signature="77489:77564" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="77743:77805" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="77840:77859" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="77910:77963" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78031:78104" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78233:78252" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78302:78355" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78468:78541" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78673:78692" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78751:78804" placeholder="..." />
+            <marker date="1407955652000" expanded="false" signature="78917:78990" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="27" selection-start="75" selection-end="75" vertical-scroll-proportion="0.19329897">
+        <state line="5" column="27" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/phonegap/www/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
