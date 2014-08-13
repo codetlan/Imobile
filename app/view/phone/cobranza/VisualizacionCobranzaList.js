@@ -16,13 +16,19 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
         items: [{
             xtype: 'toolbar',
             docked: 'top',
-            layout:'fit',
+            layout:'hbox',
             items: [{
                 xtype: 'searchfield',
-                itemId: 'busca',
-                placeHolder: ' Buscar cobranza...'
+                itemId: 'buscarCobranzas',
+                placeHolder: ' Buscar cobranza...',
+                flex: 8
+            },{
+                xtype: 'button',
+                iconCls: 'search',
+                itemId: 'btnBuscarCobranza',
+                flex: 0.5
             }]
-        }],
+        }],        
         plugins: [{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true

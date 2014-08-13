@@ -46,11 +46,10 @@ Ext.define('APP.controller.phone.Cobranza', {
             },
             'montoapagarform #pagar': {
                 tap: 'onPagar'
-            }/*,
-            'totalapagarlist':{
-                itemtap: 'editaPago',
-                itemswipe: 'eliminaPago'
-            }*/
+            },
+            'visualizacioncobranzalist #btnBuscarCobranza': {
+                tap: 'onBuscarCobranza'
+            }
     	}
     },
 
@@ -155,7 +154,15 @@ console.log(idCliente);
 
             case 'visualizarCobranza':
                 var store = Ext.getStore('Transacciones'),
-                    anticiposlist;
+                    url = 'http://ferman.ddns.net:88/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobile2',                    
+
+                    params = {
+                        CardCode: idCliente,
+                        CardName: ''
+                    };
+
+                store.getProxy().setUrl(url);
+                store.setParams(params);                
 
                 view.push({
                     xtype: 'visualizacioncobranzalist',
@@ -163,6 +170,9 @@ console.log(idCliente);
                     //name: name
                     //opcion: record.data.action
                 });
+
+            view.getActiveItem().setEmptyText('No existen cobros para este cliente');
+            store.load();
         }
     },
 
@@ -626,6 +636,25 @@ console.log(params);
             saldoMostrado = APP.core.FormatCurrency.currency(item.get('TotalDocumento'), moneda);
             item.set('saldoAMostrar', saldoMostrado);
         });
+    },
+
+    onBuscarCobranza: function (button) {
+        var me = this,
+            store = Ext.getStore('Transacciones'),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle(),
+            value = button.up('toolbar').down('#buscarCobranzas').getValue(),
+            list = button.up('visualizacioncobranzalist');
+
+            list.setEmptyText('No existen cobros para este cliente');
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value,
+            CardCode: idCliente,
+            CardName: ''
+        });
+
+        store.load();
     },
 
     launch: function (){
