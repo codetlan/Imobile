@@ -914,17 +914,18 @@ Ext.define('APP.controller.phone.Ordenes', {
                     datosProducto = ordenes.getAt(ind),
                     totaldeimpuesto,
                     moneda = values.moneda;
-
+console.log(moneda, 'la del producto');
+console.log(codigoMonedaSeleccionada, 'la actual');
                 if (moneda != codigoMonedaSeleccionada) {
                     precio = APP.core.FormatCurrency.formatCurrencytoNumber(values.precioConDescuento) * datosProducto.get('TipoCambio');
                     importe = precio * cantidad;
                     precio = APP.core.FormatCurrency.currency(precio, codigoMonedaSeleccionada);
                     importe = APP.core.FormatCurrency.currency(importe, codigoMonedaSeleccionada);
-                    totaldeimpuesto = totalDeImpuesto * datosProducto.get('TipoCambio');
+                    totaldeimpuesto = totalDeImpuesto * tipoCambio;//totalDeImpuesto * datosProducto.get('TipoCambio');
                     datosProducto.set('precioConDescuento', precio);
                     datosProducto.set('cantidad', cantidad);
                     datosProducto.set('importe', importe);
-                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totalDeImpuesto);
+                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totaldeimpuesto);
                     //datosProducto.set('Imagen', cantidadProducto.get('Imagen'));
                     menu.pop();
                     me.actualizarTotales();
@@ -1314,7 +1315,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             importe = preciocondescuento,
             sujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto,
             totalDeImpuesto = me.getOpcionesOrden().totalDeImpuesto;
-console.log(sujetoImpuesto, 'Impuesto');
+console.log(preciocondescuento, 'Precio');
+console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
         if (sujetoImpuesto) {
             me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;
         }
@@ -1561,7 +1563,7 @@ console.log(sujetoImpuesto, 'Impuesto');
                 params["Orden.Partidas[" + index + "].Moneda"] = moneda.trim();//item.get('moneda').trim();
                 params["Orden.Partidas[" + index + "].Importe"] = parseFloat(importe.toFixed(2));//Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad');
                 params["Orden.Partidas[" + index + "].PorcentajeDescuento"] = APP.core.FormatCurrency.formatCurrencytoNumber(item.get('PorcentajeDescuento'));
-                params["Orden.Partidas[" + index + "].TipoCambio"] = item.get('TipoCambio');
+                //params["Orden.Partidas[" + index + "].TipoCambio"] = item.get('TipoCambio');
             });
 
             params["Orden.TotalDocumento"] = parseFloat(total.toFixed(2));
@@ -1697,7 +1699,6 @@ console.log(sujetoImpuesto, 'Impuesto');
                     partidas[index].esOrdenRecuperada = true;
 
                 }
-                ;
 
 //                if(codigoMonedaSeleccionada != codigoMonedaPredeterminada){
                 var monedas = Ext.getStore('Monedas'),

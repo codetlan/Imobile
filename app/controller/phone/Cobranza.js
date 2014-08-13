@@ -203,9 +203,15 @@ console.log(idCliente);
         if(seleccion.length > 0){ // Validamos que por lo menos se haya seleccionado una factura.
             moneda = seleccion[0].data.CodigoMoneda + ' ';
 
-            for (i = 0; i < seleccion.length; i++) {
+/*            for (i = 0; i < seleccion.length; i++) {
                 //total += seleccion[i].data.Saldo;
                 total += seleccion[i].data.TotalDocumento;
+                seleccion[i].data.aPagar = true;
+            }            
+*/
+            for (i = 0; i < seleccion.length; i++) {
+                //total += seleccion[i].data.Saldo;
+                total += seleccion[i].data.Saldo;
                 seleccion[i].data.aPagar = true;
             }
 
