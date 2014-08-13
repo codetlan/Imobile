@@ -4,3 +4,4 @@
 /native/*
 /build/*
 /resources/sass/.sass-cache/
+/phonegap/*
