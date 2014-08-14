@@ -97,7 +97,6 @@ Ext.define('APP.controller.phone.Cobranza', {
             idCliente = me.getNavigationCobranza().idCliente; //view.getActiveItem().idCliente,
             //name = view.getActiveItem().name;
 
-console.log(idCliente);
         switch(record.data.action){
             case 'cobranzaFacturas':            
                 var store = Ext.getStore('Facturas');
@@ -155,7 +154,7 @@ console.log(idCliente);
 
             case 'visualizarCobranza':
                 var store = Ext.getStore('Transacciones'),
-                    url = 'http://ferman.ddns.net:88/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobile2',                    
+                    url = "http://" + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
 
                     params = {
                         CardCode: idCliente,
@@ -212,7 +211,12 @@ console.log(idCliente);
 */
             for (i = 0; i < seleccion.length; i++) {
                 //total += seleccion[i].data.Saldo;
-                console.log(seleccion[i].data);
+
+                if(moneda != seleccion[i].data.CodigoMoneda + ' '){
+                    Ext.Msg.alert("Monedas diferentes", 'Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.');
+                    return;
+                }
+                
                 total += seleccion[i].data.TotalDocumento;
                 seleccion[i].data.aPagar = true;
             }
@@ -523,9 +527,7 @@ console.log(idCliente);
                 "Cobranza.CodigoVendedor": localStorage.getItem("CodigoUsuario"),
                 "Cobranza.Tipo": 'C',
                 "Cobranza.CodigoCliente": idCliente
-            };
-
-            console.log(me.getNavigationCobranza().opcion, 'opcion');
+            };            
 
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
@@ -580,7 +582,7 @@ console.log(params);
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
 
-/*            Ext.data.JsonP.request({
+            Ext.data.JsonP.request({
                 url: url,
                 params: params,
                 callbackKey: 'callback',
@@ -597,7 +599,7 @@ console.log(params);
                         Ext.Msg.alert("Cobro no procesado", "No se proceso el cobro correctamente: " + response.Descripcion);
                     }
                 }
-            });*/
+            });
 
         } else {
             me.getMainCard().getActiveItem().setMasked(false);
