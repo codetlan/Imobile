@@ -102,6 +102,8 @@ console.log(idCliente);
             case 'cobranzaFacturas':            
                 var store = Ext.getStore('Facturas');
 
+                me.getNavigationCobranza().opcion = 'cobranza';
+
                 view.push({
                     xtype: 'facturascontainer',
                     title: idCliente
@@ -211,7 +213,8 @@ console.log(idCliente);
 */
             for (i = 0; i < seleccion.length; i++) {
                 //total += seleccion[i].data.Saldo;
-                total += seleccion[i].data.Saldo;
+                console.log(seleccion[i].data);
+                total += seleccion[i].data.TotalDocumento;
                 seleccion[i].data.aPagar = true;
             }
 
@@ -523,9 +526,11 @@ console.log(idCliente);
                 "Cobranza.CodigoCliente": idCliente
             };
 
+            console.log(me.getNavigationCobranza().opcion, 'opcion');
+
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
-                params["Cobranza.NumeroPedido"] = array[0].data.Folio;
+                params["Cobranza.NumeroPedido"] = array[0].data.NumeroDocumento;
                 msg = 'Se realizó el anticipo exitosamente con folio ';
             } else {
                 Ext.Array.forEach(array, function (item, index, allItems) {
@@ -576,7 +581,7 @@ console.log(params);
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
 
-            Ext.data.JsonP.request({
+/*            Ext.data.JsonP.request({
                 url: url,
                 params: params,
                 callbackKey: 'callback',
@@ -593,7 +598,7 @@ console.log(params);
                         Ext.Msg.alert("Cobro no procesado", "No se proceso el cobro correctamente: " + response.Descripcion);
                     }
                 }
-            });
+            });*/
 
         } else {
             me.getMainCard().getActiveItem().setMasked(false);
