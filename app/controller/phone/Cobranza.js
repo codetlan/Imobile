@@ -153,7 +153,7 @@ console.log(idCliente);
 
             case 'visualizarCobranza':
                 var store = Ext.getStore('Transacciones'),
-                    url = 'http://ferman.ddns.net:88/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobile2',                    
+                    url = 'http://' + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
 
                     params = {
                         CardCode: idCliente,
@@ -571,7 +571,6 @@ console.log(idCliente);
                 }
                 
             });
-console.log(params);
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
 
@@ -655,8 +654,7 @@ console.log(params);
         store.resetCurrentPage();
         store.setParams({
             Criterio: value,
-            CardCode: idCliente,
-            CardName: ''
+            CardCode: idCliente
         });
 
         store.load();
