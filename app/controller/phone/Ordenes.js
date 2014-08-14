@@ -120,18 +120,7 @@ Ext.define('APP.controller.phone.Ordenes', {
         var me = this,
             name = record.get('NombreSocio'),
             idCliente = record.get('CodigoSocio'),
-            titulo = name,
-            barraTitulo = ({
-                xtype: 'toolbar',
-                docked: 'top',
-                title: titulo
-            });
-
-        this.getMenuNav().push({
-            xtype: 'opcionordeneslist',
-            title: idCliente,
-            idCliente: idCliente
-        });
+            titulo = name;
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
@@ -151,7 +140,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 this.getOpcionesOrden().clienteSeleccionado = clienteSeleccionado;
 
                 if (procesada) {
-                    this.estableceDirecciones(this.getMenuNav(), barraTitulo, clienteSeleccionado);
+                    this.estableceDirecciones(this.getMenuNav(), titulo, clienteSeleccionado, idCliente);
 
                     if (codigoMonedaCliente == '##') {
                         this.dameMonedaPredeterminada();
@@ -184,8 +173,9 @@ Ext.define('APP.controller.phone.Ordenes', {
      * @param view La vista actual.
      * @param barraTitulo El toolbar para agregar el nombre del cliente.
      */
-    estableceDirecciones: function (view, barraTitulo, clienteSeleccionado) {
+    estableceDirecciones: function (view, titulo, clienteSeleccionado, idCliente) {
         var me = this,
+            menu = me.getMenuNav(),
             direcciones = Ext.getStore('Direcciones');
 
         direcciones.setData(clienteSeleccionado.Direcciones);
@@ -193,7 +183,17 @@ Ext.define('APP.controller.phone.Ordenes', {
         direcciones.filter('TipoDireccion', 'S');
 
         if (direcciones.getCount() > 0) {
-            view.add(barraTitulo);
+            menu.push({
+                xtype: 'opcionordeneslist',
+                title: idCliente,
+                idCliente: idCliente
+            });
+
+            menu.add({
+                xtype: 'toolbar',
+                docked: 'top',
+                title: titulo
+            });
 
             me.getOpcionesOrden().direccionEntrega = direcciones.getAt(0).data.CodigoDireccion; // Se obtiene el codigo de la direccion de entrga y se lo asignamos a una propiedad del componente opcionesOrden
             me.getOpcionesOrden().codigoImpuesto = direcciones.getAt(0).data.CodigoImpuesto;
@@ -212,7 +212,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
         } else {
             this.mandaMensaje('Sin dirección de entrega', 'Este cliente no tiene direcciones de entrega definidas.');
-            view.pop();
+            //view.pop();
             direcciones.removeAll();
         }
 
@@ -274,8 +274,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 Ext.getStore('Transacciones').resetCurrentPage();
 
                 store.setParams({
-                    CardCode: idCliente,
-                    CardName: ''
+                    CardCode: idCliente
                 });
 
                 store.load();
@@ -309,24 +308,24 @@ Ext.define('APP.controller.phone.Ordenes', {
             codigoMonedaPredeterminada = me.getOpcionesOrden().codigoMonedaPredeterminada,
             tipoCambio = me.getOpcionesOrden().tipoCambio;
 
-            if(me.getOpcionesOrden().clienteSeleccionado == undefined){
-                return;
-            }
+        if (me.getOpcionesOrden().clienteSeleccionado == undefined) {
+            return;
+        }
 
         var clienteSeleccionado = new Object({ // Se crea nuevo objeto con los datos numéricos para representarlos en formato de miles.
-                LimiteCredito: me.getOpcionesOrden().clienteSeleccionado.LimiteCredito,
-                Saldo: me.getOpcionesOrden().clienteSeleccionado.Saldo
-            });
+            LimiteCredito: me.getOpcionesOrden().clienteSeleccionado.LimiteCredito,
+            Saldo: me.getOpcionesOrden().clienteSeleccionado.Saldo
+        });
 
-            clienteSeleccionado.LimiteCredito = APP.core.FormatCurrency.formatValue(clienteSeleccionado.LimiteCredito);
-            clienteSeleccionado.Saldo = APP.core.FormatCurrency.formatValue(clienteSeleccionado.Saldo);
+        clienteSeleccionado.LimiteCredito = APP.core.FormatCurrency.formatValue(clienteSeleccionado.LimiteCredito);
+        clienteSeleccionado.Saldo = APP.core.FormatCurrency.formatValue(clienteSeleccionado.Saldo);
 
         if (value.xtype == 'clientecontainer') {
             boton.setText('Back').show(); // Disfrazamos de back al botón agregar
             boton.setUi('back'); // Le ponemos el ícono de back
 
             var form = value.down('clienteform'),
-                direcciones = Ext.getStore('Direcciones');            
+                direcciones = Ext.getStore('Direcciones');
 
             form.setValues(me.getOpcionesOrden().clienteSeleccionado);
             form.setValues(clienteSeleccionado);
@@ -338,9 +337,9 @@ Ext.define('APP.controller.phone.Ordenes', {
             } else {
                 clienteSeleccionado.tipoCambio = parseFloat(tipoCambio).toFixed(2);
             }
-            
+
             value.setValues(me.getOpcionesOrden().clienteSeleccionado);
-            value.setValues(clienteSeleccionado);            
+            value.setValues(clienteSeleccionado);
             value.setValues({
                 CodigoMoneda: codigoMonedaSeleccionada
             });
@@ -477,7 +476,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             direccionEntrega = me.getOpcionesOrden().direccionEntrega,
             codigoImpuesto = me.getOpcionesOrden().codigoImpuesto,
             tasaImpuesto = me.getOpcionesOrden().tasaImpuesto,
-            view = me.getNavigationOrden();        
+            view = me.getNavigationOrden();
 
         direcciones.each(function (item, index, length) {
             item.set('Predeterminado', false)
@@ -752,8 +751,8 @@ Ext.define('APP.controller.phone.Ordenes', {
         var me = this,
             view = me.getNavigationOrden(),
             direcciones = Ext.getStore('Direcciones');
-        
-        direcciones.clearFilter();        
+
+        direcciones.clearFilter();
 
         if (record.data.action == 'entrega') {
             direcciones.filter('TipoDireccion', 'S');
@@ -914,8 +913,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                     datosProducto = ordenes.getAt(ind),
                     totaldeimpuesto,
                     moneda = values.moneda;
-console.log(moneda, 'la del producto');
-console.log(codigoMonedaSeleccionada, 'la actual');
+                console.log(moneda, 'la del producto');
+                console.log(codigoMonedaSeleccionada, 'la actual');
                 if (moneda != codigoMonedaSeleccionada) {
                     precio = APP.core.FormatCurrency.formatCurrencytoNumber(values.precioConDescuento) * datosProducto.get('TipoCambio');
                     importe = precio * cantidad;
@@ -1315,8 +1314,8 @@ console.log(codigoMonedaSeleccionada, 'la actual');
             importe = preciocondescuento,
             sujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto,
             totalDeImpuesto = me.getOpcionesOrden().totalDeImpuesto;
-console.log(preciocondescuento, 'Precio');
-console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
+        console.log(preciocondescuento, 'Precio');
+        console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
         if (sujetoImpuesto) {
             me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;
         }
@@ -1739,8 +1738,7 @@ console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
         store.resetCurrentPage();
         store.setParams({
             Criterio: value,
-            CardCode: idCliente,
-            CardName: ''
+            CardCode: idCliente
         });
 
         store.load();
@@ -1756,8 +1754,7 @@ console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
 
         store.setParams({
             Criterio: '',
-            CardCode: idCliente,
-            CardName: ''
+            CardCode: idCliente
         });
 
         store.load();
@@ -1792,7 +1789,7 @@ console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
             item.Predeterminado = false;
         });
 
-        almacenes[index].Predeterminado = true;        
+        almacenes[index].Predeterminado = true;
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Consultas/ObtenerDisponibleiMobile",
@@ -1851,7 +1848,7 @@ console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
         var list = this.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
         if (list.down('#datos_orden') == undefined) {
             list.createChild('<div id="datos_orden" style="margin-top: -91%; height: 100%; background-color: gray; text-align: center;">' +
-                '<img src="' + localStorage.getItem('imagenorden') + '" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
+                '<img src="" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
                 '<div style="display: table; text-align: left; font-size: 10px; z-index: 0;">' +
                 '<div style="display: table-row;">' +
                 '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Transacción: Orden de Venta</div>' +
@@ -1867,6 +1864,10 @@ console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
                 '</div>' +
                 '</div>' +
                 '</div>');
+        }
+
+        if (localStorage.getItem('imagenorden') != null) {
+            list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'))
         }
     }
 });

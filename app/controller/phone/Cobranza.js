@@ -144,7 +144,6 @@ console.log(idCliente);
 
                 params = {
                     CardCode: idCliente,
-                    CardName: '',
                     Criterio: ''
                 };
                 
