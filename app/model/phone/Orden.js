@@ -63,6 +63,9 @@ Ext.define('APP.model.phone.Orden', {
         },{
             name: 'TipoCambio',
             type: 'float'
+        },{
+            name: 'SujetoImpuesto',
+            type: 'boolean'
         }]
     }
 });

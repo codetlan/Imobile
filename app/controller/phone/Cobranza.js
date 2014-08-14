@@ -97,10 +97,11 @@ Ext.define('APP.controller.phone.Cobranza', {
             idCliente = me.getNavigationCobranza().idCliente; //view.getActiveItem().idCliente,
             //name = view.getActiveItem().name;
 
-console.log(idCliente);
         switch(record.data.action){
             case 'cobranzaFacturas':            
                 var store = Ext.getStore('Facturas');
+
+                me.getNavigationCobranza().opcion = 'cobranza';
 
                 view.push({
                     xtype: 'facturascontainer',
@@ -153,8 +154,7 @@ console.log(idCliente);
 
             case 'visualizarCobranza':
                 var store = Ext.getStore('Transacciones'),
-                    url = 'http://' + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
-
+                    url = "http://" + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
                     params = {
                         CardCode: idCliente,
                         CardName: ''
@@ -210,7 +210,13 @@ console.log(idCliente);
 */
             for (i = 0; i < seleccion.length; i++) {
                 //total += seleccion[i].data.Saldo;
-                total += seleccion[i].data.Saldo;
+
+                if(moneda != seleccion[i].data.CodigoMoneda + ' '){
+                    Ext.Msg.alert("Monedas diferentes", 'Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.');
+                    return;
+                }
+                
+                total += seleccion[i].data.TotalDocumento;
                 seleccion[i].data.aPagar = true;
             }
 
@@ -520,11 +526,11 @@ console.log(idCliente);
                 "Cobranza.CodigoVendedor": localStorage.getItem("CodigoUsuario"),
                 "Cobranza.Tipo": 'C',
                 "Cobranza.CodigoCliente": idCliente
-            };
+            };            
 
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
-                params["Cobranza.NumeroPedido"] = array[0].data.Folio;
+                params["Cobranza.NumeroPedido"] = array[0].data.NumeroDocumento;
                 msg = 'Se realizó el anticipo exitosamente con folio ';
             } else {
                 Ext.Array.forEach(array, function (item, index, allItems) {

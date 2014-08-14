@@ -40,6 +40,9 @@ Ext.define('APP.model.phone.Factura', {
         },{
             name: 'NumeroDocumento',
             type: 'string'
+        },{
+            name: 'Saldo',
+            type: 'float'
         }]
     }
 });

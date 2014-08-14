@@ -44,11 +44,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Cobranza.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Cobranza.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="71" selection-start="4981" selection-end="4981" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.3227633">
+              <folding>
+                <marker date="1408057359000" expanded="false" signature="4458:4494" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,24 +94,20 @@
       <file leaf-file-name="Ordenes.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="415" column="12" selection-start="16994" selection-end="17814" vertical-scroll-proportion="0.0">
+            <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
               <folding>
-                <marker date="1407970531000" expanded="true" signature="15501:15530" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="15732:15761" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="15975:16004" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="16197:16226" placeholder="..." />
-                <marker date="1407970531000" expanded="false" signature="77632:77707" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="77774:77808" placeholder="..." />
-                <marker date="1407970531000" expanded="false" signature="77843:77905" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="77940:77959" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="78010:78063" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="78131:78204" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="78333:78352" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="78402:78455" placeholder="..." />
-                <marker date="1407970531000" expanded="false" signature="78568:78641" placeholder="..." />
-                <marker date="1407970531000" expanded="true" signature="78773:78792" placeholder="..." />
-                <marker date="1407970531000" expanded="false" signature="78851:78904" placeholder="..." />
-                <marker date="1407970531000" expanded="false" signature="79017:79090" placeholder="..." />
+                <marker date="1408057321000" expanded="false" signature="78004:78079" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78146:78180" placeholder="..." />
+                <marker date="1408057321000" expanded="false" signature="78215:78277" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78312:78331" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78382:78435" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78503:78576" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78705:78724" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="78774:78827" placeholder="..." />
+                <marker date="1408057321000" expanded="false" signature="78940:79013" placeholder="..." />
+                <marker date="1408057321000" expanded="true" signature="79145:79164" placeholder="..." />
+                <marker date="1408057321000" expanded="false" signature="79223:79276" placeholder="..." />
+                <marker date="1408057321000" expanded="false" signature="79389:79462" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -133,10 +131,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Configuracion.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Configuracion.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="24" selection-start="3706" selection-end="3706" vertical-scroll-proportion="0.78255945">
+            <state line="102" column="24" selection-start="3706" selection-end="3706" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -173,10 +171,10 @@
         <option value="$PROJECT_DIR$/phonegap/www/app.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
         <option value="$PROJECT_DIR$/app/view/phone/login/LoginForm.js" />
         <option value="$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Configuracion.js" />
+        <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
       </list>
     </option>
   </component>
@@ -784,7 +782,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1905" height="1054" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -949,41 +947,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="71" selection-start="4981" selection-end="4981" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="415" column="12" selection-start="16994" selection-end="17814" vertical-scroll-proportion="0.0">
+        <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
           <folding>
-            <marker date="1407970531000" expanded="true" signature="15501:15530" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="15732:15761" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="15975:16004" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="16197:16226" placeholder="..." />
-            <marker date="1407970531000" expanded="false" signature="77632:77707" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="77774:77808" placeholder="..." />
-            <marker date="1407970531000" expanded="false" signature="77843:77905" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="77940:77959" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="78010:78063" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="78131:78204" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="78333:78352" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="78402:78455" placeholder="..." />
-            <marker date="1407970531000" expanded="false" signature="78568:78641" placeholder="..." />
-            <marker date="1407970531000" expanded="true" signature="78773:78792" placeholder="..." />
-            <marker date="1407970531000" expanded="false" signature="78851:78904" placeholder="..." />
-            <marker date="1407970531000" expanded="false" signature="79017:79090" placeholder="..." />
+            <marker date="1408057321000" expanded="false" signature="78004:78079" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78146:78180" placeholder="..." />
+            <marker date="1408057321000" expanded="false" signature="78215:78277" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78312:78331" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78382:78435" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78503:78576" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78705:78724" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="78774:78827" placeholder="..." />
+            <marker date="1408057321000" expanded="false" signature="78940:79013" placeholder="..." />
+            <marker date="1408057321000" expanded="true" signature="79145:79164" placeholder="..." />
+            <marker date="1408057321000" expanded="false" signature="79223:79276" placeholder="..." />
+            <marker date="1408057321000" expanded="false" signature="79389:79462" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="24" selection-start="3706" selection-end="3706" vertical-scroll-proportion="0.78255945">
+        <state line="102" column="24" selection-start="3706" selection-end="3706" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.3227633">
+          <folding>
+            <marker date="1408057359000" expanded="false" signature="4458:4494" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
