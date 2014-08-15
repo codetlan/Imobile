@@ -24,17 +24,37 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                 ]
             },
             {
+                xtype: 'container',
+                layout: 'hbox',
+                margin: '0 auto',
                 flex: 1,
-                itemId: 'fileLoadBtn',
-                xtype: 'button',
-                text: 'Seleccionar imagen',
-                action: 'subirimagen',
-                width: '60%',
-                style: {
-                    margin: '0 auto',
-                    marginTop: '5%',
-                    marginBottom: '5%'
-                }
+                items: [
+                    {
+                        itemId: 'fileLoadBtn',
+                        xtype: 'button',
+                        text: 'Seleccionar imagen',
+                        action: 'subirimagen',
+                        width: '60%',
+                        style: {
+                            marginTop: '5%',
+                            marginBottom: '5%'
+                        }
+                    },
+                    {
+                        xtype: 'spacer',
+                        flex: 1
+                    },
+                    {
+                        itemId: 'deleteImage',
+                        xtype: 'button',
+                        iconCls: 'delete',
+                        flex: 1,
+                        style: {
+                            marginTop: '5%',
+                            marginBottom: '5%'
+                        }
+                    }
+                ]
             },
             {
                 xtype: 'selectfield',

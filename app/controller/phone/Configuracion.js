@@ -11,7 +11,7 @@ Ext.define('APP.controller.phone.Configuracion', {
             opcionesOrden: 'opcionesorden'
         },
         control: {
-            'configuracionpanel button[action=subirimagen]': {
+            'configuracionpanel container button[action=subirimagen]': {
                 tap: function () {
 
                     Ext.device.Camera.capture({
@@ -20,7 +20,7 @@ Ext.define('APP.controller.phone.Configuracion', {
                                 imagesize = this.sizeString(data) / 1024 / 1024;
 
                             if (imagesize < 10) {
-                                imagecmp.setHtml("<img src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
+                                imagecmp.setHtml("<img id='imagen_background' src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
                             }
                             else {
                                 Ext.Msg.alert("Error", "La imagen debe de ser menor de 4 megas");
@@ -57,7 +57,7 @@ Ext.define('APP.controller.phone.Configuracion', {
                     var imagen = localStorage.getItem("imagenorden");
                     if (imagen) {
                         var imagecmp = this.getImagenCmp();
-                        imagecmp.setHtml("<img src='" + imagen + "' style='width:100%; height:auto;'>");
+                        imagecmp.setHtml("<img id='imagen_background' src='"+imagen+"' style='width:100%; height:auto;'>");
 
                     }
 
@@ -65,6 +65,9 @@ Ext.define('APP.controller.phone.Configuracion', {
             },
             'configuracionpanel #guardar': {
                 tap: 'onSaveConfig'
+            },
+            'configuracionpanel container #deleteImage': {
+                tap: 'onDeleteImage'
             }
         }
     },
@@ -80,7 +83,10 @@ Ext.define('APP.controller.phone.Configuracion', {
     },
 
     onSaveConfig: function () {
-        var me = this;
+        var me = this,
+            imagecmp = me.getImagenCmp(),
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
         Ext.Msg.show({
             title: 'Configuración',
             message: 'Deseas guardar los cambios Configurados?',
@@ -98,16 +104,25 @@ Ext.define('APP.controller.phone.Configuracion', {
             ],
             fn: function (buttonId) {
                 if (buttonId == 'yes') {
-                    var imagecmp = me.getImagenCmp().down('img'),
-                        list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
-                        alert(imagecmp);
-                        localStorage.setItem("imagenorden", imagecmp.getAttribute('src'));
-
-                    list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
-                } else {
-                    localStorage.removeItem('imagenorden');
+                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
+                        localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
+                        list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
+                    } else {
+                        localStorage.setItem('imagenorden','');
+                        list.down('#datos_orden img').dom.setAttribute("src", "");
+                    }
                 }
             }
         });
+    },
+
+    onDeleteImage: function () {
+        var me = this,
+            imagecmp = me.getImagenCmp(),
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
+        imagecmp.setHtml("");
+        //imagecmp.getInnerHtmlElement().down('#imagen_background').dom.setAttribute('src','');
+        //localStorage.setItem('imagenorden','');
     }
 });
