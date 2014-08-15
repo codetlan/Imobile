@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="026fa604-91ef-49cb-855b-c1f1bce83ff2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/view/phone/rutas/actividades/ActividadesCalendarioCont.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/view/phone/rutas/actividades/ActividadesCalendarioDia.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/form/phone/rutas/ActividadesForm.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/view/phone/rutas/actividades/OpcionRutasActividades.js" afterPath="$PROJECT_DIR$/app/view/phone/rutas/OpcionRutasActividades.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/model/phone/ActividadCalendario.js" afterPath="$PROJECT_DIR$/app/model/phone/ActividadCalendario.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/profile/Phone.js" afterPath="$PROJECT_DIR$/app/profile/Phone.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controller/phone/Rutas.js" afterPath="$PROJECT_DIR$/app/controller/phone/Rutas.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="026fa604-91ef-49cb-855b-c1f1bce83ff2" name="Default" comment="" />
     <ignored path="Imobile.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -541,7 +531,7 @@
     <frame x="-1" y="27" width="1368" height="742" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.7430442" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.006546645" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23187311" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
