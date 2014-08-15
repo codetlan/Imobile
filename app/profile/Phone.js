@@ -92,8 +92,11 @@ Ext.define('APP.profile.Phone',{
             'cobranza.TotalAPagarList',            
             'prospectos.ProspectosList',
 
-            'rutas.actividades.OpcionRutasActividades',
+            'rutas.OpcionRutasActividades',
             'rutas.actividades.ActividadesCalendario',
+            'rutas.actividades.ActividadesCalendarioCont',
+            'rutas.actividades.ActividadesCalendarioDia',
+            'APP.form.phone.rutas.ActividadesForm',
 
             'rutas.OpcionRutasList',
             'rutas.RutasCalendario',
