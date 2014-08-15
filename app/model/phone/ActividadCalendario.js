@@ -30,6 +30,24 @@ Ext.define('APP.model.phone.ActividadCalendario', {
             name: 'HoraInicio'
         },{
             name: 'HoraFin'
+        },{
+            name:'Repetir'
+        },{
+            name:'Lunes'
+        },{
+            name:'Martes'
+        },{
+            name:'Miercoles'
+        },{
+            name:'Jueves'
+        },{
+            name:'Viernes'
+        },{
+            name:'Sabado'
+        },{
+            name:'Domingo'
+        },{
+            name:'Estatus'
         }]
     }
 });

@@ -34,6 +34,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
             'actividadescalendario':{
                 periodchange:function(calendar,mindate,maxdate,direction){
+
                     var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");
                     var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(maxdate),"Y-m-d");
 
@@ -124,7 +125,10 @@ Ext.define('APP.controller.phone.Rutas', {
         store.load({
             callback:function(){
                 Ext.Viewport.setMasked(false);
-                ac.element.redraw();
+                if(ac.element){
+                    ac.element.redraw();
+                }
+
             },
             scope:this
         });
@@ -140,6 +144,18 @@ Ext.define('APP.controller.phone.Rutas', {
 
         this.getMenuNav().push({
             xtype:'actividadescalendariocont',
+            items:[{
+                xtype:'container',
+                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+            },{
+                xtype:'actividadescalendariodia',
+                flex:1
+            },{
+                xtype:'button',
+                action:'agregar',
+                text: 'Agregar',
+                margin:10
+            }],
             nd:nd
         });
 
@@ -175,6 +191,8 @@ Ext.define('APP.controller.phone.Rutas', {
 
 
         Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+
+
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad",

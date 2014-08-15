@@ -64,7 +64,8 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
             },{
                 xtype: 'checkboxfield',
                 name: 'Repetir',
-                label: 'Repetir'
+                label: 'Repetir',
+                required:false
             },{
                 xtype:'fieldset',
                 id:'actividadesrepetir',
@@ -107,7 +108,8 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 xtype: 'textareafield',
                 name: 'Notas',
                 label: 'Notas',
-                labelAlign:'top'
+                labelAlign:'top',
+                required:false
             },{
                 xtype:'container',
                 items:[{

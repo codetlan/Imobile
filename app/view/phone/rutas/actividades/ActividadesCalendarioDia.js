@@ -9,10 +9,34 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
     config: {
         itemTpl:new Ext.XTemplate(
             '<tpl>',
-            '<div style="text-align: right; color:#999999; font-size:12px;">{[this.dateParser(values.HoraInicio)]} - {[this.dateParser(values.HoraFin)]}</div><div>{title}</div>',
+
+            '<div style="border-left:5px solid {[this.backColor(values.Estatus,values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)]}; padding-left:5px;">',
+                '<div style="text-align: right; color:#999999; font-size:14px;">',
+                   '{[this.dateParser(values.HoraInicio)]} - {[this.dateParser(values.HoraFin)]}',
+                '</div>',
+                '<div>{title}</div>',
+            '</div>',
             '</tpl>',{
                 dateParser: function(data){
                     return data.substr(0,data.length - 3);
+                },
+                backColor:function(status){
+
+                    switch(status){
+                        case 0:
+                            return "lightred";
+                            break;
+                        case 1:
+                            return "lightblue";
+                            break;
+                        case 2:
+                            return "lightgreen";
+                            break;
+                        case 3:
+                            return "lightorange";
+                            break;
+
+                    }
                 }
             }
         ),
