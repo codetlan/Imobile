@@ -139,6 +139,9 @@ Ext.define('APP.controller.phone.Cobranza', {
 
                 anticiposlist.setStore(store);
                 anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">No hay anticipos pendientes</div>');
+                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>Número: <b>{NumeroDocumento}</b> Saldo: <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+                  '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
+            '</div>']);
                 anticiposlist.setMode('SINGLE');
 
                 params = {
@@ -235,6 +238,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             me.getTotales().down('#aCobrar').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar, moneda)});
             me.getTotales().down('#pagado').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(pagado, moneda)});
             me.getTotales().down('#pendiente').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar - pagado, moneda)});
+
         } else {
             Ext.Msg.alert("Sin selección", "Seleccione al menos una factura para continuar.");
         }
@@ -626,13 +630,18 @@ Ext.define('APP.controller.phone.Cobranza', {
             view = me.getMainCard(),
             navigationCobranza = view.getActiveItem(),
             titulo = navigationCobranza.down('toolbar'),
-            totales = Ext.getStore('Totales'),
-            facturas = Ext.getStore('Facturas');
+            totales = Ext.getStore('Totales')
+        //    facturas = Ext.getStore('Facturas');
 
         navigationCobranza.remove(titulo, true); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
         totales.removeAll();
-        me.pagado = 0;
-        facturas.clearFilter();
+
+        if(me.getNavigationCobranza().opcion == 'anticipo'){
+            Ext.getStore('Anticipos').clearFilter();
+        } else {
+            Ext.getStore('Facturas').clearFilter();
+        }
+
         view.setActiveItem(0);
     },
 
