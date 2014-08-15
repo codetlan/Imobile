@@ -1,7 +1,6 @@
 .idea/*
-.idea/workspace.xml
-
 /native/*
 /build/*
 /resources/sass/.sass-cache/
 /phonegap/*
+.idea/workspace.xml

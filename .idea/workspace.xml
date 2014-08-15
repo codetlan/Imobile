@@ -20,7 +20,7 @@
     <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079591742" ignored="false" />
     <file path="/Configuracion.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079743835" ignored="false" />
     <file path="/Ordenes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407970313690" ignored="false" />
-    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407960454962" ignored="false" />
+    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408112604898" ignored="false" />
     <file path="$PROJECT_DIR$/../Intrinno/Intrinno/routes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408000400627" ignored="false" />
     <file path="/ConfiguracionPanel.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408064526535" ignored="false" />
     <file path="/LoginForm.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407988883032" ignored="false" />
@@ -50,9 +50,7 @@
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1408057359000" expanded="false" signature="4458:4494" placeholder="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -60,7 +58,7 @@
       <file leaf-file-name="ConfiguracionPanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="-9.307693">
+            <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -106,32 +104,24 @@
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1408057321000" expanded="false" signature="15713:15742" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="15944:15973" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="16187:16216" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="16409:16438" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78004:78079" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78146:78180" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78215:78277" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78312:78331" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78382:78435" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78503:78576" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78705:78724" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78774:78827" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="78940:79013" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="79145:79164" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="79223:79276" placeholder="..." />
-                <marker date="1408057321000" expanded="false" signature="79389:79462" placeholder="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Configuracion.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Configuracion.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.3617021">
+            <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="7" selection-start="7" selection-end="7" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -164,7 +154,6 @@
         <option value="$PROJECT_DIR$/phonegap/platforms/android/build.xml" />
         <option value="$PROJECT_DIR$/phonegap/www/app.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/view/phone/login/LoginForm.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
         <option value="$PROJECT_DIR$/app/store/phone/Anticipos.js" />
@@ -172,6 +161,7 @@
         <option value="$PROJECT_DIR$/app/store/phone/Facturas.js" />
         <option value="$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Configuracion.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -207,6 +197,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -259,7 +250,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -267,8 +257,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Intrinno/Intrinno" />
-    <property name="options.searchVisible" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -297,10 +288,9 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869378" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13128039" sideWeight="0.6713062" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1337115" sideWeight="0.6713062" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -309,6 +299,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869378" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -394,35 +385,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Clientes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="1" selection-start="78" selection-end="78" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/login/LoginForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="37" selection-start="543" selection-end="543" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/core/FormatCurrency.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -450,54 +423,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/configuracion/ConfiguracionContainer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.47565117">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.47565117" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1408057359000" expanded="false" signature="4458:4494" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1408057321000" expanded="false" signature="15713:15742" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="15944:15973" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="16187:16216" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="16409:16438" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78004:78079" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78146:78180" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78215:78277" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78312:78331" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78382:78435" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78503:78576" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78705:78724" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78774:78827" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="78940:79013" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="79145:79164" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="79223:79276" placeholder="..." />
-            <marker date="1408057321000" expanded="false" signature="79389:79462" placeholder="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="-9.307693">
+        <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.3617021">
+        <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core/FormatCurrency.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="7" selection-start="7" selection-end="7" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
