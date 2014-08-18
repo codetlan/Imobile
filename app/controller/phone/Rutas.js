@@ -300,7 +300,7 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     onActividadesEdit:function(list,index,target,record){
-
+        var form = this.getActividadesForm();
         var items=[{
             xtype:'actividadesform',
             flex:1,
@@ -308,7 +308,6 @@ Ext.define('APP.controller.phone.Rutas', {
         }];
 
         if(record.data.Estatus != 1 && record.data.Estatus != 3){
-            console.log(record.data);
             items.push({
                 xtype:'container',
                 padding:'0 10px 10px 10px',
@@ -374,7 +373,9 @@ Ext.define('APP.controller.phone.Rutas', {
             Domingo:record.data.Domingo
         });
 
-
+        if(record.data.Estatus != 2){
+            var btnGuardar = form.down("button[action=guardar]").destroy();
+        }
     },
 
     onActividadesUpdate:function(status){
