@@ -203,71 +203,78 @@ Ext.define('APP.controller.phone.Rutas', {
         var form = this.getActividadesForm(),
             values = form.getValues();
 
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
-        Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+            if(values.Descripcion == ""){
+                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            }
+            else{
 
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
+                Ext.data.JsonP.request({
+                    url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad",
+                    params: {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                        "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                        "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                        "Actividad.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                        "Actividad.Descripcion" : values.Descripcion,
+                        "Actividad.Notas" : values.Notas,
+                        "Actividad.Repetir" : values.Repetir?true:false,
+                        "Actividad.Lunes" : values.Lunes?true:false,
+                        "Actividad.Martes" : values.Martes?true:false,
+                        "Actividad.Miercoles" : values.Miercoles?true:false,
+                        "Actividad.Jueves" : values.Jueves?true:false,
+                        "Actividad.Viernes" : values.Viernes?true:false,
+                        "Actividad.Sabado" : values.Sabado?true:false,
+                        "Actividad.Domingo" : values.Domingo?true:false,
+                        "Actividad.Notas"   : values.Notas,
+                        "Actividad.Estatus" : 2
+                    },
+                    callbackKey: 'callback',
+                    success: function (response) {
+                        var procesada = response.Procesada
 
-        Ext.data.JsonP.request({
-            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad",
-            params: {
-                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token"),
-                "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
-                "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
-                "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
-                "Actividad.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
-                "Actividad.Descripcion" : values.Descripcion,
-                "Actividad.Notas" : values.Notas,
-                "Actividad.Repetir" : values.Repetir?true:false,
-                "Actividad.Lunes" : values.Lunes?true:false,
-                "Actividad.Martes" : values.Martes?true:false,
-                "Actividad.Miercoles" : values.Miercoles?true:false,
-                "Actividad.Jueves" : values.Jueves?true:false,
-                "Actividad.Viernes" : values.Viernes?true:false,
-                "Actividad.Sabado" : values.Sabado?true:false,
-                "Actividad.Domingo" : values.Domingo?true:false,
-                "Actividad.Notas"   : values.Notas,
-                "Actividad.Estatus" : 2
-            },
-            callbackKey: 'callback',
-            success: function (response) {
-                var procesada = response.Procesada
+                        if (procesada) {
+                            var ac = this.getActividadesCalendario(),
+                                store = ac.view.eventStore;
 
-                if (procesada) {
-                    var ac = this.getActividadesCalendario(),
-                        store = ac.view.eventStore;
-
-                    store.load({
-                        callback:function(){
-                            ac.element.redraw();
-                            this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                            store.load({
+                                callback:function(){
+                                    ac.element.redraw();
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                                    Ext.Viewport.setMasked(false);
+                                },
+                                scope:this
+                            });
+                        }
+                        else {
+                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
                             Ext.Viewport.setMasked(false);
-                        },
-                        scope:this
-                    });
-                }
-                else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
-                    Ext.Viewport.setMasked(false);
-                }
+                        }
 
-            },
-            failure: function () {
-                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
-                    Ext.Viewport.setMasked(false);
+                    },
+                    failure: function () {
+                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                            Ext.Viewport.setMasked(false);
+                        });
+                        Ext.Viewport.setMasked(false);
+                    },
+                    scope: this
                 });
-                Ext.Viewport.setMasked(false);
-            },
-            scope: this
-        });
+            }
+        }
+        else{
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+        }
     },
 
     onActividadesEdit:function(list,index,target,record){
-
-        console.log(record);
 
         var items=[{
             xtype:'actividadesform',
@@ -312,7 +319,6 @@ Ext.define('APP.controller.phone.Rutas', {
         })
 
         var form = this.getActividadesForm();
-        console.log(this.getActividadesCalendarioCont());
 
         var horaInicio = new Date();
         horaInicio.setHours(record.data.HoraInicio.substr(0,2));
@@ -408,6 +414,19 @@ Ext.define('APP.controller.phone.Rutas', {
             },
             scope: this
         });
+    },
+
+    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin){
+
+        if(fechaInicio.getTime() > fechaFin.getTime()){
+            return false;
+        }
+        if(fechaInicio.getTime() == fechaFin.getTime()){
+            if(horaInicio.getTime() >= horaFin.getTime()){
+                return false;
+            }
+        }
+        return true;
     }
     /*onSeleccionarCliente:function(list, index, target, record) {
      var name = record.get('NombreSocio'),

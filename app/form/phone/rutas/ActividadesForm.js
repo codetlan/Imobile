@@ -10,6 +10,7 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
     xtype: 'actividadesform',
     initialize : function() {
         this.callParent();
+
         this.setItems([{
             xtype:'fieldset',
             scrollable: {
