@@ -212,13 +212,21 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
+                if(values.CodigoActividad > 0){
+                    var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad";
+                }
+                else{
+                    var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad"
+                }
+
                 Ext.data.JsonP.request({
-                    url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad",
+                    url: url,
                     params: {
                         CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                         CodigoSociedad: localStorage.getItem("CodigoSociedad"),
                         CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                         Token: localStorage.getItem("Token"),
+                        "Actividad.CodigoActividad" : values.CodigoActividad,
                         "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
                         "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
                         "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
@@ -355,8 +363,6 @@ Ext.define('APP.controller.phone.Rutas', {
 
         var form = this.getActividadesForm(),
             values = form.getValues();
-
-        console.log("PTM");
 
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
