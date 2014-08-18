@@ -181,6 +181,8 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     onActividadesCalendarioFormPop:function(calendar, nd, pop){
+        nd = new Date(nd);
+
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
@@ -270,7 +272,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             store.load({
                                 callback:function(){
                                     ac.element.redraw();
-                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
                                     Ext.Viewport.setMasked(false);
                                 },
                                 scope:this
@@ -424,7 +426,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             store.load({
                                 callback:function(){
                                     ac.element.redraw();
-                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
                                     Ext.Viewport.setMasked(false);
                                 },
                                 scope:this
