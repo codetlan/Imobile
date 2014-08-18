@@ -12,6 +12,7 @@ Ext.define('APP.controller.phone.Rutas', {
             // Actividades
             actividadesCalendario:'actividadescalendario',
             actividadesCalendarioCont:'actividadescalendariocont',
+            actividadesCalendarioContNd:'actividadescalendariocont hiddenfield[name=ndhf]',
             actividadesCalendarioDia:'actividadescalendariodia',
             actividadesForm:'actividadesform',
             actividadesContRepetir:'actividadesform fieldset[id=actividadesrepetir]',
@@ -162,6 +163,10 @@ Ext.define('APP.controller.phone.Rutas', {
                 xtype:'container',
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
+                xtype:'hiddenfield',
+                name:'ndhf',
+                value:nd
+            },{
                 xtype:'actividadescalendariodia',
                 flex:1
             },{
@@ -169,14 +174,15 @@ Ext.define('APP.controller.phone.Rutas', {
                 action:'agregar',
                 text: 'Agregar',
                 margin:10
-            }],
-            nd:nd
+            }]
         });
 
         this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
     onActividadesCalendarioFormPop:function(calendar, nd, pop){
+        nd = new Date(nd);
+
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
@@ -191,10 +197,21 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     showFormActividades:function(b){
+        var nd = this.getActividadesCalendarioContNd().getValue();
+
         this.getMenuNav().push({
             xtype:'actividadesform',
             flex:1,
-            nd:this.getActividadesCalendarioCont().nd
+            listeners:{
+                scope:this,
+                activate:function(form){
+                    console.log(form);
+                    form.setValues({
+                        FechaInicio:new Date(nd),
+                        FechaFin:new Date(nd)
+                    });
+                }
+            }
         })
     },
 
@@ -255,7 +272,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             store.load({
                                 callback:function(){
                                     ac.element.redraw();
-                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
                                     Ext.Viewport.setMasked(false);
                                 },
                                 scope:this
@@ -409,7 +426,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             store.load({
                                 callback:function(){
                                     ac.element.redraw();
-                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
                                     Ext.Viewport.setMasked(false);
                                 },
                                 scope:this

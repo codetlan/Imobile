@@ -8,10 +8,9 @@
 Ext.define('APP.form.phone.rutas.ActividadesForm', {
     extend: 'Ext.form.Panel',
     xtype: 'actividadesform',
-    initialize : function() {
-        this.callParent();
-
-        this.setItems([{
+    config: {
+        layout:'fit',
+        items:[{
             xtype:'fieldset',
             scrollable: {
                 direction: 'vertical',
@@ -39,7 +38,6 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 },
                 items:[{
                     xtype:'datepickerfield',
-                    value:this.nd,
                     border:0,
                     name:'FechaInicio',
                     readOnly:true
@@ -57,8 +55,8 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 },
                 items:[{
                     xtype:'datepickerfield',
-                    value:this.nd,
-                    name:'FechaFin'
+                    name:'FechaFin',
+                    value:new Date()
                 },{
                     xtype: 'timepickerfield',
                     name: 'HoraFin',
@@ -123,9 +121,6 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                     action:'guardar'
                 }]
             }]
-        }]);
-    },
-    config: {
-        layout:'fit'
+        }]
     }
 });
