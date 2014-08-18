@@ -9,8 +9,7 @@ Ext.define('APP.store.phone.Productos', {
     config: {
         model:'APP.model.phone.Producto',
         proxy: {            
-            url: '/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',
-            //url: 'http://25.15.241.121:88/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',
+            url: '/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',            
                  
             type: 'jsonp',
             callbackKey: 'callback',
