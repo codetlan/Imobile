@@ -10,6 +10,7 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
     xtype: 'actividadesform',
     initialize : function() {
         this.callParent();
+
         this.setItems([{
             xtype:'fieldset',
             scrollable: {
@@ -23,6 +24,9 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 inputCls: 'labels'
             },
             items:[{
+                xtype:'hiddenfield',
+                name:'CodigoActividad'
+            },{
                 xtype: 'textfield',
                 name: 'Descripcion',
                 label:'Título'
@@ -64,7 +68,8 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
             },{
                 xtype: 'checkboxfield',
                 name: 'Repetir',
-                label: 'Repetir'
+                label: 'Repetir',
+                required:false
             },{
                 xtype:'fieldset',
                 id:'actividadesrepetir',
@@ -107,7 +112,8 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 xtype: 'textareafield',
                 name: 'Notas',
                 label: 'Notas',
-                labelAlign:'top'
+                labelAlign:'top',
+                required:false
             },{
                 xtype:'container',
                 items:[{
