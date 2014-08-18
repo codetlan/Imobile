@@ -52,7 +52,7 @@ Ext.define('Imobile.view.configuracion.ConfiguracionContainer', {
                     },
 
                     uploading: {
-                        text: 'Loading',
+                        text: 'Cargando...',
                         loading: true
                     }
                 }

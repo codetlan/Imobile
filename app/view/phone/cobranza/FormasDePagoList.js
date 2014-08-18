@@ -11,7 +11,8 @@ Ext.define('APP.view.phone.cobranza.FormasDePagoList', {
             this.fireEvent("tap", record, listItem, index, e);            
         },
         itemTpl: '{Nombre}',
-        store: 'FormasDePago'
+        store: 'FormasDePago',
+        loadingText: 'Cargando...'
         /*data:[
             {title: 'Efectivo', action: 'efectivo'},
             {title: 'Tarjeta de Crédito', action: 'credito'},

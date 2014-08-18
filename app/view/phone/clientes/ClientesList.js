@@ -40,6 +40,7 @@ Ext.define('APP.view.phone.clientes.ClientesList', {
         masked: {
             xtype: 'loadmask',
             message: 'Cargando...'
-        }
+        },
+        loadingText: 'Cargando...'
     }
 });

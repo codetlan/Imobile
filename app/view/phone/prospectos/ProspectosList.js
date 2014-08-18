@@ -42,6 +42,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
             loadMoreText: 'Ver Más...'
-        }]
+        }],
+        loadingText: 'Cargando...'
     }
 });

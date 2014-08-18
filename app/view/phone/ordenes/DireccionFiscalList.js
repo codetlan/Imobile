@@ -12,6 +12,7 @@ Ext.define('APP.view.phone.ordenes.DireccionFiscalList', {
         store: 'DireccionesFiscales',
     	onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
-        }
+        },
+        loadingText: 'Cargando...'
     }
 });

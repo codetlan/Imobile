@@ -75,6 +75,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.form.phone.pedidos.EditarPedidoForm": [],
   "APP.form.phone.productos.AgregarProductosForm": [],
   "APP.form.phone.prospectos.ProspectosForm": [],
+  "APP.form.phone.rutas.ActividadesForm": [],
   "APP.form.phone.rutas.RutasForm": [],
   "APP.model.phone.ActividadCalendario": [],
   "APP.model.phone.Cliente": [],
@@ -144,13 +145,15 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.productos.ProductosOrden": [],
   "APP.view.phone.productos.ProductosView": [],
   "APP.view.phone.prospectos.ProspectosList": [],
+  "APP.view.phone.rutas.OpcionRutasActividades": [],
   "APP.view.phone.rutas.OpcionRutasList": [],
   "APP.view.phone.rutas.RutasCalendario": [],
   "APP.view.phone.rutas.RutasCalendarioCont": [],
   "APP.view.phone.rutas.RutasCalendarioDia": [],
   "APP.view.phone.rutas.RutasMapa": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [],
-  "APP.view.phone.rutas.actividades.OpcionRutasActividades": [],
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioCont": [],
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
@@ -818,6 +821,9 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.form.phone.prospectos.ProspectosForm": [
     "widget.prospectosform"
   ],
+  "APP.form.phone.rutas.ActividadesForm": [
+    "widget.actividadesform"
+  ],
   "APP.form.phone.rutas.RutasForm": [
     "widget.rutasform"
   ],
@@ -967,6 +973,9 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.view.phone.prospectos.ProspectosList": [
     "widget.prospectoslist"
   ],
+  "APP.view.phone.rutas.OpcionRutasActividades": [
+    "widget.opcionrutasactividades"
+  ],
   "APP.view.phone.rutas.OpcionRutasList": [
     "widget.opcionrutaslist"
   ],
@@ -985,8 +994,11 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [
     "widget.actividadescalendario"
   ],
-  "APP.view.phone.rutas.actividades.OpcionRutasActividades": [
-    "widget.opcionrutasactividades"
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioCont": [
+    "widget.actividadescalendariocont"
+  ],
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [
+    "widget.actividadescalendariodia"
   ],
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],

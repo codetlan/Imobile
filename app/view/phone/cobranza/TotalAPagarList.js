@@ -10,7 +10,8 @@ Ext.define('APP.view.phone.cobranza.TotalAPagarList', {
     config: {
         itemCls: 'factura',
     	itemTpl: '{tipo}: <b>{monto}</b>',
-        store: 'Totales'
+        store: 'Totales',
+        loadingText: 'Cargando...'
     	/*onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },*/

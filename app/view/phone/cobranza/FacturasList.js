@@ -11,7 +11,8 @@ Ext.define('APP.view.phone.cobranza.FacturasList', {
         store: 'Facturas',
         selectedCls: 'direc-selected',
         mode: 'MULTI',
-        emptyText: '<div style="margin-top: 20px; text-align: center">No hay facturas pendientes</div>'
+        emptyText: '<div style="margin-top: 20px; text-align: center">No hay facturas pendientes</div>',
+        loadingText: 'Cargando...'
     },
 
     onItemDisclosure: function (record, listItem, index, e) {

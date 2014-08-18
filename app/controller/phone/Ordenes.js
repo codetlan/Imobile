@@ -776,10 +776,21 @@ Ext.define('APP.controller.phone.Ordenes', {
      * Muestra la lista de productos.
      */
     mostrarListaProductos: function () {
-        var me = this;
-        
-        Ext.getStore('Productos').clearFilter();
-        me.getProductosOrden().setItems({xtype: 'productoslist'});        
+        var me = this,
+            productos = Ext.getStore('Productos'),
+            idCliente = me.getNavigationOrden().getNavigationBar().getTitle();
+
+        productos.clearFilter();
+        productos.resetCurrentPage();
+
+        productos.setParams({
+            CardCode: idCliente,
+            Criterio: ""
+        });
+
+        productos.load();
+
+        me.getProductosOrden().setItems({xtype: 'productoslist'});
     },
 
 
@@ -891,7 +902,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 values.totalDeImpuesto = totalDeImpuesto;
                 values.Imagen = productoAgregado.get('Imagen');
                 values.nombreMostrado = Ext.String.ellipsis(descripcion, 25, false);
-                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;                
+                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;
                 ordenes.add(values);
                 menu.pop();
                 me.actualizarTotales();
@@ -904,7 +915,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 values.precioConDescuento = precio;
                 values.importe = APP.core.FormatCurrency.currency(values.importe, codigoMonedaSeleccionada);
                 values.totalDeImpuesto = totalDeImpuesto * tipoCambio;
-                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;                
+                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;
                 //values.descuento = values.descuento;
                 values.Imagen = productoAgregado.get('Imagen');
                 values.nombreMostrado = Ext.String.ellipsis(descripcion, 25, false);
@@ -929,7 +940,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                     datosProducto.set('precioConDescuento', precio);
                     datosProducto.set('cantidad', cantidad);
                     datosProducto.set('importe', importe);
-                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totaldeimpuesto);                    
+                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totaldeimpuesto);
                     //datosProducto.set('Imagen', cantidadProducto.get('Imagen'));
                     menu.pop();
                     me.actualizarTotales();
@@ -1208,8 +1219,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             ind = ordenes.find('id', id),
             idCliente = view.getNavigationBar().getTitle(),
             codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
-            
-            me.getOpcionesOrden().sujetoImpuesto = values.SujetoImpuesto;
+
+        me.getOpcionesOrden().sujetoImpuesto = values.SujetoImpuesto;
 
         if (view.getActiveItem().xtype == 'agregarproductosform') {
             return;
@@ -1323,7 +1334,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             totalDeImpuesto = me.getOpcionesOrden().totalDeImpuesto;
 
         if (sujetoImpuesto) {
-            me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;            
+            me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;
         }
 
         view.getActiveItem().setValues({
@@ -1377,20 +1388,21 @@ Ext.define('APP.controller.phone.Ordenes', {
 
         if (itemActivo.isXType('partidacontainer')) {
 
-            Ext.getStore('Productos').resetCurrentPage();
+            store.resetCurrentPage();
 
             store.setParams({
                 CardCode: idCliente,
                 Criterio: ""
-            });            
-
+            });
+            store.load();
+            //store.clearFilter();
             view.push({
                 xtype: 'productosorden',
                 title: idCliente
             });
 
-            store.clearFilter();
-            store.load();
+
+            //store.load();
 
             view.getNavigationBar().down('#agregarProductos').hide()
         } else {

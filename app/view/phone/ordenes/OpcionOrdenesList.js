@@ -11,6 +11,7 @@ Ext.define('APP.view.phone.ordenes.OpcionOrdenesList', {
         data:[
             {title: 'Orden de venta', action: 'orden'},
             {title: 'Visualizar transacciones', action: 'visualizar'}
-        ]
+        ],
+        loadingText: 'Cargando...'
     }
 });
