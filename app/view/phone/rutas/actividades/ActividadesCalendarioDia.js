@@ -12,7 +12,7 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
 
             '<div style="border-left:5px solid {[this.backColor(values.Estatus,values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)]}; padding-left:5px;">',
                 '<div style="text-align: right; color:#999999; font-size:14px;">',
-                   '{[this.dateParser(values.HoraInicio)]} - {[this.dateParser(values.HoraFin)]}',
+                   '{FechaInicio} {[this.dateParser(values.HoraInicio)]} - {FechaFin} {[this.dateParser(values.HoraFin)]}',
                 '</div>',
                 '<div>{title}</div>',
             '</div>',

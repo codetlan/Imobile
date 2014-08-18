@@ -62,6 +62,20 @@ Ext.define('APP.controller.phone.Rutas', {
 
             'actividadesform button[action=guardar]':{
                 tap:'onActividadesAdd'
+            },
+
+            'actividadescalendariodia':{
+                itemtap:'onActividadesEdit'
+            },
+            'button[action=realizaractividad]':{
+                tap:function(){
+                    this.onActividadesUpdate(1);
+                }
+            },
+            'button[action=cancelaractividad]':{
+                tap:function(){
+                    this.onActividadesUpdate(3);
+                }
             }
 
 
@@ -162,7 +176,7 @@ Ext.define('APP.controller.phone.Rutas', {
         this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
-    onActividadesCalendarioFormPop:function(calendar, nd){
+    onActividadesCalendarioFormPop:function(calendar, nd, pop){
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
@@ -170,7 +184,7 @@ Ext.define('APP.controller.phone.Rutas', {
         }, this);
 
 
-        this.getMenuNav().pop();
+        this.getMenuNav().pop(pop);
 
         this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
 
@@ -215,6 +229,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 "Actividad.Viernes" : values.Viernes?true:false,
                 "Actividad.Sabado" : values.Sabado?true:false,
                 "Actividad.Domingo" : values.Domingo?true:false,
+                "Actividad.Notas"   : values.Notas,
                 "Actividad.Estatus" : 2
             },
             callbackKey: 'callback',
@@ -228,7 +243,152 @@ Ext.define('APP.controller.phone.Rutas', {
                     store.load({
                         callback:function(){
                             ac.element.redraw();
-                            this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd);
+                            this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
+                            Ext.Viewport.setMasked(false);
+                        },
+                        scope:this
+                    });
+                }
+                else {
+                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
+                }
+
+            },
+            failure: function () {
+                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                    Ext.Viewport.setMasked(false);
+                });
+                Ext.Viewport.setMasked(false);
+            },
+            scope: this
+        });
+    },
+
+    onActividadesEdit:function(list,index,target,record){
+
+        console.log(record);
+
+        var items=[{
+            xtype:'actividadesform',
+            flex:1,
+            nd:this.getActividadesCalendarioCont().nd
+        }];
+
+        if(record.data.Estatus != 1 || record.data.Estatus != 3){
+            items.push({
+                xtype:'container',
+                padding:'0 10px 10px 10px',
+                layout:{
+                    type:'hbox',
+                    align: 'stretch'
+                },
+                items:[{
+                    xtype:'button',
+                    text:'Realizada',
+                    action:'realizaractividad',
+                    flex:1
+                },{
+                    xtype:'button',
+                    text:'Cancelar',
+                    action:'cancelaractividad',
+                    flex:1
+                }]
+            });
+        }
+        else{
+            if(record.data.Estatus == 2){
+
+            }
+        }
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            layout:{
+                type:'vbox'
+            },
+            items:items
+        })
+
+        var form = this.getActividadesForm();
+        console.log(this.getActividadesCalendarioCont());
+
+        var horaInicio = new Date();
+        horaInicio.setHours(record.data.HoraInicio.substr(0,2));
+        horaInicio.setMinutes(record.data.HoraInicio.substr(3,2));
+        horaInicio.setMilliseconds(record.data.HoraInicio.substr(6,2));
+
+        var horaFin = new Date();
+        horaFin.setHours(record.data.HoraFin.substr(0,2));
+        horaFin.setMinutes(record.data.HoraFin.substr(3,2));
+        horaFin.setMilliseconds(record.data.HoraFin.substr(6,2));
+
+        form.setValues({
+            CodigoActividad:record.data.CodigoActividad,
+            Descripcion:record.data.title,
+            FechaInicio:record.data.start,
+            HoraInicio: horaInicio,
+            FechaFin:record.data.end,
+            HoraFin: horaFin,
+            Notas:record.data.Notas,
+            Repetir:record.data.Repetir,
+            Lunes:record.data.Lunes,
+            Martes:record.data.Martes,
+            Miercoles:record.data.Miercoles,
+            Jueves:record.data.Jueves,
+            Viernes:record.data.Viernes,
+            Sabado:record.data.Sabado,
+            Domingo:record.data.Domingo
+        });
+
+
+    },
+
+    onActividadesUpdate:function(status){
+
+        var form = this.getActividadesForm(),
+            values = form.getValues();
+
+        Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
+            params: {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                "Actividad.CodigoActividad":values.CodigoActividad,
+                "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                "Actividad.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                "Actividad.Descripcion" : values.Descripcion,
+                "Actividad.Notas" : values.Notas,
+                "Actividad.Repetir" : values.Repetir?true:false,
+                "Actividad.Lunes" : values.Lunes?true:false,
+                "Actividad.Martes" : values.Martes?true:false,
+                "Actividad.Miercoles" : values.Miercoles?true:false,
+                "Actividad.Jueves" : values.Jueves?true:false,
+                "Actividad.Viernes" : values.Viernes?true:false,
+                "Actividad.Sabado" : values.Sabado?true:false,
+                "Actividad.Domingo" : values.Domingo?true:false,
+                "Actividad.Notas"   : values.Notas,
+                "Actividad.Estatus" : status
+            },
+            callbackKey: 'callback',
+            success: function (response) {
+                var procesada = response.Procesada
+
+                if (procesada) {
+                    var ac = this.getActividadesCalendario(),
+                        store = ac.view.eventStore;
+
+                    store.load({
+                        callback:function(){
+                            ac.element.redraw();
+                            this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioCont().nd,1);
                             Ext.Viewport.setMasked(false);
                         },
                         scope:this

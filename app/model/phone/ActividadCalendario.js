@@ -48,6 +48,8 @@ Ext.define('APP.model.phone.ActividadCalendario', {
             name:'Domingo'
         },{
             name:'Estatus'
+        },{
+            name:'Notas'
         }]
     }
 });

@@ -23,6 +23,9 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 inputCls: 'labels'
             },
             items:[{
+                xtype:'hiddenfield',
+                name:'CodigoActividad'
+            },{
                 xtype: 'textfield',
                 name: 'Descripcion',
                 label:'Título'
