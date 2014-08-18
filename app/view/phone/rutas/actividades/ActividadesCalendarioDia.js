@@ -33,7 +33,7 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
                             return "lightgreen";
                             break;
                         case 3:
-                            return "lightorange";
+                            return "#ff6600";
                             break;
 
                     }

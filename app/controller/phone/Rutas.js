@@ -307,7 +307,8 @@ Ext.define('APP.controller.phone.Rutas', {
             nd:this.getActividadesCalendarioCont().nd
         }];
 
-        if(record.data.Estatus != 1 || record.data.Estatus != 3){
+        if(record.data.Estatus != 1 && record.data.Estatus != 3){
+            console.log(record.data);
             items.push({
                 xtype:'container',
                 padding:'0 10px 10px 10px',
