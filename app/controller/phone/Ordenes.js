@@ -777,8 +777,9 @@ Ext.define('APP.controller.phone.Ordenes', {
      */
     mostrarListaProductos: function () {
         var me = this;
+        
         Ext.getStore('Productos').clearFilter();
-        me.getProductosOrden().setItems({xtype: 'productoslist'});
+        me.getProductosOrden().setItems({xtype: 'productoslist'});        
     },
 
 
@@ -1381,7 +1382,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             store.setParams({
                 CardCode: idCliente,
                 Criterio: ""
-            });
+            });            
 
             view.push({
                 xtype: 'productosorden',

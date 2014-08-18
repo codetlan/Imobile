@@ -36,6 +36,10 @@ Ext.define('APP.view.phone.productos.ProductosList', {
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
             loadMoreText: 'Ver Más...'
-        }]
+        }],
+        masked: {
+            xtype: 'loadmask',
+            message: 'Cargando...'
+        }
     }
 });

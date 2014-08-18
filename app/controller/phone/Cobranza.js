@@ -159,8 +159,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                 var store = Ext.getStore('Transacciones'),
                     url = "http://" + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
                     params = {
-                        CardCode: idCliente,
-                        CardName: ''
+                        CardCode: idCliente                        
                     };
 
                 store.getProxy().setUrl(url);
@@ -583,6 +582,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             });
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
+            
+            console.log(params);
 
             Ext.data.JsonP.request({
                 url: url,
