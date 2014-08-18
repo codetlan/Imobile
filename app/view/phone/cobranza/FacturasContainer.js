@@ -8,10 +8,10 @@ Ext.define('APP.view.phone.cobranza.FacturasContainer', {
     requires: [],
     xtype: 'facturascontainer',
     config: {
-        scrollable: {
+        /*scrollable: {
             direction: 'vertical',
             directionLock: true
-        },
+        },*/
         layout: 'vbox',
         items: [{
             xtype: 'facturaslist',

@@ -16,6 +16,7 @@ Ext.define('APP.view.phone.ordenes.DireccionesList', {
         data:[
             {title: 'Dirección de entrega', action: 'entrega'},
             {title: 'Dirección fiscal', action: 'fiscal'}
-        ]
+        ],
+        loadingText: 'Cargando...'
     }
 });

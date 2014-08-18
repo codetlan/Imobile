@@ -22,7 +22,8 @@ Ext.define('APP.view.phone.ordenes.OrdenList', {
             '<p style="margin: 0px;">Desc: {PorcentajeDescuento}</p>',
             '<p style="margin: 0px;"><b>Total: {importe}</b></p>',
             '</span></section>'].join(''),
-        store: 'Ordenes'
+        store: 'Ordenes',
+        loadingText: 'Cargando...'
     },
 
     onItemDisclosure: function (record, listItem, index, e) {

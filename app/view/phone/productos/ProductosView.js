@@ -28,6 +28,7 @@ Ext.define('APP.view.phone.productos.ProductosView', {
         store: 'Productos',
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        }
+        },
+        loadingText: 'Cargando...'
     }
 });

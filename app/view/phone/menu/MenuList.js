@@ -17,6 +17,7 @@ Ext.define('APP.view.phone.menu.MenuList', {
             '</div>',
             '</tpl>'
             //'<div style="clear:both"></div>'
-        ].join('')
+        ].join(''),
+        loadingText: 'Cargando...'
     }
 });

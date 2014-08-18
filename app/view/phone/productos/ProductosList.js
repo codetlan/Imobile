@@ -40,6 +40,7 @@ Ext.define('APP.view.phone.productos.ProductosList', {
         masked: {
             xtype: 'loadmask',
             message: 'Cargando...'
-        }
+        },
+        loadingText: 'Cargando...'
     }
 });

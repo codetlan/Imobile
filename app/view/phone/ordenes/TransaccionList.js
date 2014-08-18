@@ -32,6 +32,7 @@ Ext.define('APP.view.phone.ordenes.TransaccionList', {
         plugins: [{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true
-        }]
+        }],
+        loadingText: 'Cargando...'
     }
 });
