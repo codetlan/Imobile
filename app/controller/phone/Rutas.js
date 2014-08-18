@@ -356,6 +356,8 @@ Ext.define('APP.controller.phone.Rutas', {
         var form = this.getActividadesForm(),
             values = form.getValues();
 
+        console.log("PTM");
+
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
             if(values.Descripcion == ""){
@@ -422,6 +424,9 @@ Ext.define('APP.controller.phone.Rutas', {
                     scope: this
                 });
             }
+        }
+        else{
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
         }
     },
 
