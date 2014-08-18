@@ -31,6 +31,6 @@ Ext.define('APP.view.phone.productos.ProductosOrden', {
         },{
             xtype:'productoslist'
             //html:'Lista de productos'
-        }],
+        }]
     }
 });

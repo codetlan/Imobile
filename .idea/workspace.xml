@@ -16,15 +16,13 @@
     <file path="/build.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915163258" ignored="false" />
     <file path="$PROJECT_DIR$/phonegap/platforms/android/ant-build/AndroidManifest.cordova.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079591742" ignored="false" />
     <file path="/.gitignore" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407971951951" ignored="false" />
-    <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408063249095" ignored="false" />
-    <file path="$PROJECT_DIR$/phonegap/platforms/android/assets/www/app.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079591742" ignored="false" />
+    <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408390580838" ignored="false" />
     <file path="/Configuracion.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079743835" ignored="false" />
-    <file path="/Ordenes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407970313690" ignored="false" />
-    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408114074174" ignored="false" />
+    <file path="/Ordenes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408393159164" ignored="false" />
+    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408378108809" ignored="false" />
     <file path="$PROJECT_DIR$/../Intrinno/Intrinno/routes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408000400627" ignored="false" />
     <file path="/ConfiguracionPanel.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408064526535" ignored="false" />
     <file path="/LoginForm.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407988883032" ignored="false" />
-    <file path="$PROJECT_DIR$/resources/css/app.css" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408059606255" ignored="false" />
     <file path="$PROJECT_DIR$/phonegap/www/resources/css/app.css" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408059606255" ignored="false" />
     <file path="$PROJECT_DIR$/phonegap/platforms/android/AndroidManifest.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079591742" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -46,89 +44,115 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Cobranza.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
+      <file leaf-file-name="ProductosList.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="38" column="10" selection-start="1508" selection-end="1603" vertical-scroll-proportion="0.0">
+              <folding>
+                <marker date="1408386878000" expanded="false" signature="489:500" placeholder="..." />
+                <marker date="1408386878000" expanded="false" signature="649:685" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConfiguracionPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js">
+      <file leaf-file-name="ClientesList.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/clientes/ClientesList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="30" column="15" selection-start="1227" selection-end="1227" vertical-scroll-proportion="0.0">
+              <folding>
+                <marker date="1407187612000" expanded="false" signature="442:459" placeholder="..." />
+                <marker date="1407187612000" expanded="false" signature="600:636" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginForm.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/view/phone/login/LoginForm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="37" selection-start="543" selection-end="543" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Anticipos.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/store/phone/Anticipos.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FormasDePago.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/store/phone/FormasDePago.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="16" selection-start="320" selection-end="320" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Facturas.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/store/phone/Facturas.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="3" selection-start="529" selection-end="529" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Ordenes.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Ordenes.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="784" column="0" selection-start="32491" selection-end="32491" vertical-scroll-proportion="0.17721519">
+              <folding>
+                <marker date="1408394098000" expanded="false" signature="15713:15742" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="15944:15973" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="16187:16216" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="16409:16438" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78216:78291" placeholder="..." />
+                <marker date="1408394098000" expanded="true" signature="78358:78392" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78427:78489" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78524:78543" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78594:78647" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78715:78788" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78917:78936" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="78986:79039" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="79152:79225" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="79357:79376" placeholder="..." />
+                <marker date="1408394098000" expanded="false" signature="79435:79488" placeholder="..." />
+                <marker date="1408394098000" expanded="true" signature="79601:79674" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Configuracion.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
+      <file leaf-file-name="Store.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/core/data/Store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file leaf-file-name="Productos.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/store/phone/Productos.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="7" selection-start="7" selection-end="7" vertical-scroll-proportion="0.0">
+            <state line="25" column="3" selection-start="680" selection-end="680" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FormatCurrency.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/core/FormatCurrency.js">
+      <file leaf-file-name="ProductosView.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosView.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="9" selection-start="1130" selection-end="1130" vertical-scroll-proportion="0.0">
+              <folding>
+                <marker date="1408392396000" expanded="false" signature="614:639" placeholder="..." />
+                <marker date="1408392396000" expanded="false" signature="886:922" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConfiguracionContainer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/configuracion/ConfiguracionContainer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="51" column="22" selection-start="1650" selection-end="1650" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProductosOrden.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosOrden.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="43" selection-start="779" selection-end="793" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PartidaContainer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/PartidaContainer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClienteContainer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/ClienteContainer.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -154,14 +178,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/packager.json" />
-        <option value="$PROJECT_DIR$/.sencha/app/sencha.cfg" />
-        <option value="$PROJECT_DIR$/phonegap.local.properties" />
-        <option value="$PROJECT_DIR$/config.xml" />
         <option value="$PROJECT_DIR$/phonegap/www/config.xml" />
         <option value="$PROJECT_DIR$/phonegap/platforms/android/build.xml" />
         <option value="$PROJECT_DIR$/phonegap/www/app.js" />
-        <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
         <option value="$PROJECT_DIR$/app/view/phone/login/LoginForm.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
         <option value="$PROJECT_DIR$/app/store/phone/Anticipos.js" />
@@ -170,13 +189,18 @@
         <option value="$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Configuracion.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/app/controller/phone/Rutas.js" />
+        <option value="$PROJECT_DIR$/app/view/phone/productos/ProductosOrden.js" />
+        <option value="$PROJECT_DIR$/app/view/configuracion/ConfiguracionContainer.js" />
+        <option value="$PROJECT_DIR$/app/view/phone/productos/ProductosView.js" />
+        <option value="$PROJECT_DIR$/app/controller/phone/Ordenes.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1280" />
-    <option name="height" value="774" />
+    <option name="width" value="1920" />
+    <option name="height" value="1054" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -204,7 +228,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -251,12 +274,251 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="productos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ordenes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="clientes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Imobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="phone" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -265,8 +527,8 @@
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Intrinno/Intrinno" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager">
     <list size="0" />
@@ -281,14 +543,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="774" extended-state="6" />
+    <frame x="0" y="22" width="1920" height="1054" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32799146" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1337115" sideWeight="0.6713062" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19103523" sideWeight="0.6720086" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -297,7 +560,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869378" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -364,91 +626,12 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/phonegap/.cordova/config.json">
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Rutas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/phonegap/platforms/android/local.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/phonegap/www/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Clientes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/view/phone/login/LoginForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="37" selection-start="543" selection-end="543" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/store/phone/Anticipos.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/store/phone/FormasDePago.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="16" selection-start="320" selection-end="320" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/store/phone/Facturas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="3" selection-start="529" selection-end="529" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/view/configuracion/ConfiguracionContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.47565117" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="16" selection-start="4908" selection-end="4908" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="418" column="12" selection-start="17206" selection-end="17206" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/view/phone/configuracion/ConfiguracionPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="44" selection-start="1431" selection-end="1442" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/phone/Configuracion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="118" selection-start="3928" selection-end="3928" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="137" column="32" selection-start="4419" selection-end="4419" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1408374707000" expanded="false" signature="-1:-1" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -459,10 +642,134 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OrdenList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="7" selection-start="7" selection-end="7" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1407728367000" expanded="false" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OrdenContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OpcionesOrdenPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OpcionOrdenesList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/PartidaContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/ClienteContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/clientes/ClientesList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="15" selection-start="1227" selection-end="1227" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1407187612000" expanded="false" signature="442:459" placeholder="..." />
+            <marker date="1407187612000" expanded="false" signature="600:636" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core/data/Store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="10" selection-start="1508" selection-end="1603" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1408386878000" expanded="false" signature="489:500" placeholder="..." />
+            <marker date="1408386878000" expanded="false" signature="649:685" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/configuracion/ConfiguracionContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="22" selection-start="1650" selection-end="1650" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/store/phone/Productos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="3" selection-start="680" selection-end="680" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="9" selection-start="1130" selection-end="1130" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1408392396000" expanded="false" signature="614:639" placeholder="..." />
+            <marker date="1408392396000" expanded="false" signature="886:922" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosOrden.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="43" selection-start="779" selection-end="793" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/phone/Ordenes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="784" column="0" selection-start="32491" selection-end="32491" vertical-scroll-proportion="0.17721519">
+          <folding>
+            <marker date="1408394098000" expanded="false" signature="15713:15742" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="15944:15973" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="16187:16216" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="16409:16438" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78216:78291" placeholder="..." />
+            <marker date="1408394098000" expanded="true" signature="78358:78392" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78427:78489" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78524:78543" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78594:78647" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78715:78788" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78917:78936" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="78986:79039" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="79152:79225" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="79357:79376" placeholder="..." />
+            <marker date="1408394098000" expanded="false" signature="79435:79488" placeholder="..." />
+            <marker date="1408394098000" expanded="true" signature="79601:79674" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
