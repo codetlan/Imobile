@@ -300,7 +300,7 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     onActividadesEdit:function(list,index,target,record){
-
+        var form = this.getActividadesForm();
         var items=[{
             xtype:'actividadesform',
             flex:1,
@@ -308,7 +308,6 @@ Ext.define('APP.controller.phone.Rutas', {
         }];
 
         if(record.data.Estatus != 1 && record.data.Estatus != 3){
-            console.log(record.data);
             items.push({
                 xtype:'container',
                 padding:'0 10px 10px 10px',
@@ -373,6 +372,24 @@ Ext.define('APP.controller.phone.Rutas', {
             Sabado:record.data.Sabado,
             Domingo:record.data.Domingo
         });
+
+        if(record.data.Estatus != 2){
+            var btnGuardar = form.down("button[action=guardar]").destroy();
+            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
+            form.down("checkboxfield[name=Repetir]").disable();
+            form.down("checkboxfield[name=Lunes]").disable();
+            form.down("checkboxfield[name=Martes]").disable();
+            form.down("checkboxfield[name=Miercoles]").disable();
+            form.down("checkboxfield[name=Jueves]").disable();
+            form.down("checkboxfield[name=Viernes]").disable();
+            form.down("checkboxfield[name=Sabado]").disable();
+            form.down("checkboxfield[name=Domingo]").disable();
+
+        }
 
 
     },
