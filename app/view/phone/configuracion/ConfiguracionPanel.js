@@ -83,7 +83,7 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                     {
                         xtype: 'button',
                         itemId: 'guardar',
-                        iconCls: 'action',
+                        //iconCls: 'action',
                         ui: 'confirm',
                         text: 'Guardar Cambios'
                     }

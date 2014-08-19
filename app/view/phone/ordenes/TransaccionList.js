@@ -7,8 +7,9 @@ Ext.define('APP.view.phone.ordenes.TransaccionList', {
     extend: 'Ext.dataview.List',
     xtype: 'transaccionlist',
     config: {
-        itemTpl: 'Folio: {NumeroDocumento} <br> Tipo de transacción: Orden de venta', //{TipoTransaccion}',
+        itemTpl: '<b>Folio:</b> {NumeroDocumento} <br> <b>Tipo de transacción:</b> Orden de venta', //{TipoTransaccion}',
         store: 'Transacciones',
+        cls: 'factura',
         /*data:[
             {folio: 'F001', transaccion: 'Ordenes de Venta', cliente: 'C091 Oswaldo Lopez'},
             {folio: 'F002', transaccion: 'Ordenes de Venta', cliente: 'C032 Ali Hernandez'}

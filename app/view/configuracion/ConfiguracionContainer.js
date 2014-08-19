@@ -104,7 +104,7 @@ Ext.define('Imobile.view.configuracion.ConfiguracionContainer', {
                     {
                         xtype: 'button',
                         itemId: 'guardar',
-                        iconCls: 'action',
+                        //iconCls: 'action',
                         ui: 'confirm',
                         text: 'Guardar Cambios'
                     }

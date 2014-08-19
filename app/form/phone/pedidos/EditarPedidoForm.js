@@ -35,14 +35,14 @@ Ext.define('APP.form.phone.pedidos.EditarPedidoForm', {
             },*/
             {
                 xtype:'fieldset',
-                itemId:'datos',
-                title:'Editar Pedido',
-                instructions: 'Ingrese los datos',
+                itemId:'datos',                
+                instructions: 'Editar pedido',
                 defaults:{
                     //required:true,
                     disabled: true,
                     clearIcon:true,
                     autoCapitalize:true,
+                    labelWrap: true,
                     labelWidth: '45%'
                 },
                 items:[
@@ -85,8 +85,7 @@ Ext.define('APP.form.phone.pedidos.EditarPedidoForm', {
                         name:'CodigoMoneda',
                         label:'Moneda',
                         disabled: false,
-                        itemId: 'moneda',
-                        //tpl: ['<div style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"</div>'].join('')
+                        itemId: 'moneda',                        
                         inputCls: 'fa-check'
                     },{
                         xtype:'textfield',

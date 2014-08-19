@@ -21,6 +21,7 @@ Ext.define('APP.view.phone.cobranza.FacturasContainer', {
             text: 'Aplicar pago',
             ui: 'confirm',
             itemId: 'aplicarPago',
+            //iconCls: 'action',
             margin: 10
         }]
     }

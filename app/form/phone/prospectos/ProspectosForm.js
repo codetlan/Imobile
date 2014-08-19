@@ -8,33 +8,9 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
         //'Ext.field.Spinner'
 	],
 	config:{
-		padding:'10 15 15 15',
+		padding:'0 15 15 15',
         scrollable: 'vertical', 
-		items:[{        
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {                        
-                        //xtype: 'button',
-                        itemId:'agregarProspecto',
-                        text:'Agregar',
-                        ui: 'confirm'
-                        //ui:'btn-login-ui',
-                        // handler:function(btn){
-                        //     var form = btn.up('formpanel');
-                        //     form.fireEvent('logged', form);
-                        // }
-                    }
-                ]
-            },
+		items:[
             {
                 xtype:'fieldset',
                 itemId:'datos',
@@ -44,6 +20,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     required:true,
                     //disabled: true,
                     clearIcon:true,
+                    cls: 'factura',
+                    labelWrap: true,
                     autoCapitalize:true,
                     labelWidth: '45%'
                 },
@@ -80,7 +58,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     title:'Dirección',                    
                     defaults:{
                         required:true,
-                        //disabled: true,
+                        cls: 'factura',
+                        labelWrap: true,                        
                         clearIcon:true,
                         autoCapitalize:true,
                         labelWidth: '45%'
@@ -128,7 +107,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 title:'Encargado',                    
                 defaults:{
                     required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%'                
@@ -156,8 +136,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 xtype:'fieldset',
                 itemId:'cultivos',                    
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%',
@@ -185,8 +165,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 xtype:'fieldset',
                 itemId: 'superficie',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '70%',
@@ -224,8 +204,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 itemId:'distribuidor',
                 title:'Distribuidor',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '65%'                
@@ -258,8 +238,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 itemId:'productosUtilizados',
                 title:'Productos utilizados',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%'                
@@ -276,8 +256,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 itemId:'comentarios',
                 title:'Comentarios',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%'
@@ -287,6 +267,18 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textareafield'
                         //name:'productos',
                         //label:'Productos'
+                    }
+                ]
+            },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregarProspecto', 
+                        ui: 'action',
+                        text: 'Agregar prospecto'
                     }
                 ]
             }

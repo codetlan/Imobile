@@ -9,10 +9,10 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
         'Ext.field.Hidden'
 	],
 	config:{        
-		padding:'10 15 15 15',
-        scrollable: 'vertical',
+		padding:'0 15 15 15',
+        scrollable: 'vertical',        
 		items:[
-            {
+/*            {
                 xtype:'container',
                 padding: '0 0 0 200',
                 defaults:{
@@ -31,18 +31,20 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                     }
                 ]
 
-            },
+            },*/
             {
                 xtype:'fieldset',
                 itemId:'datos',
                 title:'Agregar Productos',
-                instructions: 'Ingrese los datos',
+                instructions: 'Ingrese los datos',                
                 defaults:{
                     //required:true,
                     disabled: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '45%'
+                    cls: 'factura',
+                    labelWrap: true,
+                    labelWidth: '40%'                    
                 },
                 items:[
                     {
@@ -100,6 +102,18 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                         xtype:'textfield',
                         name:'Disponible',
                         label:'Disponible'
+                    }
+                ]
+            },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregar',                        
+                        ui: 'action',
+                        text: 'Guardar Cambios'
                     }
                 ]
             }

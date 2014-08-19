@@ -277,7 +277,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 };
 
                 Ext.getStore('Transacciones').resetCurrentPage();
-                getProxy().setUrl(url);
+                store.getProxy().setUrl(url);
                 store.setParams(params);
 
                 store.load();
