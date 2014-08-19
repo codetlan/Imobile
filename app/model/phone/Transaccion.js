@@ -8,11 +8,11 @@ Ext.define('APP.model.phone.Transaccion', {
     config: {
         fields: [
             {
-                name: 'Folio',
+                name: 'CodigoCobranza',
                 type: 'string'
             },
             {
-                name: 'CodigoSocio',
+                name: 'CodigoCliente',
                 type: 'string'
             },
             {
@@ -25,6 +25,15 @@ Ext.define('APP.model.phone.Transaccion', {
             },
             {
                 name: 'NumeroDocumento',
+                type: 'string'
+            },{
+                name: 'CodigoCliente',
+                type: 'string'
+            },{
+                name: 'NombreCliente',
+                type: 'string'
+            },{
+                name: 'Tipo',
                 type: 'string'
             }
         ]

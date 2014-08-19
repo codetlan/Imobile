@@ -10,7 +10,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             mainCard:'maincard',
             navigationCobranza:'navigationcobranza',
             totales: 'totalescontainer',
-            facturasList: 'facturaslist'
+            facturasList: 'facturaslist',
+            visualizacionCobranzaList: 'visualizacioncobranzalist'
         },
     	control:{
 
@@ -49,6 +50,12 @@ Ext.define('APP.controller.phone.Cobranza', {
             },
             'visualizacioncobranzalist #btnBuscarCobranza': {
                 tap: 'onBuscarCobranza'
+            },
+            'visualizacioncobranzalist #buscarCobranzas':{
+                clearicontap: 'limpiaBusquedaTransacciones'
+            },
+            'visualizacioncobranzalist #buscarTipo':{
+                clearicontap: 'limpiaBusquedaTransacciones'
             }
     	}
     },
@@ -159,21 +166,23 @@ Ext.define('APP.controller.phone.Cobranza', {
                 var store = Ext.getStore('Transacciones'),
                     url = "http://" + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
                     params = {
-                        CardCode: idCliente                        
+                        CardCode: idCliente,
+                        Tipo: ''
                     };
 
                 store.getProxy().setUrl(url);
-                store.setParams(params);                
+                store.setParams(params);
 
                 view.push({
                     xtype: 'visualizacioncobranzalist',
                     title: idCliente
-                    //name: name
-                    //opcion: record.data.action
                 });
 
             view.getActiveItem().setEmptyText('No existen cobros para este cliente');
-            store.load();
+
+            store.load({
+                callback: me.recorreVisualizacion (store)
+            });
         }
     },
 
@@ -663,6 +672,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             store = Ext.getStore('Transacciones'),
             idCliente = me.getMenuNav().getNavigationBar().getTitle(),
             value = button.up('toolbar').down('#buscarCobranzas').getValue(),
+            tipo = button.up('toolbar').down('#buscarTipo').getValue(),
             list = button.up('visualizacioncobranzalist');
 
             list.setEmptyText('No existen cobros para este cliente');
@@ -670,10 +680,45 @@ Ext.define('APP.controller.phone.Cobranza', {
         store.resetCurrentPage();
         store.setParams({
             Criterio: value,
-            CardCode: idCliente
+            CardCode: idCliente,
+            Tipo: tipo
         });
 
-        store.load();
+        store.load({
+            callback: me.recorreVisualizacion (store)
+        });
+    },
+
+    limpiaBusquedaTransacciones: function (searchfield) {
+        var me = this,
+            store = me.getVisualizacionCobranzaList().getStore(),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle();
+
+        store.resetCurrentPage();        
+
+        if(searchfield.getItemId() == 'buscarCobranzas'){
+            store.setParams({
+                Criterio: '',
+                CardCode: idCliente
+            });
+        } else {
+            store.setParams({
+                Tipo: '',
+                CardCode: idCliente
+            });
+        }
+
+        store.load({
+            callback: me.recorreVisualizacion (store)
+        });
+    },
+
+    recorreVisualizacion: function (store){
+        var me = this;
+
+        store.each(function (item, index, length) {
+            item.set('NombreCliente', me.getMenuNav().down('toolbar').getTitle().getTitle())
+        });
     },
 
     launch: function (){

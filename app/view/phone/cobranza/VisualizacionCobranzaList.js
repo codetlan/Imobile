@@ -7,8 +7,9 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
     extend: 'Ext.dataview.List',
     xtype: 'visualizacioncobranzalist',
     config: {
-        itemTpl: 'Folio: {NumeroDocumento} <br> Tipo de transacción: Cobranza de factura <br> Cliente: {CodigoSocio} {NombreCliente}', //{TipoTransaccion}',
+        itemTpl: '<b>Folio:</b> {CodigoCobranza} <b>Tipo:</b> {Tipo}<br> <b>Tipo de transacción:</b> Cobranza de factura <br> <b>Cliente:</b> {CodigoCliente} {NombreCliente}', 
         store: 'Transacciones',
+        cls: 'factura',
         /*data:[
             {folio: 'F001', transaccion: 'Ordenes de Venta', cliente: 'C091 Oswaldo Lopez'},
             {folio: 'F002', transaccion: 'Ordenes de Venta', cliente: 'C032 Ali Hernandez'}
@@ -20,7 +21,12 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
             items: [{
                 xtype: 'searchfield',
                 itemId: 'buscarCobranzas',
-                placeHolder: ' Buscar cobranza...',
+                placeHolder: 'Criterio...',
+                flex: 8
+            },{
+                xtype: 'searchfield',
+                itemId: 'buscarTipo',
+                placeHolder: 'Tipo...',
                 flex: 8
             },{
                 xtype: 'button',
