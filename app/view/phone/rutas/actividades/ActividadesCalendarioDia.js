@@ -7,6 +7,7 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
     extend: 'Ext.dataview.List',
     xtype: 'actividadescalendariodia',
     config: {
+        emptyText:'No tiene actividades este día',
         itemTpl:new Ext.XTemplate(
             '<tpl>',
 
