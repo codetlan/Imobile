@@ -116,15 +116,15 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[
                     {
                         xtype:'textfield',
-                        name:'nombre',
+                        name:'nombreEncargado',
                         label:'Nombre'
                     },{
                         xtype:'textfield',
-                        name:'telOficina',
+                        name:'telOficinaEncargado',
                         label:'Tel. Oficina'                    
                     },{
                         xtype:'textfield',
-                        name:'telMovil',
+                        name:'telMovilEncargado',
                         label:'Tel. Móvil',
                         required:false
                     }

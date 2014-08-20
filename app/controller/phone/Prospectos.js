@@ -6,7 +6,8 @@ Ext.define('APP.controller.phone.Prospectos', {
 
     config:{
     	refs:{
-			menuNav:'menunav'
+			menuNav:'menunav',
+            prospectosForm: 'prospectosform'
     	},
 
     	control:{
@@ -18,7 +19,10 @@ Ext.define('APP.controller.phone.Prospectos', {
             },
             'prospectosform numberfield': {
                 keyup: 'respondeAKeyUp'
-            }    		
+            },
+            'prospectosform #agregarProspecto':{
+            tap: 'agregaProspecto'
+            }
     	}
     },
 
@@ -78,6 +82,63 @@ Ext.define('APP.controller.phone.Prospectos', {
                 padre.down('#total').setValue(suma).setDisabled(true);
                 break;
         }
+    },
+
+    agregaProspecto: function (button){
+       var me = this,
+            form = me.getProspectosForm(),
+            valores = form.getValues(),
+            msg = 'Se agregó el prospecto exitosamente con folio ',
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                "oProspecto.CodigoSocio": valores.codigo,
+                "oProspecto.NombreSocio": valores.razonSocial,
+                "oProspecto.TipoPersona": valores.tipoPersona,
+                "oProspecto.RFC": valores.rfc,
+                "oProspecto.Direcciones[0].Calle": valores.calle,
+                "oProspecto.Direcciones[0].NoExterior": valores.noExt,
+                "oProspecto.Direcciones[0].NoInterior": valores.noInt,
+                "oProspecto.Direcciones[0].Colonia": valores.colonia,
+                "oProspecto.Direcciones[0].Municipio": valores.municipio,
+                "oProspecto.Direcciones[0].Ciudad": valores.ciudad,
+                "oProspecto.Direcciones[0].Estado": valores.estado,
+                //"oProspecto.Direcciones[0].Pais": valores.
+                "oProspecto.Direcciones[0].CodigoPostal": valores.cp,                
+                "oProspecto.Contacto1.CodigoSocio": valores.codigo,
+                "oProspecto.Contacto1.CodigoContacto": 128,
+                "oProspecto.Contacto1.Nombre": valores.nombreEncargado,
+                "oProspecto.Contacto1.Telefono1": valores.telOficinaEncargado,
+                "oProspecto.Contacto1.TelefonoMovil": valores.telMovilEncargado
+
+            };            
+
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
+            
+            console.log(params);
+
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+                    if (response.Procesada) {
+                        me.getMainCard().setActiveItem(0);
+                        Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
+                        me.getMainCard().getActiveItem().pop();
+                    } else {
+                        me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);
+                    }
+                }
+            });
+
+        // } else {
+        //     me.getMainCard().getActiveItem().setMasked(false);
+        //     Ext.Msg.alert("Sin pago", "Agrega por lo menos un pago.");
+        // }
     }
 
 });
