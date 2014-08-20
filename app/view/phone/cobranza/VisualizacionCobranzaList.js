@@ -10,10 +10,6 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
         itemTpl: '<b>Folio:</b> {CodigoCobranza} <b>Tipo:</b> {Tipo}<br> <b>Tipo de transacción:</b> Cobranza de factura <br> <b>Cliente:</b> {CodigoCliente} {NombreCliente}', 
         store: 'Transacciones',
         cls: 'factura',
-        /*data:[
-            {folio: 'F001', transaccion: 'Ordenes de Venta', cliente: 'C091 Oswaldo Lopez'},
-            {folio: 'F002', transaccion: 'Ordenes de Venta', cliente: 'C032 Ali Hernandez'}
-        ],*/
         items: [{
             xtype: 'toolbar',
             docked: 'top',
@@ -34,10 +30,11 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
                 itemId: 'btnBuscarCobranza',
                 flex: 0.5
             }]
-        }],        
+        }],
         plugins: [{
             xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true
+            autoPaging: true,
+            loadMoreText: 'Ver Más...'
         }]
     }
 });
