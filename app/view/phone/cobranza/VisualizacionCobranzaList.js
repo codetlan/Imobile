@@ -7,7 +7,7 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
     extend: 'Ext.dataview.List',
     xtype: 'visualizacioncobranzalist',
     config: {
-        itemTpl: '<b>Folio:</b> {CodigoCobranza} <b>Tipo:</b> {Tipo}<br> <b>Tipo de transacción:</b> Cobranza de factura <br> <b>Cliente:</b> {CodigoCliente} {NombreCliente}', 
+        itemTpl: '<b>Folio:</b> {CodigoCobranza} <b>Tipo:</b> {Tipo}<br> <b>Tipo de transacción:</b> {TipoTransaccion} <br> <b>Cliente:</b> {CodigoCliente} {NombreCliente}', 
         store: 'Transacciones',
         cls: 'factura',
         items: [{
