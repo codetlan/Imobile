@@ -20,9 +20,13 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
                 placeHolder: 'Criterio...',
                 flex: 8
             },{
-                xtype: 'searchfield',
+                xtype: 'selectfield',
                 itemId: 'buscarTipo',
-                placeHolder: 'Tipo...',
+                options: [
+                    {text: 'Selecciona una Opción', value: ''},
+                    {text: 'Cobranza de Factura',  value: 'C'},
+                    {text: 'Anticipo de Pedido', value: 'A'}
+                ],
                 flex: 8
             },{
                 xtype: 'button',

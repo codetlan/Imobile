@@ -55,7 +55,8 @@ Ext.define('APP.controller.phone.Cobranza', {
                 clearicontap: 'limpiaBusquedaTransacciones'
             },
             'visualizacioncobranzalist #buscarTipo':{
-                clearicontap: 'limpiaBusquedaTransacciones'
+                clearicontap: 'limpiaBusquedaTransacciones',
+                change: 'onChangeTipoCobranza'
             }
     	}
     },
@@ -742,5 +743,30 @@ Ext.define('APP.controller.phone.Cobranza', {
         var me = this;                
         Ext.getStore('Facturas').on('load', me.agregaSaldoAMostrar);
         Ext.getStore('Anticipos').on('load', me.agregaSaldoAMostrar);
+    },
+
+    onChangeTipoCobranza: function (t, newValue, oldValue, eOpts) {
+        var me = this,
+            store = Ext.getStore('Transacciones'),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle(),
+            value = t.up('toolbar').down('#buscarCobranzas').getValue(),
+            tipo = newValue,
+            list = t.up('visualizacioncobranzalist');
+        console.log(list);
+        console.log(value);
+        list.setEmptyText('No existen cobros para este cliente');
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value,
+            CardCode: idCliente,
+            Tipo: tipo
+        });
+
+        store.load({
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
+        });
     }
 });
