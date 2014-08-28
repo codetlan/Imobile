@@ -14,16 +14,28 @@ Ext.define('APP.controller.phone.Prospectos', {
             'prospectoslist #agregar': {
                 tap: 'onAgregarProspecto'
             },
-            'prospectosform checkboxfield': {
+            'prospectosform checkboxfield[name=este]':{
                 change: 'toggleFieldSetItems'
             },
             'prospectosform numberfield': {
                 keyup: 'respondeAKeyUp'
             },
+            'prospectosform checkboxfield[name=servicio]':{
+                change: 'muestraConceptos'
+            },
             'prospectosform #agregarProspecto':{
             tap: 'agregaProspecto'
-            }
-    	}
+            },
+            'prospectoslist':{
+                activate: function(list){
+                    list.getStore().resetCurrentPage();
+                    list.getStore().setParams({
+                        Criterio: localStorage.getItem("CodigoDispositivo")
+                    });
+                    list.getStore().load();
+                }
+    	   }
+        }
     },
 
     onAgregarProspecto: function (btn) {
@@ -84,8 +96,64 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    muestraConceptos: function (checkboxfield, newValue, OldValue){
+        var me = this,
+            i;
+
+        if(newValue){
+            if(checkboxfield.up('fieldset').getItems().length == 1){
+                var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerConceptos",
+                    idCheck = checkboxfield.getItemId().toString(),
+                    concepto = idCheck.charAt(idCheck.length - 1),
+                    params = {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        Concepto: concepto
+                    };
+
+                    Ext.data.JsonP.request({
+                        url: url,
+                        params: params,
+                        callbackKey: 'callback',
+                        success: function (response) {
+                            if (response.Procesada) {                        
+                                var checkboxfields = new Array(),
+                                    datos = response.Data,
+                                    i;
+
+                                for (i = 0; i < datos.length; i++){
+
+                                    checkboxfields[i] = Ext.field.Checkbox({
+                                        xtype: 'checkboxfield',
+                                        name: datos[i].Nombre,
+                                        label: datos[i].Nombre,
+                                        value: datos[i].Codigo
+                                        //tipo: datos[i].Campo1
+                                    });
+                                }
+
+                                checkboxfield.up('fieldset').add(checkboxfields);
+                                me.toggleFieldSetItems(checkboxfield, true);
+                            } else {                        
+                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);
+                            }
+                        }
+                    });
+            } else {
+                me.toggleFieldSetItems(checkboxfield, true);
+            }
+        } else {
+
+            me.toggleFieldSetItems(checkboxfield, false);
+        }
+    },
+
     agregaProspecto: function (button){
-       var me = this,
+        var me = this,
+            i, j,
+            view = me.getMenuNav();
             form = me.getProspectosForm(),
             valores = form.getValues(),
             msg = 'Se agregó el prospecto exitosamente con folio ',
@@ -111,9 +179,38 @@ Ext.define('APP.controller.phone.Prospectos', {
                 "oProspecto.Contacto1.CodigoContacto": 128,
                 "oProspecto.Contacto1.Nombre": valores.nombreEncargado,
                 "oProspecto.Contacto1.Telefono1": valores.telOficinaEncargado,
-                "oProspecto.Contacto1.TelefonoMovil": valores.telMovilEncargado
+                "oProspecto.Contacto1.TelefonoMovil": valores.telMovilEncargado,
+                "oProspecto.Contacto2.CodigoSocio": valores.codigo,
+                "oProspecto.Contacto2.CodigoContacto": 129,
+                "oProspecto.Contacto2.Nombre": valores.nombreEncargadoCompras,
+                "oProspecto.Contacto2.Telefono1": valores.telEncargadoCompras,
+                "oProspecto.Contacto3.CodigoSocio": valores.codigo,
+                "oProspecto.Contacto3.CodigoContacto": 130,
+                "oProspecto.Contacto3.Nombre": valores.nombreEncargadoPagos,
+                "oProspecto.Contacto3.Telefono1": valores.telEncargadoPagos,
+                "oProspecto.Contacto4.CodigoSocio": valores.codigo,
+                "oProspecto.Contacto4.CodigoContacto": 131,
+                "oProspecto.Contacto4.Nombre": valores.nombreResponsableTecnico,
+                "oProspecto.Contacto4.Telefono1": valores.telResponsableTecnico,
+                "oProspecto.zonaDeInfluencia": valores.zonaDeInfluencia,
+                "oProspecto.comentarios": valores.comentarios
+            };
 
-            };            
+            if (valores.servicio != null){
+                for(i = 0; i < valores.servicio.length; i++){
+                    if(valores.servicio[i] != null){                                                        
+                        var campo = button.up('prospectosform').down('#conceptos' + (i+1)),
+                            elementos = campo.getItems().items,
+                            k = 0;
+
+                        for(j = 1; j < elementos.length; j++){                        
+                            if(elementos[j].getChecked()){
+                                params["oProspecto.Conceptos" + (i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue(); //item.data.Folio;//get('NumeroDocumento');    
+                            }
+                        }
+                    }
+                }
+            }
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
             
@@ -124,12 +221,11 @@ Ext.define('APP.controller.phone.Prospectos', {
                 params: params,
                 callbackKey: 'callback',
                 success: function (response) {
-                    if (response.Procesada) {
-                        me.getMainCard().setActiveItem(0);
+                    if (response.Procesada) {                        
                         Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
-                        me.getMainCard().getActiveItem().pop();
+                        view.pop();
                     } else {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                        //me.getMainCard().getActiveItem().setMasked(false);
                         Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);
                     }
                 }

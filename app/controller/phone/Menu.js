@@ -61,7 +61,6 @@ Ext.define('APP.controller.phone.Menu', {
                             title: 'Cobranza'
                         }
                     ]
-
                 });
                 break;
             case 'informes':
@@ -79,7 +78,7 @@ Ext.define('APP.controller.phone.Menu', {
             case 'prospectos':
                 this.getMenuNav().push({
                     xtype: 'prospectoslist',
-                    title: 'prospectos'
+                    title: 'Prospectos'
                 });
                 break;
             case 'favoritos':

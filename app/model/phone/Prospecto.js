@@ -16,11 +16,11 @@ Ext.define('APP.model.phone.Prospecto', {
                 type: 'string'
             },
             {
-                name: 'codigo',
+                name: 'CodigoSocio',
                 type: 'string'
             },
             {
-                name: 'razonSocial',
+                name: 'NombreSocio',
                 type: 'string'
             },
             {

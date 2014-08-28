@@ -134,7 +134,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 title:'Productor'
             },{
                 xtype:'fieldset',
-                itemId:'cultivos',                    
+                itemId: 'conceptos1',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -143,23 +143,14 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     labelWidth: '45%',
                     hidden: true
                 },
-                items:[
-                    /*{
-                        xtype:'textfield',
-                        name:'cultivos',
-                        label:'Cultivos'
-                    },*/
+                items:[                    
                     {
                         xtype: 'checkboxfield',
-                        name: 'cultivos',
+                        name: 'servicio',
                         label: 'Cultivos',
-                        hidden: false,
-                        itemId: 'cultivos'
-                    }/*,{
-                        xtype:'textfield',
-                        name:'superficie',
-                        label:'Superficie',                    
-                    }*/
+                        itemId: 'cultivos1',
+                        hidden: false
+                    }
                 ]
             },{
                 xtype:'fieldset',
@@ -174,7 +165,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 },
                 items:[{
                         xtype: 'checkboxfield',
-                        name: 'superficie',
+                        name: 'este',
+                        itemId: 'superficie',
                         label: 'Superficie',
                         hidden: false
                     },{
@@ -208,51 +200,194 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '65%'                
+                    labelWidth: '50%'                
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'zonaDeInfluencia',
                         label:'Zona de influencia'
-                    },{
-                        xtype:'textfield',
-                        name:'comercializa',
-                        label:'Comercializa'
-                    },{
-                        xtype:'textfield',
-                        name:'encargadoCompras',
-                        label:'Encargado de compras'
-                    },{
-                        xtype:'textfield',
-                        name:'encargadoPagos',
-                        label:'Encargado de pagos'
-                    },{
-                        xtype:'textfield',
-                        name:'responsableTecnico',
-                        label:'Responsable Técnico'
                     }
                 ]
             },{
                 xtype:'fieldset',
-                itemId:'productosUtilizados',
-                title:'Productos utilizados',
+                itemId: 'conceptos2',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '45%'                
+                    labelWidth: '80%'                
                 },
-                items:[
-                    {
-                        xtype:'textfield',
-                        name:'productos',
-                        label:'Productos'
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Comercializa',
+                        itemId: 'comercializa2',
+                        hidden: false
                     }
                 ]
             },{
                 xtype:'fieldset',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Encargado de compras',
+                        hidden: false,
+                        itemId: 'encargadoDeCompras',
+                    },{
+                        xtype:'textfield',
+                        name:'nombreEncargadoCompras',
+                        label:'Nombre',
+                        itemId: 'nombreEncargadoCompras'
+                    },{
+                        xtype:'textfield',
+                        name:'telEncargadoCompras',
+                        label:'Teléfono',
+                        itemId: 'telEncargadoCompras'
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Encargado de pagos',
+                        hidden: false,
+                        itemId: 'encargadoDePagos',
+                    },{
+                        xtype:'textfield',
+                        name:'nombreEncargadoPagos',
+                        label:'Nombre',
+                        itemId: 'nombreEncargadoPagos'
+                    },{
+                        xtype:'textfield',
+                        name:'telEncargadoPagos',
+                        label:'Teléfono',
+                        itemId: 'telEncargadoPagos'
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Responsable técnico',
+                        hidden: false,
+                        itemId: 'responsableTecnico',
+                    },{
+                        xtype:'textfield',
+                        name:'nombreResponsableTecnico',
+                        label:'Nombre',
+                        itemId: 'nombreResponsableTecnico'
+                    },{
+                        xtype:'textfield',
+                        name:'telResponsableTecnico',
+                        label:'Teléfono',
+                        itemId: 'telResponsableTecnico'
+                    }
+                ]
+            },{
+                xtype:'fieldset',                
+                title:'Productos utilizados',
+            },{
+                xtype:'fieldset',
+                itemId: 'conceptos3',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Solubles',
+                        itemId: 'solubles3',
+                        hidden: false
+                    }
+                ]
+            },{
+                xtype:'fieldset',
+                itemId: 'conceptos4',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Granulares',
+                        itemId: 'granulares4',
+                        hidden: false
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                itemId: 'conceptos5',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Ácidos',
+                        itemId: 'acidos5',
+                        hidden: false                        
+                    }
+                ]
+            },{
+                xtype:'fieldset',
+                itemId: 'conceptos6',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Otros',
+                        itemId: 'otros6',
+                        hidden: false                        
+                    }
+                ]
+            },{
+                xtype:'fieldset',                
                 itemId:'comentarios',
                 title:'Comentarios',
                 defaults:{
@@ -264,9 +399,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 },
                 items:[
                     {
-                        xtype:'textareafield'
-                        //name:'productos',
-                        //label:'Productos'
+                        xtype:'textareafield',
+                        name:'comentarios'                     
                     }
                 ]
             },{
