@@ -35,19 +35,27 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         value: Ext.Date.format(new Date(), "d-m-Y")
                     },{
                         xtype:'textfield',
-                        name:'codigo',
+                        name:'CodigoSocio',
                         label:'Código'
                     },{
                         xtype:'textfield',
-                        name:'razonSocial',
+                        name:'NombreSocio',
                         label:'Razón Social'
                     },{
-                        xtype:'textfield',
-                        name:'tipoPersona',
-                        label:'Tipo de persona'
+                        xtype:'selectfield',
+                        name:'TipoPersona',
+                        label:'Tipo de persona',
+                        options:[{
+                                text: 'Física',
+                                value: 'F'
+                            },{
+                                text: 'Moral',
+                                value: 'M'
+                            }],
+                        autoSelect: false
                     },{
                         xtype:'textfield',
-                        name:'rfc',
+                        name:'RFC',
                         label:'RFC',
                         required:false
                     }
@@ -67,38 +75,39 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     items:[
                         {
                             xtype:'textfield',
-                            name:'calle',
+                            name:'Calle',
                             label:'Calle'
                         },{
                             xtype:'textfield',
-                            name:'noExt',
+                            name:'NoExterior',
                             label:'No. Ext',
                             required:false
                         },{
                             xtype:'textfield',
-                            name:'noInt',
+                            name:'NoInterior',
                             label:'No.Int',
                             required:false
                         },{
                             xtype:'textfield',
-                            name:'colonia',
+                            name:'Colonia',
                             label:'Colonia'
                         },{
                             xtype:'textfield',
-                            name:'ciudad',
+                            name:'Ciudad',
                             label:'Ciudad'  
                         },{
                             xtype:'textfield',
-                            name:'municipio',
+                            name:'Municipio',
                             label:'Municipio' 
                         },{
                             xtype:'textfield',
-                            name:'cp',
+                            name:'CodigoPostal',
                             label:'C.P.' 
                         },{
-                            xtype:'textfield',
-                            name:'estado',
-                            label:'Estado' 
+                            xtype:'selectfield',                            
+                            name:'Estado',
+                            label:'Estado',
+                            itemId: 'estado'
                         }
                     ]
             },{
@@ -119,11 +128,11 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name:'nombreEncargado',
                         label:'Nombre'
                     },{
-                        xtype:'textfield',
+                        xtype:'numberfield',
                         name:'telOficinaEncargado',
                         label:'Tel. Oficina'                    
                     },{
-                        xtype:'textfield',
+                        xtype:'numberfield',
                         name:'telMovilEncargado',
                         label:'Tel. Móvil',
                         required:false
@@ -155,6 +164,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 itemId: 'superficie',
+                margin: '3 0 0 0',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -212,6 +222,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos2',
+                margin: '3 0 0 0',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -229,6 +240,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ]
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -242,14 +254,14 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Encargado de compras',
                         hidden: false,
-                        itemId: 'encargadoDeCompras',
+                        itemId: 'contactos2'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoCompras',
                         label:'Nombre',
                         itemId: 'nombreEncargadoCompras'
                     },{
-                        xtype:'textfield',
+                        xtype:'numberfield',
                         name:'telEncargadoCompras',
                         label:'Teléfono',
                         itemId: 'telEncargadoCompras'
@@ -257,6 +269,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ] 
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -270,14 +283,14 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Encargado de pagos',
                         hidden: false,
-                        itemId: 'encargadoDePagos',
+                        itemId: 'contactos3',
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
                         label:'Nombre',
                         itemId: 'nombreEncargadoPagos'
                     },{
-                        xtype:'textfield',
+                        xtype:'numberfield',
                         name:'telEncargadoPagos',
                         label:'Teléfono',
                         itemId: 'telEncargadoPagos'
@@ -285,6 +298,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ] 
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -298,21 +312,22 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Responsable técnico',
                         hidden: false,
-                        itemId: 'responsableTecnico',
+                        itemId: 'contactos4',
                     },{
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
                         label:'Nombre',
                         itemId: 'nombreResponsableTecnico'
                     },{
-                        xtype:'textfield',
+                        xtype:'numberfield',
                         name:'telResponsableTecnico',
                         label:'Teléfono',
                         itemId: 'telResponsableTecnico'
                     }
                 ]
             },{
-                xtype:'fieldset',                
+                xtype:'fieldset',
+                margin: '3 0 0 0',
                 title:'Productos utilizados',
             },{
                 xtype:'fieldset',
@@ -334,6 +349,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ]
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 itemId: 'conceptos4',
                 defaults:{
                     cls: 'factura',
@@ -352,6 +368,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ] 
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 itemId: 'conceptos5',
                 defaults:{
                     cls: 'factura',
@@ -370,6 +387,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ]
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
                 itemId: 'conceptos6',
                 defaults:{
                     cls: 'factura',
@@ -405,6 +423,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 ]
             },{
                 xtype: 'fieldset',
+                itemId: 'fieldButton',
                 padding: 10,
                 docked: 'bottom',
                 items: [
