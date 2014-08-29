@@ -39,6 +39,7 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
             loadMoreText: 'Ver Más...'
-        }]
+        }],
+        loadingText: 'Cargando...'
     }
 });

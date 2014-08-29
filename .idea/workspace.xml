@@ -11,11 +11,11 @@
     <file path="/config.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915149529" ignored="false" />
     <file path="/build.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407915163258" ignored="false" />
     <file path="/.gitignore" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407971951951" ignored="false" />
-    <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408467688702" ignored="false" />
+    <file path="/a.dummy" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408732145474" ignored="false" />
     <file path="/Configuracion.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408079743835" ignored="false" />
     <file path="/Ordenes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408393159164" ignored="false" />
-    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408571913419" ignored="false" />
-    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/routes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408000400627" ignored="false" />
+    <file path="/Dummy.txt" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409258176426" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/routes.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408680821249" ignored="false" />
     <file path="/ConfiguracionPanel.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408064526535" ignored="false" />
     <file path="/LoginForm.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1407988883032" ignored="false" />
     <file path="$PROJECT_DIR$/phonegap/www/resources/css/app.css" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408059606255" ignored="false" />
@@ -25,6 +25,14 @@
     <file path="$PROJECT_DIR$/phonegap/platforms/android/AndroidManifest.xml" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408571921821" ignored="false" />
     <file path="/VisualizacionCobranzaList.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408574597611" ignored="false" />
     <file path="/Cobranza.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408575946899" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/serverside/controller/BaseController.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409330448993" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/serverside/controller/UsersController.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408723348882" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/serverside/model/User.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408723348882" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/clientside/index.html" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409330448993" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/clientside/partials/header-nav.html" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409330448993" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/clientside/js/controller.js" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1408732113444" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/clientside/partials/mi-perfil.html" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409330448993" ignored="false" />
+    <file path="$PROJECT_DIR$/../Intrinno/Intrinno/config/enviroments/development.json" changelist="026fa604-91ef-49cb-855b-c1f1bce83ff2" time="1409271073340" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,22 +79,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductosList.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosList.js">
+      <file leaf-file-name="VisualizacionCobranzaList.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/VisualizacionCobranzaList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="8" selection-start="1372" selection-end="1508" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1408398741000" expanded="false" signature="489:500" placeholder="..." />
-                <marker date="1408398741000" expanded="false" signature="649:685" placeholder="..." />
-              </folding>
+            <state line="42" column="34" selection-start="1521" selection-end="1521" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VisualizacionCobranzaList.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/VisualizacionCobranzaList.js">
+      <file leaf-file-name="TotalAPagarList.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/TotalAPagarList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="35" selection-start="887" selection-end="897" vertical-scroll-proportion="0.0">
+            <state line="13" column="8" selection-start="398" selection-end="424" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -95,11 +100,11 @@
       <file leaf-file-name="Cobranza.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="755" column="27" selection-start="29634" selection-end="29634" vertical-scroll-proportion="0.49646643">
+            <state line="674" column="50" selection-start="27065" selection-end="27065" vertical-scroll-proportion="0.69129723">
               <folding>
-                <marker date="1408575948000" expanded="true" signature="4837:4873" placeholder="..." />
-                <marker date="1408575948000" expanded="true" signature="5068:5115" placeholder="..." />
-                <marker date="1408575948000" expanded="true" signature="5175:5189" placeholder="..." />
+                <marker date="1408577182000" expanded="false" signature="4837:4873" placeholder="..." />
+                <marker date="1408577182000" expanded="false" signature="5068:5115" placeholder="..." />
+                <marker date="1408577182000" expanded="false" signature="5175:5189" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -173,15 +178,16 @@
         <option value="$PROJECT_DIR$/app/view/phone/prospectos/ProspectosList.js" />
         <option value="$PROJECT_DIR$/app/view/phone/clientes/ClientesList.js" />
         <option value="$PROJECT_DIR$/app/view/phone/cobranza/FacturasContainer.js" />
-        <option value="$PROJECT_DIR$/app/view/phone/cobranza/VisualizacionCobranzaList.js" />
         <option value="$PROJECT_DIR$/app/controller/phone/Cobranza.js" />
+        <option value="$PROJECT_DIR$/app/view/phone/cobranza/VisualizacionCobranzaList.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-2" />
     <option name="y" value="22" />
-    <option name="width" value="1280" />
-    <option name="height" value="774" />
+    <option name="width" value="1920" />
+    <option name="height" value="778" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -209,6 +215,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -727,7 +734,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -736,8 +742,8 @@
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Intrinno/Intrinno" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager">
     <list size="0" />
@@ -752,14 +758,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="774" extended-state="6" />
+    <frame x="-2" y="22" width="1920" height="778" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2893031" sideWeight="0.6720086" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17609392" sideWeight="0.6720086" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -835,11 +841,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/MontoAPagarFormContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/NavigationCobranza.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="29" selection-start="658" selection-end="658" vertical-scroll-proportion="0.0" />
@@ -852,40 +853,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OpcionOrdenesList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="34" selection-start="495" selection-end="495" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="14" column="34" selection-start="495" selection-end="495" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/OrdenList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1408398859000" expanded="false" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/ordenes/TransaccionList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="11" selection-start="1244" selection-end="1244" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="35" column="11" selection-start="1244" selection-end="1244" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/productos/ProductosList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="8" selection-start="1372" selection-end="1508" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1408398741000" expanded="false" signature="489:500" placeholder="..." />
-            <marker date="1408398741000" expanded="false" signature="649:685" placeholder="..." />
-          </folding>
-        </state>
+        <state line="34" column="8" selection-start="1372" selection-end="1508" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/form/phone/clientes/ClienteForm.js">
@@ -937,20 +920,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/TotalAPagarList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="8" selection-start="398" selection-end="424" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/view/phone/cobranza/VisualizacionCobranzaList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="35" selection-start="887" selection-end="897" vertical-scroll-proportion="0.0">
+        <state line="42" column="34" selection-start="1521" selection-end="1521" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/phone/Cobranza.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="755" column="27" selection-start="29634" selection-end="29634" vertical-scroll-proportion="0.49646643">
+        <state line="674" column="50" selection-start="27065" selection-end="27065" vertical-scroll-proportion="0.69129723">
           <folding>
-            <marker date="1408575948000" expanded="true" signature="4837:4873" placeholder="..." />
-            <marker date="1408575948000" expanded="true" signature="5068:5115" placeholder="..." />
-            <marker date="1408575948000" expanded="true" signature="5175:5189" placeholder="..." />
+            <marker date="1408577182000" expanded="false" signature="4837:4873" placeholder="..." />
+            <marker date="1408577182000" expanded="false" signature="5068:5115" placeholder="..." />
+            <marker date="1408577182000" expanded="false" signature="5175:5189" placeholder="..." />
           </folding>
         </state>
       </provider>

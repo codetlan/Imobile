@@ -752,8 +752,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             value = t.up('toolbar').down('#buscarCobranzas').getValue(),
             tipo = newValue,
             list = t.up('visualizacioncobranzalist');
-        console.log(list);
-        console.log(value);
+
         list.setEmptyText('No existen cobros para este cliente');
 
         store.resetCurrentPage();
