@@ -16,7 +16,8 @@ Ext.define('APP.profile.Phone',{
             'Cobranza',
             'Informes',
             'Configuracion',
-            'Prospectos'
+            'Prospectos',
+            'Informes'
         ],
         models:[
             'Menu',
@@ -91,6 +92,9 @@ Ext.define('APP.profile.Phone',{
             'cobranza.VisualizacionCobranzaList',
             'cobranza.TotalAPagarList',            
             'prospectos.ProspectosList',
+            'informes.InformesList',
+            'informes.AnalisisVentasList',            
+            'APP.form.phone.informes.InformesForm',
 
             'rutas.OpcionRutasActividades',
             'rutas.actividades.ActividadesCalendario',
