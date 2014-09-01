@@ -153,7 +153,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.rutas.RutasMapa": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendarioCont": [],
-  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],  
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
