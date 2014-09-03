@@ -126,7 +126,9 @@ Ext.define('APP.controller.phone.Prospectos', {
                                     datos = response.Data,
                                     i;
 
-                                for (i = 0; i < datos.length; i++){
+                                me.agregaCampos(datos, checkboxfields);
+
+/*                                for (i = 0; i < datos.length; i++){
 
                                     checkboxfields[i] = Ext.field.Checkbox({
                                         xtype: 'checkboxfield',
@@ -135,7 +137,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                                         value: datos[i].Codigo
                                         //tipo: datos[i].Campo1
                                     });
-                                }
+                                }*/
 
                                 checkboxfield.up('fieldset').add(checkboxfields);
                                 me.toggleFieldSetItems(checkboxfield, true);
@@ -152,6 +154,20 @@ Ext.define('APP.controller.phone.Prospectos', {
             me.toggleFieldSetItems(checkboxfield, false);
         }
     },
+
+    agregaCampos: function(datos, checkboxfields){
+        var i;
+
+        for (i = 0; i < datos.length; i++){
+
+            checkboxfields[i] = Ext.field.Checkbox({
+                xtype: 'checkboxfield',
+                name: datos[i].Nombre,
+                label: datos[i].Nombre,
+                value: datos[i].Codigo                
+            });
+        }
+    },  
 
     estableceOpciones: function (selectfield){
         if(selectfield.getOptions() == null){ // Checamos si tiene opciones            
@@ -229,71 +245,87 @@ Ext.define('APP.controller.phone.Prospectos', {
                 "oProspecto.comentarios": valores.comentarios
             };
 
-            for(i = 2; i < 5; i++){
-                campo = button.up('prospectosform').down('#contactos' + i); // Esto es un checkboxfield
-                console.log('contactos' + i);
-                if(campo.getChecked()){
-                    elementos = campo.up('fieldset').getItems().items; // Obtenemos los hermanos del checkboxfield
+        for(i = 2; i < 5; i++){
+            campo = button.up('prospectosform').down('#contactos' + i); // Esto es un checkboxfield
+            
+            if(campo.getChecked()){
+                elementos = campo.up('fieldset').getItems().items; // Obtenemos los hermanos del checkboxfield
 
-                    params["oProspecto.Contacto" + i + ".CodigoSocio"] = valores.codigo;
-                    params["oProspecto.Contacto" + i + ".CodigoContacto"] = l++;                    
-                    params["oProspecto.Contacto" + i + ".Nombre"] = elementos[1].getValue(); 
-                    params["oProspecto.Contacto" + i + ".Telefono1"] = elementos[2].getValue();                    
-                }
+                params["oProspecto.Contacto" + i + ".CodigoSocio"] = valores.CodigoSocio;
+                params["oProspecto.Contacto" + i + ".CodigoContacto"] = l++;                    
+                params["oProspecto.Contacto" + i + ".Nombre"] = elementos[1].getValue(); 
+                params["oProspecto.Contacto" + i + ".Telefono1"] = elementos[2].getValue();                    
             }
+        }
 
-            if (valores.servicio != null){ // Validamos si se seleccionó algún servicio
-                for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
-                    if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
-                        campo = button.up('prospectosform').down('#conceptos' + (i+1)); // Esto es un Fieldset
-                        elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo                        
-                        k = 0;
+        if (valores.servicio != null){ // Validamos si se seleccionó algún servicio
+            for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
+                if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
+                    campo = button.up('prospectosform').down('#conceptos' + (i+1)); // Esto es un Fieldset
+                    elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
+                    k = 0;
 
-                        for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
-                            if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
-                                params["oProspecto.Conceptos" + (i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
-                            }
+                    for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
+                        if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
+                            params["oProspecto.Conceptos" + (i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
                         }
                     }
                 }
             }
+        }
 
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
-            
-            console.log(params);
+        campo = button.up('prospectosform').down('#superficieCheck'); // Esto es un Checkboxfield
 
-            Ext.data.JsonP.request({
-                url: url,
-                params: params,
-                callbackKey: 'callback',
-                success: function (response) {
-                    if (response.Procesada) {                        
-                        Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
-                        view.pop();
-                    } else {
-                        //me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);
+        if(campo.getChecked()){
+            params["oProspecto.campoAbierto"] = valores.campoAbierto;
+            params["oProspecto.invernadero"] = valores.invernadero;
+            params["oProspecto.macroTunel"] = valores.macroTunel;
+            params["oProspecto.total"] = valores.total;
+        }
+
+        elementos = me.getProspectosForm().getItems().items;
+
+        for(i = 0; i < 3; i++){
+            for(j = 0; j < elementos[i].getInnerItems().length; j++){
+                if(elementos[i].getInnerItems()[j].getRequired()){                    
+                    if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){
+                        Ext.Msg.alert("Campo obligatorio", "El campo " + elementos[i].getAt(j).getLabel() + " es obligatorio.");
+                        return;
                     }
-                }
-            });
+                }                
+            }                
+        }
 
-        // } else {
-        //     me.getMainCard().getActiveItem().setMasked(false);
-        //     Ext.Msg.alert("Sin pago", "Agrega por lo menos un pago.");
-        // }
+        url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
+        
+        console.log(params);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {                        
+                    Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
+                    view.pop();
+                } else {                    
+                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);
+                }
+            }
+        });        
     },
 
     muestraProspectos: function(list, index, target, record){
-        var me = this,
-            view = me.getMenuNav(),            
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",            
+        var me = this,            
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",
+            campo, elementos, i,
             params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                 CodigoSociedad: localStorage.getItem("CodigoSociedad"),
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token"),
                 CardCode: record.data.CodigoSocio
-            }        
+            };
 
         Ext.data.JsonP.request({
             url: url,
@@ -303,19 +335,72 @@ Ext.define('APP.controller.phone.Prospectos', {
                 if (response.Procesada) {
                     var valores = response.Data[0];
 
-                    valores = valores.Direcciones[0];                    
+                    // Extraemos la dirección
+                    valores = valores.Direcciones[0]; 
                     me.onAgregarProspecto();
                     me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");
                     me.getProspectosForm().setValues(valores);
 
-                    valores = response.Data[0];                    
-                    me.getProspectosForm().setValues(valores);
+                    // Vamos por los contactos, primero el obligatorio
+                    valores = response.Data[0].Contacto1
+                    campos = me.getProspectosForm().down('#contactos1'); // Esto es un fieldset
+                    elementos = campos.getItems().items; // Obtenemos los items del fieldset en un arreglo
+                    elementos[0].setValue(valores.Nombre);
+                    elementos[1].setValue(valores.Telefono1);
+                    elementos[2].setValue(valores.TelefonoMovil);
 
+                    //Ahora por los otros 3
+
+                    for (i = 2; i < 5; i++){
+                        valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Contacto' + i).value;
+                        
+                        if(!(valores.Nombre === "")){
+                            campos = me.getProspectosForm().down('#campo' + i); // Esto es un fieldset
+                            elementos = campos.getItems().items; // Obtenemos a los hijos del fieldset
+                            elementos[0].setChecked(true);
+                            elementos[1].setValue(valores.Nombre);                        
+                            elementos[2].setValue(valores.Telefono1);
+                        }
+                    }
+
+                    // Siguen los conceptos.
+                    var checkboxfields = new Array(),
+                        concepto, j;
+
+                    for (i = 1; i < 7; i++){
+                        valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Conceptos' + i).value;
+
+                        if(!(valores.length == 0)){
+                            concepto = me.getProspectosForm().down('#conceptos' + i);
+                            me.agregaCampos(valores, checkboxfields);
+                            concepto.add(checkboxfields);
+                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
+                            elementos = concepto.getItems().items;
+
+                            for (j = 0; j < elementos.length; j++){
+                                elementos[j].setChecked(true);
+                            }
+                        }
+                    }
+
+                    // La superficie
+                    valores = response.Data[0];
+                    if(!(valores.total === "")){
+                        campo = me.getProspectosForm().down('#superficieCheck');
+                        campo.setChecked(true);
+                    }                    
+
+
+                    // Ahora los datos básicos como nombre, código, razón social, etc.
+                    valores = response.Data[0];
+                    me.getProspectosForm().setValues(valores);
+                    //me.getProspectosForm().setActiveItem(me.getProspectosForm().down('#fecha'));
+                    
                     me.getProspectosForm().setDisabled(true);
-                    me.getProspectosForm().down('button').setHidden(true);
+                    me.getProspectosForm().down('button').setHidden(true);                    
 
                 } else {
-                    Ext.Msg.alert("Imposiblr cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
+                    Ext.Msg.alert("Imposible cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
                 }
             }
         });        
