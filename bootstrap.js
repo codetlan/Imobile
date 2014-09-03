@@ -72,6 +72,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.core.data.Store": [],
   "APP.form.phone.clientes.ClienteForm": [],
   "APP.form.phone.cobranza.MontoAPagarForm": [],
+  "APP.form.phone.informes.InformesForm": [],
   "APP.form.phone.pedidos.EditarPedidoForm": [],
   "APP.form.phone.productos.AgregarProductosForm": [],
   "APP.form.phone.prospectos.ProspectosForm": [],
@@ -119,6 +120,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.cobranza.TotalesContainer": [],
   "APP.view.phone.cobranza.VisualizacionCobranzaList": [],
   "APP.view.phone.configuracion.ConfiguracionPanel": [],
+  "APP.view.phone.informes.AnalisisVentasList": [],
+  "APP.view.phone.informes.InformesList": [],
   "APP.view.phone.login.ConfiguracionForm": [],
   "APP.view.phone.login.LoginForm": [],
   "APP.view.phone.login.LoginPanel": [],
@@ -153,7 +156,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.rutas.RutasMapa": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendarioCont": [],
-  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],  
+  "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
@@ -812,6 +815,9 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.form.phone.cobranza.MontoAPagarForm": [
     "widget.montoapagarform"
   ],
+  "APP.form.phone.informes.InformesForm": [
+    "widget.informesform"
+  ],
   "APP.form.phone.pedidos.EditarPedidoForm": [
     "widget.editarpedidoform"
   ],
@@ -894,6 +900,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "APP.view.phone.configuracion.ConfiguracionPanel": [
     "widget.configuracionpanel"
+  ],
+  "APP.view.phone.informes.AnalisisVentasList": [
+    "widget.analisisventaslist"
+  ],
+  "APP.view.phone.informes.InformesList": [
+    "widget.informeslist"
   ],
   "APP.view.phone.login.ConfiguracionForm": [
     "widget.configuracionform"

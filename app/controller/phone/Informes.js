@@ -19,7 +19,7 @@ Ext.define('APP.controller.phone.Informes', {
     },
 
     muestraOpcionElegida: function (list, index, target, record){
-    	var me = this
+    	var me = this,
     		view = me.getMenuNav();
 
     	switch (record.data.action){
