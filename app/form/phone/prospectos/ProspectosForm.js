@@ -32,7 +32,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         label: 'Fecha',
                         required:false,
                         disabled: true,
-                        value: Ext.Date.format(new Date(), "d-m-Y")
+                        value: Ext.Date.format(new Date(), "d-m-Y"),
+                        itemId: 'fecha'
                     },{
                         xtype:'textfield',
                         name:'CodigoSocio',
@@ -112,8 +113,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     ]
             },{
                 xtype:'fieldset',
-                itemId:'encargado',
-                title:'Encargado',                    
+                itemId:'contactos1',
+                title:'Encargado',                                 
                 defaults:{
                     required:true,
                     cls: 'factura',
@@ -176,7 +177,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        itemId: 'superficie',
+                        itemId: 'superficieCheck',
                         label: 'Superficie',
                         hidden: false
                     },{
@@ -241,6 +242,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
+                itemId: 'campo2',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -270,6 +272,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
+                itemId: 'campo3',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -299,6 +302,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
+                itemId: 'campo4',
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
