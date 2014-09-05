@@ -80,6 +80,7 @@ Ext.define('APP.controller.phone.Menu', {
                     xtype: 'prospectoslist',
                     title: 'Prospectos'
                 });
+                this.agregaOpciones();
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -137,5 +138,41 @@ Ext.define('APP.controller.phone.Menu', {
             store.setParams(params);
             store.load();            
         }
+    },
+
+    agregaOpciones: function(){
+        var me = this,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token")                
+            };
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+
+                if (response.Procesada) {
+                    var opciones = new Array(),
+                        datos = response.Data,
+                        i;
+
+                    for (i = 0; i < datos.length; i++){
+                        opciones[i] = {
+                            text: datos[i].NombreEstado,
+                            value: datos[i].CodigoEstado
+                        };
+                    }                    
+
+                    me.getMenuNav().estados = opciones;
+                } else {                    
+                    Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                }
+            }
+        });
     }
 });

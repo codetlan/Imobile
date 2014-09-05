@@ -9,7 +9,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
 	],
 	config:{
 		padding:'0 15 15 15',
-        scrollable: 'vertical', 
+        scrollable: 'vertical',
+        modal: true,
 		items:[
             {
                 xtype:'fieldset',
@@ -37,10 +38,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     },{
                         xtype:'textfield',
                         name:'CodigoSocio',
+                        itemId: 'codigoSocio',
+                        tabIndex: 1,
                         label:'Código'
                     },{
                         xtype:'textfield',
                         name:'NombreSocio',
+                        tabIndex: 2,
                         label:'Razón Social'
                     },{
                         xtype:'selectfield',
@@ -53,11 +57,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                                 text: 'Moral',
                                 value: 'M'
                             }],
+                        tabIndex: 3,
                         autoSelect: false
                     },{
                         xtype:'textfield',
                         name:'RFC',
                         label:'RFC',
+                        tabIndex: 4,
                         required:false
                     }
                 ]
@@ -77,37 +83,45 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         {
                             xtype:'textfield',
                             name:'Calle',
+                            tabIndex: 5,
                             label:'Calle'
                         },{
                             xtype:'textfield',
                             name:'NoExterior',
                             label:'No. Ext',
+                            tabIndex: 6,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'NoInterior',
                             label:'No.Int',
+                            tabIndex: 7,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'Colonia',
+                            tabIndex: 8,
                             label:'Colonia'
                         },{
                             xtype:'textfield',
                             name:'Ciudad',
+                            tabIndex: 9,
                             label:'Ciudad'  
                         },{
                             xtype:'textfield',
                             name:'Municipio',
+                            tabIndex: 10,
                             label:'Municipio' 
                         },{
                             xtype:'textfield',
                             name:'CodigoPostal',
+                            tabIndex: 11,
                             label:'C.P.' 
                         },{
                             xtype:'selectfield',                            
                             name:'Estado',
                             label:'Estado',
+                            tabIndex: 12,
                             itemId: 'estado'
                         }
                     ]
@@ -127,14 +141,17 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     {
                         xtype:'textfield',
                         name:'nombreEncargado',
+                        tabIndex: 13,
                         label:'Nombre'
                     },{
                         xtype:'numberfield',
                         name:'telOficinaEncargado',
+                        tabIndex: 14,
                         label:'Tel. Oficina'                    
                     },{
                         xtype:'numberfield',
                         name:'telMovilEncargado',
+                        tabIndex: 15,
                         label:'Tel. Móvil',
                         required:false
                     }
@@ -171,7 +188,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '70%',
+                    labelWidth: '45%',
                     hidden: true
                 },
                 items:[{
@@ -184,16 +201,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'numberfield',
                         name:'campoAbierto',
                         label:'Campo Abierto',
+                        tabIndex: 16,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
                         label:'Invernadero',
+                        tabIndex: 17,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
                         label:'Macro Túnel',
+                        tabIndex: 18,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
@@ -211,12 +231,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '50%'                
+                    labelWidth: '50%'
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'zonaDeInfluencia',
+                        tabIndex: 19,
                         label:'Zona de influencia'
                     }
                 ]
@@ -261,11 +282,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'nombreEncargadoCompras',
                         label:'Nombre',
+                        tabIndex: 20,
                         itemId: 'nombreEncargadoCompras'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoCompras',
                         label:'Teléfono',
+                        tabIndex: 21,
                         itemId: 'telEncargadoCompras'
                     }
                 ] 
@@ -291,11 +314,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
                         label:'Nombre',
+                        tabIndex: 22,
                         itemId: 'nombreEncargadoPagos'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoPagos',
                         label:'Teléfono',
+                        tabIndex: 23,
                         itemId: 'telEncargadoPagos'
                     }
                 ] 
@@ -321,11 +346,13 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
                         label:'Nombre',
+                        tabIndex: 24,
                         itemId: 'nombreResponsableTecnico'
                     },{
                         xtype:'numberfield',
                         name:'telResponsableTecnico',
                         label:'Teléfono',
+                        tabIndex: 25,
                         itemId: 'telResponsableTecnico'
                     }
                 ]
@@ -422,6 +449,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[
                     {
                         xtype:'textareafield',
+                        tabIndex: 26,
                         name:'comentarios'                     
                     }
                 ]
