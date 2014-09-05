@@ -6,8 +6,9 @@ Ext.define('APP.controller.phone.Prospectos', {
 
     config:{
     	refs:{
-			menuNav:'menunav',
-            prospectosForm: 'prospectosform'
+			menuNav:'menunav',            
+            prospectosForm: 'prospectosform',
+            prospectosList: 'prospectoslist'
     	},
 
     	control:{
@@ -26,29 +27,116 @@ Ext.define('APP.controller.phone.Prospectos', {
             'prospectosform #agregarProspecto':{
                 tap: 'agregaProspecto'
             },
+            'prospectoslist #buscar':{
+                tap: 'buscaProspectoBoton'
+            },
             'prospectosform #estado':{
                 focus:'estableceOpciones'
             },
             'prospectoslist':{
                 activate: function(list){
                     list.getStore().resetCurrentPage();
-                    list.getStore().setParams({
+/*                    list.getStore().setParams({
                         Criterio: localStorage.getItem("CodigoDispositivo")
-                    });
+                    });*/
                     list.getStore().load();
                 },
                 itemtap: 'muestraProspectos'
-    	   }
+    	   },
+           'prospectoslist #buscarProspectos':{
+                keyup: 'buscaProspecto',
+                clearicontap: 'limpiaBusquedaProspecto'
+           }/*,
+            'prospectosform textfield':{
+                focus: 'muestraTabIndex'
+           }*/
         }
     },
 
     onAgregarProspecto: function (btn) {
         var me = this,
-            view = me.getMenuNav();
-            
-        view.push({
-            xtype: 'prospectosform'
+            url =  "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerFolioSiguienteProspecto",            
+            view = me.getMenuNav(),
+            codigo,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),                
+            };
+        Ext.Viewport.getMasked().setMessage('Construyendo folio...');
+        Ext.Viewport.setMasked(true);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {                        
+                   codigo = response.Data[0].Campo1;
+
+                    view.push({
+                        xtype: 'prospectosform'
+                    });
+
+                    me.getProspectosForm().setValues({
+                        CodigoSocio: codigo
+                    });
+
+                    me.getProspectosForm().down("#codigoSocio").setDisabled(true);
+                    Ext.Viewport.setMasked(false);
+
+                } else {                        
+                    Ext.Msg.alert("Error", "No se pudo obtener el código del cliente: " + response.Descripcion);
+                }
+            }
+        });        
+    },
+
+    muestraTabIndex: function (textfield){
+        //var me = this;
+
+        console.log(textfield.getTabIndex());
+    },
+
+    buscaProspectoBoton: function (btn){
+        var me = this,
+            store = me.getProspectosList().getStore(),
+            value = me.getProspectosList().down('searchfield').getValue();
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value
         });
+
+        store.load();
+    },
+
+    buscaProspecto: function (searchfield){
+        if(event.keyCode == 13){
+            var me = this,
+                store = me.getProspectosList().getStore(),
+                value = searchfield.getValue();
+
+            store.resetCurrentPage();
+            store.setParams({
+                Criterio: value
+            });
+
+            store.load();
+        }
+    },
+
+    limpiaBusquedaProspecto: function (){
+        var me = this,
+            store = me.getProspectosList().getStore();
+        
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: ''
+        });
+
+        store.load();    
     },
 
     toggleFieldSetItems: function (chk, value) {
@@ -116,6 +204,9 @@ Ext.define('APP.controller.phone.Prospectos', {
                         Concepto: concepto
                     };
 
+                Ext.Viewport.getMasked().setMessage('Obteniendo ' + checkboxfield.getLabel());
+                Ext.Viewport.setMasked(true);
+
                     Ext.data.JsonP.request({
                         url: url,
                         params: params,
@@ -128,21 +219,12 @@ Ext.define('APP.controller.phone.Prospectos', {
 
                                 me.agregaCampos(datos, checkboxfields);
 
-/*                                for (i = 0; i < datos.length; i++){
-
-                                    checkboxfields[i] = Ext.field.Checkbox({
-                                        xtype: 'checkboxfield',
-                                        name: datos[i].Nombre,
-                                        label: datos[i].Nombre,
-                                        value: datos[i].Codigo
-                                        //tipo: datos[i].Campo1
-                                    });
-                                }*/
-
                                 checkboxfield.up('fieldset').add(checkboxfields);
                                 me.toggleFieldSetItems(checkboxfield, true);
-                            } else {                        
-                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);
+                                Ext.Viewport.setMasked(false);
+                            } else {
+                                Ext.Viewport.setMasked(true);
+                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);                                
                             }
                         }
                     });
@@ -170,45 +252,13 @@ Ext.define('APP.controller.phone.Prospectos', {
     },  
 
     estableceOpciones: function (selectfield){
-        if(selectfield.getOptions() == null){ // Checamos si tiene opciones            
-            var me = this,
-                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-                params = {
-                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                    Token: localStorage.getItem("Token")                
-                };
+        var me = this;
 
-            Ext.data.JsonP.request({
-                url: url,
-                params: params,
-                callbackKey: 'callback',
-                success: function (response) {
-
-                    if (response.Procesada) {
-                        var opciones = new Array(),
-                            datos = response.Data,
-                            i;
-
-                        for (i = 0; i < datos.length; i++){
-                            opciones[i] = {
-                                text: datos[i].NombreEstado,
-                                value: datos[i].CodigoEstado
-                            };
-                        }
-
-                        selectfield.setOptions(opciones);
-                        selectfield.showPicker();                        
-
-                    } else {
-                        //me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
-                    }
-                }
-            });            
+        if(selectfield.getOptions() == null){ // Checamos si tiene opciones   
+            selectfield.setOptions(me.getMenuNav().estados);
+            selectfield.showPicker(); 
         }
-    },
+    },    
 
     agregaProspecto: function (button) {
         var me = this,
@@ -281,6 +331,11 @@ Ext.define('APP.controller.phone.Prospectos', {
             params["oProspecto.invernadero"] = valores.invernadero;
             params["oProspecto.macroTunel"] = valores.macroTunel;
             params["oProspecto.total"] = valores.total;
+        } else {
+            params["oProspecto.campoAbierto"] = 0;
+            params["oProspecto.invernadero"] = 0;
+            params["oProspecto.macroTunel"] = 0;
+            params["oProspecto.total"] = 0;
         }
 
         elementos = me.getProspectosForm().getItems().items;
@@ -288,7 +343,7 @@ Ext.define('APP.controller.phone.Prospectos', {
         for(i = 0; i < 3; i++){
             for(j = 0; j < elementos[i].getInnerItems().length; j++){
                 if(elementos[i].getInnerItems()[j].getRequired()){                    
-                    if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){
+                    if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){                        
                         Ext.Msg.alert("Campo obligatorio", "El campo " + elementos[i].getAt(j).getLabel() + " es obligatorio.");
                         return;
                     }
@@ -298,6 +353,8 @@ Ext.define('APP.controller.phone.Prospectos', {
 
         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
         
+        Ext.Viewport.getMasked().setMessage('Enviando prospecto...');
+        Ext.Viewport.setMasked(true);
         console.log(params);
 
         Ext.data.JsonP.request({
@@ -306,18 +363,21 @@ Ext.define('APP.controller.phone.Prospectos', {
             callbackKey: 'callback',
             success: function (response) {
                 if (response.Procesada) {                        
+                    Ext.Viewport.setMasked(false);
                     Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
-                    view.pop();
-                } else {                    
-                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);
+                    view.pop();                    
+                } else {       
+                    Ext.Viewport.setMasked(false);             
+                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);                    
                 }
             }
-        });        
+        });
     },
 
     muestraProspectos: function(list, index, target, record){
-        var me = this,            
+        var me = this,
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",
+            view = me.getMenuNav(),
             campo, elementos, i,
             params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -327,6 +387,9 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CardCode: record.data.CodigoSocio
             };
 
+        Ext.Viewport.getMasked().setMessage('Obteniendo prospecto...');
+        Ext.Viewport.setMasked(true);
+
         Ext.data.JsonP.request({
             url: url,
             params: params,
@@ -335,10 +398,16 @@ Ext.define('APP.controller.phone.Prospectos', {
                 if (response.Procesada) {
                     var valores = response.Data[0];
 
+                    view.push({
+                        xtype: 'prospectosform'
+                    }); 
+
+                    //me.estableceOpciones(me.getProspectosForm().down('#estado'));
+                    me.getProspectosForm().down('#estado').setOptions(me.getMenuNav().estados);
+
                     // Extraemos la dirección
-                    valores = valores.Direcciones[0]; 
-                    me.onAgregarProspecto();
-                    me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");
+                    valores = valores.Direcciones[0];                     
+                    me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
                     me.getProspectosForm().setValues(valores);
 
                     // Vamos por los contactos, primero el obligatorio
@@ -354,12 +423,14 @@ Ext.define('APP.controller.phone.Prospectos', {
                     for (i = 2; i < 5; i++){
                         valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Contacto' + i).value;
                         
-                        if(!(valores.Nombre === "")){
-                            campos = me.getProspectosForm().down('#campo' + i); // Esto es un fieldset
-                            elementos = campos.getItems().items; // Obtenemos a los hijos del fieldset
-                            elementos[0].setChecked(true);
-                            elementos[1].setValue(valores.Nombre);                        
-                            elementos[2].setValue(valores.Telefono1);
+                        if(valores != null){
+                            if(!(valores.Nombre === "")){
+                                campos = me.getProspectosForm().down('#campo' + i); // Esto es un fieldset
+                                elementos = campos.getItems().items; // Obtenemos a los hijos del fieldset
+                                elementos[0].setChecked(true);
+                                elementos[1].setValue(valores.Nombre);                        
+                                elementos[2].setValue(valores.Telefono1);
+                            }
                         }
                     }
 
@@ -381,28 +452,34 @@ Ext.define('APP.controller.phone.Prospectos', {
                                 elementos[j].setChecked(true);
                             }
                         }
-                    }
+                    }                  
 
                     // La superficie
                     valores = response.Data[0];
-                    if(!(valores.total === "")){
+                    if(!(valores.total == 0)){
                         campo = me.getProspectosForm().down('#superficieCheck');
-                        campo.setChecked(true);
-                    }                    
-
+                        campo.setChecked(true);                        
+                    }   
 
                     // Ahora los datos básicos como nombre, código, razón social, etc.
                     valores = response.Data[0];
                     me.getProspectosForm().setValues(valores);
-                    //me.getProspectosForm().setActiveItem(me.getProspectosForm().down('#fecha'));
-                    
+                                        
                     me.getProspectosForm().setDisabled(true);
-                    me.getProspectosForm().down('button').setHidden(true);                    
+                    me.getProspectosForm().down('button').setHidden(true);                                        
+
+                    setTimeout (function (){
+                        me.getProspectosForm().down('#codigoSocio').focus();
+                        Ext.Viewport.setMasked(false);
+
+                    }, 200);                                
 
                 } else {
+                    Ext.Viewport.setMasked(false);
                     Ext.Msg.alert("Imposible cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
                 }
             }
-        });        
+        }); 
+
     }
-});
+}); 
