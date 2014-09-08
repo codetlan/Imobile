@@ -464,9 +464,13 @@ Ext.define('APP.controller.phone.Prospectos', {
                     // Ahora los datos básicos como nombre, código, razón social, etc.
                     valores = response.Data[0];
                     me.getProspectosForm().setValues(valores);
+
+                    me.getProspectosForm().setValues({
+                        fecha: me.daFormatoAFecha(valores.FechaCreacion)
+                    });                    
                                         
                     me.getProspectosForm().setDisabled(true);
-                    me.getProspectosForm().down('button').setHidden(true);                                        
+                    me.getProspectosForm().down('button').setHidden(true);
 
                     setTimeout (function (){
                         me.getProspectosForm().down('#codigoSocio').focus();
@@ -480,6 +484,13 @@ Ext.define('APP.controller.phone.Prospectos', {
                 }
             }
         }); 
+    },
 
+    daFormatoAFecha: function(fecha){
+        anio = fecha.substring(0,4);
+        mes = fecha.substring(5,7);
+        dia = fecha.substring(8,10);
+        
+        return dia + '-' + mes + '-' + anio;
     }
 }); 
