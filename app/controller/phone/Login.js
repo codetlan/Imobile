@@ -3,7 +3,7 @@
  */
 Ext.define('APP.controller.phone.Login', {
     extend: 'Ext.app.Controller',
-
+    requires:['APP.core.config.Locale'],
     config: {
         refs: {
             loginForm: 'loginpanel loginform',
@@ -158,7 +158,25 @@ Ext.define('APP.controller.phone.Login', {
 
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
+    },
+
+    launch: function(){
+        var me = this;        
+        Ext.Ajax.request({
+            url: 'app/core/data/Prueba.json',
+            
+            success: function(response){
+                console.log(response);
+                var text = response.responseText,
+                    idiomas = Ext.decode(response.responseText);
+
+                me.getLoginForm().idiomas = idiomas;
+                console.log(idiomas);
+//                APP.core.config.Locale.localize('en_US');
+            },
+            failure: function(response, opts) {
+                Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
+            }
+        });        
     }
-
-
 });

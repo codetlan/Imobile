@@ -3,6 +3,7 @@
  */
 Ext.define('APP.controller.phone.Configuracion', {
     extend: 'Ext.app.Controller',
+    requires:['APP.core.config.Locale'],
 
     config: {
         refs: {
@@ -82,7 +83,7 @@ Ext.define('APP.controller.phone.Configuracion', {
         return s;
     },
 
-    onSaveConfig: function () {
+    onSaveConfig: function (button) {
         var me = this,
             imagecmp = me.getImagenCmp(),
             list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
@@ -107,9 +108,24 @@ Ext.define('APP.controller.phone.Configuracion', {
                     if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
+
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
+                    }
+
+                    var idioma = button.up('configuracionpanel').down('selectfield').getValue();
+console.log(idioma);
+                    switch (idioma){
+                        case 'es':
+                            break;
+
+                        case 'en':
+                            console.log('Ingles');
+                            Ext.Viewport.removeAll(true);
+                            APP.core.config.Locale.localize('en_US');
+                            Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel')); 
+                            break;
                     }
                 }
             }

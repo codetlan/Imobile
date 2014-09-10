@@ -1,0 +1,42 @@
+{
+  "Language": [
+  {"es-MX":
+   [
+    {
+      "login": 
+      {
+        "usuario": "Código de Usuario",
+        "contrasenia": "Contraseña",
+        "ingresar": "Ingresar",
+        "sinUsuario": "No existe el usuario"
+      }
+    },{
+      "configuracion":
+      {
+          "mensaje1": "Este es el mensaje 1",
+          "mensaje2": "Este el mensaje 2",
+          "mensaje3": "Este es el mensaje 3"
+      }
+    }
+  ]},
+
+{
+    "en-US":
+    [{
+      "login":
+      {
+        "usuario": "Code user",
+        "contrasenia": "Password",
+        "ingresar": "Login",
+        "sinUsuario": "There is no user"
+      }
+    },{
+      "configuracion":
+      {
+          "mensaje1": "Este es el mensaje one",
+          "mensaje2": "Este el mensaje two",
+          "mensaje3": "Este es el mensaje three"
+        }
+    }]
+  }]
+}

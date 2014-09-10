@@ -32,6 +32,7 @@ Ext.define('APP.profile.Phone',{
             'Prospecto',
             'Transaccion',
             'RutaCalendario',
+//            'APP.core.data.Language',
 
             'ActividadCalendario'
         ],
@@ -49,6 +50,7 @@ Ext.define('APP.profile.Phone',{
             'Prospectos',
             'Transacciones',
             'RutasCalendario',
+//            'APP.core.data.Languages',
 
             'ActividadesCalendario'
         ],
@@ -122,7 +124,11 @@ Ext.define('APP.profile.Phone',{
         return Ext.os.is.Phone;
     },
 
-    launch: function(){
-        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+    launch: function(){        
+        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));        
+
+/*        setTimeout(function (){
+            console.log(Ext.getStore('Languages'));
+        }, 200);*/
     }
 });
