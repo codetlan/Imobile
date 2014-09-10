@@ -9,7 +9,7 @@ Ext.define('APP.controller.phone.Informes', {
     	},
 
     	control: {
-    		'list':{
+    		'informeslist':{
     			itemtap: 'muestraOpcionElegida'
     		}/*,
     		'analisisventaslist':{
@@ -22,6 +22,7 @@ Ext.define('APP.controller.phone.Informes', {
     	var me = this,
     		view = me.getMenuNav();
 
+console.log(view.getActiveItem().xtype);
     	switch (record.data.action){
     		case 'bitacoraVendedores':
     			view.push({
@@ -31,6 +32,11 @@ Ext.define('APP.controller.phone.Informes', {
     			break;
 
     		case 'analisisVentas':
+
+/*                if(view.getActiveItem().isXType('analisisventaslist')){
+                    return;
+                }*/
+
     			view.push({
     				xtype: 'analisisventaslist'
     				//title: 'Análisis de Ventas'
@@ -39,6 +45,10 @@ Ext.define('APP.controller.phone.Informes', {
     			break;
 
     		case 'analisisClientes':
+                if(view.getActiveItem().isXType('informesform')){
+                    return;
+                }
+
     			view.push({
     				xtype: 'informesform'
     			})

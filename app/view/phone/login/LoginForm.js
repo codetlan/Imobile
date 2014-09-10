@@ -2,27 +2,37 @@
  * Created by th3gr4bb3r on 7/21/14.
  */
 Ext.define('APP.view.phone.login.LoginForm', {
+    singleton: true,
     extend: 'Ext.form.Panel',
     xtype:'loginform',
+
+    usuario: 'Código de usuario',
+    contrasenia: 'Contraseña',
+    ingresar: 'Ingresar',
+
     config: {
         padding: '15 15 15 15',
         defaults: {
             required: true,
             clearIcon: true
         },
-        items: [{
+    },
+
+    initialize: function(){
+         this.setItems(
+        [{
             xtype: 'textfield',
             name: 'usuario',
-            placeHolder: 'Codigo de Usuario'
+            placeHolder: this.usuario
         },{
             xtype: 'passwordfield',
             name: 'password',
             margin:'5 0',
-            placeHolder: 'Contraseña'
+            placeHolder: this.contrasenia
         },{
             xtype: 'button',
             action:'login',
-            text: 'Login',
+            text: this.ingresar,
             ui: 'btn-login-ui',
             itemId: 'login',
             margin:'5 0',
@@ -45,6 +55,7 @@ Ext.define('APP.view.phone.login.LoginForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }]
-    }
+        }]);
+         this.callParent(arguments);
+    }    
 });
