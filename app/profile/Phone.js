@@ -124,8 +124,12 @@ Ext.define('APP.profile.Phone',{
         return Ext.os.is.Phone;
     },
 
-    launch: function(){        
-        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));        
+    launch: function(){
+        var me = this; 
+    
+        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+
+
 
 /*        setTimeout(function (){
             console.log(Ext.getStore('Languages'));

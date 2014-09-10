@@ -1,9 +1,23 @@
 Ext.define('APP.core.config.Locale', {
-  singleton: true,  
+  singleton: true,
 
-  idiomas: APP.view.phone.login.LoginForm.idiomas,
+  language: {es_MX: {
+    LoginForm: {
+      usuario: 'Código de usuario',
+      contrasenia: 'Contraseña',
+      ingresar: 'Ingresar'
+    },
 
-  config: {      
+    Configuracion:{
+      imagenEmpresa: "Imagen de la empresa2",
+      seleccionarImagen: "Seleccionar imagen2",
+      idioma: "Idioma2",
+      guardar: "Guardar cambios2"
+    }
+  }
+}
+
+/*  config: {      
 
     es_MX: {
       LoginForm: {
@@ -15,7 +29,7 @@ Ext.define('APP.core.config.Locale', {
 
     en_US: {
       LoginForm: {
-        usuario: idiomas.Language[1].en_US[0].login.usuario,//'Code user',
+        usuario: 'Code user', //idiomas.Language[1].en_US[0].login.usuario,//'Code user', 
         contrasenia: 'Password',
         ingresar: 'Login'
       }
@@ -56,5 +70,5 @@ Ext.define('APP.core.config.Locale', {
         }
     });
     return idiomas;
-  }
+  }*/
 });

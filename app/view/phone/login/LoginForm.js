@@ -1,14 +1,11 @@
 /**
  * Created by th3gr4bb3r on 7/21/14.
  */
-Ext.define('APP.view.phone.login.LoginForm', {
-    singleton: true,
+Ext.define('APP.view.phone.login.LoginForm', {    
     extend: 'Ext.form.Panel',
     xtype:'loginform',
 
-    usuario: 'Código de usuario',
-    contrasenia: 'Contraseña',
-    ingresar: 'Ingresar',
+    //App.core.config.Locale = idioma
 
     config: {
         padding: '15 15 15 15',
@@ -16,23 +13,21 @@ Ext.define('APP.view.phone.login.LoginForm', {
             required: true,
             clearIcon: true
         },
-    },
 
-    initialize: function(){
-         this.setItems(
+        items:
         [{
             xtype: 'textfield',
             name: 'usuario',
-            placeHolder: this.usuario
+            placeHolder: APP.core.config.Locale.language.es_MX.LoginForm.usuario
         },{
             xtype: 'passwordfield',
             name: 'password',
             margin:'5 0',
-            placeHolder: this.contrasenia
+            placeHolder: 'Cadena1'
         },{
             xtype: 'button',
             action:'login',
-            text: this.ingresar,
+            text: 'Cadena2',
             ui: 'btn-login-ui',
             itemId: 'login',
             margin:'5 0',
@@ -55,7 +50,7 @@ Ext.define('APP.view.phone.login.LoginForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }]);
-         this.callParent(arguments);
-    }    
+        }
+    ]
+    },
 });
