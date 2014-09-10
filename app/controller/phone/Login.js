@@ -160,7 +160,7 @@ Ext.define('APP.controller.phone.Login', {
         this.getLoginPanel().setActiveItem(0);
     },
 
-    launch: function(){
+/*    launch: function(){
         var me = this;        
         Ext.Ajax.request({
             url: 'app/core/data/Prueba.json',
@@ -168,15 +168,16 @@ Ext.define('APP.controller.phone.Login', {
             success: function(response){
                 console.log(response);
                 var text = response.responseText,
-                    idiomas = Ext.decode(response.responseText);
+                    idiomas = Ext.decode(text);
 
-                me.getLoginForm().idiomas = idiomas;
+                APP.core.config.Locale.languages = idiomas;
                 console.log(idiomas);
+                localStorage.setItem('idioma', 'es_MX');
 //                APP.core.config.Locale.localize('en_US');
             },
             failure: function(response, opts) {
                 Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
             }
         });        
-    }
+    }*/
 });

@@ -13,7 +13,7 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
         items: [
             {
                 xtype: 'fieldset',
-                title: 'Imagen de la empresa',
+                title: APP.core.config.Locale.language.es_MX.Configuracion.imagenEmpresa,
                 flex: 1,
                 items: [
                     {
@@ -66,11 +66,11 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                         value: 'es'
                     },
                     {
-                        text: 'Inglés',
+                        text: 'English',
                         value: 'en'
                     },
                     {
-                        text: 'Portugués',
+                        text: 'Português',
                         value: 'pes'
                     }
                 ]

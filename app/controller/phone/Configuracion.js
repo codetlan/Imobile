@@ -118,6 +118,25 @@ Ext.define('APP.controller.phone.Configuracion', {
 console.log(idioma);
                     switch (idioma){
                         case 'es':
+                            Ext.Ajax.request({
+                                url: 'app/core/data/Prueba.json',
+                                
+                                success: function(response){
+                                    console.log(response);
+                                    var text = response.responseText,
+                                        idiomas = Ext.decode(text);
+
+                                    APP.core.config.Locale.languages = idiomas;
+                                    console.log(APP.core.config.Locale.languages);
+                                    localStorage.setItem('idioma', 'es_MX');
+                                                                        
+                    //                APP.core.config.Locale.localize('en_US');
+                                },
+                                failure: function(response, opts) {
+                                    Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
+                                }
+                            });
+
                             break;
 
                         case 'en':
