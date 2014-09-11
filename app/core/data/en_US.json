@@ -6,13 +6,21 @@
           "ingresar": "Login"
       },
 
-      "ConfiguracionPanel":{
+      "ConfiguracionPanel": {
         "imagenEmpresa": "Company image",
         "seleccionarImagen": "Choice image",
         "idioma": "Language",
         "guardar": "Save changes"
       },
 
-      
+      "menu": {
+        "Orden": "Sale Order",
+        "Rutas": "Tours and activities",
+        "Cobranza": "Billing",
+        "Informes": "Reports",
+        "Configuracion": "Settings",
+        "Prospectos": "Prospects",
+        "Salir": "Exit"
+      }
     }
-  }
+  }    

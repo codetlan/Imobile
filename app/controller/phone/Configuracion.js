@@ -119,23 +119,30 @@ console.log(idioma);
                     switch (idioma){
                         case 'en':
                             Ext.Ajax.request({
-                                url: 'app/core/data/en_US.json',
+                                url: 'app/core/data/en_US.json', // Leemos del json
                                 
                                 success: function(response){
-                                    console.log(response);
-                                    var text = response.responseText,
-                                        idiomas = Ext.decode(text);
-                                    console.log(idiomas);
-                                    APP.core.config.Locale.config.lan = idiomas.lan;
-                                    console.log(APP.core.config.Locale.config.lan);
+                                    var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
+                                        menuTrans, // Las traducciones para el menú
+                                        idiomas = Ext.decode(text);  // Convertimos text en objeto
+                                    
+                                    APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
+                                    menuTrans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-                                    Ext.Viewport.removeAll(true);
-                                    APP.core.config.Locale.localize();
-                                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));
+                                    Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport
+                                    APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main
 
-                                    Ext.Viewport.getActiveItem().getActiveItem().push({
-                                        //Ext.create('APP.view.phone.configuracion.ConfiguracionPanel')
+                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
                                         xtype: 'configuracionpanel'
+                                    });                                    
+
+                                    Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
+                                        Object.defineProperty(element.getData(), "name", {
+                                            get: function(){
+                                                return menuTrans[index];
+                                            }
+                                        });                                        
                                     });
                                 },
                                 failure: function(response, opts) {
