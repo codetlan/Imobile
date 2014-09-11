@@ -1,0 +1,18 @@
+{
+    "lan": {
+        "LoginForm": {
+          "usuario": "Code user",
+          "contrasenia": "Password",
+          "ingresar": "Login"
+      },
+
+      "ConfiguracionPanel":{
+        "imagenEmpresa": "Company image",
+        "seleccionarImagen": "Choice image",
+        "idioma": "Language",
+        "guardar": "Save changes"
+      },
+
+      
+    }
+  }

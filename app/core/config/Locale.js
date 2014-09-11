@@ -1,48 +1,79 @@
 Ext.define('APP.core.config.Locale', {
   singleton: true,
 
-  language: {es_MX: {
-    LoginForm: {
-      usuario: 'Código de usuario',
-      contrasenia: 'Contraseña',
-      ingresar: 'Ingresar'
-    },
-
-    Configuracion:{
-      imagenEmpresa: "Imagen de la empresa2",
-      seleccionarImagen: "Seleccionar imagen2",
-      idioma: "Idioma2",
-      guardar: "Guardar cambios2"
-    }
-  }
-}
-
-/*  config: {      
-
-    es_MX: {
+/*  language: {[
+    lan: { [
       LoginForm: {
-        usuario: 'Código de usuario:',
+        usuario: 'Código de usuario',
         contrasenia: 'Contraseña',
         ingresar: 'Ingresar'
-      }
-    },
+      },
 
-    en_US: {
+      Configuracion:{
+        imagenEmpresa: "Imagen de la empresa2",
+        seleccionarImagen: "Seleccionar imagen2",
+        idioma: "Idioma2",
+        guardar: "Guardar cambios2"
+      }]
+    }]
+  },*/
+
+/*  language: {
+    lan: [
+        {
+        usuario: 'Código de usuario',
+        contrasenia: 'Contraseña',
+        ingresar: 'Ingresar'
+      },
+
+       {
+        imagenEmpresa: "Imagen de la empresa2",
+        seleccionarImagen: "Seleccionar imagen2",
+        idioma: "Idioma2",
+        guardar: "Guardar cambios2"
+      }
+    ]
+  },*/
+
+  config: {
+
+    lan: {
       LoginForm: {
-        usuario: 'Code user', //idiomas.Language[1].en_US[0].login.usuario,//'Code user', 
-        contrasenia: 'Password',
-        ingresar: 'Login'
+        usuario: 'Código de usuario',
+        contrasenia: 'Contraseña',
+        ingresar: 'Ingresar'
+      },
+
+      ConfiguracionPanel: {
+        imagenEmpresa: "Imagen de la empresa",
+        seleccionarImagen: "Seleccione imagen",
+        idioma: "Idioma",
+        guardar: "Guardar cambios"
       }
     }
   },  
 
-  localize: function(locale) {    
-    var translations = this.config[locale];
+  localize: function() {    
+    console.log(this.config);
+    var translations = this.config.lan;
+        me = this,      
+
+    console.log(translations);
+      
     for (var view in translations) {
-      console.log(translations);
+      console.log(view);
       //APP.view.phone.login[view];
   
-      Ext.apply(APP.view.phone.login[view].prototype, translations[view]);
+      switch(view.toString()){
+        case 'LoginForm':
+          Ext.apply(APP.view.phone.login[view].prototype, translations[view]);
+          break;
+
+        case 'ConfiguracionPanel':
+          Ext.apply(APP.view.phone.configuracion[view].prototype, translations[view]);
+        break;
+      }
+      
       //Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel')); 
     }
   },
@@ -70,5 +101,5 @@ Ext.define('APP.core.config.Locale', {
         }
     });
     return idiomas;
-  }*/
+  }
 });

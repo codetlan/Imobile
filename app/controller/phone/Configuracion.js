@@ -117,20 +117,26 @@ Ext.define('APP.controller.phone.Configuracion', {
                     var idioma = button.up('configuracionpanel').down('selectfield').getValue();
 console.log(idioma);
                     switch (idioma){
-                        case 'es':
+                        case 'en':
                             Ext.Ajax.request({
-                                url: 'app/core/data/Prueba.json',
+                                url: 'app/core/data/en_US.json',
                                 
                                 success: function(response){
                                     console.log(response);
                                     var text = response.responseText,
                                         idiomas = Ext.decode(text);
+                                    console.log(idiomas);
+                                    APP.core.config.Locale.config.lan = idiomas.lan;
+                                    console.log(APP.core.config.Locale.config.lan);
 
-                                    APP.core.config.Locale.languages = idiomas;
-                                    console.log(APP.core.config.Locale.languages);
-                                    localStorage.setItem('idioma', 'es_MX');
-                                                                        
-                    //                APP.core.config.Locale.localize('en_US');
+                                    Ext.Viewport.removeAll(true);
+                                    APP.core.config.Locale.localize();
+                                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));
+
+                                    Ext.Viewport.getActiveItem().getActiveItem().push({
+                                        //Ext.create('APP.view.phone.configuracion.ConfiguracionPanel')
+                                        xtype: 'configuracionpanel'
+                                    });
                                 },
                                 failure: function(response, opts) {
                                     Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
@@ -139,7 +145,7 @@ console.log(idioma);
 
                             break;
 
-                        case 'en':
+                        case 'es':
                             console.log('Ingles');
                             Ext.Viewport.removeAll(true);
                             APP.core.config.Locale.localize('en_US');
