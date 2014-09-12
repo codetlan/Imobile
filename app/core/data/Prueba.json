@@ -1,23 +1,11 @@
-{
-  "language": [
-  {"es_MX":
-   [
-    {
-      "LoginForm": 
-      {
-        "usuario": "Código de Usuario",
+{  
+  "language": {
+    "lan": [
+        {
+        "usuario": "Código de usuario",
         "contrasenia": "Contraseña",
-        "ingresar": "Ingresar",
-        "sinUsuario": "No existe el usuario"
+        "ingresar": "Ingresar"
       }
-    },{
-      "Configuracion":
-      {
-          "imagenEmpresa": "Imagen de la empresa",
-          "seleccionarImagen": "Seleccionar imagen",
-          "idioma": "Idioma",
-          "guardar": "Guardar cambios"
-      }
-    }
-  ]},
-]}
+    ]
+  }
+}

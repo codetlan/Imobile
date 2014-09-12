@@ -1,0 +1,51 @@
+{
+    "lan": {
+        "LoginForm": {
+          "usuario": "Code user",
+          "contrasenia": "Password",
+          "ingresar": "Login"
+      },
+
+      "ConfiguracionPanel": {
+        "imagenEmpresa": "Company image",
+        "seleccionarImagen": "Choice image",
+        "idioma": "Language",
+        "guardar": "Save changes"
+      },
+
+      "menu": {
+        "Orden": "Sale Order",
+        "Rutas": "Tours and activities",
+        "Cobranza": "Billing",
+        "Informes": "Reports",
+        "Configuracion": "Settings",
+        "Prospectos": "Prospects",
+        "Salir": "Exit"
+      },
+
+      "ClientesList": {
+        "buscarClientes": "Search client...",
+        "cargando": "Loading..."
+      },
+
+      "OpcionOrdenesList": {
+        "ordenDeVenta": "Sale order",
+        "visualizarTransacciones" : "Display transactions"
+      },
+
+      "OpcionesOrdenPanel": {
+        "orden": "Order",
+        "cliente": "Client",
+        "editar": "Edit",
+        "eliminar": "Delete",
+        "terminar": "Done"
+      },
+
+      "OrdenContainer": {
+        "descuento": "Discount",
+        "subTotal": "Subtotal",
+        "impuesto": "Tax",
+        "total": "Total"
+      }
+    }
+  }    

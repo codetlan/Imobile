@@ -5,29 +5,29 @@ Ext.define('APP.view.phone.login.LoginForm', {
     extend: 'Ext.form.Panel',
     xtype:'loginform',
 
-    //App.core.config.Locale = idioma
-
     config: {
         padding: '15 15 15 15',
         defaults: {
             required: true,
             clearIcon: true
         },
+    },
 
-        items:
+    initialize: function(){
+         this.setItems(
         [{
             xtype: 'textfield',
             name: 'usuario',
-            placeHolder: APP.core.config.Locale.language.es_MX.LoginForm.usuario
+            placeHolder: APP.core.config.Locale.config.lan.LoginForm.usuario
         },{
             xtype: 'passwordfield',
             name: 'password',
             margin:'5 0',
-            placeHolder: 'Cadena1'
+            placeHolder: APP.core.config.Locale.config.lan.LoginForm.contrasenia
         },{
             xtype: 'button',
             action:'login',
-            text: 'Cadena2',
+            text: APP.core.config.Locale.config.lan.LoginForm.ingresar,
             ui: 'btn-login-ui',
             itemId: 'login',
             margin:'5 0',
@@ -50,7 +50,7 @@ Ext.define('APP.view.phone.login.LoginForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }
-    ]
-    },
+        }]);
+         this.callParent(arguments);
+    }
 });

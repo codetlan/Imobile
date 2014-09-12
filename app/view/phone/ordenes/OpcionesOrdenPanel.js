@@ -15,35 +15,39 @@ Ext.define('APP.view.phone.ordenes.OpcionesOrdenPanel', {
         defaults: {
             styleHtmlContent: true,
             background: '#000'
-        },
-        items: [
+        }
+    },
+
+    initialize: function(){
+        this.setItems ([
             {
-                title: 'Orden',
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.orden,
                 iconCls: 'settings',
                 xtype: 'partidacontainer'
             },
             {
-                title: 'Cliente',
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.cliente,
                 iconCls: 'user',
                 xtype: 'clientecontainer'
             },
             {
-                title: 'Editar',
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.editar,
                 itemId: 'editarPedido',
                 iconCls: 'fa fa-pencil-square-o',
                 xtype: 'editarpedidoform'
             },
             {
-                title: 'Eliminar',
-                iconCls: 'fa fa-times',                
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.eliminar,
+                iconCls: 'fa fa-times',
                 itemId: 'eliminar'
             },
             {
-                title: 'Terminar',
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.terminar,
                 iconCls: 'action',
                 itemId: 'terminar'
-
             }
-        ]
+        ]);
+
+        this.callParent(arguments);
     }
 });

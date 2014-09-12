@@ -126,11 +126,8 @@ Ext.define('APP.profile.Phone',{
 
     launch: function(){
         var me = this; 
-    
-        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-
-
-
+       Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+       
 /*        setTimeout(function (){
             console.log(Ext.getStore('Languages'));
         }, 200);*/
