@@ -49,6 +49,31 @@ Ext.define('APP.core.config.Locale', {
         seleccionarImagen: "Seleccione imagen",
         idioma: "Idioma",
         guardar: "Guardar cambios"
+      },
+
+      ClientesList: {
+        buscarClientes: "Buscar cliente...",
+        cargando: "Cargando..."
+      },
+
+      OpcionOrdenesList: {
+        ordenDeVenta: "Orden de venta",
+        visualizarTransacciones : "Visualizar transacciones"
+      },
+
+      OpcionesOrdenPanel: {
+        orden: 'Orden',
+        cliente: 'Cliente',
+        editar: 'Editar',
+        eliminar: 'Eliminar',
+        terminar: 'Terminar'
+      },
+
+      OrdenContainer: {
+        descuento: "Descuento",
+        subTotal: "Subtotal",
+        impuesto: "Impuesto",
+        total: "Total"
       }
     }
   },  
@@ -71,7 +96,15 @@ Ext.define('APP.core.config.Locale', {
 
         case 'ConfiguracionPanel':
           Ext.apply(APP.view.phone.configuracion[view].prototype, translations[view]);
-        break;
+          break;
+
+        case 'ClientesList':
+          Ext.apply(APP.view.phone.clientes[view].prototype, translations[view]);
+          break;
+
+        case 'OpcionOrdenesList':
+          Ext.apply(APP.view.phone.ordenes[view].prototype, translations[view]);
+          break;
       }
       
       //Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel')); 

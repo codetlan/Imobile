@@ -14,8 +14,6 @@ Ext.define('APP.view.phone.login.LoginForm', {
     },
 
     initialize: function(){
-
-
          this.setItems(
         [{
             xtype: 'textfield',
@@ -54,5 +52,5 @@ Ext.define('APP.view.phone.login.LoginForm', {
             html:'<i class="icon-help-circled"></i>'
         }]);
          this.callParent(arguments);
-    }    
+    }
 });

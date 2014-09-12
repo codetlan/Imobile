@@ -7,11 +7,16 @@ Ext.define('APP.view.phone.ordenes.OpcionOrdenesList', {
     extend: 'Ext.dataview.List',
     xtype: 'opcionordeneslist',
     config: {
-        itemTpl: '{title}',
-        data:[
-            {title: 'Orden de venta', action: 'orden'},
-            {title: 'Visualizar transacciones', action: 'visualizar'}
-        ],
-        loadingText: 'Cargando...'
+        itemTpl: '{title}'
+    },
+
+    initialize: function(){
+        this.setData([                                                  
+            {title: APP.core.config.Locale.config.lan.OpcionOrdenesList.ordenDeVenta, action: 'orden'},
+            {title: APP.core.config.Locale.config.lan.OpcionOrdenesList.visualizarTransacciones, action: 'visualizar'}
+        ]);
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        this.callParent(arguments);
     }
 });
