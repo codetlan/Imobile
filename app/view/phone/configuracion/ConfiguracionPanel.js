@@ -73,10 +73,6 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                     {
                         text: 'English',
                         value: 'en'
-                    },
-                    {
-                        text: 'Português',
-                        value: 'pes'
                     }
                 ]
             },

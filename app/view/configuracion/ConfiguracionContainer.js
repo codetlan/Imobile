@@ -79,10 +79,6 @@ Ext.define('Imobile.view.configuracion.ConfiguracionContainer', {
                             {
                                 text: 'Inglés',
                                 value: 'en'
-                            },
-                            {
-                                text: 'Portugués',
-                                value: 'pes'
                             }
                         ]
                     },

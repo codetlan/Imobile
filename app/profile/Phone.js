@@ -32,7 +32,6 @@ Ext.define('APP.profile.Phone',{
             'Prospecto',
             'Transaccion',
             'RutaCalendario',
-//            'APP.core.data.Language',
 
             'ActividadCalendario'
         ],
@@ -49,8 +48,7 @@ Ext.define('APP.profile.Phone',{
             'FormasDePago',
             'Prospectos',
             'Transacciones',
-            'RutasCalendario',
-//            'APP.core.data.Languages',
+            'RutasCalendario',  
 
             'ActividadesCalendario'
         ],
