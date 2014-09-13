@@ -132,8 +132,6 @@ Ext.define('APP.controller.phone.Menu', {
 
             view.remove(titulo, true);
 
-            //view.setMasked({xtype: 'loadmask', message: 'Cargando...'});
-
             store.getProxy().setUrl("http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerListaSociosiMobile");
             store.setParams(params);
             store.load();            

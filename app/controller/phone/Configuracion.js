@@ -10,7 +10,7 @@ Ext.define('APP.controller.phone.Configuracion', {
             fileUpload: 'configuracionpanel fileupload',
             imagenCmp: 'configuracionpanel component[id=imagencmp]',
             opcionesOrden: 'opcionesorden',
-            opcionesOrdenesList: 'opcionordeneslist'
+            opcionesOrdenesList: 'opcionordeneslist'            
         },
         control: {
             'configuracionpanel container button[action=subirimagen]': {
@@ -130,9 +130,13 @@ console.log(idioma);
                                     APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
                                     trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-                                    Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport
+                                    APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
+
+                                    Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
                                     APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
-                                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main
+                                    
+                                    //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                                    Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
 
 /*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
                                         xtype: 'configuracionpanel'
@@ -146,7 +150,7 @@ console.log(idioma);
                                         });
                                     });
                                 },
-                                
+
                                 failure: function(response, opts) {
                                     Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
                                 }

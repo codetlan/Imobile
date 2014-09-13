@@ -40,7 +40,7 @@ Ext.define('APP.controller.phone.Login', {
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
 
-        Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Accediendo'});
+        Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Login.accediendo});
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_UsuarioiMobile/Login",
@@ -64,19 +64,20 @@ Ext.define('APP.controller.phone.Login', {
                     //localStorage.setItem("Almacenes", response.ConfiguracionDispositivo.Almacenes);
                     //console.log(response.ConfiguracionDispositivo.Almacenes);
                     almacenes = response.ConfiguracionDispositivo.Almacenes;
-                    Ext.Viewport.removeAll(true);
+                    Ext.Viewport.removeAll(true);                                        
                     Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));                    
                     Ext.Viewport.getActiveItem().getAt(0).almacenes = almacenes;
 
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
 
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, response.Descripcion, Ext.emptyFn);
                 }
                 Ext.Viewport.setMasked(false);
             },
             failure: function () {
-                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {
                     Ext.Viewport.setMasked(false);
                 });
                 Ext.Viewport.setMasked(false);
@@ -125,7 +126,8 @@ Ext.define('APP.controller.phone.Login', {
             configForm = me.getConfiguracionForm(),
             values = configForm.getValues();
 
-        me.confirma('Configuración', 'Estas seguro que deseas cambiar la Configuración?', 300,
+        me.confirma(APP.core.config.Locale.config.lan.Login.confirmaTitle,
+         APP.core.config.Locale.config.lan.Login.confirmaMsg, 300,
             function (buttonId) {
                 if (buttonId == 'yes') {
                     localStorage.setItem('CodigoSociedad', values.cod_soc);
@@ -146,10 +148,10 @@ Ext.define('APP.controller.phone.Login', {
             width: ancho,
             buttons: [{
                 itemId : 'no',
-                text   : 'No'
+                text   : APP.core.config.Locale.config.lan.Ordenes.confirmaNo
             },{
                 itemId : 'yes',
-                text   : 'Si',
+                text   : APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                 ui     : 'action'
             }],
             fn: funcion

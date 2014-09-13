@@ -10,33 +10,18 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
 	],
 	config:{        
 		padding:'0 15 15 15',
-        scrollable: 'vertical',        
-		items:[
-/*            {
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {
-                        itemId:'agregar',
-                        text:'Guardar',
-                        ui: 'confirm'
-                    }
-                ]
+        scrollable: 'vertical',
+	},
 
-            },*/
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
                 itemId:'datos',
-                title:'Agregar Productos',
-                instructions: 'Ingrese los datos',                
+                title: APP.core.config.Locale.config.lan.AgregarProductosForm.titulo,
+                instructions: APP.core.config.Locale.config.lan.AgregarProductosForm.instrucciones,
                 defaults:{
                     //required:true,
                     disabled: true,
@@ -44,55 +29,50 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                     autoCapitalize:true,
                     cls: 'factura',
                     labelWrap: true,
-                    labelWidth: '40%'                    
+                    labelWidth: '40%'
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'CodigoArticulo',
-                        label: 'Código',
-                        itemId: 'codepro'
-                        //value: 12345
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.codigo,
+                        itemId: 'codepro'                        
                     },{
                         xtype:'textfield',
                         name:'NombreArticulo',
-                        label:'Descripción',
+                        label:APP.core.config.Locale.config.lan.AgregarProductosForm.descripcion,
                         itemId: 'descripcion'
                     },{
                         xtype:'numberfield',
                         name:'cantidad',
-                        label:'Cantidad',
+                        label: APP.core.config.Locale.config.lan.OrdenList.cantidad,
                         disabled: false,
                         minValue: 0.1,
                         itemId: 'cantidad'
-                        //maxValue: 100,
-                        //stepValue: .1
-                        //ui: 'spinner'
                     },{
                         xtype:'textfield',
                         name:'Precio',
-                        label:'Precio'
+                        label:APP.core.config.Locale.config.lan.OrdenList.precio
                     },{
                         xtype:'textfield',
                         name:'moneda',
-                        label:'Moneda'
-                        //itemId: 'moneda'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.moneda
                     },{
                         xtype:'textfield',
                         name:'PorcentajeDescuento',
-                        label:'Descuento'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.descuento
                     },{
                         xtype:'textfield',
                         name:'precioConDescuento',
-                        label:'Precio con Descuento'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.precioConDescuento
                     },{
                         xtype:'textfield',
                         name:'importe',
-                        label:'Importe'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.importe
                     },{
                         xtype:'textfield',
                         name:'NombreAlmacen',
-                        label:'Almacen',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.almacen,
                         disabled: false,
                         itemId: 'almacenProducto'
                     },{
@@ -101,7 +81,7 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                     },{
                         xtype:'textfield',
                         name:'Disponible',
-                        label:'Disponible'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.disponible
                     }
                 ]
             },{
@@ -113,10 +93,12 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                         xtype: 'button',
                         itemId: 'agregar',                        
                         ui: 'action',
-                        text: 'Guardar Cambios'
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.guardar
                     }
                 ]
             }
-        ]
-	}
+        ]);
+
+        me.callParent(arguments);
+    }
 });

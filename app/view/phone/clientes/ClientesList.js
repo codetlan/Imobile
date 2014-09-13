@@ -15,13 +15,7 @@ Ext.define('APP.view.phone.clientes.ClientesList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
-
-        plugins: [{
-            xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }]
+        }
     },
 
     initialize: function(){
@@ -43,10 +37,18 @@ Ext.define('APP.view.phone.clientes.ClientesList', {
             }]
         }]);
 
+        this.setPlugins([{
+            xclass: 'Ext.plugin.ListPaging',
+            autoPaging: true,
+            loadMoreText: APP.core.config.Locale.config.lan.ProductosList.verMas
+        }]);
+
         this.setMasked({
             xtype: 'loadmask',
             message: APP.core.config.Locale.config.lan.ClientesList.cargando
-        });        
+        });
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
         this.callParent(arguments);
     }
 });
