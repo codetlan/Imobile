@@ -1,176 +1,191 @@
 {
     "lan": {
-        "LoginForm": {
-          "usuario": "User code",
-          "contrasenia": "Password",
-          "ingresar": "Login"
+      "LoginForm": {
+        "usuario": "User code",
+        "contrasenia": "Password",
+        "ingresar": "Login"
+      },
+
+      "Login": {
+        "accediendo": "Accessing",                
+        "problemasConexionMsg": "Can not find server",
+        "confirmaTitle": "Settings",
+        "confirmaMsg": "Are you sure you want to change the settings?"
         },
 
-        "Login": {
-          "accediendo": "Accessing",                
-          "problemasConexionMsg": "Can not find server",
-          "confirmaTitle": "Settings",
-          "confirmaMsg": "Are you sure you want to change the settings?"
-          },
+      "ConfiguracionPanel": {
+        "imagenEmpresa": "Company image",
+        "seleccionarImagen": "Choice image",
+        "idioma": "Language",
+        "guardar": "Save changes"
+      },
 
-        "ConfiguracionPanel": {
-          "imagenEmpresa": "Company image",
-          "seleccionarImagen": "Choice image",
-          "idioma": "Language",
-          "guardar": "Save changes"
-        },
+      "Configuracion" :{
+        "tamanioImagen": "The image must be less than 4 MB",
+        "onSaveConfig": "Do you want to save changes configured?",
+        "sinIdioma": "No configuration file found language",
+        "titulo": "Settings"
+      },
 
-        "menu": {
-          "Orden": "Sale Order",
-          "Rutas": "Tours and activities",
-          "Cobranza": "Billing",
-          "Informes": "Reports",
-          "Configuracion": "Settings",
-          "Prospectos": "Prospects",
-          "Salir": "Exit"
-        },
+      "ConfiguracionForm" :{
+        "titulo": "Configuration data",
+        "codigoSociedad": "Company Code",
+        "codigoDispositivo": "Device Code",
+        "servidor": "Server",
+        "guardar": "Save"
+      },
 
-        "ClientesList": {
-          "buscarClientes": "Search client...",
-          "cargando": "Loading..."
-        },
+      "menu": {
+        "Orden": "Sale Orders",
+        "Rutas": "Tours and activities",
+        "Cobranza": "Billing",
+        "Informes": "Reports",
+        "Configuracion": "Settings",
+        "Prospectos": "Prospects",
+        "Salir": "Exit"
+      },
 
-        "OpcionOrdenesList": {
-          "ordenDeVenta": "Sale order",
-          "visualizarTransacciones" : "Display transactions"
-        },
+      "ClientesList": {
+        "buscarClientes": "Search client...",
+        "cargando": "Loading..."
+      },
 
-        "OpcionesOrdenPanel": {
-          "orden": "Order",
-          "cliente": "Client",
-          "editar": "Edit",
-          "eliminar": "Delete",
-          "terminar": "Done"
-        },
+      "OpcionOrdenesList": {
+        "ordenDeVenta": "Sale order",
+        "visualizarTransacciones" : "Display transactions"
+      },
 
-        "OrdenContainer": {
-          "descuento": "Discount",
-          "subTotal": "Subtotal",
-          "impuesto": "Tax",
-          "total": "Total"
-        },
+      "OpcionesOrdenPanel": {
+        "orden": "Order",
+        "cliente": "Client",
+        "editar": "Edit",
+        "eliminar": "Delete",
+        "terminar": "Done"
+      },
 
-        "OrdenList": {
-          "cantidad": "Quantity:",
-          "precio": "Price:",
-          "descuento": "Disc:",
-          "total": "Total:"
-        },
+      "OrdenContainer": {
+        "descuento": "Discount",
+        "subTotal": "Subtotal",
+        "impuesto": "Tax",
+        "total": "Total"
+      },
 
-        "onShowListOrden": {
-          "transaccion": "Transaction: Sale order",
-          "codigoDispositivo": "Device code:",
-          "nombreDispositivo": "Device name:",
-          "fecha": "Date:",
-          "codigoUsuario": "User code:",
-          "nombreUsuario": "User name:"
-        },
+      "OrdenList": {
+        "cantidad": "Quantity:",
+        "precio": "Price:",
+        "descuento": "Disc:",
+        "total": "Total:"
+      },
 
-        "NavigationOrden" : {
-          "agregar": "Add"
-        },
+      "onShowListOrden": {
+        "transaccion": "Transaction: Sale order",
+        "codigoDispositivo": "Device code:",
+        "nombreDispositivo": "Device name:",
+        "fecha": "Date:",
+        "codigoUsuario": "User code:",
+        "nombreUsuario": "User name:"
+      },
 
-        "ProductosList": {
-          "textoVacio": "There are no products with these data",
-          "buscar": "Search product...",
-          "verMas": "See more..."
-        },
+      "NavigationOrden" : {
+        "agregar": "Add"
+      },
 
-        "ProductosOrden": {
-          "lista": "List",
-          "panel": "Panel"
-        },
+      "ProductosList": {
+        "textoVacio": "There are no products with these data",
+        "buscar": "Search product...",
+        "verMas": "See more..."
+      },
 
-        "AgregarProductosForm": {
-          "titulo": "Add products",
-          "instrucciones": "Enter the data",
-          "codigo": "Code",
-          "descripcion": "Description",
-          "moneda": "Currency",
-          "descuento": "Discount",
-          "precioConDescuento": "Price with discount",
-          "importe": "Amount",
-          "almacen": "Store",
-          "disponible": "Available"
-        },
+      "ProductosOrden": {
+        "lista": "List",
+        "panel": "Panel"
+      },
 
-        "ClienteForm": {
-          "instrucciones": "Customer data",
-          "nombre": "Name",
-          "rfc": "RFC",
-          "telefono": "Phone",
-          "correo": "Mail",
-          "listaPrecios": "Price list",
-          "credito": "Credit",
-          "saldo": "Balance"
-        },
+      "AgregarProductosForm": {
+        "titulo": "Add products",
+        "instrucciones": "Enter the data",
+        "codigo": "Code",
+        "descripcion": "Description",
+        "moneda": "Currency",
+        "descuento": "Discount",
+        "precioConDescuento": "Price with discount",
+        "importe": "Amount",
+        "almacen": "Store",
+        "disponible": "Available"
+      },
 
-        "DireccionesList": {
-          "entrega": "Ship address",
-          "fiscal": "Bill address"
-        },
+      "ClienteForm": {
+        "instrucciones": "Customer data",
+        "nombre": "Name",
+        "rfc": "RFC",
+        "telefono": "Phone",
+        "correo": "Mail",
+        "listaPrecios": "Price list",
+        "credito": "Credit",
+        "saldo": "Balance"
+      },
 
-        "EditarPedidoForm": {
-          "instrucciones": "Edit order",
-          "codigoCliente": "Customer code",
-          "nombreCliente": "Customer name",
-          "limiteCredito": "Credit limit",
-          "condicionCredito": "Credit status",
-          "vendedor": "Seller",
-          "tipoCambio": "Exchange rate"
-        },
+      "DireccionesList": {
+        "entrega": "Ship address",
+        "fiscal": "Bill address"
+      },
 
-        "Ordenes":{
-          "alSeleccionarCliente": "Incorrect data",
-          "alSeleccionarClienteCargar": "Loading customer...",
-          "confirmaSi": "Yes",
-          "confirmaNo": "No",
-          "onTerminarOrdenAgregar": "The order is added correctly with foil: ",
-          "onTerminarOrdenActualizar": "The order was updated correctly with foil: ",
-          "onTerminarOrdenProcesada": "Order processed",
-          "onTerminarOrdenNoProcesadaTitle": "Order not processed",
-          "onTerminarOrdenNoProcesadaMsg": "The order was not processed correctly:",
-          "onTerminarOrdenFalloTitle": "Connection problems",
-          "onTerminarOrdenFalloMsg": "The server is taking too long to respond, try again later.",
-          "onTerminarOrdenSinProductosTitle": "Products",
-          "onTerminarOrdenSinProductosMsg": "Select at least one product.",
-          "onEliminarOrdenTitulo": "Remove order",
-          "onEliminarOrdenMsg": "It will delete the order, all products can lose aggregates, are you sure?",
-          "eliminarPartidaTitulo": "Remove order product",
-          "eliminarPartidaMsg": "It will remove the product from the order, are you sure?",
-          "confirmaTerminarOrdenTitulo": "Complete order",
-          "confirmaTerminarOrdenMsg": "Do you want to end the sales order?",
-          "confirmaActualizarOrdenTitulo": "Update order",
-          "confirmaActualizarOrdenMsg": "Do you want to update the sales order?",
-          "estableceDireccionesTitle": "No ship address",
-          "estableceDireccionesMsg": "This customer has no defined ship addresses.",
-          "seleccionarMonedaError": "Error",
-          "seleccionarMonedaMsg1": "You can not change the settings because the currency of the product code ",
-          "seleccionarMonedaEs": " is ",
-          "seleccionarMonedaMsg2": ". Delete it from the order.",
-          "seleccionarMonedaNoMultimonedaTitle": "Not multicurrency",
-          "seleccionarMonedaNoMultimonedaMsg1": "The customer ",
-          "seleccionarMonedaNoMultimonedaMsg2": " can only operate ",
-          "agregaProductosCamposInvalidosTitle": "Invalid or empty fields",
-          "agregaProductosCamposInvalidosMsg": "Verify that the value is correct or fields that are not empty",
-          "agregaProductosImposibleAgregarTitle": "Unable to add",
-          "agregaProductosImposibleAgregarMsg1": "Can not add the product to the order because the configuration of the current currency is ",
-          "agregaProductosImposibleAgregarMsg2": " and the currency of the product is ",
-          "onSeleccionarTransaccionTitle": "Currency different",
-          "onSeleccionarTransaccionMsg": "Could not retrieve the sales order for any item comes in a different document currency is foreign currency.",
-          "enviandoOrden": "Sending order"
-        },
+      "EditarPedidoForm": {
+        "instrucciones": "Edit order",
+        "codigoCliente": "Customer code",
+        "nombreCliente": "Customer name",
+        "limiteCredito": "Credit limit",
+        "condicionCredito": "Credit status",
+        "vendedor": "Seller",
+        "tipoCambio": "Exchange rate"
+      },
 
-        "TransaccionList": {
-          "folio": "Folio",
-          "tipoTransaccion": "Transaction type",
-          "orden": "Sales order",
-          "buscar": "Search transaction..."
-        }
+      "Ordenes":{
+        "alSeleccionarCliente": "Incorrect data",
+        "alSeleccionarClienteCargar": "Loading customer...",
+        "confirmaSi": "Yes",
+        "confirmaNo": "No",
+        "onTerminarOrdenAgregar": "The order is added correctly with foil: ",
+        "onTerminarOrdenActualizar": "The order was updated correctly with foil: ",
+        "onTerminarOrdenProcesada": "Order processed",
+        "onTerminarOrdenNoProcesadaTitle": "Order not processed",
+        "onTerminarOrdenNoProcesadaMsg": "The order was not processed correctly:",
+        "onTerminarOrdenFalloTitle": "Connection problems",
+        "onTerminarOrdenFalloMsg": "The server is taking too long to respond, try again later.",
+        "onTerminarOrdenSinProductosTitle": "Products",
+        "onTerminarOrdenSinProductosMsg": "Select at least one product.",
+        "onEliminarOrdenTitulo": "Remove order",
+        "onEliminarOrdenMsg": "It will delete the order, all products can lose aggregates, are you sure?",
+        "eliminarPartidaTitulo": "Remove order product",
+        "eliminarPartidaMsg": "It will remove the product from the order, are you sure?",
+        "confirmaTerminarOrdenTitulo": "Complete order",
+        "confirmaTerminarOrdenMsg": "Do you want to end the sales order?",
+        "confirmaActualizarOrdenTitulo": "Update order",
+        "confirmaActualizarOrdenMsg": "Do you want to update the sales order?",
+        "estableceDireccionesTitle": "No ship address",
+        "estableceDireccionesMsg": "This customer has no defined ship addresses.",
+        "seleccionarMonedaError": "Error",
+        "seleccionarMonedaMsg1": "You can not change the settings because the currency of the product code ",
+        "seleccionarMonedaEs": " is ",
+        "seleccionarMonedaMsg2": ". Delete it from the order.",
+        "seleccionarMonedaNoMultimonedaTitle": "Not multicurrency",
+        "seleccionarMonedaNoMultimonedaMsg1": "The customer ",
+        "seleccionarMonedaNoMultimonedaMsg2": " can only operate ",
+        "agregaProductosCamposInvalidosTitle": "Invalid or empty fields",
+        "agregaProductosCamposInvalidosMsg": "Verify that the value is correct or fields that are not empty",
+        "agregaProductosImposibleAgregarTitle": "Unable to add",
+        "agregaProductosImposibleAgregarMsg1": "Can not add the product to the order because the configuration of the current currency is ",
+        "agregaProductosImposibleAgregarMsg2": " and the currency of the product is ",
+        "onSeleccionarTransaccionTitle": "Currency different",
+        "onSeleccionarTransaccionMsg": "Could not retrieve the sales order for any item comes in a different document currency is foreign currency.",
+        "enviandoOrden": "Sending order"
+      },
+
+      "TransaccionList": {
+        "folio": "Folio",
+        "tipoTransaccion": "Transaction type",
+        "orden": "Sales order",
+        "buscar": "Search transaction..."
+      }
     }
   }

@@ -25,7 +25,8 @@ Ext.define('APP.controller.phone.Configuracion', {
                                 imagecmp.setHtml("<img id='imagen_background' src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
                             }
                             else {
-                                Ext.Msg.alert("Error", "La imagen debe de ser menor de 4 megas");
+                                Ext.Msg.alert(APP.core.config.locale.config.lan.Configuracion.seleccionarMonedaError,
+                                    APP.core.config.locale.config.lan.Configuracion.tamanioImagen);
                             }
                         },
                         source: 'album',
@@ -90,17 +91,17 @@ Ext.define('APP.controller.phone.Configuracion', {
             list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
 
         Ext.Msg.show({
-            title: 'Configuración',
-            message: 'Deseas guardar los cambios Configurados?',
+            title: APP.core.config.Locale.config.lan.Configuracion.titulo,
+            message: APP.core.config.Locale.config.lan.Configuracion.onSaveConfig,
             width: 300,
             buttons: [
                 {
                     itemId: 'no',
-                    text: 'No'
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaNo
                 },
                 {
                     itemId: 'yes',
-                    text: 'Si',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                     ui: 'action'
                 }
             ],
@@ -160,7 +161,8 @@ console.log(idioma);
                         },
 
                         failure: function(response, opts) {
-                            Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, 
+                                APP.core.config.Locale.config.lan.Configuracion.sinIdioma);
                         }
                     });
                 }

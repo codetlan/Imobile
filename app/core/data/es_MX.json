@@ -20,6 +20,21 @@
         "guardar": "Guardar cambios"
       },
 
+      "Configuracion" :{
+        "tamanioImagen": "La imagen debe ser menor de 4 megas",
+        "onSaveConfig": "¿Desea guardar los cambios configurados?",
+        "sinIdioma": "No se encontró el archivo de configuración de idioma",
+        "titulo": "Configuración"
+      },
+
+      "ConfiguracionForm" :{
+        "titulo": "Datos de configuración",
+        "codigoSociedad": "Código de Sociedad",
+        "codigoDispositivo": "Código de Dispositivo",
+        "servidor": "Servidor",
+        "guardar": "Guardar"
+      },
+
         "menu": {
           "Orden": "Órdenes de venta",
           "Rutas": "Rutas y Actividades",

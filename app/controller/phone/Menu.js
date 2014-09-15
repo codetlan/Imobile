@@ -33,7 +33,7 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Ordenes'
+                            title: APP.core.config.Locale.config.lan.menu.Orden
                         }
                     ]
 
@@ -46,7 +46,7 @@ Ext.define('APP.controller.phone.Menu', {
                     id: 'rutasactividadescont',
                     items: [{
                         xtype: 'opcionrutasactividades',
-                        title: 'Rutas y Actividades'
+                        title: APP.core.config.Locale.config.lan.menu.Rutas
                     }]
                 });
                 break;
@@ -58,27 +58,27 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Cobranza'
+                            title: APP.core.config.Locale.config.lan.menu.Cobranza
                         }
                     ]
                 });
                 break;
             case 'informes':
                 this.getMenuNav().push({
-                    title: 'Informes',
+                    title: APP.core.config.Locale.config.lan.menu.Informes,
                     xtype: 'informeslist'
                 });
                 break;
             case 'configuracion':
                 this.getMenuNav().push({
                     xtype: 'configuracionpanel',
-                    title: 'Configuración'
+                    title: APP.core.config.Locale.config.lan.menu.Configuracion
                 });
                 break;
             case 'prospectos':
                 this.getMenuNav().push({
                     xtype: 'prospectoslist',
-                    title: 'Prospectos'
+                    title: APP.core.config.Locale.config.lan.menu.Prospectos
                 });
                 this.agregaOpciones();
                 break;
