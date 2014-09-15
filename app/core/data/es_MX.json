@@ -186,6 +186,49 @@
         "tipoTransaccion": "Tipo de transacción",
         "orden": "Orden de venta",
         "buscar": "Buscar transacción..."
+      },
+
+      "CobranzaList": {
+        "cobranzaFacturas": "Cobranza de facturas",
+        "anticipoPedidos": "Anticipo de pedido",
+        "visualizarCobranza": "Visualizar cobranzas"
+      },
+
+      "FacturasList": {
+        "numero": "Número",
+        "saldo": "Saldo",
+        "fecha": "Fecha",
+        "vencimiento": "Vencimiento",
+        "noFacturasPendientes": "No hay facturas pendientes"
+      },
+
+      "FacturasContainer": {
+        "aplicarPago": "Aplicar pago"
+      },
+
+      "TotalAPagarContainer":{
+        "terminar": "Terminar",
+        "cancelar": "Cancelar"
+      },
+
+      "TotalesContainer": {
+        "aCobrar": "A cobrar",
+        "pagado": "Pagado",
+        "pendiente": "Pendiente"
+      },
+
+      "VisualizacionCobranzaList": {
+        "buscarCobranza": "Buscar cobranzas...",
+        "criterio": "Criterio...",
+        "seleccionaOpcion": "Seleccione una opción",
+        "cobranzaFactura": "Cobranza de factura",
+        "anticipoPedido": "Anticipo de pedido"
+      },
+
+      "MontoAPagarForm": {
+        "monto": "Ingrese el monto a pagar",
+        "etiquetaMonto": "Monto",
+        "pagar": "Pagar"
       }
     }
   }

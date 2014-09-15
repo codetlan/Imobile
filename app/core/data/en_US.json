@@ -57,7 +57,7 @@
 
       "OpcionesOrdenPanel": {
         "orden": "Order",
-        "cliente": "Client",
+        "cliente": "Customer",
         "editar": "Edit",
         "eliminar": "Delete",
         "terminar": "Done"
@@ -186,6 +186,49 @@
         "tipoTransaccion": "Transaction type",
         "orden": "Sales order",
         "buscar": "Search transaction..."
+      },
+
+      "CobranzaList": {
+        "cobranzaFacturas": "Bill collection",
+        "anticipoPedidos": "Advance order",
+        "visualizarCobranza": "Display collections"
+      },
+
+      "FacturasList": {
+        "numero": "Number",
+        "saldo": "Balance",
+        "fecha": "Date",
+        "vencimiento": "Expiration",
+        "noFacturasPendientes": "There are no outstanding bills"
+      },
+
+      "FacturasContainer": {
+        "aplicarPago": "Apply payment"
+      },
+
+      "TotalAPagarContainer":{
+        "terminar": "Done",
+        "cancelar": "Cancel"
+      },
+
+      "TotalesContainer": {
+        "aCobrar": "Payable",
+        "pagado": "Paid",
+        "pendiente": "Balance Due"
+      },
+
+      "VisualizacionCobranzaList": {
+        "buscarCobranza": "Search collections...",
+        "criterio": "Criterion...",
+        "seleccionaOpcion": "Choice a option",
+        "cobranzaFactura": "Invoice Collection",
+        "anticipoPedido": "Advance Order"
+      },
+
+      "MontoAPagarForm": {
+        "monto": "Enter the amount to be paid",
+        "etiquetaMonto": "Mount",
+        "pagar": "Pay"
       }
-    }
+    } 
   }

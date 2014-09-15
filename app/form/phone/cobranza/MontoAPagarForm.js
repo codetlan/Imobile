@@ -3,7 +3,7 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
     xtype: 'montoapagarform',
     //requires: ['Ext.form.FieldSet', 'Ext.field.Email', 'Ext.field.Password'],
     config: {
-        padding: '0 15 15 15',        
+        padding: '0 15 15 15'
 
         
 /*        defaults: {
@@ -11,7 +11,13 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             clearIcon: true
         },*/
         //centered: true,
-        items: [{
+
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'fieldset',
             title: 'Title',
             defaults:{
@@ -23,15 +29,15 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             items:[{
                 xtype: 'numberfield',
                 name: 'monto',
-                placeHolder: 'Ingrese el monto a pagar',
-                label: 'Monto'
+                placeHolder: APP.core.config.Locale.config.lan.MontoAPagarForm.monto,
+                label: APP.core.config.Locale.config.lan.MontoAPagarForm.etiquetaMonto
             }]
         },{
             xtype:'component',
             height:10
         }, {
             xtype: 'button',
-            text: 'Pagar',
+            text: APP.core.config.Locale.config.lan.MontoAPagarForm.pagar,
             ui: 'action',
             itemId: 'pagar'
         }/*,  {
@@ -44,6 +50,8 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }*/]
+        }*/]);
+
+        me.callParent(arguments);
     }
 });
