@@ -8,9 +8,9 @@
 Ext.define('APP.form.phone.rutas.RutasForm', {
     extend: 'Ext.form.Panel',
     xtype: 'rutasform',
-    initialize : function() {
-        this.callParent();
-        this.setItems([{
+    config: {
+        layout:'fit',
+        items:[{
             xtype:'fieldset',
             scrollable: {
                 direction: 'vertical',
@@ -23,25 +23,26 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 inputCls: 'labels'
             },
             items:[{
-                xtype:'container',
-                layout:{
-                    type:'hbox',
-                    align:'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    action:'showrutasform',
-                    text:'Rutas',
-                    flex:1
-                },{
-                    xtype:'button',
-                    action:'showactividadesform',
-                    text:'Actividades',
-                    flex:1
-                }]
+                xtype:'hiddenfield',
+                name:'CodigoRuta'
+            },{
+                xtype:'hiddenfield',
+                name:'CodigoCliente'
+            },{
+                xtype:'hiddenfield',
+                name:'TipoDireccion'
+            },{
+                xtype:'hiddenfield',
+                name:'CodigoDireccion'
+            },{
+                xtype:'hiddenfield',
+                name:'LatitudOrigen'
+            },{
+                xtype:'hiddenfield',
+                name:'LongitudOrigen'
             },{
                 xtype: 'textfield',
-                name: 'titulo',
+                name: 'Descripcion',
                 label:'Título'
             },{
                 xtype:'fieldset',
@@ -52,13 +53,12 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 },
                 items:[{
                     xtype:'datepickerfield',
-                    value:new Date(),
                     border:0,
-                    name:'empiezafecha',
+                    name:'FechaInicio',
                     readOnly:true
                 },{
                     xtype: 'timepickerfield',
-                    name: 'empiezahora',
+                    name: 'HoraInicio',
                     value: new Date()
                 }]
             },{
@@ -70,61 +70,75 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 },
                 items:[{
                     xtype:'datepickerfield',
-                    value:new Date(),
-                    name:'terminafecha'
+                    name:'FechaFin',
+                    value:new Date()
                 },{
                     xtype: 'timepickerfield',
-                    name: 'terminahora',
+                    name: 'HoraFin',
                     value: new Date()
                 }]
 
             },{
                 xtype: 'checkboxfield',
-                name: 'repetir',
-                label: 'Repetir'
+                name: 'Repetir',
+                label: 'Repetir',
+                required:false
             },{
-                xtype:'container',
+                xtype:'fieldset',
                 id:'rutasrepetir',
                 hidden:true,
+                defaults:{
+                    labelWidth:'30%',
+                    labelCls: 'labels',
+                    inputCls: 'labels'
+                },
                 items:[{
                     xtype: 'checkboxfield',
-                    name: 'lunes',
+                    name: 'Lunes',
                     label: 'Lunes'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'martes',
+                    name: 'Martes',
                     label: 'Martes'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'miercoles',
+                    name: 'Miercoles',
                     label: 'Miercoles'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'jueves',
+                    name: 'Jueves',
                     label: 'Jueves'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'viernes',
+                    name: 'Viernes',
                     label: 'Viernes'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'sabado',
+                    name: 'Sabado',
                     label: 'Sabado'
                 },{
                     xtype: 'checkboxfield',
-                    name: 'domingo',
+                    name: 'Domingo',
                     label: 'Domingo'
                 }]
             },{
                 xtype: 'textareafield',
-                name: 'notas',
+                name: 'Notas',
                 label: 'Notas',
-                labelAlign:'top'
+                labelAlign:'top',
+                required:false
             },{
-                xtype:'rutasmapa',
-                useCurrentLocation: true,
-                height:400,
-                width:'98%'
+                xtype:'fieldset',
+                title:'Seleccione una dirección',
+                layout:{
+                    type:'vbox',
+                    align:'stretch'
+                },
+                items:[{
+                    xtype:'rutascalendariodirecciones'
+                },{
+                    xtype:'rutascalendariomapa'
+                }]
             },{
                 xtype:'container',
                 items:[{
@@ -134,9 +148,6 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                     action:'guardar'
                 }]
             }]
-        }]);
-    },
-    config: {
-        layout:'fit'
+        }]
     }
 });

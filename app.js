@@ -28,6 +28,7 @@ Ext.application({
         'Ext.Map',
 
         'APP.store.phone.RutasCalendario',
+        'APP.store.phone.ActividadesCalendario',
 
         'Ext.ux.Fileup',
 

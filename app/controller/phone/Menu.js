@@ -125,7 +125,7 @@ Ext.define('APP.controller.phone.Menu', {
 
         if (navigationview.getActiveItem().getId() == 'ordenescont' ||
             navigationview.getActiveItem().getId() == 'cobranzacont' ||
-            navigationview.getActiveItem().getId() == 'rutascont'
+            navigationview.getActiveItem().getId() == 'rutasccont'
             ) {
             store = this.getClientesList().getStore()
             titulo = view.down('toolbar');
