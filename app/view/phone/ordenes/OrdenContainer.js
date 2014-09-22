@@ -4,13 +4,16 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
     config: {
         layout: 'vbox',
         xtype: 'container',
-        docked: 'bottom',
-        items: {
+        docked: 'bottom'
+    },
+
+    initialize: function(){
+        this.setItems({
             layout: 'hbox',
             items: [
                 {
                     xtype: 'container',
-                    html: 'Descuento',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.descuento,
                     flex: 1.2,
                     height: 50,
                     itemId: 'descuento',
@@ -26,7 +29,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Subtotal',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.subTotal,
                     flex: 1,
                     itemId: 'subtotal',
                     style: {
@@ -40,7 +43,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Impuesto',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.impuesto,
                     flex: 1,
                     itemId: 'tax',
                     style: {
@@ -54,7 +57,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Total',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.total,
                     flex: 1,
                     itemId: 'total',
                     style: {
@@ -67,6 +70,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                     }
                 }
             ]
-        }
+        });
+        this.callParent(arguments);
     }
 });

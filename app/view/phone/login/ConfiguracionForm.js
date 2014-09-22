@@ -3,10 +3,15 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
     xtype: 'configuracionform',
     config: {
         padding: 15,
-        items: [
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setItems([
             {
                 xtype: 'fieldset',
-                title: 'Datos de Configuración',
+                title: APP.core.config.Locale.config.lan.ConfiguracionForm.titulo,
                 defaults: {
                     clearIcon: true,
                     autoCapitalize: true,
@@ -26,17 +31,17 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
                     {
                         xtype: 'textfield',
                         name: 'cod_soc',
-                        label: 'Codigo de Sociedad'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoSociedad
                     },
                     {
                         xtype: 'textfield',
                         name: 'cod_dis',
-                        label: 'Codigo de Dispositivo'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoDispositivo
                     },
                     {
                         xtype: 'textfield',
                         name: 'servidor',
-                        label: 'Servidor'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.servidor
                     }/*,
                     {
                         xtype: 'selectfield',
@@ -57,11 +62,13 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
             },
             {
                 xtype: 'button',
-                text: 'Guardar',
+                text: APP.core.config.Locale.config.lan.ConfiguracionForm.guardar,
                 itemId: 'saveConfiguration',
                 margin: '0 auto',
                 width: '50%'
             }
-        ]
+        ]);
+
+        me.callParent(arguments);
     }
 });

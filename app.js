@@ -40,7 +40,8 @@ Ext.application({
         'Ext.ux.timepicker.TimePicker',
 
         'APP.core.data.Store',
-        'APP.core.FormatCurrency'
+        'APP.core.FormatCurrency',
+        'APP.core.config.Locale'
     ],
 
     icon: {

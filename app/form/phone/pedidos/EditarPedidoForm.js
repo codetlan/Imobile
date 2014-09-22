@@ -5,96 +5,77 @@ Ext.define('APP.form.phone.pedidos.EditarPedidoForm', {
 		'Ext.form.FieldSet',
 		'Ext.field.Text',
 		'Ext.field.Number'
-        //'Ext.field.Spinner'
 	],
 	config:{
 		//padding:'15 15 15 15',
-		items:[/*{        
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {                        
-                        itemId:'guardar',
-                        text:'Guardar',
-                        ui: 'confirm'
-                        //ui:'btn-login-ui',
-                        // handler:function(btn){
-                        //     var form = btn.up('formpanel');
-                        //     form.fireEvent('logged', form);
-                        // }
-                    }
-                ]
-            },*/
+
+	},
+
+    initialize: function(){
+        var me = this;
+        me.setItems([
             {
                 xtype:'fieldset',
-                itemId:'datos',
-                title:'Editar Pedido',
-                instructions: 'Ingrese los datos',
+                itemId:'datos',                
+                instructions: APP.core.config.Locale.config.lan.EditarPedidoForm.instrucciones,
                 defaults:{
                     //required:true,
                     disabled: true,
                     clearIcon:true,
                     autoCapitalize:true,
+                    labelWrap: true,
                     labelWidth: '45%'
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'CodigoSocio',
-                        label: 'Código de Cliente',
-                        itemId: 'codepro'
-                        //value: 12345
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.codigoCliente,
+                        itemId: 'codepro'                        
                     },{
                         xtype:'textfield',
                         name:'NombreSocio',
-                        label:'Nombre de Cliente'
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.nombreCliente
                     },{
                         xtype:'textfield',
                         name:'LimiteCredito',
-                        label:'Límite de Crédito'
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.limiteCredito
                     },{
                         xtype:'textfield',
                         name:'NombreCondicionPago',
-                        label:'Condición de Crédito'
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.condicionCredito
                     },{
                         xtype:'textfield',
                         name:'Saldo',
-                        label:'Saldo'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.saldo
                     },{
                         xtype:'textfield',
                         name:'NombreListaPrecio',
-                        label:'Lista de Precios'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.listaPrecios
                     },{
                         xtype:'textfield',
                         name:'NombreVendedor',
-                        label:'Vendedor'
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.vendedor
                     },{
                         xtype:'textfield',
                         name:'descuento',
-                        label:'Descuento'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.descuento
                     },{
                         xtype:'textfield',
                         name:'CodigoMoneda',
-                        label:'Moneda',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.moneda,
                         disabled: false,
-                        itemId: 'moneda',
-                        //tpl: ['<div style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"</div>'].join('')
+                        itemId: 'moneda',                        
                         inputCls: 'fa-check'
                     },{
                         xtype:'textfield',
                         name:'tipoCambio',
-                        label:'Tipo de Cambio'  
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.tipoCambio
                     }
                 ]
             }
-        ]
-	}
+        ]);
+
+        me.callParent(arguments);
+    }
 });

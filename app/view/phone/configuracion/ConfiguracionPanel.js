@@ -10,10 +10,13 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
             directionLock: true
         },
         padding: 10,
-        items: [
+    },
+
+    initialize: function(){
+        this.setItems ([
             {
                 xtype: 'fieldset',
-                title: 'Imagen de la empresa',
+                title: APP.core.config.Locale.config.lan.ConfiguracionPanel.imagenEmpresa,
                 flex: 1,
                 items: [
                     {
@@ -32,7 +35,7 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                     {
                         itemId: 'fileLoadBtn',
                         xtype: 'button',
-                        text: 'Seleccionar imagen',
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.seleccionarImagen,
                         action: 'subirimagen',
                         width: '60%',
                         style: {
@@ -59,19 +62,17 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
             {
                 xtype: 'selectfield',
                 name: 'idioma',
-                label: 'Idioma',
+                label: APP.core.config.Locale.config.lan.ConfiguracionPanel.idioma,
+                labelWidth: '40%',
+
                 options: [
                     {
                         text: 'Español',
                         value: 'es'
                     },
                     {
-                        text: 'Inglés',
+                        text: 'English',
                         value: 'en'
-                    },
-                    {
-                        text: 'Portugués',
-                        value: 'pes'
                     }
                 ]
             },
@@ -83,12 +84,13 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                     {
                         xtype: 'button',
                         itemId: 'guardar',
-                        iconCls: 'action',
+                        //iconCls: 'action',
                         ui: 'confirm',
-                        text: 'Guardar Cambios'
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.guardar
                     }
                 ]
             }
-        ]
-    }
+        ]);
+        this.callParent(arguments);
+    }    
 });

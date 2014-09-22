@@ -12,6 +12,12 @@ Ext.define('APP.view.phone.menu.MenuNav', {
                 iconCls: 'logo'
             }]
         },
+/*         masked:{
+            xtype: 'loadmask',
+            message: 'Trabajando...',
+            fullscreen: true,
+            indicator: true
+        },*/
         items: [{
             xtype: 'menulist'
         }]

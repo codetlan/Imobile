@@ -21,7 +21,7 @@ Ext.define('APP.model.phone.Transaccion', {
             },
             {
                 name: 'TipoTransaccion',
-                type: 'int'
+                type: 'string'
             },
             {
                 name: 'NumeroDocumento',

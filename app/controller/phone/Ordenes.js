@@ -77,9 +77,6 @@ Ext.define('APP.controller.phone.Ordenes', {
             'opcionesorden #terminar': {
                 activate: 'confirmaTerminarOrden'
             },
-            'clientecontainer #guardar': {
-                tap: 'guardaDatosDeCliente'
-            },
             'editarpedidoform #moneda': {
                 focus: 'muestraMonedas'
             },
@@ -122,6 +119,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             idCliente = record.get('CodigoSocio'),
             titulo = name;
 
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarClienteCargar);
+        Ext.Viewport.setMasked(true);
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
             params: {
@@ -160,7 +159,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                         });
                     }
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
             },
             scope: this
@@ -181,6 +181,8 @@ Ext.define('APP.controller.phone.Ordenes', {
         direcciones.setData(clienteSeleccionado.Direcciones);
         direcciones.clearFilter();
         direcciones.filter('TipoDireccion', 'S');
+
+        Ext.Viewport.setMasked(false);
 
         if (direcciones.getCount() > 0) {
             menu.push({
@@ -211,7 +213,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             }
 
         } else {
-            this.mandaMensaje('Sin dirección de entrega', 'Este cliente no tiene direcciones de entrega definidas.');
+            this.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.estableceDireccionesTitle, 
+                APP.core.config.Locale.config.lan.Ordenes.estableceDireccionesMsg);
             //view.pop();
             direcciones.removeAll();
         }
@@ -237,6 +240,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             opcionesOrden = me.getOpcionesOrden(),
             opcion = record.get('action'),
             idCliente = menuNav.getNavigationBar().getTitle(), i,
+            boton = me.getNavigationOrden().getNavigationBar().down('#agregarProductos'),
             barraTitulo = ({
                 xtype: 'toolbar',
                 docked: 'top',
@@ -251,7 +255,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                 me.getOpcionesOrden().down('#moneda').setDisabled(false);
 
                 opcionesOrden.actionOrden = 'crear';
-                this.getMainCard().getAt(1).setMasked(false);
+                //this.getMainCard().getAt(1).setMasked(false);
+                boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
                 this.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden
                 this.getNavigationOrden().getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
                 this.getOpcionesOrden().setActiveItem(0); //Establecemos como activo el item 0 del tabpanel.
@@ -277,7 +282,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 };
 
                 Ext.getStore('Transacciones').resetCurrentPage();
-                getProxy().setUrl(url);
+                store.getProxy().setUrl(url);
                 store.setParams(params);
 
                 store.load();
@@ -352,7 +357,7 @@ Ext.define('APP.controller.phone.Ordenes', {
         }
 
         if (value.xtype == 'partidacontainer') {
-            boton.setText('Agregar').show();
+            boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar).show();
             boton.setUi('normal');
         }
     },
@@ -411,8 +416,8 @@ Ext.define('APP.controller.phone.Ordenes', {
     onEliminarOrden: function (newActiveItem, tabPanel) {
         var me = this,
             ordenes = Ext.getStore('Ordenes'),
-            titulo = 'Eliminar orden',
-            mensaje = 'Se va a eliminar la orden, todos los productos agregados se perderán ¿está seguro?',
+            titulo = APP.core.config.Locale.config.lan.Ordenes.onEliminarOrdenTitulo,
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.onEliminarOrdenMsg,
             ancho = 300;
 
         me.confirma(titulo, mensaje, ancho,
@@ -452,11 +457,11 @@ Ext.define('APP.controller.phone.Ordenes', {
             buttons: [
                 {
                     itemId: 'no',
-                    text: 'No'
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaNo
                 },
                 {
                     itemId: 'yes',
-                    text: 'Si',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                     ui: 'action'
                 }
             ],
@@ -471,7 +476,7 @@ Ext.define('APP.controller.phone.Ordenes', {
      * @param target El elemento tapeado
      * @param record El record asociado al ítem.
      */
-    seleccionaDireccion: function (list, index, target, record) {
+     seleccionaDireccion:function(list, index, target, record){
         var me = this,
             direcciones = Ext.getStore('Direcciones'),
             entrega = me.getOpcionesOrden().entrega,
@@ -532,7 +537,10 @@ Ext.define('APP.controller.phone.Ordenes', {
 
             if ((codigoMonedaSeleccionada != moneda) && (codigoMonedaSeleccionada == codigoMonedaPredeterminada)) {
                 if (me.dameProductoConMonedaPredeterminada(codigoMonedaPredeterminada) != 'No hay') {
-                    me.mandaMensaje('Error', 'No es posible cambiar la configuración debido a que la moneda del producto con código ' + me.dameProductoConMonedaPredeterminada() + ' es ' + codigoMonedaPredeterminada + '. Elimínelo primero de la orden.');
+                    me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError,
+                     APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaMsg1 + 
+                     me.dameProductoConMonedaPredeterminada() + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaEs + 
+                     codigoMonedaPredeterminada + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaMsg2);
                 } else {
                     me.obtenerTipoCambio(moneda, record);
                     //                me.estableceMonedaPredeterminada(record);
@@ -558,7 +566,9 @@ Ext.define('APP.controller.phone.Ordenes', {
                 //me.actualizarTotales();
             }
         } else {
-            me.mandaMensaje('No es Multimoneda', 'El cliente ' + clienteSeleccionado.CodigoSocio + ' sólo puede operar con ' + clienteSeleccionado.CodigoMoneda + '.');
+            me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaTitle,
+             APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaMsg1 + 
+             clienteSeleccionado.CodigoSocio + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaMsg2 + clienteSeleccionado.CodigoMoneda + '.');
         }
 
         view.pop();
@@ -639,7 +649,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                 } else {
                     var error = response.Descripcion;
-                    me.mandaMensaje('Error', error);
+                    me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, error);
                     // form.setValues({
                     //     CodigoMoneda: me.codigoMonedaSeleccionada,
                     //     tipoCambio: me.tipoCambio
@@ -721,8 +731,8 @@ Ext.define('APP.controller.phone.Ordenes', {
     eliminaPartida: function (list, index, target, record) {
         var me = this,
             ordenes = Ext.getStore('Ordenes'),
-            titulo = "Eliminar producto de la orden",
-            mensaje = "Se va a eliminar el producto de la orden, ¿está seguro?",
+            titulo = APP.core.config.Locale.config.lan.Ordenes.eliminarPartidaTitulo,
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.eliminarPartidaMsg,
             ancho = 300;
 
         me.confirma(titulo, mensaje, ancho,
@@ -856,12 +866,15 @@ Ext.define('APP.controller.phone.Ordenes', {
         Ext.getStore('Productos').resetCurrentPage();
 //        if (Ext.isEmpty(descripcion) || Ext.isEmpty(cantidad)) {
         if (cantidad <= 0 || Ext.isEmpty(cantidad)) {
-            me.mandaMensaje("Campos inválidos o vacíos", "Verifique que el valor de los campos sea correcto o que no estén vacíos");
+            me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.agregarProductosCamposInvalidosTitle,
+             APP.core.config.Locale.config.lan.Ordenes.agregarProductosCamposInvalidosMsg);
         } else {
             if (modo != 'edicion') {
                 if (moneda != codigoMonedaSeleccionada) {
                     if (moneda == codigoMonedaPredeterminada) {
-                        me.mandaMensaje('Imposible agregar', 'No es posible agregar el producto a la orden debido a que la configuración de moneda actual es ' + codigoMonedaSeleccionada + '  y la moneda del producto es ' + moneda + '.');
+                        me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarTitle,
+                        APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarMsg1 + 
+                        codigoMonedaSeleccionada + APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarMsg2 + moneda + '.');
                     } else {
                         me.obtenerTipoCambio(moneda); // Aquí esperamos a que obtenga el tipo de cambio y realizamos el cálculo del nuevo precio.
                     }
@@ -1071,7 +1084,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                     me.llenaAgregarProductos(response.Data[0]); // Hacer un
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
             }
         });
@@ -1130,7 +1143,12 @@ Ext.define('APP.controller.phone.Ordenes', {
         precio = APP.core.FormatCurrency.currency(valores.ListaPrecios[0].Precio, moneda);
         cantidad = 1;
 
-        view.setMasked({xtype: 'loadmask', message: 'Cargando Datos...'});
+        //view.setMasked({xtype: 'loadmask', message: 'Cargando Datos...'});
+        //Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.ClientesList.cargando});
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
+        
         //Se calcula descuento
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Consultas/ObtenerPrecioEspecialiMobile",
@@ -1193,9 +1211,9 @@ Ext.define('APP.controller.phone.Ordenes', {
                     me.actualizaCantidad(cantidad);
 
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
-                view.setMasked(false);
+                Ext.Viewport.setMasked(false);
             }
         });
     },
@@ -1364,17 +1382,6 @@ Ext.define('APP.controller.phone.Ordenes', {
     },
 
     /**
-     * Manda un mensaje con el codigo de las direcciones tanto de entrega como fiscal.
-     */
-    guardaDatosDeCliente: function (button) {
-        var me = this,
-            direccionEntrega = me.getOpcionesOrden().direccionEntrega,
-            direccionFiscal = me.getOpcionesOrden().direccionFiscal;
-
-        me.mandaMensaje('Códigos de dirección', 'Entrega: ' + direccionEntrega + '\nFiscal: ' + direccionFiscal);
-    },
-
-    /**
      * Determina la siguiente vista productosorden o partidacontainer dependiendo del ítem activo, si no está en
      * partidacontainer este boton dice "Back".
      * @param button Este botón.
@@ -1488,12 +1495,12 @@ Ext.define('APP.controller.phone.Ordenes', {
             ancho = 300;
 
         if (opcionesOrden.actionOrden == 'crear') {
-            titulo = "Terminar orden";
-            mensaje = "¿Desea terminar la orden de venta?";
+            titulo = APP.core.config.Locale.config.lan.Ordenes.confirmaTerminarOrdenTitulo;
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.confirmaTerminarOrdenMsg;
 
         } else {
-            titulo = "Actualizar orden";
-            mensaje = "¿Desea actualizar la orden de venta?";
+            titulo = APP.core.config.Locale.config.lan.Ordenes.confirmaActualizarOrdenTitulo;
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.confirmaActualizarOrdenMsg;
         }
 
         me.confirma(titulo, mensaje, ancho,
@@ -1527,8 +1534,10 @@ Ext.define('APP.controller.phone.Ordenes', {
             direccionFiscal = me.getOpcionesOrden().direccionFiscal,
             tipoCambio = me.getOpcionesOrden().tipoCambio;
 
-        me.getMainCard().getActiveItem().getMasked().setMessage('Enviando orden...');
-        me.getMainCard().getActiveItem().setMasked(true);
+        // me.getMainCard().getActiveItem().getMasked().setMessage('Enviando orden...');
+        // me.getMainCard().getActiveItem().setMasked(true);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.enviandoOrden);
+        Ext.Viewport.setMasked(true);
 
         if (array.length > 0) {
             var params = {
@@ -1587,11 +1596,11 @@ Ext.define('APP.controller.phone.Ordenes', {
 
             if (opcionesOrden.actionOrden == 'crear') {
                 url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_OrdenVenta/AgregarOrdenMobile";
-                msg = "Se agrego la orden correctamente con folio: ";
+                msg = APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenAgregar;
             } else {
                 params["Orden.NumeroDocumento"] = me.getOpcionesOrden().NumeroDocumento;
                 url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_OrdenVenta/ActualizarOrdenVentaiMobile";
-                msg = "Se acualizo la orden correctamente con folio: ";
+                msg = APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenActualizar;
             }
 
             console.log(params);
@@ -1602,9 +1611,10 @@ Ext.define('APP.controller.phone.Ordenes', {
                 callbackKey: 'callback',
                 success: function (response) {
                     if (response.Procesada) {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                        //me.getMainCard().getActiveItem().setMasked(false);                                
+                        Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
-                        Ext.Msg.alert("Orden Procesada", msg + response.CodigoUnicoDocumento);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenProcesada, msg + response.CodigoUnicoDocumento);
                         store.clearData();
                         me.getNavigationOrden().remove(me.getNavigationOrden().down('toolbar'), true);
                         me.getMenuNav().remove(me.getMenuNav().down('toolbar'), true);
@@ -1616,23 +1626,30 @@ Ext.define('APP.controller.phone.Ordenes', {
                         }
 
                     } else {
-                        me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("Orden No Procesada", "No se proceso la orden correctamente: " + response.Descripcion);
+                        //me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaTitle, 
+                            APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaMsg + response.Descripcion);
                         me.getOpcionesOrden().setActiveItem(0);
                     }
                 },
 
                 failure: function () {
-                    Ext.Msg.alert('Problemas de conexión', 'El servidor está tardando demasiado en responder. Intente más tarde.', function () {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                        APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloMsg, function () {
+                        //me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
                         me.getOpcionesOrden().setActiveItem(0);
                     });
                 }
             });
         } else {
-            me.getMainCard().getActiveItem().setMasked(false);
-            me.getOpcionesOrden().setActiveItem(0);
-            Ext.Msg.alert("Productos", "Selecciona al menos un Producto");
+            //me.getMainCard().getActiveItem().setMasked(false);
+            Ext.Viewport.setMasked(false);
+            setTimeout(function(){
+                me.getOpcionesOrden().setActiveItem(0);
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenSinProductosTitle, APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenSinProductosMsg);
+            }, 10)
         }
     },
 
@@ -1644,6 +1661,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             idCliente = me.getMenuNav().getNavigationBar().getTitle(),
             store = Ext.getStore('Ordenes'),
             productos = Ext.getStore('Productos'),
+            boton = me.getNavigationOrden().getNavigationBar().down('#agregarProductos'),
             index,
             barraTitulo = ({
                 xtype: 'toolbar',
@@ -1651,7 +1669,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                 title: 'titulo'
             });
 
-        me.getMainCard().getAt(1).setMasked(false);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Consultas/RegresarOrdenVentaiMobile",
@@ -1667,6 +1686,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 var response = response.Data[0],
                     partidas = response.Partidas;
 
+                Ext.Viewport.setMasked(false);
                 me.getOpcionesOrden().codigoMonedaSeleccionada = response.CodigoMoneda + ' ';
                 codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
                 me.getOpcionesOrden().NumeroDocumento = record.get('NumeroDocumento');
@@ -1697,7 +1717,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                      }*/
 
                     if (codigoMonedaSeleccionada != codigoMonedaPredeterminada && moneda == codigoMonedaPredeterminada) { // Si orden viene en USD y producto en MXP
-                        me.mandaMensaje('Moneda Diferente', 'No se pudo recuperar la Orden de Venta pues alguna partida viene en una moneda diferente a la del documento y está en moneda extranjera.');
+                        me.mandaMensaje(APP.core.config.Locale.config.lan.onSeleccionarTransaccionTitle,
+                        APP.core.config.Locale.config.lan.onSeleccionarTransaccionMsg);
                         return;
                     }
 
@@ -1736,7 +1757,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                     }
                 });
 
-                me.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden
+                boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
+                me.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden                
                 me.getMainCard().getActiveItem().getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
                 me.getMainCard().getActiveItem().down('opcionesorden').setActiveItem(0); //Establecemos como activo el item 0 del tabpanel.
                 me.actualizarTotales();
@@ -1869,16 +1891,16 @@ Ext.define('APP.controller.phone.Ordenes', {
                 '<img src="" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
                 '<div style="display: table; text-align: left; font-size: 10px; z-index: 0;">' +
                 '<div style="display: table-row;">' +
-                '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Transacción: Orden de Venta</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Fecha: ' + Ext.DateExtras.dateFormat(new Date(), 'd/m/Y') + '</div>' +
+                '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.transaccion + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.fecha + ' ' + Ext.DateExtras.dateFormat(new Date(), 'd/m/Y') + '</div>' +
                 '</div>' +
                 '<div style="display: table-row;">' +
-                '<div id="codigo_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Código de Dispositivo: ' + localStorage.getItem("CodigoDispositivo") + '</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Código de Usuario: ' + localStorage.getItem("CodigoUsuario") + '</div>' +
+                '<div id="codigo_id" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.codigoDispositivo + ' ' + localStorage.getItem("CodigoDispositivo") + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.codigoUsuario + ' ' + localStorage.getItem("CodigoUsuario") + '</div>' +
                 '</div>' +
                 '<div style="display: table-row;">' +
-                '<div id="codigo_dispositivo" style="display: table-cell;  padding-left: 10px; width: 50%;">Nombre de Dispositivo: ' + localStorage.getItem("NombreDispositivo") + '</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Nombre de Usuario: ' + localStorage.getItem("NombreUsuario") + '</div>' +
+                '<div id="codigo_dispositivo" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.nombreDispositivo + ' ' + localStorage.getItem("NombreDispositivo") + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.nombreUsuario + ' ' + localStorage.getItem("NombreUsuario") + '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');

@@ -1,5 +1,5 @@
 /**
- * @class Imobile.view.prospectos.ClientesList
+ * @class Imobile.view.prospectos.ProspectosList
  * @extends Ext.dataview.List
  * Esta es la lista para listar prospectos.
  */
@@ -8,7 +8,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
     xtype: 'prospectoslist',
     requires: ['Ext.field.Search', 'Ext.plugin.ListPaging', 'Ext.SegmentedButton'],
     config: {
-        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{codigo}</p>', '<span style="color: cadetblue;"><b>{razonSocial}</b></span>', '</div>'].join(''),
+        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{CodigoSocio}</p>', '<span style="color: cadetblue;"><b>{NombreSocio}</b></span>', '</div>'].join(''),
         store: 'Prospectos',
         useSimpleItems: true,
         emptyText: '<div style="margin-top: 20px; text-align: center">No hay prospectos con esos datos</div>',
@@ -24,8 +24,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 xtype: 'searchfield',
                 itemId: 'buscarProspectos',
                 placeHolder: ' Buscar prospecto...',                
-                flex: 12,
-                cls: 'list-search'
+                flex: 12                
             },/*{
                 xtype: 'button',
                 iconCls: 'search',
@@ -33,16 +32,32 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 flex: 1
             },*/{
                 xtype: 'button',
-                iconCls: 'add',
-                itemId: 'agregar',
+                iconCls: 'search',
+                itemId: 'buscar',
                 flex: 1
             }]
-        }],
+        },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregar',                        
+                        ui: 'action',
+                        text: 'Agregar prospecto'
+                    }
+                ]
+            }],
         plugins: [{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
             loadMoreText: 'Ver Más...'
         }],
-        loadingText: 'Cargando...'
+        masked: {
+            xtype: 'loadmask',
+            message: 'Cargando...'
+        },
+        loadingText: 'Obteniendo prospectos...'    
     }
 });

@@ -7,7 +7,7 @@ Ext.define('APP.store.phone.Menu',{
         autoload: true,
         model:'APP.model.phone.Menu',
         data: [
-            {name: 'Ordenes de venta',  icon: 'package.png', action: 'ordenes'},
+            {name: 'Órdenes de venta',  icon: 'package.png', action: 'ordenes'},
             {name: 'Rutas y Actividades',   icon: 'map.png', action: 'rutas'},
             {name: 'Cobranza', icon: 'briefcase.png', action: 'cobranza'},
             {name: 'Informes', icon: 'graph.png', action: 'informes'},

@@ -12,16 +12,24 @@ Ext.define('APP.view.phone.cobranza.FacturasContainer', {
             direction: 'vertical',
             directionLock: true
         },*/
-        layout: 'vbox',
-        items: [{
+        layout: 'vbox'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'facturaslist',
             flex: 5
         },{
             xtype: 'button',
-            text: 'Aplicar pago',
+            text: APP.core.config.Locale.config.lan.FacturasContainer.aplicarPago,
             ui: 'confirm',
             itemId: 'aplicarPago',
+            //iconCls: 'action',
             margin: 10
-        }]
+        }]);
+
+        me.callParent(arguments)
     }
 });

@@ -15,15 +15,19 @@ Ext.define('APP.view.phone.clientes.ClientesList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
-        items: [{
+        }
+    },
+
+    initialize: function(){
+        this.setItems(
+         [{
             xtype: 'toolbar',
             docked: 'top',
             layout:'hbox',
             items: [{
                 xtype: 'searchfield',
                 itemId: 'buscarClientes',
-                placeHolder: ' Buscar cliente...',
+                placeHolder: APP.core.config.Locale.config.lan.ClientesList.buscarClientes,
                 flex: 8
             },{
                 xtype: 'button',
@@ -31,16 +35,20 @@ Ext.define('APP.view.phone.clientes.ClientesList', {
                 itemId: 'btnBuscarClientes',
                 flex: 0.5
             }]
-        }],
-        plugins: [{
+        }]);
+
+        this.setPlugins([{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }],
-        masked: {
+            loadMoreText: APP.core.config.Locale.config.lan.ProductosList.verMas
+        }]);
+
+        this.setMasked({
             xtype: 'loadmask',
-            message: 'Cargando...'
-        },
-        loadingText: 'Cargando...'
+            message: APP.core.config.Locale.config.lan.ClientesList.cargando
+        });
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        this.callParent(arguments);
     }
 });

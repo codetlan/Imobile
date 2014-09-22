@@ -3,12 +3,14 @@
  */
 Ext.define('APP.controller.phone.Configuracion', {
     extend: 'Ext.app.Controller',
+    requires:['APP.core.config.Locale'],
 
     config: {
         refs: {
             fileUpload: 'configuracionpanel fileupload',
             imagenCmp: 'configuracionpanel component[id=imagencmp]',
-            opcionesOrden: 'opcionesorden'
+            opcionesOrden: 'opcionesorden',
+            opcionesOrdenesList: 'opcionordeneslist'            
         },
         control: {
             'configuracionpanel container button[action=subirimagen]': {
@@ -23,7 +25,8 @@ Ext.define('APP.controller.phone.Configuracion', {
                                 imagecmp.setHtml("<img id='imagen_background' src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
                             }
                             else {
-                                Ext.Msg.alert("Error", "La imagen debe de ser menor de 4 megas");
+                                Ext.Msg.alert(APP.core.config.locale.config.lan.Configuracion.seleccionarMonedaError,
+                                    APP.core.config.locale.config.lan.Configuracion.tamanioImagen);
                             }
                         },
                         source: 'album',
@@ -82,23 +85,23 @@ Ext.define('APP.controller.phone.Configuracion', {
         return s;
     },
 
-    onSaveConfig: function () {
+    onSaveConfig: function (button) {
         var me = this,
             imagecmp = me.getImagenCmp(),
             list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
 
         Ext.Msg.show({
-            title: 'Configuración',
-            message: 'Deseas guardar los cambios Configurados?',
+            title: APP.core.config.Locale.config.lan.Configuracion.titulo,
+            message: APP.core.config.Locale.config.lan.Configuracion.onSaveConfig,
             width: 300,
             buttons: [
                 {
                     itemId: 'no',
-                    text: 'No'
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaNo
                 },
                 {
                     itemId: 'yes',
-                    text: 'Si',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                     ui: 'action'
                 }
             ],
@@ -107,10 +110,61 @@ Ext.define('APP.controller.phone.Configuracion', {
                     if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
+
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
                     }
+
+                    var idioma = button.up('configuracionpanel').down('selectfield').getValue();
+console.log(idioma);
+                    switch (idioma){
+                        case 'en':
+                            url = 'app/core/data/en_US.json';
+                            break;
+
+                        case 'es':
+                            url = 'app/core/data/es_MX.json';
+                            break;
+                    }
+
+                    Ext.Ajax.request({
+                        url: url, // Leemos del json
+                        
+                        success: function(response){
+                            var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
+                                trans, // Las traducciones para el menú
+                                idiomas = Ext.decode(text);  // Convertimos text en objeto
+                            
+                            APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
+                            trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
+
+                            APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
+
+                            Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
+                            APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                            
+                            //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                            Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+
+/*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
+                                xtype: 'configuracionpanel'
+                            });   */
+
+                            Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
+                                Object.defineProperty(element.getData(), "name", {
+                                    get: function(){
+                                        return trans[index];
+                                    }
+                                });
+                            });
+                        },
+
+                        failure: function(response, opts) {
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, 
+                                APP.core.config.Locale.config.lan.Configuracion.sinIdioma);
+                        }
+                    });
                 }
             }
         });

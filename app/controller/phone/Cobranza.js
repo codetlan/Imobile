@@ -55,7 +55,8 @@ Ext.define('APP.controller.phone.Cobranza', {
                 clearicontap: 'limpiaBusquedaTransacciones'
             },
             'visualizacioncobranzalist #buscarTipo':{
-                clearicontap: 'limpiaBusquedaTransacciones'
+                clearicontap: 'limpiaBusquedaTransacciones',
+                change: 'onChangeTipoCobranza'
             }
     	}
     },
@@ -180,8 +181,10 @@ Ext.define('APP.controller.phone.Cobranza', {
 
             view.getActiveItem().setEmptyText('No existen cobros para este cliente');
 
-            store.load({
-                callback: me.recorreVisualizacion (store)
+            store.load({                
+                callback: function(){
+                    me.recorreVisualizacion (store)
+                }
             });
         }
     },
@@ -685,7 +688,9 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
 
         store.load({
-            callback: me.recorreVisualizacion (store)
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
         });
     },
 
@@ -709,15 +714,28 @@ Ext.define('APP.controller.phone.Cobranza', {
         }
 
         store.load({
-            callback: me.recorreVisualizacion (store)
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
         });
     },
 
     recorreVisualizacion: function (store){
-        var me = this;
+        var me = this,
+            tipo;
 
-        store.each(function (item, index, length) {
-            item.set('NombreCliente', me.getMenuNav().down('toolbar').getTitle().getTitle())
+        store.each(function (item, index, length) {            
+            tipo = item.get('Tipo');            
+
+            item.set('NombreCliente', me.getMenuNav().down('toolbar').getTitle().getTitle());
+
+            if(tipo == 'C'){
+                item.set('TipoTransaccion', 'Cobranza de factura');                
+            }
+
+            if(tipo == 'A'){
+                item.set('TipoTransaccion', 'Anticipo de pedido');                
+            }           
         });
     },
 
@@ -725,5 +743,30 @@ Ext.define('APP.controller.phone.Cobranza', {
         var me = this;                
         Ext.getStore('Facturas').on('load', me.agregaSaldoAMostrar);
         Ext.getStore('Anticipos').on('load', me.agregaSaldoAMostrar);
+    },
+
+    onChangeTipoCobranza: function (t, newValue, oldValue, eOpts) {
+        var me = this,
+            store = Ext.getStore('Transacciones'),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle(),
+            value = t.up('toolbar').down('#buscarCobranzas').getValue(),
+            tipo = newValue,
+            list = t.up('visualizacioncobranzalist');
+        console.log(list);
+        console.log(value);
+        list.setEmptyText('No existen cobros para este cliente');
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value,
+            CardCode: idCliente,
+            Tipo: tipo
+        });
+
+        store.load({
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
+        });
     }
 });

@@ -33,7 +33,7 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Ordenes'
+                            title: APP.core.config.Locale.config.lan.menu.Orden
                         }
                     ]
 
@@ -46,7 +46,7 @@ Ext.define('APP.controller.phone.Menu', {
                     id: 'rutasactividadescont',
                     items: [{
                         xtype: 'opcionrutasactividades',
-                        title: 'Rutas y Actividades'
+                        title: APP.core.config.Locale.config.lan.menu.Rutas
                     }]
                 });
                 break;
@@ -58,29 +58,29 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Cobranza'
+                            title: APP.core.config.Locale.config.lan.menu.Cobranza
                         }
                     ]
-
                 });
                 break;
             case 'informes':
                 this.getMenuNav().push({
-                    title: 'informes',
-                    html: 'informes'
+                    title: APP.core.config.Locale.config.lan.menu.Informes,
+                    xtype: 'informeslist'
                 });
                 break;
             case 'configuracion':
                 this.getMenuNav().push({
                     xtype: 'configuracionpanel',
-                    title: 'Configuración'
+                    title: APP.core.config.Locale.config.lan.menu.Configuracion
                 });
                 break;
             case 'prospectos':
                 this.getMenuNav().push({
                     xtype: 'prospectoslist',
-                    title: 'prospectos'
+                    title: APP.core.config.Locale.config.lan.menu.Prospectos
                 });
+                this.agregaOpciones();
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -132,11 +132,45 @@ Ext.define('APP.controller.phone.Menu', {
 
             view.remove(titulo, true);
 
-            //view.setMasked({xtype: 'loadmask', message: 'Cargando...'});
-
             store.getProxy().setUrl("http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerListaSociosiMobile");
             store.setParams(params);
             store.load();            
         }
+    },
+
+    agregaOpciones: function(){
+        var me = this,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token")                
+            };
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+
+                if (response.Procesada) {
+                    var opciones = new Array(),
+                        datos = response.Data,
+                        i;
+
+                    for (i = 0; i < datos.length; i++){
+                        opciones[i] = {
+                            text: datos[i].NombreEstado,
+                            value: datos[i].CodigoEstado
+                        };
+                    }                    
+
+                    me.getMenuNav().estados = opciones;
+                } else {                    
+                    Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                }
+            }
+        });
     }
 });

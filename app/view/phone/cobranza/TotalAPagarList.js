@@ -10,10 +10,17 @@ Ext.define('APP.view.phone.cobranza.TotalAPagarList', {
     config: {
         itemCls: 'factura',
     	itemTpl: '{tipo}: <b>{monto}</b>',
-        store: 'Totales',
-        loadingText: 'Cargando...'
+        store: 'Totales'
     	/*onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },*/
+    },
+
+    initialze: function(){
+        var me = this;
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
