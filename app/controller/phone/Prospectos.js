@@ -247,7 +247,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                 name: datos[i].Nombre,
                 label: datos[i].Nombre,
                 value: datos[i].Codigo                
-            });
+            });8
         }
     },  
 
@@ -406,7 +406,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                     me.getProspectosForm().down('#estado').setOptions(me.getMenuNav().estados);
 
                     // Extraemos la dirección
-                    valores = valores.Direcciones[0];                     
+                    valores = valores.Direcciones[0];
                     me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
                     me.getProspectosForm().setValues(valores);
 

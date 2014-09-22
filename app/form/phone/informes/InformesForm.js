@@ -31,7 +31,7 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                         name:'fechaDesde',
                         label: 'Desde',
                         itemId: 'fechaDesde',
-                        value: new Date()
+                        value: Ext.Date.add(new Date(), Ext.Date.MONTH, -1)
                     },{
                         xtype:'datepickerfield',
                         name:'fechaHasta',
@@ -55,15 +55,15 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                 },
                 items:[
                     {
-                        xtype:'datepickerfield',
+                        xtype:'selectfield',
                         name:'codigoDesde',
                         label: 'Desde',
-                        itemId: 'codigoDesde'                        
+                        itemId: 'codigoDesde',
                     },{
-                        xtype:'datepickerfield',
+                        xtype:'selectfield',
                         name:'codigoHasta',
                         label:'Hasta',
-                        itemId: 'codigoHasta'
+                        itemId: 'codigoHasta',                        
                     }]
             },{
                 xtype: 'fieldset',

@@ -233,6 +233,17 @@ Ext.define('APP.core.config.Locale', {
         monto: "Ingrese el monto a pagar",
         etiquetaMonto: "Monto",
         pagar: "Pagar"
+      },
+
+      InformesGeneradosList: {
+        codigo: "Código",
+        descripcion: "Descripción",
+        moneda: "Moneda",
+        cantidad: "Cantidad",
+        importe: "Importe",
+        articulos: "Artículos",
+        total: "Total",
+        sinPendientes: "No existen informes con los datos proporcionados."
       }
     }
   },

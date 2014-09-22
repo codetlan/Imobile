@@ -139,38 +139,40 @@ Ext.define('APP.controller.phone.Menu', {
     },
 
     agregaOpciones: function(){
-        var me = this,
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-            params = {
-                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token")                
-            };
+        if(this.getMenuNav().estados == undefined){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+                params = {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token")                
+                };
 
-        Ext.data.JsonP.request({
-            url: url,
-            params: params,
-            callbackKey: 'callback',
-            success: function (response) {
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
 
-                if (response.Procesada) {
-                    var opciones = new Array(),
-                        datos = response.Data,
-                        i;
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
 
-                    for (i = 0; i < datos.length; i++){
-                        opciones[i] = {
-                            text: datos[i].NombreEstado,
-                            value: datos[i].CodigoEstado
-                        };
-                    }                    
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].NombreEstado,
+                                value: datos[i].CodigoEstado
+                            };
+                        }                    
 
-                    me.getMenuNav().estados = opciones;
-                } else {                    
-                    Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                        me.getMenuNav().estados = opciones;
+                    } else {                    
+                        Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 });
