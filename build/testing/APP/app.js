@@ -88144,6 +88144,8 @@ Ext.define('APP.view.phone.rutas.OpcionRutasList', {
 Ext.define('APP.view.phone.rutas.RutasCalendario', {
     extend: 'Ext.ux.calendar.TouchCalendar',
     xtype: 'rutascalendario',
+    idCliente:undefined,
+    direcciones:undefined,
     config:{
         viewMode: 'month',
         weekStart: 0,

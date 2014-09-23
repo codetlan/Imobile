@@ -125,7 +125,7 @@ Ext.define('APP.controller.phone.Menu', {
 
         if (navigationview.getActiveItem().getId() == 'ordenescont' ||
             navigationview.getActiveItem().getId() == 'cobranzacont' ||
-            navigationview.getActiveItem().getId() == 'rutascont'
+            navigationview.getActiveItem().getId() == 'rutasccont'
             ) {
             store = this.getClientesList().getStore()
             titulo = view.down('toolbar');
@@ -149,6 +149,9 @@ Ext.define('APP.controller.phone.Menu', {
                     Token: localStorage.getItem("Token")                
                 };
 
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
             Ext.data.JsonP.request({
                 url: url,
                 params: params,
@@ -168,8 +171,10 @@ Ext.define('APP.controller.phone.Menu', {
                         }                    
 
                         me.getMenuNav().estados = opciones;
+                        Ext.Viewport.setMasked(false);
                     } else {                    
                         Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
                     }
                 }
             });

@@ -22,7 +22,6 @@ Ext.define('APP.controller.phone.Informes', {
     	var me = this
     		view = me.getMenuNav();
 
-console.log(view.getActiveItem().xtype);
     	switch (record.data.action){
     		case 'bitacoraVendedores':
                 if(view.getActiveItem().isXType('container')){
@@ -46,7 +45,7 @@ console.log(view.getActiveItem().xtype);
     				title: 'Análisis de Ventas'
     			});
 
-                me.agregaOpciones('clientes');    		
+                me.agregaOpciones('clientes');
     			break;
 
     		case 'analisisClientes':
@@ -73,6 +72,9 @@ console.log(view.getActiveItem().xtype);
                     Criterio: criterio
                 };
 
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
             Ext.data.JsonP.request({
                 url: url,
                 params: params,
@@ -92,21 +94,21 @@ console.log(view.getActiveItem().xtype);
                         }                    
 
                         if(criterio === 'clientes'){
-                            me.getMenuNav().clientes = opciones;                            
+                            me.getMenuNav().clientes = opciones;
+                            Ext.Viewport.setMasked(false);
+                            me.agregaOpciones('articulos');
                         } else {
-                            me.getMenuNav().articulos = opciones;                            
-                            console.log('entre a articulos');
-                        }
-                                                
-                        me.agregaOpciones('articulos');
+                            me.getMenuNav().articulos = opciones;
+                            Ext.Viewport.setMasked(false);
+                            me.agregaOpciones('clientes');
+                        }                                                                        
 
-                    } else {                    
+                    } else {
                         Ext.Msg.alert("No se pudieron obtener los códigos", "Se presentó un problema al intentar obtener los códigos: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
                     }
                 }
                   });
-        } else {
-            console.log('No entre');
         }
     },
 
@@ -130,34 +132,41 @@ console.log(view.getActiveItem().xtype);
             fechaHasta = Ext.Date.format(button.up('informesform').down('#fechaHasta').getValue(), "Y-m-d"),
             codigoDesde = button.up('informesform').down('#codigoDesde').getValue(),
             codigoHasta = button.up('informesform').down('#codigoHasta').getValue(),
-            criterio = fechaDesde + "," + fechaHasta + "," + codigoDesde + "," + codigoHasta;
+            criterio = fechaDesde + "," + fechaHasta + "," + codigoDesde + "," + codigoHasta,
+            url;
 
-console.log(criterio);
         if(view.getActiveItem().isXType('informesgeneradoslist')){
             return;
         }
 
-        view.push({
-            xtype: 'informesgeneradoslist'
+        view.push({            
+            xtype: 'informesgeneradoslist',
+            title: view.titulo
         });
-console.log(view.titulo);
-        if(view.titulo === 'Articulos'){
-            var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeArticulos";
+
+        console.log(view.titulo == 'Articulos');
+
+        if(view.titulo == 'Articulos'){
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeArticulos";
             
             informes.getProxy().setUrl(url);
             view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
             ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.descripcion +
-            ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
-            ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +  
+            ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +  
+            ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +  
              ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
-                      '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.articulos + 
-                      ' :<b>{cantidad}</b> </div>',
+                      '<div style="font-size: 90%"> <div><p> </div>',
                 '</div>'].join(''));
+        } else{
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeClientes";
+            informes.getProxy().setUrl(url);
         }
 
         informes.setParams({
-            Criterio: criterio
+            Criterio: criterio            
         });
+
+        console.log(informes.getProxy().getUrl());
 
         informes.load();
     },
@@ -177,5 +186,4 @@ console.log(view.titulo);
         me.getMenuNav().titulo = criterio;        
         me.ponCodigos(criterio);
     }
-
 });

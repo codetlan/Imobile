@@ -15,10 +15,18 @@ Ext.define('APP.model.phone.Informe', {
             type: 'string'
         },{
             name: 'cantidad',
-            type: 'int'
+            type: 'float',
+            convert: function(decimales){
+                var nuevo = APP.core.FormatCurrency.formatValue(decimales);
+                return nuevo;
+            }
         },{
             name: 'importe',
-            type: 'int'
+            type: 'float',
+            convert: function(decimales){
+                var nuevo = APP.core.FormatCurrency.formatValue(decimales);
+                return nuevo;
+            }
         }]
     }
 });
