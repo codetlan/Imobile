@@ -34,6 +34,9 @@ Ext.define('APP.profile.Phone',{
             'Prospecto',
             'Transaccion',
 
+            'RutaCalendario',
+            'Informe',
+
             // Actividades
             'ActividadCalendario',
 
@@ -55,6 +58,9 @@ Ext.define('APP.profile.Phone',{
             'Prospectos',
             'Transacciones',
 
+            'RutasCalendario',
+            'Informes',
+            
             // Actividades
             'ActividadesCalendario',
 
@@ -101,6 +107,11 @@ Ext.define('APP.profile.Phone',{
             'cobranza.VisualizacionCobranzaList',
             'cobranza.TotalAPagarList',            
             'prospectos.ProspectosList',
+
+            'informes.InformesList',
+            'informes.AnalisisVentasList',            
+            'APP.form.phone.informes.InformesForm',
+            'APP.view.phone.informes.InformesGeneradosList',
 
             //Rutas y actividades
             'rutas.OpcionRutasActividades',
