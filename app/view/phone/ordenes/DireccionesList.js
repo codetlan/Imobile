@@ -11,12 +11,18 @@ Ext.define('APP.view.phone.ordenes.DireccionesList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },        
-        itemTpl: '{title}',
-        //scrollable: null,
-        data:[
-            {title: 'Dirección de entrega', action: 'entrega'},
-            {title: 'Dirección fiscal', action: 'fiscal'}
-        ],
-        loadingText: 'Cargando...'
-    }
+        itemTpl: '{title}'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.DireccionesList.entrega, action: 'entrega'},
+            {title: APP.core.config.Locale.config.lan.DireccionesList.fiscal, action: 'fiscal'}
+        ]);
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        me.callParent(arguments);
+    }        
 });

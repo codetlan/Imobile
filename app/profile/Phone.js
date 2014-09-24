@@ -12,12 +12,14 @@ Ext.define('APP.profile.Phone',{
             'Menu',
             'Clientes',
             'Ordenes',
+
+            //Rutas y Actividadaes
             'Rutas',
+
             'Cobranza',
             'Informes',
             'Configuracion',
-            'Prospectos',
-            'Informes'
+            'Prospectos'
         ],
         models:[
             'Menu',
@@ -31,10 +33,13 @@ Ext.define('APP.profile.Phone',{
             'FormaDePago',
             'Prospecto',
             'Transaccion',
-            'RutaCalendario',
-//            'APP.core.data.Language',
 
-            'ActividadCalendario'
+            // Actividades
+            'ActividadCalendario',
+
+            // Rutas
+            'RutaCalendario',
+            'RutaCalendarioDirecciones'
         ],
         stores:[
             'Menu',
@@ -49,10 +54,12 @@ Ext.define('APP.profile.Phone',{
             'FormasDePago',
             'Prospectos',
             'Transacciones',
-            'RutasCalendario',
-//            'APP.core.data.Languages',
 
-            'ActividadesCalendario'
+            // Actividades
+            'ActividadesCalendario',
+
+            // Rutas
+            'RutasCalendario'
         ],
         views:[
             'MainCard',
@@ -94,29 +101,31 @@ Ext.define('APP.profile.Phone',{
             'cobranza.VisualizacionCobranzaList',
             'cobranza.TotalAPagarList',            
             'prospectos.ProspectosList',
-            'informes.InformesList',
-            'informes.AnalisisVentasList',            
-            'APP.form.phone.informes.InformesForm',
 
+            //Rutas y actividades
             'rutas.OpcionRutasActividades',
+
+            //Actividades
             'rutas.actividades.ActividadesCalendario',
             'rutas.actividades.ActividadesCalendarioCont',
             'rutas.actividades.ActividadesCalendarioDia',
             'APP.form.phone.rutas.ActividadesForm',
 
-            'rutas.OpcionRutasList',
-            'rutas.RutasCalendario',
-            'rutas.RutasCalendarioCont',
-            'rutas.RutasCalendarioDia',
-            'rutas.RutasMapa',
+            //Rutas
+            'rutas.rutas.RutasCalendarioCont',
+            'rutas.rutas.RutasCalendario',
+            'rutas.rutas.RutasCalendarioDia',
+            'rutas.rutas.RutasCalendarioDirecciones',
+            'rutas.rutas.RutasCalendarioMapa',
+            'APP.form.phone.rutas.RutasForm',
 
             'APP.form.phone.pedidos.EditarPedidoForm',
             'APP.form.phone.clientes.ClienteForm',
             'APP.form.phone.productos.AgregarProductosForm',
             'APP.form.phone.cobranza.MontoAPagarForm',
-            'APP.form.phone.prospectos.ProspectosForm',
+            'APP.form.phone.prospectos.ProspectosForm'
 
-            'APP.form.phone.rutas.RutasForm'
+
         ]
     },
 
@@ -125,11 +134,6 @@ Ext.define('APP.profile.Phone',{
     },
 
     launch: function(){
-        var me = this; 
-       Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-       
-/*        setTimeout(function (){
-            console.log(Ext.getStore('Languages'));
-        }, 200);*/
+        Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
     }
 });

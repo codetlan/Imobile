@@ -11,6 +11,7 @@ Ext.define('APP.view.phone.MainCard',{
     config: {
         layout:'card',
         activeItem:0,
+
         items: [{
             xtype: 'menunav'
         },{
@@ -19,4 +20,18 @@ Ext.define('APP.view.phone.MainCard',{
             xtype: 'navigationcobranza'
         }]
     }
+
+/*    initialize: function(){        
+        this.setItems([{
+            xtype: 'menunav'
+        },{
+            xtype: 'navigationorden'
+        },
+        {
+            xtype: 'navigationcobranza'
+        }]);
+
+        this.callParent(arguments);
+        console.log('MainCard');
+    }*/
 });

@@ -18,12 +18,12 @@ Ext.define('APP.view.phone.cobranza.NavigationCobranza', {
             ]
         },
 
-        masked:{
+/*        masked:{
             xtype: 'loadmask',
             message: 'Trabajando...',
             fullscreen: true,
             indicator: true
-        },
+        },*/
 
         items: [{
             xtype: 'totalapagarcontainer'

@@ -7,19 +7,51 @@ Ext.define('APP.model.phone.RutaCalendario', {
     extend: 'Ext.data.Model',
     config: {
         fields: [{
+            name:'CodigoRuta'
+        },{
+            name:'CodigoCliente'
+        },{
             name: 'title',
-            type: 'string'
+            type: 'string',
+            mapping:'Descripcion'
         },{
             name: 'location',
-            type: 'string'
+            type: 'string',
+            mapping:'Notas'
         },{
             name: 'start',
             type: 'date',
-            dateFormat: 'c'
+            dateFormat: 'c',
+            mapping:'FechaInicio'
         },{
             name: 'end',
             type: 'date',
-            dateFormat: 'c'
+            dateFormat: 'c',
+            mapping:'FechaFin'
+        },{
+            name: 'HoraInicio'
+        },{
+            name: 'HoraFin'
+        },{
+            name:'Repetir'
+        },{
+            name:'Lunes'
+        },{
+            name:'Martes'
+        },{
+            name:'Miercoles'
+        },{
+            name:'Jueves'
+        },{
+            name:'Viernes'
+        },{
+            name:'Sabado'
+        },{
+            name:'Domingo'
+        },{
+            name:'Estatus'
+        },{
+            name:'Notas'
         }]
     }
 });

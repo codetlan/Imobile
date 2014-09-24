@@ -9,8 +9,13 @@ Ext.define('APP.view.phone.productos.ProductosOrden', {
     requires: ['Ext.Toolbar','Ext.SegmentedButton'],
     config: {
         layout: 'fit',
-        itemId: 'principal',
-        items:[{
+        itemId: 'principal'        
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype:'toolbar',
             docked: 'top',
             items:[{
@@ -18,19 +23,20 @@ Ext.define('APP.view.phone.productos.ProductosOrden', {
             },{
                 xtype:'segmentedbutton',
                 items:[{
-                    text:'Lista',
+                    text: APP.core.config.Locale.config.lan.ProductosOrden.lista,
                     itemId: 'listaProductos',
                     pressed: true
                 },{
-                    text:'Panel',
+                    text: APP.core.config.Locale.config.lan.ProductosOrden.panel,
                     itemId: 'panelProductos'
                 }]
             },{
                 xtype:'spacer'
             }]
         },{
-            xtype:'productoslist'
-            //html:'Lista de productos'
-        }]
+            xtype:'productoslist'            
+        }]);
+
+        me.callParent(arguments);
     }
 });

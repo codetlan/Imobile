@@ -11,12 +11,19 @@ Ext.define('APP.view.phone.cobranza.FormasDePagoList', {
             this.fireEvent("tap", record, listItem, index, e);            
         },
         itemTpl: '{Nombre}',
-        store: 'FormasDePago',
-        loadingText: 'Cargando...'
+        store: 'FormasDePago'        
         /*data:[
             {title: 'Efectivo', action: 'efectivo'},
             {title: 'Tarjeta de Crédito', action: 'credito'},
             {title: 'Tarjeta de Regalo', action: 'regalo'}
         ]*/
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });

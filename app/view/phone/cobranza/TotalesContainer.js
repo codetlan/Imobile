@@ -3,13 +3,18 @@ Ext.define('APP.view.phone.cobranza.TotalesContainer', {
     xtype: 'totalescontainer',
     requires:['Ext.Label'],
     config: {
-        layout: 'hbox',        
+        layout: 'hbox'
         //itemCls: 'factura',
-        items: [{   
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{   
             xtype: 'container',
             flex: 1,
             itemId: 'aCobrar',  
-            html: 'A cobrar',            
+            html: APP.core.config.Locale.config.lan.TotalesContainer.aCobrar,
             cls: 'aCobrar2'
             /*style: {
                 background: 'black',
@@ -21,7 +26,7 @@ Ext.define('APP.view.phone.cobranza.TotalesContainer', {
             }*/
         },{
             xtype: 'container',
-            html: 'Pagado',
+            html: APP.core.config.Locale.config.lan.TotalesContainer.pagado,
             flex: 1,
             itemId: 'pagado',
             style: {
@@ -33,7 +38,7 @@ Ext.define('APP.view.phone.cobranza.TotalesContainer', {
             }
         },{
             xtype: 'container',
-            html: 'Pendiente',
+            html: APP.core.config.Locale.config.lan.TotalesContainer.pendiente,
             flex: 1,
             itemId: 'pendiente',
             style: {
@@ -43,11 +48,8 @@ Ext.define('APP.view.phone.cobranza.TotalesContainer', {
                 'text-align': 'center',
                 'font-weight':'bold'
             }
-/*            items:[{
-                xtype: 'label',
-                itemId: 'pendiente'
-                //docked: 'bottom'
-            }]*/
-        }]
+        }]);
+
+    me.callParent(arguments);
     }
 });

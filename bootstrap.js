@@ -89,6 +89,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.model.phone.Producto": [],
   "APP.model.phone.Prospecto": [],
   "APP.model.phone.RutaCalendario": [],
+  "APP.model.phone.RutaCalendarioDirecciones": [],
   "APP.model.phone.Total": [],
   "APP.model.phone.Transaccion": [],
   "APP.profile.Phone": [],
@@ -149,14 +150,14 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.productos.ProductosView": [],
   "APP.view.phone.prospectos.ProspectosList": [],
   "APP.view.phone.rutas.OpcionRutasActividades": [],
-  "APP.view.phone.rutas.OpcionRutasList": [],
-  "APP.view.phone.rutas.RutasCalendario": [],
-  "APP.view.phone.rutas.RutasCalendarioCont": [],
-  "APP.view.phone.rutas.RutasCalendarioDia": [],
-  "APP.view.phone.rutas.RutasMapa": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendarioCont": [],
   "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [],
+  "APP.view.phone.rutas.rutas.RutasCalendario": [],
+  "APP.view.phone.rutas.rutas.RutasCalendarioCont": [],
+  "APP.view.phone.rutas.rutas.RutasCalendarioDia": [],
+  "APP.view.phone.rutas.rutas.RutasCalendarioDirecciones": [],
+  "APP.view.phone.rutas.rutas.RutasCalendarioMapa": [],
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
@@ -844,6 +845,7 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.model.phone.Producto": [],
   "APP.model.phone.Prospecto": [],
   "APP.model.phone.RutaCalendario": [],
+  "APP.model.phone.RutaCalendarioDirecciones": [],
   "APP.model.phone.Total": [],
   "APP.model.phone.Transaccion": [],
   "APP.profile.Phone": [],
@@ -988,21 +990,6 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.view.phone.rutas.OpcionRutasActividades": [
     "widget.opcionrutasactividades"
   ],
-  "APP.view.phone.rutas.OpcionRutasList": [
-    "widget.opcionrutaslist"
-  ],
-  "APP.view.phone.rutas.RutasCalendario": [
-    "widget.rutascalendario"
-  ],
-  "APP.view.phone.rutas.RutasCalendarioCont": [
-    "widget.rutascalendariocont"
-  ],
-  "APP.view.phone.rutas.RutasCalendarioDia": [
-    "widget.rutascalendariodia"
-  ],
-  "APP.view.phone.rutas.RutasMapa": [
-    "widget.rutasmapa"
-  ],
   "APP.view.phone.rutas.actividades.ActividadesCalendario": [
     "widget.actividadescalendario"
   ],
@@ -1011,6 +998,21 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "APP.view.phone.rutas.actividades.ActividadesCalendarioDia": [
     "widget.actividadescalendariodia"
+  ],
+  "APP.view.phone.rutas.rutas.RutasCalendario": [
+    "widget.rutascalendario"
+  ],
+  "APP.view.phone.rutas.rutas.RutasCalendarioCont": [
+    "widget.rutascalendariocont"
+  ],
+  "APP.view.phone.rutas.rutas.RutasCalendarioDia": [
+    "widget.rutascalendariodia"
+  ],
+  "APP.view.phone.rutas.rutas.RutasCalendarioDirecciones": [
+    "widget.rutascalendariodirecciones"
+  ],
+  "APP.view.phone.rutas.rutas.RutasCalendarioMapa": [
+    "widget.rutascalendariomapa"
   ],
   "APP.view.tablet.Main": [],
   "Ext.AbstractComponent": [],

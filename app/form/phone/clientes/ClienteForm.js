@@ -15,11 +15,16 @@ Ext.define('APP.form.phone.clientes.ClienteForm', {
     ],
     config: {
         //padding:'0 0 15 0',
-        items: [
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
             {
                 xtype: 'fieldset',
                 itemId: 'datosCliente',
-                instructions: 'Datos del Cliente',
+                instructions: APP.core.config.Locale.config.lan.ClienteForm.instrucciones,
                 defaults: {
                     disabled: true,
                     clearIcon: true,
@@ -35,42 +40,42 @@ Ext.define('APP.form.phone.clientes.ClienteForm', {
                     {
                         xtype: 'textfield',
                         name: 'CodigoSocio',
-                        label: 'Código'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.codigo
                     },
                     {
                         xtype: 'textfield',
                         name: 'NombreSocio',
-                        label: 'Nombre'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.nombre
                     },
                     {
                         xtype: 'textfield',
                         name: 'RFC',
-                        label: 'RFC'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.rfc
                     },
                     {
                         xtype: 'numberfield',
                         name: 'Telefono',
-                        label: 'Teléfono'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.telefono
                     },
                     {
                         xtype: 'emailfield',
                         name: 'Correo',
-                        label: 'Correo'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.correo
                     },
                     {
                         xtype: 'textfield',
                         name: 'NombreListaPrecio',
-                        label: 'Lista de Precios'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.listaPrecios
                     },
                     {
                         xtype: 'textfield',
                         name: 'LimiteCredito',
-                        label: 'Crédito'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.credito
                     },
                     {
                         xtype: 'textfield',
                         name: 'Saldo',
-                        label: 'Saldo'
+                        label: APP.core.config.Locale.config.lan.ClienteForm.saldo
                     },
                     {
                         xtype: 'direccioneslist',
@@ -78,6 +83,8 @@ Ext.define('APP.form.phone.clientes.ClienteForm', {
                     }
                 ]
             }
-        ]
+        ]);
+
+        me.callParent(arguments);
     }
 });

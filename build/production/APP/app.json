@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"id":"8c71eadf-1516-498a-9370-34c98392926b","js":[{"path":"phonegap.js","remote":true},{"path":"app.js","update":"delta","version":"2766cc8db10706cfd359b9723a788b5f06f8137d"}],"css":[{"path":"resources/css/app.css","update":"delta","version":"afd07b81146314b680397db7435cd4931b053173"}]}
+=======
+{"id":"8c71eadf-1516-498a-9370-34c98392926b","js":[{"path":"phonegap.js","remote":true},{"path":"app.js","update":"delta","version":"2dcbacf3b1f724f5873b0bd1bfb35078ce789983"}],"css":[{"path":"resources/css/app.css","update":"delta","version":"c1b3ec74286121307908b6622c651acfe9fbebd9"}]}
+>>>>>>> 902b840f2069d089647f51b7a4db36fba8e86fda
