@@ -103,7 +103,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },
 
             'container[id=rutascalendarioshowform] button[action=agregar]':{
-                tap:'showFormRutas'
+                tap:'muestraClientes'
             },
             'rutasform checkboxfield[name=Repetir]':{
                 change:function(cb,check){
@@ -152,12 +152,22 @@ Ext.define('APP.controller.phone.Rutas', {
                 break;
             case 'rutas':
                 this.getMenuNav().push({
-                    xtype:'rutascalendariocont',
-                    layout:'fit',
-                    items:[{
-                        xtype:'clienteslist'
-                    }]
+                    // xtype:'rutascalendariocont',
+                    // layout:'fit',
+                    // items:[{
+                    //     xtype:'clienteslist'
+                    // }]
+                    xtype: 'rutascalendario',
+                    title: 'Rutas'
                 });
+
+                var date = new Date();
+
+                var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+
+                this.loadRutasCalendario(firstDay,lastDay, "");
+
                 break;
         }
     },
@@ -564,22 +574,24 @@ Ext.define('APP.controller.phone.Rutas', {
                             docked: 'top',
                             title: titulo
                         });
+console.log(direcciones);
+                        // this.getMenuNav().push({
+                        //     xtype: 'rutascalendario',
+                        //     title: idCliente,
+                        //     idCliente: idCliente,
+                        //     direcciones: direcciones
+                        // });
 
-                        this.getMenuNav().push({
-                            xtype: 'rutascalendario',
-                            title: idCliente,
-                            idCliente: idCliente,
-                            direcciones: direcciones
-                        });
+                        this.showFormRutas(idCliente, direcciones);
 
                         this.getMenuNav().add(barraTitulo);
 
-                        var date = new Date();
+                        // var date = new Date();
 
-                        var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
-                        var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
 
-                        this.loadRutasCalendario(firstDay,lastDay);
+                        // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{
                         Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
@@ -592,7 +604,7 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    loadRutasCalendario: function(fechaInicio,fechaFin){
+    loadRutasCalendario: function(fechaInicio,fechaFin, codigoCliente){
 
         var ac = this.getRutasCalendario(),
             store = ac.view.eventStore;
@@ -605,7 +617,7 @@ Ext.define('APP.controller.phone.Rutas', {
             Usuario: localStorage.getItem("CodigoUsuario"),
             FechaInicio: fechaInicio,
             FechaFin: fechaFin,
-            CodigoCliente:ac.idCliente
+            CodigoCliente: codigoCliente//ac.idCliente
         };
 
         Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
@@ -624,14 +636,12 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    onRutasCalendarioTap:function(calendar, nd){
+    onRutasCalendarioTap2:function(calendar, nd){
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
         }, this);
-
-        var rc = this.getRutasCalendario();
 
 
         this.getMenuNav().push({
@@ -661,12 +671,55 @@ Ext.define('APP.controller.phone.Rutas', {
         this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
-    showFormRutas:function(b){
-        var nd = this.getRutasCalendarioDia().config.nd;
-        var idCliente = this.getRutasCalendarioDia().config.idCliente;
-        var direcciones = this.getRutasCalendarioDia().config.direcciones;
+    onRutasCalendarioTap:function(calendar, nd){
+        calendar.eventStore.clearFilter();
+        calendar.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
+        }, this);
+
+        var rc = this.getRutasCalendario(),
+            rutas = rc.view.eventStore;
 
 
+        this.getMenuNav().push({
+            xtype:'container',
+            id:'rutascalendarioshowform',
+            title: 'Rutas',
+            layout:{
+                type:'vbox',
+                align:'stretch'
+            },
+            items:[{
+                xtype:'container',
+                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+            },{
+                xtype: rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
+                flex:1,
+                nd:nd
+                // idCliente: rc.idCliente,
+                // direcciones:rc.direcciones
+            },{
+                xtype:'button',
+                action:'agregar',
+                text: 'Agregar',
+                margin:10
+            }]
+        });
+
+        this.colocaMarcadores();
+
+        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+    },
+
+    showFormRutas:function(idCliente, direcciones){        
+        var rc = this.getRutasCalendario(),
+            rutas = rc.view.eventStore,
+            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
+        // var idCliente = this.getRutasCalendarioDia().config.idCliente;
+        // var direcciones = this.getRutasCalendarioDia().config.direcciones;
+
+console.log(nd);
 
         this.getMenuNav().push({
             xtype:'rutasform',
@@ -678,6 +731,7 @@ Ext.define('APP.controller.phone.Rutas', {
                         CodigoCliente:idCliente,
                         FechaInicio:new Date(nd),
                         FechaFin:new Date(nd)
+                        //direcciones: direcciones
                     });
 
                     this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
@@ -704,9 +758,10 @@ Ext.define('APP.controller.phone.Rutas', {
 
         var geocoder = new google.maps.Geocoder();
 
-        var extMapa = this.getRutasCalendarioMapa();
+        var extMapa = list.up('rutasform').down('rutascalendariomapa');//this.getRutasCalendarioMapa();
 
-        var mapa = extMapa.getMap();
+        var mapa = extMapa.getMap(),
+            bounds = new google.maps.LatLngBounds();
 
         form.setValues({
             CodigoDireccion:data.CodigoDireccion,
@@ -719,6 +774,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
         if(extMapa.marker){
             extMapa.marker.setMap(null);
+            console.log('Chetote');
         }
 
         geocoder.geocode( { 'address': direccion}, function(results, status) {
@@ -739,7 +795,18 @@ Ext.define('APP.controller.phone.Rutas', {
                     draggable:true
                 });
 
-                extMapa.setMapOptions({zoom:15});
+
+            //     extMapa.marker = new google.maps.Marker({
+            //     map: mapa,
+            //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
+            //     draggable:true
+            // });
+
+             bounds.extend(extMapa.marker.position); 
+
+            mapa.setCenter(bounds.getCenter());
+
+                //extMapa.setMapOptions({zoom:15});
 
                 google.maps.event.addListener(extMapa.marker,"dragend",function(){
                     var point = extMapa.marker.getPosition();
@@ -755,6 +822,62 @@ Ext.define('APP.controller.phone.Rutas', {
                 Ext.Msg.alert("Lo sentimos","La ubicación no ha podido ser encontrada");
             }
             Ext.Viewport.setMasked(false);
+        });
+    },
+
+    colocaMarcadores:function(){
+        var me = this,
+            ac = me.getRutasCalendario(),
+            rutas = ac.view.eventStore;
+
+        if(rutas.getCount() > 0){
+            var extMapa = this.getRutasCalendarioMapa(),
+                mapa = extMapa.getMap(),
+                ruta,
+                bounds = new google.maps.LatLngBounds();
+
+            Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+
+            if(extMapa.marker){
+                extMapa.marker.setMap(null);
+                console.log('Cheto');
+            }
+        
+            rutas.each(function (item, index, length) {
+                //console.log(item.get('firstName'), index);
+                ruta = item.getData();  //rutas.getAt(0).getData();
+
+                console.log(ruta);
+
+                extMapa.marker = new google.maps.Marker({
+                    map: mapa,
+                    position: new google.maps.LatLng(ruta.lat, ruta.lon),
+                    draggable:true
+                });
+
+                bounds.extend(extMapa.marker.position); 
+
+                mapa.setCenter(bounds.getCenter());
+
+                //extMapa.setMapOptions({zoom:15});
+
+                google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                    var point = extMapa.marker.getPosition();
+                    mapa.panTo(point);
+                });  
+            });
+        }
+
+        Ext.Viewport.setMasked(false);
+    },
+
+    muestraClientes: function() {
+        this.getMenuNav().push({
+            xtype:'rutascalendariocont',
+            layout:'fit',
+            items:[{
+                xtype:'clienteslist'
+            }]
         });
     },
 
