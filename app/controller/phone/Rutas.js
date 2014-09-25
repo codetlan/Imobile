@@ -774,7 +774,7 @@ console.log(nd);
 
         if(extMapa.marker){
             extMapa.marker.setMap(null);
-            console.log('Chetote');
+            console.log('Se elimina marcador');
         }
 
         geocoder.geocode( { 'address': direccion}, function(results, status) {
@@ -840,7 +840,7 @@ console.log(nd);
 
             if(extMapa.marker){
                 extMapa.marker.setMap(null);
-                console.log('Cheto');
+                console.log('Quitamos marcador');
             }
         
             rutas.each(function (item, index, length) {
