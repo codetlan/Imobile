@@ -694,7 +694,7 @@ console.log(direcciones);
                 xtype:'container',
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
-                xtype: rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
+                xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
                 flex:1,
                 nd:nd
                 // idCliente: rc.idCliente,
@@ -829,7 +829,7 @@ console.log(nd);
         var me = this,
             ac = me.getRutasCalendario(),
             rutas = ac.view.eventStore;
-
+console.log(rutas.getCount(), ' en colocaMarcadores')
         if(rutas.getCount() > 0){
             var extMapa = this.getRutasCalendarioMapa(),
                 mapa = extMapa.getMap(),
@@ -884,7 +884,8 @@ console.log(nd);
     onRutasAdd:function(btn){
 
         var form = this.getRutasForm(),
-            values = form.getValues();
+            values = form.getValues(),
+            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
 
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
@@ -944,7 +945,7 @@ console.log(nd);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view,this.getRutasCalendarioDia().config.nd,1);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2);
                                         Ext.Viewport.setMasked(false);
                                     },
                                     scope:this
@@ -975,19 +976,29 @@ console.log(nd);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, pop){
-        nd = new Date(nd);
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop){
+        var nd = new Date(nd),
+            titulo = this.getMenuNav().down('toolbar')
 
         calendar.eventStore.clearFilter();
+
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
+        console.log(codigoCliente, ' El código del cliente');
+        //console.log(calendar.eventStore.getCount(), " Rutas antes de filtrar por código");
+
+        calendar.eventStore.filter('CodigoCliente', codigoCliente);
+
+console.log(calendar.eventStore.getCount(), " Rutas");
 
         this.getMenuNav().pop(pop);
+        this.getMenuNav().remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
+        this.colocaMarcadores();
 
-        this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
 
     },
 
@@ -1089,8 +1100,5 @@ console.log(nd);
             form.down("checkboxfield[name=Domingo]").disable();
 
         }
-
-
     }
-
 });
