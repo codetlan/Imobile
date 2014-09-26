@@ -172,7 +172,8 @@ Ext.define('APP.controller.phone.Informes', {
     },
 
     auxiliarPonCodigos: function (criterio){
-        var me = this;
+        var me = this,
+            view = me.getMenuNav();
 
         if(view.getActiveItem().isXType('informesform')){
             return;

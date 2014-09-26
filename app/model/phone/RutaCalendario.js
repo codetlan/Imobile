@@ -15,9 +15,13 @@ Ext.define('APP.model.phone.RutaCalendario', {
             type: 'string',
             mapping:'Descripcion'
         },{
-            name: 'location',
+            name: 'lat',
             type: 'string',
-            mapping:'Notas'
+            mapping:'LatitudOrigen'
+        },{
+            name: 'lon',
+            type: 'string',
+            mapping: 'LongitudOrigen'
         },{
             name: 'start',
             type: 'date',

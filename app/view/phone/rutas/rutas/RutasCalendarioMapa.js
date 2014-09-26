@@ -7,6 +7,7 @@
 Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioMapa', {
     extend: 'Ext.Map',
     xtype: 'rutascalendariomapa',
+   	nd: undefined,
     config:{
         height:350,
         mapOptions:{
