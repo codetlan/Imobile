@@ -80131,6 +80131,65 @@ Ext.define('Ext.viewport.Viewport', {
  */
 
 /**
+ * @class Core.data.Store
+ * @extends Ext.data.Store
+ * store genereico para aplicacion
+ */
+Ext.define('APP.core.data.Store', {
+    extend: 'Ext.data.Store',
+    config: {
+        autoLoad: false,
+        listeners: {
+            beforeload: function (store, operation, ops) {
+                var me = this,
+                    extraParams = store.getProxy().getExtraParams();
+                me.params.auth_token = localStorage.getItem("Token");
+                me.params.idioma = localStorage.getItem("idioma");
+                me.params.Token = localStorage.getItem("Token");
+                me.params.CodigoUsuario = localStorage.getItem("CodigoUsuario");
+                me.params.CodigoSociedad = localStorage.getItem("CodigoSociedad");
+                me.params.CodigoDispositivo = localStorage.getItem("CodigoDispositivo");
+                me.params.Elementos = 50;
+
+                if (store.getProxy().getUrl().search('http') == -1) {
+                    store.getProxy().setUrl('http://' + localStorage.getItem("dirIP") + store.getProxy().getUrl());
+                }
+
+                if (me.resetParams) {
+                    store.getProxy().setExtraParams(me.params);
+                    me.resetParams = false;
+                } else {
+                    store.getProxy().setExtraParams(me.mergePropertiesObject(extraParams, me.params));
+                }
+            }
+        }
+    },
+
+    setParams: function (params, resetParams) {
+        var me = this;
+
+        me.params = params;
+        me.resetParams = resetParams;
+    },
+
+    mergePropertiesObject: function (obj1, obj2) {
+        var obj3 = {};
+        for (var attrname in obj1) {
+            obj3[attrname] = obj1[attrname];
+        }
+        for (var attrname in obj2) {
+            obj3[attrname] = obj2[attrname];
+        }
+        return obj3;
+    },
+
+    resetCurrentPage: function () {
+        var me = this;
+        me.currentPage = 1;
+    }
+});
+
+/**
  * @class Imobile.model..Cliente
  * @extends Ext.data.Model
  * El modelo del cliente
@@ -80139,19 +80198,55 @@ Ext.define('APP.model.phone.RutaCalendario', {
     extend: 'Ext.data.Model',
     config: {
         fields: [{
-            name: 'title',
-            type: 'string'
+            name:'CodigoRuta'
         },{
-            name: 'location',
-            type: 'string'
+            name:'CodigoCliente'
+        },{
+            name: 'title',
+            type: 'string',
+            mapping:'Descripcion'
+        },{
+            name: 'lat',
+            type: 'string',
+            mapping:'LatitudOrigen'
+        },{
+            name: 'lon',
+            type: 'string',
+            mapping: 'LongitudOrigen'
         },{
             name: 'start',
             type: 'date',
-            dateFormat: 'c'
+            dateFormat: 'c',
+            mapping:'FechaInicio'
         },{
             name: 'end',
             type: 'date',
-            dateFormat: 'c'
+            dateFormat: 'c',
+            mapping:'FechaFin'
+        },{
+            name: 'HoraInicio'
+        },{
+            name: 'HoraFin'
+        },{
+            name:'Repetir'
+        },{
+            name:'Lunes'
+        },{
+            name:'Martes'
+        },{
+            name:'Miercoles'
+        },{
+            name:'Jueves'
+        },{
+            name:'Viernes'
+        },{
+            name:'Sabado'
+        },{
+            name:'Domingo'
+        },{
+            name:'Estatus'
+        },{
+            name:'Notas'
         }]
     }
 });
@@ -80162,22 +80257,105 @@ Ext.define('APP.model.phone.RutaCalendario', {
  * Este es el store para los clientes
  */
 Ext.define('APP.store.phone.RutasCalendario', {
-    //extend: 'APP.core.data.Store',
-    extend: 'Ext.data.Store',
+    extend: 'APP.core.data.Store',
+    //extend: 'Ext.data.Store',
 
     config: {
         model: 'APP.model.phone.RutaCalendario',
-        data: [{
-            title: 'Senca Con Title',
-            location: 'Austin, Texas',
-            start: new Date(2014, 6, 23,11,0),
-            end: new Date(2014, 6, 27,12,0)
+        proxy: {
+            url: "/iMobile/COK1_CL_Rutas/ObtenerRutas",
+            type: 'jsonp',
+            callbackKey: 'callback',
+            reader: {
+                type: 'json',
+                rootProperty: 'Data'
+            },
+            extraParams:{
+                format:'json'
+            }
+        }
+    }
+});
+
+/**
+ * @class Imobile.model..Cliente
+ * @extends Ext.data.Model
+ * El modelo del cliente
+ */
+Ext.define('APP.model.phone.ActividadCalendario', {
+    extend: 'Ext.data.Model',
+    config: {
+        fields: [{
+            name:'CodigoActividad'
         },{
-            title: 'Senca Con Title 2',
-            location: 'Austin, Texas',
-            start: new Date(2014, 6, 23,12,0),
-            end: new Date(2014, 6, 27,12,0)
+            name: 'title',
+            type: 'string',
+            mapping:'Descripcion'
+        },{
+            name: 'location',
+            type: 'string',
+            mapping:'Notas'
+        },{
+            name: 'start',
+            type: 'date',
+            dateFormat: 'c',
+            mapping:'FechaInicio'
+        },{
+            name: 'end',
+            type: 'date',
+            dateFormat: 'c',
+            mapping:'FechaFin'
+        },{
+            name: 'HoraInicio'
+        },{
+            name: 'HoraFin'
+        },{
+            name:'Repetir'
+        },{
+            name:'Lunes'
+        },{
+            name:'Martes'
+        },{
+            name:'Miercoles'
+        },{
+            name:'Jueves'
+        },{
+            name:'Viernes'
+        },{
+            name:'Sabado'
+        },{
+            name:'Domingo'
+        },{
+            name:'Estatus'
+        },{
+            name:'Notas'
         }]
+    }
+});
+
+/**
+ * @class Imobile.store.Clientes
+ * @extends Ext.data.Store
+ * Este es el store para los clientes
+ */
+Ext.define('APP.store.phone.ActividadesCalendario', {
+    extend: 'APP.core.data.Store',
+    //extend: 'Ext.data.Store',
+
+    config: {
+        model: 'APP.model.phone.ActividadCalendario',
+        proxy: {
+            url: "/iMobile/COK1_CL_Actividades/ObtenerActividades",
+            type: 'jsonp',
+            callbackKey: 'callback',
+            reader: {
+                type: 'json',
+                rootProperty: 'Data'
+            },
+            extraParams:{
+                format:'json'
+            }
+        }
     }
 });
 
@@ -82512,65 +82690,6 @@ Ext.define('Ext.ux.timepicker.TimePicker', {
     }
 });
 
-/**
- * @class Core.data.Store
- * @extends Ext.data.Store
- * store genereico para aplicacion
- */
-Ext.define('APP.core.data.Store', {
-    extend: 'Ext.data.Store',
-    config: {
-        autoLoad: false,
-        listeners: {
-            beforeload: function (store, operation, ops) {
-                var me = this,
-                    extraParams = store.getProxy().getExtraParams();
-                me.params.auth_token = localStorage.getItem("Token");
-                me.params.idioma = localStorage.getItem("idioma");
-                me.params.Token = localStorage.getItem("Token");
-                me.params.CodigoUsuario = localStorage.getItem("CodigoUsuario");
-                me.params.CodigoSociedad = localStorage.getItem("CodigoSociedad");
-                me.params.CodigoDispositivo = localStorage.getItem("CodigoDispositivo");
-                me.params.Elementos = 50;
-
-                if (store.getProxy().getUrl().search('http') == -1) {
-                    store.getProxy().setUrl('http://' + localStorage.getItem("dirIP") + store.getProxy().getUrl());
-                }
-
-                if (me.resetParams) {
-                    store.getProxy().setExtraParams(me.params);
-                    me.resetParams = false;
-                } else {
-                    store.getProxy().setExtraParams(me.mergePropertiesObject(extraParams, me.params));
-                }
-            }
-        }
-    },
-
-    setParams: function (params, resetParams) {
-        var me = this;
-
-        me.params = params;
-        me.resetParams = resetParams;
-    },
-
-    mergePropertiesObject: function (obj1, obj2) {
-        var obj3 = {};
-        for (var attrname in obj1) {
-            obj3[attrname] = obj1[attrname];
-        }
-        for (var attrname in obj2) {
-            obj3[attrname] = obj2[attrname];
-        }
-        return obj3;
-    },
-
-    resetCurrentPage: function () {
-        var me = this;
-        me.currentPage = 1;
-    }
-});
-
 Ext.define('APP.core.FormatCurrency', {
     widget: 'currency',
     singleton: true,
@@ -82629,6 +82748,270 @@ Ext.define('APP.core.FormatCurrency', {
     formatCurrencytoNumber: function (value){
         return parseFloat(value.replace(/[^0-9-.]/g, ''));
     }
+});
+
+Ext.define('APP.core.config.Locale', {
+  singleton: true,
+
+  config: {
+
+    lan: {
+      LoginForm: {
+        usuario: 'Código de usuario',
+        contrasenia: 'Contraseña',
+        ingresar: 'Ingresar'
+      },
+
+      Login: {
+        accediendo: "Accediendo",
+        problemasConexionMsg: "No se puede encontrar el servidor",
+        confirmaTitle: "Configuración",
+        confirmaMsg: "¿Estás seguro que deseas cambiar la configuración?"
+      },
+
+      ConfiguracionPanel: {
+        imagenEmpresa: "Imagen de la empresa",
+        seleccionarImagen: "Seleccione imagen",
+        idioma: "Idioma",
+        guardar: "Guardar cambios"
+      },
+
+      Configuracion: {
+        tamanioImagen: "La imagen debe ser menor de 4 megas",
+        onSaveConfig: "¿Desea guardar los cambios configurados?",
+        sinIdioma: "No se encontró el archivo de configuración de idioma",
+        titulo: "Configuración"
+      },
+
+      ConfiguracionForm: {
+        titulo: "Datos de configuración",
+        codigoSociedad: "Código de Sociedad",
+        codigoDispositivo: "Código de Dispositivo",
+        servidor: "Servidor",
+        guardar: "Guardar"
+      },
+
+      menu: {
+        Orden: "Órdenes de Venta",
+        Rutas: "Rutas y Actividades",
+        Cobranza: "Cobranza",
+        Informes: "Informes",
+        Configuracion: "Configuración",
+        Prospectos: "Prospectos"
+      },
+
+
+      ClientesList: {
+        buscarClientes: "Buscar cliente...",
+        cargando: "Cargando..."
+      },
+
+      OpcionOrdenesList: {
+        ordenDeVenta: "Orden de venta",
+        visualizarTransacciones : "Visualizar transacciones"
+      },
+
+      NavigationOrden: {
+        agregar: "Agregar"
+      },
+
+      OpcionesOrdenPanel: {
+        orden: 'Orden',
+        cliente: 'Cliente',
+        editar: 'Editar',
+        eliminar: 'Eliminar',
+        terminar: 'Terminar'
+      },
+
+      OrdenContainer: {
+        descuento: "Descuento",
+        subTotal: "Subtotal",
+        impuesto: "Impuesto",
+        total: "Total"
+      },
+
+      OrdenList: {
+        cantidad: "Cantidad:",
+        precio: "Precio:",
+        descuento: "Desc:",
+        total: "Total:"
+      },
+
+      onShowListOrden: {
+        transaccion: "Transacción: Orden de venta",
+        codigoDispositivo: "Código de dispositivo:",
+        nombreDispositivo: "Nombre de dispositivo:",
+        fecha: "Fecha:",
+        codigoUsuario: "Código de usuario:",
+        nombreUsuario: "Nombre de usuario:"
+      },
+
+      ProductosList: {
+        textoVacio: "No hay productos con esos datos",
+        buscar: "Buscar producto...",
+        verMas: "Ver más..."
+      },
+
+      ProductosOrden: {
+        lista: "Lista",
+        panel: "Panel"
+      },
+
+      AgregarProductosForm: {
+        titulo: "Agregar productos",
+        instrucciones: "Ingrese los datos",
+        codigo: "Código",
+        descripcion: "Descripción",        
+        moneda: "Moneda",
+        descuento: "Descuento",
+        precioConDescuento: "Precio con descuento",
+        importe: "Importe",
+        almacen: "Almacén",
+        disponible: "Disponible"
+      },
+
+      ClienteForm: {
+        instrucciones: "Datos del cliente",
+        nombre: "Nombre",
+        rfc: "RFC",
+        telefono: "Teléfono",
+        correo: "Correo",
+        listaPrecios: "Lista de precios",
+        credito: "Crédito",
+        saldo: "Saldo"
+      },
+
+      DireccionesList:{
+        entrega: "Dirección de entrega",
+        fiscal: "Dirección fiscal"
+      },
+
+      EditarPedidoForm:{
+        instrucciones: "Editar pedido",
+        codigoCliente: "Código de cliente",
+        nombreCliente: "Nombre de cliente",
+        limiteCredito: "Límite de crédito",
+        condicionCredito: "Condición de crédito",
+        vendedor: "Vendedor",
+        tipoCambio: "Tipo de cambio"
+      },
+
+      Ordenes:{
+        alSeleccionarCliente: "Datos incorrectos",
+        alSeleccionarClienteCargar: "Cargando cliente...",
+        confirmaSi: "Si",
+        confirmaNo: "No",
+        onTerminarOrdenAgregar: "Se agrego la orden correctamente con folio: ",
+        onTerminarOrdenActualizar: "Se actualizó la orden correctamente con folio: ",
+        onTerminarOrdenProcesada: "Orden procesada",
+        onTerminarOrdenNoProcesadaTitle: "Orden no procesada",
+        onTerminarOrdenNoProcesadaMsg: "No se procesó la orden correctamente: ",
+        onTerminarOrdenFalloTitle: "Problemas de conexión",
+        onTerminarOrdenFalloMsg: "El servidor está tardando demasiado en responder, intente más tarde.",
+        onTerminarOrdenSinProductosTitle: "Productos",
+        onTerminarOrdenSinProductosMsg: "Seleccione al menos un producto.",
+        onEliminarOrdenTitulo: "Eliminar orden",
+        onEliminarOrdenMsg: "Se va a eliminar la orden, todos los productos agregados se perderán ¿está seguro?",
+        eliminarPartidaTitulo: "Eliminar producto de la orden",
+        eliminarPartidaMsg: "Se va a eliminar el producto de la orden ¿está seguro?",
+        confirmaTerminarOrdenTitulo: "Terminar orden",
+        confirmaTerminarOrdenMsg: "¿Desea terminar la orden de venta?",        
+        confirmaActualizarOrdenTitulo: "Actualizar orden",
+        confirmaActualizarOrdenMsg: "¿Desea actualizar la orden de venta?",
+        estableceDireccionesTitle: "Sin dirección de entrega",
+        estableceDireccionesMsg: "Este cliente no tiene direcciones de entrega definidas.",
+        seleccionarMonedaError: "Error",
+        seleccionarMonedaMsg1: "No es posible cambiar la configuración debido a que la moneda del producto con código ",
+        seleccionarMonedaEs: " es ",
+        seleccionarMonedaMsg2: ". Elimínelo primero de la orden.",
+        seleccionarMonedaNoMultimonedaTitle: "No es multimoneda",
+        seleccionarMonedaNoMultimonedaMsg1: "El cliente ",
+        seleccionarMonedaNoMultimonedaMsg2: " sólo puede operar con ",
+        agregaProductosCamposInvalidosTitle: "Campos inválidos o vacíos",
+        agregaProductosCamposInvalidosMsg: "Verifique que el valor de los campos sea correcto o que no estén vacíos",
+        agregaProductosImposibleAgregarTitle: "Imposible agregar",
+        agregaProductosImposibleAgregarMsg1: "No es posible agregar el producto a la orden debido a que la configuración de la moneda actual es ",
+        agregaProductosImposibleAgregarMsg2: " y la moneda del producto es ",
+        onSeleccionarTransaccionTitle: "Moneda diferente",
+        onSeleccionarTransaccionMsg: "No se pudo recuperar la Orden de Venta pues alguna partida viene en una moneda diferente a la del documento y está en moneda extranjera.",
+        enviandoOrden: "Enviando orden"
+      },
+
+      TransaccionList: {
+        folio: "Folio",
+        tipoTransaccion: "Tipo de transacción",
+        orden: "Orden de venta",
+        buscar: "Buscar transacción..."
+      },
+
+      CobranzaList: {
+        cobranzaFacturas: "Cobranza de facturas",
+        anticipoPedidos: "Anticipo de pedido",
+        visualizarCobranza: "Visualizar cobranzas"      
+      },
+
+      FacturasList: {
+        numero: "Número",
+        saldo: "Saldo",
+        fecha: "Fecha",
+        vencimiento: "Vencimiento",
+        noFacturasPendientes: "No hay facturas pendientes"
+      },
+
+      FacturasContainer: {
+        aplicarPago: "Aplicar pago"
+      },
+
+      TotalAPagarContainer: {
+        terminar: "Terminar",
+        cancelar: "Cancelar"
+      },
+
+      TotalesContainer: {
+        aCobrar: "A cobrar",
+        pagado: "Pagado",
+        pendiente: "Pendiente"
+      },
+
+      VisualizacionCobranzaList: {
+        buscarCobranza: "Buscar cobranzas...",
+        criterio: "Criterio...",
+        seleccionaOpcion: "Seleccione una opción",
+        cobranzaFactura: "Cobranza de factura",
+        anticipoPedido: "Anticipo de pedido"
+      },
+
+      MontoAPagarForm: {
+        monto: "Ingrese el monto a pagar",
+        etiquetaMonto: "Monto",
+        pagar: "Pagar"
+      },
+
+      InformesGeneradosList: {
+        codigo: "Código",
+        descripcion: "Descripción",
+        moneda: "Moneda",
+        cantidad: "Cantidad",
+        importe: "Importe",
+        articulos: "Artículos",
+        total: "Total",
+        sinPendientes: "No existen informes con los datos proporcionados."
+      }
+    }
+  },
+
+  localize: function() {
+    console.log(this.config);
+    var translations = this.config.lan;
+        me = this,      
+
+    console.log(translations);
+      
+    for (var view in translations) {
+      console.log(view);
+    }
+  },
+
 });
 
 /**
@@ -83122,11 +83505,11 @@ Ext.define('APP.model.phone.Prospecto', {
                 type: 'string'
             },
             {
-                name: 'codigo',
+                name: 'CodigoSocio',
                 type: 'string'
             },
             {
-                name: 'razonSocial',
+                name: 'NombreSocio',
                 type: 'string'
             },
             {
@@ -83171,11 +83554,11 @@ Ext.define('APP.model.phone.Transaccion', {
     config: {
         fields: [
             {
-                name: 'Folio',
+                name: 'CodigoCobranza',
                 type: 'string'
             },
             {
-                name: 'CodigoSocio',
+                name: 'CodigoCliente',
                 type: 'string'
             },
             {
@@ -83184,13 +83567,55 @@ Ext.define('APP.model.phone.Transaccion', {
             },
             {
                 name: 'TipoTransaccion',
-                type: 'int'
+                type: 'string'
             },
             {
                 name: 'NumeroDocumento',
                 type: 'string'
+            },{
+                name: 'CodigoCliente',
+                type: 'string'
+            },{
+                name: 'NombreCliente',
+                type: 'string'
+            },{
+                name: 'Tipo',
+                type: 'string'
             }
         ]
+    }
+});
+
+/**
+ * Created by Alí García on 9/20/14.
+ */
+Ext.define('APP.model.phone.Informe', {
+    extend: 'Ext.data.Model',
+    config: {
+        fields: [{
+            name: 'codigo',
+            type: 'string'
+        },{
+            name: 'descripcion',
+            type: 'string'
+        },{
+            name: 'moneda',
+            type: 'string'
+        },{
+            name: 'cantidad',
+            type: 'float',
+            convert: function(decimales){
+                var nuevo = APP.core.FormatCurrency.formatValue(decimales);
+                return nuevo;
+            }
+        },{
+            name: 'importe',
+            type: 'float',
+            convert: function(decimales){
+                var nuevo = APP.core.FormatCurrency.formatValue(decimales);
+                return nuevo;
+            }
+        }]
     }
 });
 
@@ -83199,23 +83624,27 @@ Ext.define('APP.model.phone.Transaccion', {
  * @extends Ext.data.Model
  * El modelo del cliente
  */
-Ext.define('APP.model.phone.ActividadCalendario', {
+Ext.define('APP.model.phone.RutaCalendarioDirecciones', {
     extend: 'Ext.data.Model',
     config: {
         fields: [{
-            name: 'title',
-            type: 'string'
+            name:'CodigoDireccion'
         },{
-            name: 'location',
-            type: 'string'
+            name:'TipoDireccion'
         },{
-            name: 'start',
-            type: 'date',
-            dateFormat: 'c'
+            name:'Calle'
         },{
-            name: 'end',
-            type: 'date',
-            dateFormat: 'c'
+            name:'NoExterior'
+        },{
+            name:'NoInterior'
+        },{
+            name:'Colonia'
+        },{
+            name:'Ciudad'
+        },{
+            name:'Municipio'
+        },{
+            name:'Estado'
         }]
     }
 });
@@ -83225,10 +83654,15 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
     xtype: 'configuracionform',
     config: {
         padding: 15,
-        items: [
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setItems([
             {
                 xtype: 'fieldset',
-                title: 'Datos de Configuración',
+                title: APP.core.config.Locale.config.lan.ConfiguracionForm.titulo,
                 defaults: {
                     clearIcon: true,
                     autoCapitalize: true,
@@ -83248,17 +83682,17 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
                     {
                         xtype: 'textfield',
                         name: 'cod_soc',
-                        label: 'Codigo de Sociedad'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoSociedad
                     },
                     {
                         xtype: 'textfield',
                         name: 'cod_dis',
-                        label: 'Codigo de Dispositivo'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoDispositivo
                     },
                     {
                         xtype: 'textfield',
                         name: 'servidor',
-                        label: 'Servidor'
+                        label: APP.core.config.Locale.config.lan.ConfiguracionForm.servidor
                     }/*,
                     {
                         xtype: 'selectfield',
@@ -83279,40 +83713,47 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
             },
             {
                 xtype: 'button',
-                text: 'Guardar',
+                text: APP.core.config.Locale.config.lan.ConfiguracionForm.guardar,
                 itemId: 'saveConfiguration',
                 margin: '0 auto',
                 width: '50%'
             }
-        ]
+        ]);
+
+        me.callParent(arguments);
     }
 });
 
 /**
  * Created by th3gr4bb3r on 7/21/14.
  */
-Ext.define('APP.view.phone.login.LoginForm', {
+Ext.define('APP.view.phone.login.LoginForm', {    
     extend: 'Ext.form.Panel',
     xtype:'loginform',
+
     config: {
         padding: '15 15 15 15',
         defaults: {
             required: true,
             clearIcon: true
         },
-        items: [{
+    },
+
+    initialize: function(){
+         this.setItems(
+        [{
             xtype: 'textfield',
             name: 'usuario',
-            placeHolder: 'Codigo de Usuario'
+            placeHolder: APP.core.config.Locale.config.lan.LoginForm.usuario
         },{
             xtype: 'passwordfield',
             name: 'password',
             margin:'5 0',
-            placeHolder: 'Contraseña'
+            placeHolder: APP.core.config.Locale.config.lan.LoginForm.contrasenia
         },{
             xtype: 'button',
             action:'login',
-            text: 'Login',
+            text: APP.core.config.Locale.config.lan.LoginForm.ingresar,
             ui: 'btn-login-ui',
             itemId: 'login',
             margin:'5 0',
@@ -83335,7 +83776,8 @@ Ext.define('APP.view.phone.login.LoginForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }]
+        }]);
+         this.callParent(arguments);
     }
 });
 
@@ -83420,7 +83862,7 @@ Ext.define('APP.view.phone.login.LoginPanel', {
  */
 Ext.define('APP.controller.phone.Login', {
     extend: 'Ext.app.Controller',
-
+                                        
     config: {
         refs: {
             loginForm: 'loginpanel loginform',
@@ -83457,7 +83899,7 @@ Ext.define('APP.controller.phone.Login', {
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
 
-        Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Accediendo'});
+        Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Login.accediendo});
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_UsuarioiMobile/Login",
@@ -83481,19 +83923,20 @@ Ext.define('APP.controller.phone.Login', {
                     //localStorage.setItem("Almacenes", response.ConfiguracionDispositivo.Almacenes);
                     //console.log(response.ConfiguracionDispositivo.Almacenes);
                     almacenes = response.ConfiguracionDispositivo.Almacenes;
-                    Ext.Viewport.removeAll(true);
-                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));
+                    Ext.Viewport.removeAll(true);                                        
+                    Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));                    
                     Ext.Viewport.getActiveItem().getAt(0).almacenes = almacenes;
 
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
 
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, response.Descripcion, Ext.emptyFn);
                 }
                 Ext.Viewport.setMasked(false);
             },
             failure: function () {
-                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {
                     Ext.Viewport.setMasked(false);
                 });
                 Ext.Viewport.setMasked(false);
@@ -83542,7 +83985,8 @@ Ext.define('APP.controller.phone.Login', {
             configForm = me.getConfiguracionForm(),
             values = configForm.getValues();
 
-        me.confirma('Configuración', 'Estas seguro que deseas cambiar la Configuración?', 300,
+        me.confirma(APP.core.config.Locale.config.lan.Login.confirmaTitle,
+         APP.core.config.Locale.config.lan.Login.confirmaMsg, 300,
             function (buttonId) {
                 if (buttonId == 'yes') {
                     localStorage.setItem('CodigoSociedad', values.cod_soc);
@@ -83563,10 +84007,10 @@ Ext.define('APP.controller.phone.Login', {
             width: ancho,
             buttons: [{
                 itemId : 'no',
-                text   : 'No'
+                text   : APP.core.config.Locale.config.lan.Ordenes.confirmaNo
             },{
                 itemId : 'yes',
-                text   : 'Si',
+                text   : APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                 ui     : 'action'
             }],
             fn: funcion
@@ -83575,9 +84019,28 @@ Ext.define('APP.controller.phone.Login', {
 
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
-    }
+    },
 
+/*    launch: function(){
+        var me = this;        
+        Ext.Ajax.request({
+            url: 'app/core/data/Prueba.json',
+            
+            success: function(response){
+                console.log(response);
+                var text = response.responseText,
+                    idiomas = Ext.decode(text);
 
+                APP.core.config.Locale.languages = idiomas;
+                console.log(idiomas);
+                localStorage.setItem('idioma', 'es_MX');
+//                APP.core.config.Locale.localize('en_US');
+            },
+            failure: function(response, opts) {
+                Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
+            }
+        });        
+    }*/
 });
 
 /**
@@ -83615,7 +84078,7 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Ordenes'
+                            title: APP.core.config.Locale.config.lan.menu.Orden
                         }
                     ]
 
@@ -83628,7 +84091,7 @@ Ext.define('APP.controller.phone.Menu', {
                     id: 'rutasactividadescont',
                     items: [{
                         xtype: 'opcionrutasactividades',
-                        title: 'Rutas y Actividades'
+                        title: APP.core.config.Locale.config.lan.menu.Rutas
                     }]
                 });
                 break;
@@ -83640,29 +84103,29 @@ Ext.define('APP.controller.phone.Menu', {
                     items: [
                         {
                             xtype: 'clienteslist',
-                            title: 'Cobranza'
+                            title: APP.core.config.Locale.config.lan.menu.Cobranza
                         }
                     ]
-
                 });
                 break;
             case 'informes':
                 this.getMenuNav().push({
-                    title: 'informes',
-                    html: 'informes'
+                    title: APP.core.config.Locale.config.lan.menu.Informes,
+                    xtype: 'informeslist'
                 });
                 break;
             case 'configuracion':
                 this.getMenuNav().push({
                     xtype: 'configuracionpanel',
-                    title: 'Configuración'
+                    title: APP.core.config.Locale.config.lan.menu.Configuracion
                 });
                 break;
             case 'prospectos':
                 this.getMenuNav().push({
                     xtype: 'prospectoslist',
-                    title: 'prospectos'
+                    title: APP.core.config.Locale.config.lan.menu.Prospectos
                 });
+                this.agregaOpciones();
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -83707,7 +84170,7 @@ Ext.define('APP.controller.phone.Menu', {
 
         if (navigationview.getActiveItem().getId() == 'ordenescont' ||
             navigationview.getActiveItem().getId() == 'cobranzacont' ||
-            navigationview.getActiveItem().getId() == 'rutascont'
+            navigationview.getActiveItem().getId() == 'rutasccont'
             ) {
             store = this.getClientesList().getStore()
             titulo = view.down('toolbar');
@@ -83716,7 +84179,50 @@ Ext.define('APP.controller.phone.Menu', {
 
             store.getProxy().setUrl("http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerListaSociosiMobile");
             store.setParams(params);
-            store.load();
+            store.load();            
+        }
+    },
+
+    agregaOpciones: function(){
+        if(this.getMenuNav().estados == undefined){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+                params = {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token")                
+                };
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
+
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].NombreEstado,
+                                value: datos[i].CodigoEstado
+                            };
+                        }                    
+
+                        me.getMenuNav().estados = opciones;
+                        Ext.Viewport.setMasked(false);
+                    } else {                    
+                        Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
+                    }
+                }
+            });
         }
     }
 });
@@ -83851,9 +84357,6 @@ Ext.define('APP.controller.phone.Ordenes', {
             'opcionesorden #terminar': {
                 activate: 'confirmaTerminarOrden'
             },
-            'clientecontainer #guardar': {
-                tap: 'guardaDatosDeCliente'
-            },
             'editarpedidoform #moneda': {
                 focus: 'muestraMonedas'
             },
@@ -83896,6 +84399,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             idCliente = record.get('CodigoSocio'),
             titulo = name;
 
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarClienteCargar);
+        Ext.Viewport.setMasked(true);
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
             params: {
@@ -83934,7 +84439,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                         });
                     }
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
             },
             scope: this
@@ -83955,6 +84461,8 @@ Ext.define('APP.controller.phone.Ordenes', {
         direcciones.setData(clienteSeleccionado.Direcciones);
         direcciones.clearFilter();
         direcciones.filter('TipoDireccion', 'S');
+
+        Ext.Viewport.setMasked(false);
 
         if (direcciones.getCount() > 0) {
             menu.push({
@@ -83985,7 +84493,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             }
 
         } else {
-            this.mandaMensaje('Sin dirección de entrega', 'Este cliente no tiene direcciones de entrega definidas.');
+            this.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.estableceDireccionesTitle, 
+                APP.core.config.Locale.config.lan.Ordenes.estableceDireccionesMsg);
             //view.pop();
             direcciones.removeAll();
         }
@@ -84011,6 +84520,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             opcionesOrden = me.getOpcionesOrden(),
             opcion = record.get('action'),
             idCliente = menuNav.getNavigationBar().getTitle(), i,
+            boton = me.getNavigationOrden().getNavigationBar().down('#agregarProductos'),
             barraTitulo = ({
                 xtype: 'toolbar',
                 docked: 'top',
@@ -84025,7 +84535,8 @@ Ext.define('APP.controller.phone.Ordenes', {
                 me.getOpcionesOrden().down('#moneda').setDisabled(false);
 
                 opcionesOrden.actionOrden = 'crear';
-                this.getMainCard().getAt(1).setMasked(false);
+                //this.getMainCard().getAt(1).setMasked(false);
+                boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
                 this.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden
                 this.getNavigationOrden().getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
                 this.getOpcionesOrden().setActiveItem(0); //Establecemos como activo el item 0 del tabpanel.
@@ -84126,7 +84637,7 @@ Ext.define('APP.controller.phone.Ordenes', {
         }
 
         if (value.xtype == 'partidacontainer') {
-            boton.setText('Agregar').show();
+            boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar).show();
             boton.setUi('normal');
         }
     },
@@ -84185,8 +84696,8 @@ Ext.define('APP.controller.phone.Ordenes', {
     onEliminarOrden: function (newActiveItem, tabPanel) {
         var me = this,
             ordenes = Ext.getStore('Ordenes'),
-            titulo = 'Eliminar orden',
-            mensaje = 'Se va a eliminar la orden, todos los productos agregados se perderán ¿está seguro?',
+            titulo = APP.core.config.Locale.config.lan.Ordenes.onEliminarOrdenTitulo,
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.onEliminarOrdenMsg,
             ancho = 300;
 
         me.confirma(titulo, mensaje, ancho,
@@ -84226,11 +84737,11 @@ Ext.define('APP.controller.phone.Ordenes', {
             buttons: [
                 {
                     itemId: 'no',
-                    text: 'No'
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaNo
                 },
                 {
                     itemId: 'yes',
-                    text: 'Si',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
                     ui: 'action'
                 }
             ],
@@ -84245,7 +84756,7 @@ Ext.define('APP.controller.phone.Ordenes', {
      * @param target El elemento tapeado
      * @param record El record asociado al ítem.
      */
-    seleccionaDireccion: function (list, index, target, record) {
+     seleccionaDireccion:function(list, index, target, record){
         var me = this,
             direcciones = Ext.getStore('Direcciones'),
             entrega = me.getOpcionesOrden().entrega,
@@ -84306,7 +84817,10 @@ Ext.define('APP.controller.phone.Ordenes', {
 
             if ((codigoMonedaSeleccionada != moneda) && (codigoMonedaSeleccionada == codigoMonedaPredeterminada)) {
                 if (me.dameProductoConMonedaPredeterminada(codigoMonedaPredeterminada) != 'No hay') {
-                    me.mandaMensaje('Error', 'No es posible cambiar la configuración debido a que la moneda del producto con código ' + me.dameProductoConMonedaPredeterminada() + ' es ' + codigoMonedaPredeterminada + '. Elimínelo primero de la orden.');
+                    me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError,
+                     APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaMsg1 + 
+                     me.dameProductoConMonedaPredeterminada() + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaEs + 
+                     codigoMonedaPredeterminada + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaMsg2);
                 } else {
                     me.obtenerTipoCambio(moneda, record);
                     //                me.estableceMonedaPredeterminada(record);
@@ -84332,7 +84846,9 @@ Ext.define('APP.controller.phone.Ordenes', {
                 //me.actualizarTotales();
             }
         } else {
-            me.mandaMensaje('No es Multimoneda', 'El cliente ' + clienteSeleccionado.CodigoSocio + ' sólo puede operar con ' + clienteSeleccionado.CodigoMoneda + '.');
+            me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaTitle,
+             APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaMsg1 + 
+             clienteSeleccionado.CodigoSocio + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaMsg2 + clienteSeleccionado.CodigoMoneda + '.');
         }
 
         view.pop();
@@ -84413,7 +84929,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                 } else {
                     var error = response.Descripcion;
-                    me.mandaMensaje('Error', error);
+                    me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, error);
                     // form.setValues({
                     //     CodigoMoneda: me.codigoMonedaSeleccionada,
                     //     tipoCambio: me.tipoCambio
@@ -84495,8 +85011,8 @@ Ext.define('APP.controller.phone.Ordenes', {
     eliminaPartida: function (list, index, target, record) {
         var me = this,
             ordenes = Ext.getStore('Ordenes'),
-            titulo = "Eliminar producto de la orden",
-            mensaje = "Se va a eliminar el producto de la orden, ¿está seguro?",
+            titulo = APP.core.config.Locale.config.lan.Ordenes.eliminarPartidaTitulo,
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.eliminarPartidaMsg,
             ancho = 300;
 
         me.confirma(titulo, mensaje, ancho,
@@ -84550,8 +85066,20 @@ Ext.define('APP.controller.phone.Ordenes', {
      * Muestra la lista de productos.
      */
     mostrarListaProductos: function () {
-        var me = this;
-        Ext.getStore('Productos').clearFilter();
+        var me = this,
+            productos = Ext.getStore('Productos'),
+            idCliente = me.getNavigationOrden().getNavigationBar().getTitle();
+
+        productos.clearFilter();
+        productos.resetCurrentPage();
+
+        productos.setParams({
+            CardCode: idCliente,
+            Criterio: ""
+        });
+
+        productos.load();
+
         me.getProductosOrden().setItems({xtype: 'productoslist'});
     },
 
@@ -84618,12 +85146,15 @@ Ext.define('APP.controller.phone.Ordenes', {
         Ext.getStore('Productos').resetCurrentPage();
 //        if (Ext.isEmpty(descripcion) || Ext.isEmpty(cantidad)) {
         if (cantidad <= 0 || Ext.isEmpty(cantidad)) {
-            me.mandaMensaje("Campos inválidos o vacíos", "Verifique que el valor de los campos sea correcto o que no estén vacíos");
+            me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.agregarProductosCamposInvalidosTitle,
+             APP.core.config.Locale.config.lan.Ordenes.agregarProductosCamposInvalidosMsg);
         } else {
             if (modo != 'edicion') {
                 if (moneda != codigoMonedaSeleccionada) {
                     if (moneda == codigoMonedaPredeterminada) {
-                        me.mandaMensaje('Imposible agregar', 'No es posible agregar el producto a la orden debido a que la configuración de moneda actual es ' + codigoMonedaSeleccionada + '  y la moneda del producto es ' + moneda + '.');
+                        me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarTitle,
+                        APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarMsg1 + 
+                        codigoMonedaSeleccionada + APP.core.config.Locale.config.lan.Ordenes.agregaProductosImposibleAgregarMsg2 + moneda + '.');
                     } else {
                         me.obtenerTipoCambio(moneda); // Aquí esperamos a que obtenga el tipo de cambio y realizamos el cálculo del nuevo precio.
                     }
@@ -84664,7 +85195,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 values.totalDeImpuesto = totalDeImpuesto;
                 values.Imagen = productoAgregado.get('Imagen');
                 values.nombreMostrado = Ext.String.ellipsis(descripcion, 25, false);
-                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;                
+                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;
                 ordenes.add(values);
                 menu.pop();
                 me.actualizarTotales();
@@ -84677,7 +85208,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                 values.precioConDescuento = precio;
                 values.importe = APP.core.FormatCurrency.currency(values.importe, codigoMonedaSeleccionada);
                 values.totalDeImpuesto = totalDeImpuesto * tipoCambio;
-                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;                
+                values.SujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto;
                 //values.descuento = values.descuento;
                 values.Imagen = productoAgregado.get('Imagen');
                 values.nombreMostrado = Ext.String.ellipsis(descripcion, 25, false);
@@ -84692,8 +85223,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                     datosProducto = ordenes.getAt(ind),
                     totaldeimpuesto,
                     moneda = values.moneda;
-                console.log(moneda, 'la del producto');
-                console.log(codigoMonedaSeleccionada, 'la actual');
+
                 if (moneda != codigoMonedaSeleccionada) {
                     precio = APP.core.FormatCurrency.formatCurrencytoNumber(values.precioConDescuento) * datosProducto.get('TipoCambio');
                     importe = precio * cantidad;
@@ -84703,7 +85233,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                     datosProducto.set('precioConDescuento', precio);
                     datosProducto.set('cantidad', cantidad);
                     datosProducto.set('importe', importe);
-                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totaldeimpuesto);                    
+                    datosProducto.set('totalDeImpuesto', /*Imobile.core.FormatCurrency.currency(me.totalDeImpuesto, '$')*/ totaldeimpuesto);
                     //datosProducto.set('Imagen', cantidadProducto.get('Imagen'));
                     menu.pop();
                     me.actualizarTotales();
@@ -84834,7 +85364,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                     me.llenaAgregarProductos(response.Data[0]); // Hacer un
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
             }
         });
@@ -84893,7 +85423,12 @@ Ext.define('APP.controller.phone.Ordenes', {
         precio = APP.core.FormatCurrency.currency(valores.ListaPrecios[0].Precio, moneda);
         cantidad = 1;
 
-        view.setMasked({xtype: 'loadmask', message: 'Cargando Datos...'});
+        //view.setMasked({xtype: 'loadmask', message: 'Cargando Datos...'});
+        //Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.ClientesList.cargando});
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
+        
         //Se calcula descuento
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Consultas/ObtenerPrecioEspecialiMobile",
@@ -84956,9 +85491,9 @@ Ext.define('APP.controller.phone.Ordenes', {
                     me.actualizaCantidad(cantidad);
 
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
-                view.setMasked(false);
+                Ext.Viewport.setMasked(false);
             }
         });
     },
@@ -84982,8 +85517,8 @@ Ext.define('APP.controller.phone.Ordenes', {
             ind = ordenes.find('id', id),
             idCliente = view.getNavigationBar().getTitle(),
             codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
-console.log(values);
-            me.getOpcionesOrden().sujetoImpuesto = values.SujetoImpuesto;
+
+        me.getOpcionesOrden().sujetoImpuesto = values.SujetoImpuesto;
 
         if (view.getActiveItem().xtype == 'agregarproductosform') {
             return;
@@ -85095,12 +85630,9 @@ console.log(values);
             importe = preciocondescuento,
             sujetoImpuesto = me.getOpcionesOrden().sujetoImpuesto,
             totalDeImpuesto = me.getOpcionesOrden().totalDeImpuesto;
-        console.log(preciocondescuento, 'Precio');
-        console.log(me.getOpcionesOrden().tasaImpuesto, 'Tasa de Impuesto');
-        console.log(sujetoImpuesto, 'Tiene impuesto?');
+
         if (sujetoImpuesto) {
             me.getOpcionesOrden().totalDeImpuesto = preciocondescuento * me.getOpcionesOrden().tasaImpuesto / 100;
-            console.log(me.getOpcionesOrden().totalDeImpuesto, 'impuesto');
         }
 
         view.getActiveItem().setValues({
@@ -85130,17 +85662,6 @@ console.log(values);
     },
 
     /**
-     * Manda un mensaje con el codigo de las direcciones tanto de entrega como fiscal.
-     */
-    guardaDatosDeCliente: function (button) {
-        var me = this,
-            direccionEntrega = me.getOpcionesOrden().direccionEntrega,
-            direccionFiscal = me.getOpcionesOrden().direccionFiscal;
-
-        me.mandaMensaje('Códigos de dirección', 'Entrega: ' + direccionEntrega + '\nFiscal: ' + direccionFiscal);
-    },
-
-    /**
      * Determina la siguiente vista productosorden o partidacontainer dependiendo del ítem activo, si no está en
      * partidacontainer este boton dice "Back".
      * @param button Este botón.
@@ -85154,20 +85675,21 @@ console.log(values);
 
         if (itemActivo.isXType('partidacontainer')) {
 
-            Ext.getStore('Productos').resetCurrentPage();
+            store.resetCurrentPage();
 
             store.setParams({
                 CardCode: idCliente,
                 Criterio: ""
             });
-
+            store.load();
+            //store.clearFilter();
             view.push({
                 xtype: 'productosorden',
                 title: idCliente
             });
 
-            store.clearFilter();
-            store.load();
+
+            //store.load();
 
             view.getNavigationBar().down('#agregarProductos').hide()
         } else {
@@ -85253,12 +85775,12 @@ console.log(values);
             ancho = 300;
 
         if (opcionesOrden.actionOrden == 'crear') {
-            titulo = "Terminar orden";
-            mensaje = "¿Desea terminar la orden de venta?";
+            titulo = APP.core.config.Locale.config.lan.Ordenes.confirmaTerminarOrdenTitulo;
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.confirmaTerminarOrdenMsg;
 
         } else {
-            titulo = "Actualizar orden";
-            mensaje = "¿Desea actualizar la orden de venta?";
+            titulo = APP.core.config.Locale.config.lan.Ordenes.confirmaActualizarOrdenTitulo;
+            mensaje = APP.core.config.Locale.config.lan.Ordenes.confirmaActualizarOrdenMsg;
         }
 
         me.confirma(titulo, mensaje, ancho,
@@ -85292,8 +85814,10 @@ console.log(values);
             direccionFiscal = me.getOpcionesOrden().direccionFiscal,
             tipoCambio = me.getOpcionesOrden().tipoCambio;
 
-        me.getMainCard().getActiveItem().getMasked().setMessage('Enviando orden...');
-        me.getMainCard().getActiveItem().setMasked(true);
+        // me.getMainCard().getActiveItem().getMasked().setMessage('Enviando orden...');
+        // me.getMainCard().getActiveItem().setMasked(true);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.enviandoOrden);
+        Ext.Viewport.setMasked(true);
 
         if (array.length > 0) {
             var params = {
@@ -85352,11 +85876,11 @@ console.log(values);
 
             if (opcionesOrden.actionOrden == 'crear') {
                 url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_OrdenVenta/AgregarOrdenMobile";
-                msg = "Se agrego la orden correctamente con folio: ";
+                msg = APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenAgregar;
             } else {
                 params["Orden.NumeroDocumento"] = me.getOpcionesOrden().NumeroDocumento;
                 url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_OrdenVenta/ActualizarOrdenVentaiMobile";
-                msg = "Se acualizo la orden correctamente con folio: ";
+                msg = APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenActualizar;
             }
 
             console.log(params);
@@ -85367,9 +85891,10 @@ console.log(values);
                 callbackKey: 'callback',
                 success: function (response) {
                     if (response.Procesada) {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                        //me.getMainCard().getActiveItem().setMasked(false);                                
+                        Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
-                        Ext.Msg.alert("Orden Procesada", msg + response.CodigoUnicoDocumento);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenProcesada, msg + response.CodigoUnicoDocumento);
                         store.clearData();
                         me.getNavigationOrden().remove(me.getNavigationOrden().down('toolbar'), true);
                         me.getMenuNav().remove(me.getMenuNav().down('toolbar'), true);
@@ -85381,23 +85906,30 @@ console.log(values);
                         }
 
                     } else {
-                        me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("Orden No Procesada", "No se proceso la orden correctamente: " + response.Descripcion);
+                        //me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaTitle, 
+                            APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaMsg + response.Descripcion);
                         me.getOpcionesOrden().setActiveItem(0);
                     }
                 },
 
                 failure: function () {
-                    Ext.Msg.alert('Problemas de conexión', 'El servidor está tardando demasiado en responder. Intente más tarde.', function () {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                        APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloMsg, function () {
+                        //me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
                         me.getOpcionesOrden().setActiveItem(0);
                     });
                 }
             });
         } else {
-            me.getMainCard().getActiveItem().setMasked(false);
-            me.getOpcionesOrden().setActiveItem(0);
-            Ext.Msg.alert("Productos", "Selecciona al menos un Producto");
+            //me.getMainCard().getActiveItem().setMasked(false);
+            Ext.Viewport.setMasked(false);
+            setTimeout(function(){
+                me.getOpcionesOrden().setActiveItem(0);
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenSinProductosTitle, APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenSinProductosMsg);
+            }, 10)
         }
     },
 
@@ -85409,6 +85941,7 @@ console.log(values);
             idCliente = me.getMenuNav().getNavigationBar().getTitle(),
             store = Ext.getStore('Ordenes'),
             productos = Ext.getStore('Productos'),
+            boton = me.getNavigationOrden().getNavigationBar().down('#agregarProductos'),
             index,
             barraTitulo = ({
                 xtype: 'toolbar',
@@ -85416,7 +85949,8 @@ console.log(values);
                 title: 'titulo'
             });
 
-        me.getMainCard().getAt(1).setMasked(false);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Consultas/RegresarOrdenVentaiMobile",
@@ -85432,6 +85966,7 @@ console.log(values);
                 var response = response.Data[0],
                     partidas = response.Partidas;
 
+                Ext.Viewport.setMasked(false);
                 me.getOpcionesOrden().codigoMonedaSeleccionada = response.CodigoMoneda + ' ';
                 codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
                 me.getOpcionesOrden().NumeroDocumento = record.get('NumeroDocumento');
@@ -85462,7 +85997,8 @@ console.log(values);
                      }*/
 
                     if (codigoMonedaSeleccionada != codigoMonedaPredeterminada && moneda == codigoMonedaPredeterminada) { // Si orden viene en USD y producto en MXP
-                        me.mandaMensaje('Moneda Diferente', 'No se pudo recuperar la Orden de Venta pues alguna partida viene en una moneda diferente a la del documento y está en moneda extranjera.');
+                        me.mandaMensaje(APP.core.config.Locale.config.lan.onSeleccionarTransaccionTitle,
+                        APP.core.config.Locale.config.lan.onSeleccionarTransaccionMsg);
                         return;
                     }
 
@@ -85501,7 +86037,8 @@ console.log(values);
                     }
                 });
 
-                me.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden
+                boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
+                me.getMainCard().setActiveItem(1); // Activamos el item 1 del menu principal navigationorden                
                 me.getMainCard().getActiveItem().getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
                 me.getMainCard().getActiveItem().down('opcionesorden').setActiveItem(0); //Establecemos como activo el item 0 del tabpanel.
                 me.actualizarTotales();
@@ -85634,16 +86171,16 @@ console.log(values);
                 '<img src="" width="30%" height="30%" style="margin-bottom: 3%; margin-top: 7%;">' +
                 '<div style="display: table; text-align: left; font-size: 10px; z-index: 0;">' +
                 '<div style="display: table-row;">' +
-                '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Transacción: Orden de Venta</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Fecha: ' + Ext.DateExtras.dateFormat(new Date(), 'd/m/Y') + '</div>' +
+                '<div id="cliente_id" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.transaccion + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.fecha + ' ' + Ext.DateExtras.dateFormat(new Date(), 'd/m/Y') + '</div>' +
                 '</div>' +
                 '<div style="display: table-row;">' +
-                '<div id="codigo_id" style="display: table-cell;  padding-left: 10px; width: 50%;">Código de Dispositivo: ' + localStorage.getItem("CodigoDispositivo") + '</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Código de Usuario: ' + localStorage.getItem("CodigoUsuario") + '</div>' +
+                '<div id="codigo_id" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.codigoDispositivo + ' ' + localStorage.getItem("CodigoDispositivo") + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.codigoUsuario + ' ' + localStorage.getItem("CodigoUsuario") + '</div>' +
                 '</div>' +
                 '<div style="display: table-row;">' +
-                '<div id="codigo_dispositivo" style="display: table-cell;  padding-left: 10px; width: 50%;">Nombre de Dispositivo: ' + localStorage.getItem("NombreDispositivo") + '</div>' +
-                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">Nombre de Usuario: ' + localStorage.getItem("NombreUsuario") + '</div>' +
+                '<div id="codigo_dispositivo" style="display: table-cell;  padding-left: 10px; width: 50%;">' + APP.core.config.Locale.config.lan.onShowListOrden.nombreDispositivo + ' ' + localStorage.getItem("NombreDispositivo") + '</div>' +
+                '<div style="display: table-cell; padding-right: 10px; width: 50%; padding-left: 15px;">' + APP.core.config.Locale.config.lan.onShowListOrden.nombreUsuario + ' ' + localStorage.getItem("NombreUsuario") + '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');
@@ -85665,46 +86202,130 @@ Ext.define('APP.controller.phone.Rutas', {
             menuNav:'menunav',
             mainCard:'maincard',
             navigationOrden:'navigationorden',
-            partidaContainer:'partidacontainer',
-            opcionesOrden:'opcionesorden',
-            ordenContainer:'ordencontainer',
-            rutasCalendario:'rutascalendario',
+
+            // Actividades
+            actividadesCalendario:'actividadescalendario',
+            actividadesCalendarioCont:'actividadescalendariocont',
+            actividadesCalendarioContNd:'actividadescalendariocont hiddenfield[name=ndhf]',
+            actividadesCalendarioDia:'actividadescalendariodia',
+            actividadesForm:'actividadesform',
+            actividadesContRepetir:'actividadesform fieldset[id=actividadesrepetir]',
+
+
+            //Rutas
             rutasCalendarioCont:'rutascalendariocont',
+            clientesList:'clienteslist',
+            rutasCalendario:'rutascalendario',
             rutasCalendarioDia:'rutascalendariodia',
-            rutasMapa:'rutasmapa',
+            rutasCalendarioDirecciones:'rutascalendariodirecciones',
+            rutasContRepetir:'rutasform fieldset[id=rutasrepetir]',
+            rutasCalendarioMapa:'rutascalendariomapa',
+            rutasForm:'rutasform'
 
-
-            actividadesCalendario:'actividadescalendario'
         },
         control:{
             'opcionrutasactividades': {
                 itemtap:'onRutasActividadesTap'
             },
+
+            //######################################################################
+            // Actividades
+            //######################################################################
+
             'actividadescalendario':{
                 periodchange:function(calendar,mindate,maxdate,direction){
-                    console.log(calendar);
-                    console.log(mindate);
-                    console.log(maxdate);
-                    console.log(direction);
+
+                    var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");
+                    var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(maxdate),"Y-m-d");
+
+                    this.loadActividadesCalendario(firstDay,lastDay);
+                },
+
+                selectionchange:'onActividadesCalendarioTap'
+            },
+
+            'actividadescalendariocont button[action=agregar]':{
+                tap:'showFormActividades'
+            },
+
+            'actividadesform checkboxfield[name=Repetir]':{
+                change:function(cb,check){
+                    var acr = this.getActividadesContRepetir();
+                    if(check){
+                        acr.setHidden(false);
+                    }
+                    else{
+                        acr.setHidden(true);
+                    }
                 }
             },
 
+            'actividadesform button[action=guardar]':{
+                tap:'onActividadesAdd'
+            },
 
-            'container[id=rutascont] clienteslist': {
+            'actividadescalendariodia':{
+                itemtap:'onActividadesEdit'
+            },
+            'button[action=realizaractividad]':{
+                tap:function(){
+                    this.onActividadesUpdate(1);
+                }
+            },
+            'button[action=cancelaractividad]':{
+                tap:function(){
+                    this.onActividadesUpdate(3);
+                }
+            },
+
+            //######################################################################
+            // Rutas
+            //######################################################################
+
+            'container[xtype=rutascalendariocont] clienteslist': {
                 itemtap:'onSeleccionarCliente'
             },
-
-            'opcionrutaslist': {
-                itemtap:'onCalendario'
-            },
             'rutascalendario':{
-                selectionchange:'onCalendarioDia'
+                periodchange:function(calendar,mindate,maxdate,direction){
+
+                    var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");
+                    var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(maxdate),"Y-m-d");
+
+                    this.loadRutasCalendario(firstDay,lastDay);
+                },
+                selectionchange:'onRutasCalendarioTap'
             },
-            'rutascalendariocont button[action=agregar]':{
-                tap:'showForm'
+
+            'container[id=rutascalendarioshowform] button[action=agregar]':{
+                tap:'muestraClientes'
+            },
+            'rutasform checkboxfield[name=Repetir]':{
+                change:function(cb,check){
+                    var acr = this.getRutasContRepetir();
+                    if(check){
+                        acr.setHidden(false);
+                    }
+                    else{
+                        acr.setHidden(true);
+                    }
+                }
+            },
+            'rutasform rutascalendariodirecciones':{
+                itemtap:'onSeleccionarDireccion'
+            },
+            'rutasform button[action=guardar]':{
+                tap:'onRutasAdd'
+            },
+            'rutascalendariodia':{
+                itemtap:'onRutasEdit'
             }
+
         }
     },
+
+    //#######################################################################
+    // Primera vista para seleccionar actividades o rutas
+    //#######################################################################
 
     onRutasActividadesTap:function(list, index, target, record){
         var opcion = record.get('action');
@@ -85715,110 +86336,991 @@ Ext.define('APP.controller.phone.Rutas', {
                     xtype:'actividadescalendario'
                 });
 
-                var ac = this.getActividadesCalendario(),
-                    store = ac.view.eventStore;
+                var date = new Date();
+
+                var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+
+                this.loadActividadesCalendario(firstDay,lastDay);
+
+                break;
+            case 'rutas':
+                this.getMenuNav().push({
+                    // xtype:'rutascalendariocont',
+                    // layout:'fit',
+                    // items:[{
+                    //     xtype:'clienteslist'
+                    // }]
+                    xtype: 'rutascalendario',
+                    title: 'Rutas'
+                });
 
                 var date = new Date();
 
                 var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
                 var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
 
-                var params = {
-                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                    Token: localStorage.getItem("Token"),
-                    Usuario: localStorage.getItem("CodigoUsuario"),
-                    FechaInicio: firstDay,
-                    FechaFin: lastDay
-                };
+                this.loadRutasCalendario(firstDay,lastDay, "");
 
-                //Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
-
-                store.clearFilter();
-                store.setParams(params);
-                /*store.load({
-                    callback:function(){
-                        //Ext.Viewport.setMasked(false);
-                    },
-                    scope:this
-                });*/
-                break;
-            case 'rutas':
                 break;
         }
     },
 
-    /**
-     * Establece el título y el id del cliente cada uno en una variable.
-     * Muestra la vista de ventas.
-     * @param list Ésta lista.
-     * @param index El índice del ítem tapeado.
-     * @param target El elemento tapeado.
-     * @param record El record asociado al ítem.
-     */
-    onSeleccionarCliente:function(list, index, target, record) {
-        var name = record.get('NombreSocio'),
-            idCliente = record.get('CodigoSocio'),
-            titulo = name,
-            barraTitulo = ({
-                xtype: 'toolbar',
-                docked: 'top',
-                title: titulo
-            });
+    //#######################################################################
+    //Actividades
+    //#######################################################################
 
-        this.getMenuNav().push({
-            xtype: 'opcionrutaslist',
-            title: idCliente,
-            idCliente: idCliente
+    loadActividadesCalendario: function(fechaInicio,fechaFin){
+
+        var ac = this.getActividadesCalendario(),
+            store = ac.view.eventStore;
+
+        var params = {
+            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+            Token: localStorage.getItem("Token"),
+            Usuario: localStorage.getItem("CodigoUsuario"),
+            FechaInicio: fechaInicio,
+            FechaFin: fechaFin
+        };
+
+        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+
+        store.clearFilter();
+        store.setParams(params);
+        store.load({
+            callback:function(){
+                Ext.Viewport.setMasked(false);
+                if(ac.element){
+                    ac.element.redraw();
+                }
+
+            },
+            scope:this
         });
-        this.getMenuNav().add(barraTitulo);
-
     },
 
-    onCalendario:function(list, index, target, record){
-        var opcion = record.get('action');
-
-        switch(opcion){
-            case 'calendario':
-                this.getMenuNav().push({
-                    xtype:'rutascalendario'
-                });
-                break;
-            case 'registrar':
-                break;
-        }
-
-    },
-
-    onCalendarioDia:function(calendar, nd, od){
-
+    onActividadesCalendarioTap:function(calendar, nd){
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
-        var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
 
         this.getMenuNav().push({
-            xtype:'rutascalendariocont',
-            nd:nd
+            xtype:'actividadescalendariocont',
+            items:[{
+                xtype:'container',
+                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+            },{
+                xtype:'hiddenfield',
+                name:'ndhf',
+                value:nd
+            },{
+                xtype:'actividadescalendariodia',
+                flex:1
+            },{
+                xtype:'button',
+                action:'agregar',
+                text: 'Agregar',
+                margin:10
+            }]
+        });
+
+        this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+    },
+
+    onActividadesCalendarioFormPop:function(calendar, nd, pop){
+        nd = new Date(nd);
+
+        calendar.eventStore.clearFilter();
+        calendar.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
+        }, this);
+
+
+        this.getMenuNav().pop(pop);
+
+        this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+
+    },
+
+    showFormActividades:function(b){
+        var nd = this.getActividadesCalendarioContNd().getValue();
+
+        this.getMenuNav().push({
+            xtype:'actividadesform',
+            flex:1,
+            listeners:{
+                scope:this,
+                activate:function(form){
+                    form.setValues({
+                        FechaInicio:new Date(nd),
+                        FechaFin:new Date(nd)
+                    });
+                }
+            }
+        })
+    },
+
+    onActividadesAdd:function(btn){
+
+        var form = this.getActividadesForm(),
+            values = form.getValues();
+
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+
+            if(values.Descripcion == ""){
+                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            }
+            else{
+
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+
+                if(values.CodigoActividad > 0){
+                    var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad";
+                }
+                else{
+                    var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad"
+                }
+
+                Ext.data.JsonP.request({
+                    url: url,
+                    params: {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        "Actividad.CodigoActividad" : values.CodigoActividad,
+                        "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                        "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                        "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                        "Actividad.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                        "Actividad.Descripcion" : values.Descripcion,
+                        "Actividad.Notas" : values.Notas,
+                        "Actividad.Repetir" : values.Repetir?true:false,
+                        "Actividad.Lunes" : values.Lunes?true:false,
+                        "Actividad.Martes" : values.Martes?true:false,
+                        "Actividad.Miercoles" : values.Miercoles?true:false,
+                        "Actividad.Jueves" : values.Jueves?true:false,
+                        "Actividad.Viernes" : values.Viernes?true:false,
+                        "Actividad.Sabado" : values.Sabado?true:false,
+                        "Actividad.Domingo" : values.Domingo?true:false,
+                        "Actividad.Notas"   : values.Notas,
+                        "Actividad.Estatus" : 2
+                    },
+                    callbackKey: 'callback',
+                    success: function (response) {
+                        var procesada = response.Procesada
+
+                        if (procesada) {
+                            var ac = this.getActividadesCalendario(),
+                                store = ac.view.eventStore;
+
+                            store.load({
+                                callback:function(){
+                                    ac.element.redraw();
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
+                                    Ext.Viewport.setMasked(false);
+                                },
+                                scope:this
+                            });
+                        }
+                        else {
+                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Viewport.setMasked(false);
+                        }
+
+                    },
+                    failure: function () {
+                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                            Ext.Viewport.setMasked(false);
+                        });
+                        Ext.Viewport.setMasked(false);
+                    },
+                    scope: this
+                });
+            }
+        }
+        else{
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+        }
+    },
+
+    onActividadesEdit:function(list,index,target,record){
+        var form = this.getActividadesForm();
+        var items=[{
+            xtype:'actividadesform',
+            flex:1,
+            nd:this.getActividadesCalendarioCont().nd
+        }];
+
+        if(record.data.Estatus != 1 && record.data.Estatus != 3){
+            items.push({
+                xtype:'container',
+                padding:'0 10px 10px 10px',
+                layout:{
+                    type:'hbox',
+                    align: 'stretch'
+                },
+                items:[{
+                    xtype:'button',
+                    text:'Realizada',
+                    action:'realizaractividad',
+                    flex:1
+                },{
+                    xtype:'button',
+                    text:'Cancelar',
+                    action:'cancelaractividad',
+                    flex:1
+                }]
+            });
+        }
+        else{
+            if(record.data.Estatus == 2){
+
+            }
+        }
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            layout:{
+                type:'vbox'
+            },
+            items:items
+        })
+
+        var form = this.getActividadesForm();
+
+        var horaInicio = new Date();
+        horaInicio.setHours(record.data.HoraInicio.substr(0,2));
+        horaInicio.setMinutes(record.data.HoraInicio.substr(3,2));
+        horaInicio.setMilliseconds(record.data.HoraInicio.substr(6,2));
+
+        var horaFin = new Date();
+        horaFin.setHours(record.data.HoraFin.substr(0,2));
+        horaFin.setMinutes(record.data.HoraFin.substr(3,2));
+        horaFin.setMilliseconds(record.data.HoraFin.substr(6,2));
+
+        form.setValues({
+            CodigoActividad:record.data.CodigoActividad,
+            Descripcion:record.data.title,
+            FechaInicio:record.data.start,
+            HoraInicio: horaInicio,
+            FechaFin:record.data.end,
+            HoraFin: horaFin,
+            Notas:record.data.Notas,
+            Repetir:record.data.Repetir,
+            Lunes:record.data.Lunes,
+            Martes:record.data.Martes,
+            Miercoles:record.data.Miercoles,
+            Jueves:record.data.Jueves,
+            Viernes:record.data.Viernes,
+            Sabado:record.data.Sabado,
+            Domingo:record.data.Domingo
+        });
+
+        if(record.data.Estatus != 2){
+            var btnGuardar = form.down("button[action=guardar]").destroy();
+            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
+            form.down("checkboxfield[name=Repetir]").disable();
+            form.down("checkboxfield[name=Lunes]").disable();
+            form.down("checkboxfield[name=Martes]").disable();
+            form.down("checkboxfield[name=Miercoles]").disable();
+            form.down("checkboxfield[name=Jueves]").disable();
+            form.down("checkboxfield[name=Viernes]").disable();
+            form.down("checkboxfield[name=Sabado]").disable();
+            form.down("checkboxfield[name=Domingo]").disable();
+
+        }
+
+
+    },
+
+    onActividadesUpdate:function(status){
+
+        var form = this.getActividadesForm(),
+            values = form.getValues();
+
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+
+            if(values.Descripcion == ""){
+                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            }
+            else{
+
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+
+                Ext.data.JsonP.request({
+                    url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
+                    params: {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        "Actividad.CodigoActividad":values.CodigoActividad,
+                        "Actividad.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                        "Actividad.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                        "Actividad.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                        "Actividad.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                        "Actividad.Descripcion" : values.Descripcion,
+                        "Actividad.Notas" : values.Notas,
+                        "Actividad.Repetir" : values.Repetir?true:false,
+                        "Actividad.Lunes" : values.Lunes?true:false,
+                        "Actividad.Martes" : values.Martes?true:false,
+                        "Actividad.Miercoles" : values.Miercoles?true:false,
+                        "Actividad.Jueves" : values.Jueves?true:false,
+                        "Actividad.Viernes" : values.Viernes?true:false,
+                        "Actividad.Sabado" : values.Sabado?true:false,
+                        "Actividad.Domingo" : values.Domingo?true:false,
+                        "Actividad.Notas"   : values.Notas,
+                        "Actividad.Estatus" : status
+                    },
+                    callbackKey: 'callback',
+                    success: function (response) {
+                        var procesada = response.Procesada
+
+                        if (procesada) {
+                            var ac = this.getActividadesCalendario(),
+                                store = ac.view.eventStore;
+
+                            store.load({
+                                callback:function(){
+                                    ac.element.redraw();
+                                    this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
+                                    Ext.Viewport.setMasked(false);
+                                },
+                                scope:this
+                            });
+                        }
+                        else {
+                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Viewport.setMasked(false);
+                        }
+
+                    },
+                    failure: function () {
+                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                            Ext.Viewport.setMasked(false);
+                        });
+                        Ext.Viewport.setMasked(false);
+                    },
+                    scope: this
+                });
+            }
+        }
+        else{
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+        }
+    },
+
+    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin){
+
+        if(fechaInicio.getTime() > fechaFin.getTime()){
+            return false;
+        }
+        if(fechaInicio.getTime() == fechaFin.getTime()){
+            if(horaInicio.getTime() >= horaFin.getTime()){
+                return false;
+            }
+        }
+        return true;
+    },
+
+    //#######################################################################
+    // Rutas
+    //#######################################################################
+
+    onSeleccionarCliente:function(list, index, target, record){
+        var me = this,
+            name = record.get('NombreSocio'),
+            idCliente = record.get('CodigoSocio'),
+            titulo = name;
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
+            params: {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                CardCode: idCliente
+            },
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {
+                    var direcciones = response.Data[0].Direcciones;
+                    if (direcciones.length > 0){
+                        var name = record.get('NombreSocio'),
+                            idCliente = record.get('CodigoSocio'),
+                            titulo = name,
+
+                        barraTitulo = ({
+                            xtype: 'toolbar',
+                            docked: 'top',
+                            title: titulo
+                        });
+console.log(direcciones);
+                        // this.getMenuNav().push({
+                        //     xtype: 'rutascalendario',
+                        //     title: idCliente,
+                        //     idCliente: idCliente,
+                        //     direcciones: direcciones
+                        // });
+
+                        this.showFormRutas(idCliente, direcciones);
+
+                        this.getMenuNav().add(barraTitulo);
+
+                        // var date = new Date();
+
+                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+
+                        // //this.loadRutasCalendario(firstDay,lastDay);
+                    }
+                    else{
+                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                    }
+                } else {
+                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                }
+            },
+            scope: this
+        });
+    },
+
+    loadRutasCalendario: function(fechaInicio,fechaFin, codigoCliente){
+
+        var ac = this.getRutasCalendario(),
+            store = ac.view.eventStore;
+
+        var params = {
+            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+            Token: localStorage.getItem("Token"),
+            Usuario: localStorage.getItem("CodigoUsuario"),
+            FechaInicio: fechaInicio,
+            FechaFin: fechaFin,
+            CodigoCliente: codigoCliente//ac.idCliente
+        };
+
+        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+
+        store.clearFilter();
+        store.setParams(params);
+        store.load({
+            callback:function(){
+                Ext.Viewport.setMasked(false);
+                if(ac.element){
+                    ac.element.redraw();
+                }
+
+            },
+            scope:this
+        });
+    },
+
+    onRutasCalendarioTap2:function(calendar, nd){
+        calendar.eventStore.clearFilter();
+        calendar.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
+        }, this);
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            id:'rutascalendarioshowform',
+            layout:{
+                type:'vbox',
+                align:'stretch'
+            },
+            items:[{
+                xtype:'container',
+                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+            },{
+                xtype:'rutascalendariodia',
+                flex:1,
+                nd:nd,
+                idCliente: rc.idCliente,
+                direcciones:rc.direcciones
+            },{
+                xtype:'button',
+                action:'agregar',
+                text: 'Agregar',
+                margin:10
+            }]
         });
 
         this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
-        console.log(this.getRutasCalendarioDia().getStore());
     },
 
-    showForm:function(b){
+    onRutasCalendarioTap:function(calendar, nd){
+        calendar.eventStore.clearFilter();
+        calendar.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
+        }, this);
+
+        var rc = this.getRutasCalendario(),
+            rutas = rc.view.eventStore;
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            id:'rutascalendarioshowform',
+            title: 'Rutas',
+            layout:{
+                type:'vbox',
+                align:'stretch'
+            },
+            items:[{
+                xtype:'container',
+                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+            },{
+                xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
+                flex:1,
+                nd:nd
+                // idCliente: rc.idCliente,
+                // direcciones:rc.direcciones
+            },{
+                xtype:'button',
+                action:'agregar',
+                text: 'Agregar',
+                margin:10
+            }]
+        });
+
+        this.colocaMarcadores();
+
+        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+    },
+
+    showFormRutas:function(idCliente, direcciones){        
+        var rc = this.getRutasCalendario(),
+            rutas = rc.view.eventStore,
+            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
+        // var idCliente = this.getRutasCalendarioDia().config.idCliente;
+        // var direcciones = this.getRutasCalendarioDia().config.direcciones;
+
+console.log(nd);
 
         this.getMenuNav().push({
             xtype:'rutasform',
             flex:1,
-            nd:this.getRutasCalendarioCont().nd
+            listeners:{
+                scope:this,
+                activate:function(form){
+                    form.setValues({
+                        CodigoCliente:idCliente,
+                        FechaInicio:new Date(nd),
+                        FechaFin:new Date(nd)
+                        //direcciones: direcciones
+                    });
+
+                    this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
+                    //this.getRutasCalendarioDirecciones().element.redraw();
+                }
+            }
         })
+    },
+
+    onSeleccionarDireccion:function(list,index,target,record){
+        var data = record.data,
+            form = this.getRutasForm();
+
+        data.Calle      = data.Calle != null?data.Calle:"";
+        data.NoExterior = data.NoExterior != null?data.NoExterior:"";
+        data.Colonia    = data.Colonia != null?data.Colonia:"";
+        data.Ciudad     = data.Ciudad != null?data.Ciudad:"";
+        data.Municipio  = data.Municipio != null?data.Municipio:"";
+        data.Estado     = data.Estado != null?data.Estado:"";
+
+        var direccion = data.Estado + " " + data.Municipio + " " + data.Ciudad + " " + data.Colonia + " " + data.Calle + " " + data.NoExterior;
+
+        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+
+        var geocoder = new google.maps.Geocoder();
+
+        var extMapa = list.up('rutasform').down('rutascalendariomapa');//this.getRutasCalendarioMapa();
+
+        var mapa = extMapa.getMap(),
+            bounds = new google.maps.LatLngBounds();
+
+        form.setValues({
+            CodigoDireccion:data.CodigoDireccion,
+            TipoDireccion:data.TipoDireccion,
+            LatitudOrigen:0,
+            LongitudOrigen:0
+        });
+
+
+
+        if(extMapa.marker){
+            extMapa.marker.setMap(null);
+            console.log('Se elimina marcador');
+        }
+
+        geocoder.geocode( { 'address': direccion}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                console.log(results[0].geometry.location);
+
+                form.setValues({
+                    LatitudOrigen:results[0].geometry.location.k,
+                    LongitudOrigen:results[0].geometry.location.B
+                });
+
+                mapa.setCenter(results[0].geometry.location);
+
+                extMapa.marker = new google.maps.Marker({
+                    map: mapa,
+                    position: results[0].geometry.location,
+                    draggable:true
+                });
+
+
+            //     extMapa.marker = new google.maps.Marker({
+            //     map: mapa,
+            //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
+            //     draggable:true
+            // });
+
+             bounds.extend(extMapa.marker.position); 
+
+            mapa.setCenter(bounds.getCenter());
+
+                //extMapa.setMapOptions({zoom:15});
+
+                google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                    var point = extMapa.marker.getPosition();
+                    mapa.panTo(point);
+
+                    form.setValues({
+                        LatitudOrigen:point.k,
+                        LongitudOrigen:point.B
+                    });
+                });
+
+            } else {
+                Ext.Msg.alert("Lo sentimos","La ubicación no ha podido ser encontrada");
+            }
+            Ext.Viewport.setMasked(false);
+        });
+    },
+
+    colocaMarcadores:function(){
+        var me = this,
+            ac = me.getRutasCalendario(),
+            rutas = ac.view.eventStore;
+console.log(rutas.getCount(), ' en colocaMarcadores')
+        if(rutas.getCount() > 0){
+            var extMapa = this.getRutasCalendarioMapa(),
+                mapa = extMapa.getMap(),
+                ruta,
+                bounds = new google.maps.LatLngBounds();
+
+            Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+
+            if(extMapa.marker){
+                extMapa.marker.setMap(null);
+                console.log('Quitamos marcador');
+            }
+        
+            rutas.each(function (item, index, length) {
+                //console.log(item.get('firstName'), index);
+                ruta = item.getData();  //rutas.getAt(0).getData();
+
+                console.log(ruta);
+
+                extMapa.marker = new google.maps.Marker({
+                    map: mapa,
+                    position: new google.maps.LatLng(ruta.lat, ruta.lon),
+                    draggable:true
+                });
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Hola, probando marcadores!'
+                });
+
+                var popup = Ext.create('Ext.Panel', {                    
+                    alias: 'widget.Popup',
+                 
+                    config: {
+                        height: '30%',
+                        html: 'I am Panel Popup',
+                        itemId: 'popup',
+                        //left: '5%',
+                        padding: 10,
+                        top: '0%',
+                        width: '40%',
+                        hideOnMaskTap: true,
+                        modal: true
+                    }
+                });
+
+
+                google.maps.event.addListener(extMapa.marker, 'click', function(){
+                    //infowindow.open(mapa, extMapa.marker);
+                    popup.showBy(extMapa.marker);
+                });
+
+                bounds.extend(extMapa.marker.position);            
+
+                //mapa.setCenter(bounds.getCenter());
+
+                //extMapa.setMapOptions({zoom:15});
+
+                google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                    var point = extMapa.marker.getPosition();
+                    mapa.panTo(point);
+                });  
+            });
+        }
+
+        Ext.Viewport.setMasked(false);
+    },
+
+    muestraClientes: function() {
+        this.getMenuNav().push({
+            xtype:'rutascalendariocont',
+            layout:'fit',
+            items:[{
+                xtype:'clienteslist'
+            }]
+        });
+    },
+
+    onRutasAdd:function(btn){
+
+        var form = this.getRutasForm(),
+            values = form.getValues(),
+            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
+
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+
+            if(values.Descripcion == ""){
+                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            }
+            else{
+
+                if(values.LatitudOrigen > 0){
+                    Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+
+                    if(values.CodigoRuta > 0){
+                        var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta";
+                    }
+                    else{
+                        var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/AgregarRuta"
+                    }
+
+                    Ext.data.JsonP.request({
+                        url: url,
+                        params: {
+                            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                            Token: localStorage.getItem("Token"),
+                            "Ruta.CodigoRuta" : values.CodigoRuta,
+                            "Ruta.CodigoCliente" : values.CodigoCliente,
+                            "Ruta.CodigoDireccion" : values.CodigoDireccion,
+                            "Ruta.TipoDireccion" : values.TipoDireccion,
+                            "Ruta.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                            "Ruta.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                            "Ruta.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                            "Ruta.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                            "Ruta.Descripcion" : values.Descripcion,
+                            "Ruta.Notas" : values.Notas,
+                            "Ruta.Repetir" : values.Repetir?true:false,
+                            "Ruta.Lunes" : values.Lunes?true:false,
+                            "Ruta.Martes" : values.Martes?true:false,
+                            "Ruta.Miercoles" : values.Miercoles?true:false,
+                            "Ruta.Jueves" : values.Jueves?true:false,
+                            "Ruta.Viernes" : values.Viernes?true:false,
+                            "Ruta.Sabado" : values.Sabado?true:false,
+                            "Ruta.Domingo" : values.Domingo?true:false,
+                            "Ruta.Notas"   : values.Notas,
+                            "Ruta.LatitudOrigen": values.LatitudOrigen,
+                            "Ruta.LongitudOrigen": values.LongitudOrigen,
+                            "Ruta.Estatus" : 2
+                        },
+                        callbackKey: 'callback',
+                        success: function (response) {
+                            var procesada = response.Procesada
+
+                            if (procesada) {
+                                var rc = this.getRutasCalendario(),
+                                    store = rc.view.eventStore;
+
+                                store.load({
+                                    callback:function(){
+                                        rc.element.redraw();
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2);
+                                        Ext.Viewport.setMasked(false);
+                                    },
+                                    scope:this
+                                });
+                            }
+                            else {
+                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                                Ext.Viewport.setMasked(false);
+                            }
+
+                        },
+                        failure: function () {
+                            Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                                Ext.Viewport.setMasked(false);
+                            });
+                            Ext.Viewport.setMasked(false);
+                        },
+                        scope: this
+                    });
+                }
+                else{
+                    Ext.Msg.alert('Datos Incorrectos', "Debe de selecciona una dirección válida", Ext.emptyFn);
+                }
+            }
+        }
+        else{
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+        }
+    },
+
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop){
+        var nd = new Date(nd),
+            titulo = this.getMenuNav().down('toolbar')
+
+        calendar.eventStore.clearFilter();
+
+        calendar.eventStore.filterBy(function(record){
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
+        }, this);
+
+        console.log(codigoCliente, ' El código del cliente');
+        //console.log(calendar.eventStore.getCount(), " Rutas antes de filtrar por código");
+
+        calendar.eventStore.filter('CodigoCliente', codigoCliente);
+
+console.log(calendar.eventStore.getCount(), " Rutas");
+
+        this.getMenuNav().pop(pop);
+        this.getMenuNav().remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
+        this.colocaMarcadores();
+
+        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
+
+    },
+
+    onRutasEdit:function(list,index,target,record){
+        var form = this.getRutasForm();
+        var direcciones = this.getRutasCalendarioDia().config.direcciones;
+
+        var items=[{
+            xtype:'rutasform',
+            flex:1//,
+            //nd:this.getActividadesCalendarioCont().nd
+        }];
+
+        if(record.data.Estatus != 1 && record.data.Estatus != 3){
+            items.push({
+                xtype:'container',
+                padding:'0 10px 10px 10px',
+                layout:{
+                    type:'hbox',
+                    align: 'stretch'
+                },
+                items:[{
+                    xtype:'button',
+                    text:'Realizada',
+                    action:'realizarruta',
+                    flex:1
+                },{
+                    xtype:'button',
+                    text:'Cancelar',
+                    action:'cancelarruta',
+                    flex:1
+                }]
+            });
+        }
+        else{
+            if(record.data.Estatus == 2){
+
+            }
+        }
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            layout:{
+                type:'vbox'
+            },
+            items:items
+        })
+
+        var form = this.getRutasForm();
+
+        var horaInicio = new Date();
+        horaInicio.setHours(record.data.HoraInicio.substr(0,2));
+        horaInicio.setMinutes(record.data.HoraInicio.substr(3,2));
+        horaInicio.setMilliseconds(record.data.HoraInicio.substr(6,2));
+
+        var horaFin = new Date();
+        horaFin.setHours(record.data.HoraFin.substr(0,2));
+        horaFin.setMinutes(record.data.HoraFin.substr(3,2));
+        horaFin.setMilliseconds(record.data.HoraFin.substr(6,2));
+
+        form.setValues({
+            CodigoRuta:record.data.CodigoRuta,
+            CodigoCliente : record.data.CodigoCliente,
+            CodigoDireccion : record.data.CodigoDireccion,
+            TipoDireccion : record.data.TipoDireccion,
+            Descripcion:record.data.title,
+            FechaInicio:record.data.start,
+            HoraInicio: horaInicio,
+            FechaFin:record.data.end,
+            HoraFin: horaFin,
+            Notas:record.data.Notas,
+            Repetir:record.data.Repetir,
+            Lunes:record.data.Lunes,
+            Martes:record.data.Martes,
+            Miercoles:record.data.Miercoles,
+            Jueves:record.data.Jueves,
+            Viernes:record.data.Viernes,
+            Sabado:record.data.Sabado,
+            Domingo:record.data.Domingo
+        });
+
+        this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
+
+        if(record.data.Estatus != 2){
+            var btnGuardar = form.down("button[action=guardar]").destroy();
+            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
+            form.down("checkboxfield[name=Repetir]").disable();
+            form.down("checkboxfield[name=Lunes]").disable();
+            form.down("checkboxfield[name=Martes]").disable();
+            form.down("checkboxfield[name=Miercoles]").disable();
+            form.down("checkboxfield[name=Jueves]").disable();
+            form.down("checkboxfield[name=Viernes]").disable();
+            form.down("checkboxfield[name=Sabado]").disable();
+            form.down("checkboxfield[name=Domingo]").disable();
+
+        }
     }
-
-
 });
 
 /**
@@ -85833,7 +87335,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             mainCard:'maincard',
             navigationCobranza:'navigationcobranza',
             totales: 'totalescontainer',
-            facturasList: 'facturaslist'
+            facturasList: 'facturaslist',
+            visualizacionCobranzaList: 'visualizacioncobranzalist'
         },
     	control:{
 
@@ -85872,6 +87375,13 @@ Ext.define('APP.controller.phone.Cobranza', {
             },
             'visualizacioncobranzalist #btnBuscarCobranza': {
                 tap: 'onBuscarCobranza'
+            },
+            'visualizacioncobranzalist #buscarCobranzas':{
+                clearicontap: 'limpiaBusquedaTransacciones'
+            },
+            'visualizacioncobranzalist #buscarTipo':{
+                clearicontap: 'limpiaBusquedaTransacciones',
+                change: 'onChangeTipoCobranza'
             }
     	}
     },
@@ -85920,7 +87430,6 @@ Ext.define('APP.controller.phone.Cobranza', {
             idCliente = me.getNavigationCobranza().idCliente; //view.getActiveItem().idCliente,
             //name = view.getActiveItem().name;
 
-console.log(idCliente);
         switch(record.data.action){
             case 'cobranzaFacturas':            
                 var store = Ext.getStore('Facturas');
@@ -85963,6 +87472,9 @@ console.log(idCliente);
 
                 anticiposlist.setStore(store);
                 anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">No hay anticipos pendientes</div>');
+                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>Número: <b>{NumeroDocumento}</b> Saldo: <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+                  '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
+            '</div>']);
                 anticiposlist.setMode('SINGLE');
 
                 params = {
@@ -85979,24 +87491,26 @@ console.log(idCliente);
             case 'visualizarCobranza':
                 var store = Ext.getStore('Transacciones'),
                     url = "http://" + localStorage.getItem("dirIP") + '/iMobile/COK1_CL_Consultas/RegresarCobranzaiMobileCliente',
-
                     params = {
                         CardCode: idCliente,
-                        CardName: ''
+                        Tipo: ''
                     };
 
                 store.getProxy().setUrl(url);
-                store.setParams(params);                
+                store.setParams(params);
 
                 view.push({
                     xtype: 'visualizacioncobranzalist',
                     title: idCliente
-                    //name: name
-                    //opcion: record.data.action
                 });
 
             view.getActiveItem().setEmptyText('No existen cobros para este cliente');
-            store.load();
+
+            store.load({                
+                callback: function(){
+                    me.recorreVisualizacion (store)
+                }
+            });
         }
     },
 
@@ -86040,8 +87554,7 @@ console.log(idCliente);
                     Ext.Msg.alert("Monedas diferentes", 'Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.');
                     return;
                 }
-
-                console.log(seleccion[i].data);
+                
                 total += seleccion[i].data.TotalDocumento;
                 seleccion[i].data.aPagar = true;
             }
@@ -86061,6 +87574,7 @@ console.log(idCliente);
             me.getTotales().down('#aCobrar').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar, moneda)});
             me.getTotales().down('#pagado').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(pagado, moneda)});
             me.getTotales().down('#pendiente').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar - pagado, moneda)});
+
         } else {
             Ext.Msg.alert("Sin selección", "Seleccione al menos una factura para continuar.");
         }
@@ -86352,9 +87866,7 @@ console.log(idCliente);
                 "Cobranza.CodigoVendedor": localStorage.getItem("CodigoUsuario"),
                 "Cobranza.Tipo": 'C',
                 "Cobranza.CodigoCliente": idCliente
-            };
-
-            console.log(me.getNavigationCobranza().opcion, 'opcion');
+            };            
 
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
@@ -86405,9 +87917,10 @@ console.log(idCliente);
                 }
                 
             });
-console.log(params);
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
+            
+            console.log(params);
 
             Ext.data.JsonP.request({
                 url: url,
@@ -86455,13 +87968,18 @@ console.log(params);
             view = me.getMainCard(),
             navigationCobranza = view.getActiveItem(),
             titulo = navigationCobranza.down('toolbar'),
-            totales = Ext.getStore('Totales'),
-            facturas = Ext.getStore('Facturas');
+            totales = Ext.getStore('Totales')
+        //    facturas = Ext.getStore('Facturas');
 
         navigationCobranza.remove(titulo, true); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
         totales.removeAll();
-        me.pagado = 0;
-        facturas.clearFilter();
+
+        if(me.getNavigationCobranza().opcion == 'anticipo'){
+            Ext.getStore('Anticipos').clearFilter();
+        } else {
+            Ext.getStore('Facturas').clearFilter();
+        }
+
         view.setActiveItem(0);
     },
 
@@ -86482,6 +88000,7 @@ console.log(params);
             store = Ext.getStore('Transacciones'),
             idCliente = me.getMenuNav().getNavigationBar().getTitle(),
             value = button.up('toolbar').down('#buscarCobranzas').getValue(),
+            tipo = button.up('toolbar').down('#buscarTipo').getValue(),
             list = button.up('visualizacioncobranzalist');
 
             list.setEmptyText('No existen cobros para este cliente');
@@ -86490,26 +88009,282 @@ console.log(params);
         store.setParams({
             Criterio: value,
             CardCode: idCliente,
-            CardName: ''
+            Tipo: tipo
         });
 
-        store.load();
+        store.load({
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
+        });
+    },
+
+    limpiaBusquedaTransacciones: function (searchfield) {
+        var me = this,
+            store = me.getVisualizacionCobranzaList().getStore(),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle();
+
+        store.resetCurrentPage();        
+
+        if(searchfield.getItemId() == 'buscarCobranzas'){
+            store.setParams({
+                Criterio: '',
+                CardCode: idCliente
+            });
+        } else {
+            store.setParams({
+                Tipo: '',
+                CardCode: idCliente
+            });
+        }
+
+        store.load({
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
+        });
+    },
+
+    recorreVisualizacion: function (store){
+        var me = this,
+            tipo;
+
+        store.each(function (item, index, length) {            
+            tipo = item.get('Tipo');            
+
+            item.set('NombreCliente', me.getMenuNav().down('toolbar').getTitle().getTitle());
+
+            if(tipo == 'C'){
+                item.set('TipoTransaccion', 'Cobranza de factura');                
+            }
+
+            if(tipo == 'A'){
+                item.set('TipoTransaccion', 'Anticipo de pedido');                
+            }           
+        });
     },
 
     launch: function (){
         var me = this;                
         Ext.getStore('Facturas').on('load', me.agregaSaldoAMostrar);
         Ext.getStore('Anticipos').on('load', me.agregaSaldoAMostrar);
+    },
+
+    onChangeTipoCobranza: function (t, newValue, oldValue, eOpts) {
+        var me = this,
+            store = Ext.getStore('Transacciones'),
+            idCliente = me.getMenuNav().getNavigationBar().getTitle(),
+            value = t.up('toolbar').down('#buscarCobranzas').getValue(),
+            tipo = newValue,
+            list = t.up('visualizacioncobranzalist');
+        console.log(list);
+        console.log(value);
+        list.setEmptyText('No existen cobros para este cliente');
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value,
+            CardCode: idCliente,
+            Tipo: tipo
+        });
+
+        store.load({
+            callback: function(){
+                me.recorreVisualizacion (store);
+            }
+        });
     }
 });
 
 /**
- * Created by th3gr4bb3r on 7/21/14.
+ * Created by Alí on 9/1/14.
  */
 Ext.define('APP.controller.phone.Informes', {
-    extend: 'Ext.app.Controller',
+    extend: 'Ext.app.Controller',    
+    config:{
+    	refs:{
+            menuNav: 'menunav'    		
+    	},
 
-    config:{}
+    	control: {
+    		'list':{
+    			itemtap: 'muestraOpcionElegida'
+    		},
+            'informesform #crearInforme':{
+                tap: 'generaInforme'
+            }
+    	}
+    },
+
+    muestraOpcionElegida: function (list, index, target, record){
+    	var me = this
+    		view = me.getMenuNav();
+
+    	switch (record.data.action){
+    		case 'bitacoraVendedores':
+                if(view.getActiveItem().isXType('container')){
+                    return;
+                }
+                
+    			view.push({
+    				html: 'Bitácora de vendedores'
+    			});
+
+    			break;
+
+    		case 'analisisVentas':
+
+                if(view.getActiveItem().isXType('analisisventaslist')){
+                    return;
+                }
+
+    			view.push({
+    				xtype: 'analisisventaslist',
+    				title: 'Análisis de Ventas'
+    			});
+
+                me.agregaOpciones('clientes');
+    			break;
+
+    		case 'analisisClientes':
+                me.auxiliarPonCodigos('Clientes');
+
+                break;
+
+            case 'analisisArticulos':
+                me.auxiliarPonCodigos('Articulos');
+                break;
+    	}
+    },
+
+    agregaOpciones: function(criterio){
+        if((criterio === 'clientes' && this.getMenuNav().clientes == undefined) || 
+            (criterio === 'articulos' && this.getMenuNav().articulos == undefined)){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenCodigos",
+                params = {  
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token"),
+                    Criterio: criterio
+                };
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
+
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].codigo,
+                                value: datos[i].codigo
+                            };
+                        }                    
+
+                        if(criterio === 'clientes'){
+                            me.getMenuNav().clientes = opciones;
+                            Ext.Viewport.setMasked(false);
+                            me.agregaOpciones('articulos');
+                        } else {
+                            me.getMenuNav().articulos = opciones;
+                            Ext.Viewport.setMasked(false);
+                            me.agregaOpciones('clientes');
+                        }                                                                        
+
+                    } else {
+                        Ext.Msg.alert("No se pudieron obtener los códigos", "Se presentó un problema al intentar obtener los códigos: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
+                    }
+                }
+                  });
+        }
+    },
+
+    ponCodigos: function(criterio){
+        var me = this,
+            view = me.getMenuNav(),
+            form = view.getActiveItem(),
+            last = criterio == 'Clientes'? me.getMenuNav().clientes[me.getMenuNav().clientes.length-1].value : me.getMenuNav().articulos[me.getMenuNav().articulos.length-1].value;
+            codigos = Object.getOwnPropertyDescriptor(me.getMenuNav(), criterio.substring(0,1).toLowerCase() + criterio.substring(1, criterio.length)).value;
+                
+        form.down('#codigoDesde').setOptions(codigos);
+        form.down('#codigoHasta').setOptions(codigos);
+        form.down('#codigoHasta').setValue(last);
+    },
+
+    generaInforme: function(button){
+        var me = this,
+            view = me.getMenuNav(),
+            informes = Ext.getStore('Informes'),
+            fechaDesde = Ext.Date.format(button.up('informesform').down('#fechaDesde').getValue(), "Y-m-d"),
+            fechaHasta = Ext.Date.format(button.up('informesform').down('#fechaHasta').getValue(), "Y-m-d"),
+            codigoDesde = button.up('informesform').down('#codigoDesde').getValue(),
+            codigoHasta = button.up('informesform').down('#codigoHasta').getValue(),
+            criterio = fechaDesde + "," + fechaHasta + "," + codigoDesde + "," + codigoHasta,
+            url;
+
+        if(view.getActiveItem().isXType('informesgeneradoslist')){
+            return;
+        }
+
+        view.push({            
+            xtype: 'informesgeneradoslist',
+            title: view.titulo
+        });
+
+        console.log(view.titulo == 'Articulos');
+
+        if(view.titulo == 'Articulos'){
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeArticulos";
+            
+            informes.getProxy().setUrl(url);
+            view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
+            ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.descripcion +
+            ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +  
+            ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +  
+             ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
+                      '<div style="font-size: 90%"> <div><p> </div>',
+                '</div>'].join(''));
+        } else{
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeClientes";
+            informes.getProxy().setUrl(url);
+        }
+
+        informes.setParams({
+            Criterio: criterio            
+        });
+
+        console.log(informes.getProxy().getUrl());
+
+        informes.load();
+    },
+
+    auxiliarPonCodigos: function (criterio){
+        var me = this,
+            view = me.getMenuNav();
+
+        if(view.getActiveItem().isXType('informesform')){
+            return;
+        }                   
+
+        view.push({
+            xtype: 'informesform',
+            title: criterio
+        });
+
+        me.getMenuNav().titulo = criterio;        
+        me.ponCodigos(criterio);
+    }
 });
 
 /**
@@ -86517,83 +88292,181 @@ Ext.define('APP.controller.phone.Informes', {
  */
 Ext.define('APP.controller.phone.Configuracion', {
     extend: 'Ext.app.Controller',
+                                        
 
     config: {
-        refs:{
-            fileUpload:'configuracionpanel fileupload',
-            imagenCmp:'configuracionpanel component[id=imagencmp]',
-            opcionesOrden: 'opcionesorden'
+        refs: {
+            fileUpload: 'configuracionpanel fileupload',
+            imagenCmp: 'configuracionpanel component[id=imagencmp]',
+            opcionesOrden: 'opcionesorden',
+            opcionesOrdenesList: 'opcionordeneslist'            
         },
-        control:{
-            'configuracionpanel button[action=subirimagen]': {
-                tap: function(){
+        control: {
+            'configuracionpanel container button[action=subirimagen]': {
+                tap: function () {
 
                     Ext.device.Camera.capture({
-                        success: function(data) {
+                        success: function (data) {
                             var imagecmp = this.getImagenCmp(),
                                 imagesize = this.sizeString(data) / 1024 / 1024;
 
-                            if(imagesize < 10){
-                                localStorage.setItem("imagenorden","data:image/jpeg;base64," + data);
-                                imagecmp.setHtml("<img src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
-
-                                var list = this.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
-
-                                list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'))
+                            if (imagesize < 10) {
+                                imagecmp.setHtml("<img id='imagen_background' src='data:image/jpeg;base64," + data + "' style='width:100%; height:auto;'>");
                             }
-                            else{
-                                Ext.Msg.alert("Error","La imagen debe de ser menor de 4 megas");
+                            else {
+                                Ext.Msg.alert(APP.core.config.locale.config.lan.Configuracion.seleccionarMonedaError,
+                                    APP.core.config.locale.config.lan.Configuracion.tamanioImagen);
                             }
                         },
-                        source:'album',
+                        source: 'album',
                         destination: 'data',
-                        encoding:'jpg',
-                        scope:this
+                        encoding: 'jpg',
+                        scope: this
                     });
 
 
-
                     /*var imagecmp = this.getImagenCmp(),
-                        imagesize = this.sizeString(data) / 1024 / 1024;
+                     imagesize = this.sizeString(data) / 1024 / 1024;
 
-                    if(data.indexOf("data:image/") >= 0){
-                        if(imagesize < 10){
-                            localStorage.setItem("imagenorden",data);
-                            imagecmp.setHtml("<img src='" + data + "' style='width:100%; height:auto;'>");
-                        }
-                        else{
-                            Ext.Msg.alert("Error","La imagen debe de ser menor de 4 megas");
-                        }
-                    }
-                    else{
-                        Ext.Msg.alert("Error","No es una imagen válida");
-                        return false;
-                    }*/
+                     if(data.indexOf("data:image/") >= 0){
+                     if(imagesize < 10){
+                     localStorage.setItem("imagenorden",data);
+                     imagecmp.setHtml("<img src='" + data + "' style='width:100%; height:auto;'>");
+                     }
+                     else{
+                     Ext.Msg.alert("Error","La imagen debe de ser menor de 4 megas");
+                     }
+                     }
+                     else{
+                     Ext.Msg.alert("Error","No es una imagen válida");
+                     return false;
+                     }*/
 
                 }
             },
-            'configuracionpanel':{
-                activate:function(){
+            'configuracionpanel': {
+                activate: function () {
                     var imagen = localStorage.getItem("imagenorden");
-                    if(imagen){
+                    if (imagen) {
                         var imagecmp = this.getImagenCmp();
-                        imagecmp.setHtml("<img src='" + imagen + "' style='width:100%; height:auto;'>");
+                        imagecmp.setHtml("<img id='imagen_background' src='"+imagen+"' style='width:100%; height:auto;'>");
 
                     }
 
                 }
+            },
+            'configuracionpanel #guardar': {
+                tap: 'onSaveConfig'
+            },
+            'configuracionpanel container #deleteImage': {
+                tap: 'onDeleteImage'
             }
         }
     },
-    sizeString:function(str){
+    sizeString: function (str) {
         var s = str.length;
-        for (var i=str.length-1; i>=0; i--) {
+        for (var i = str.length - 1; i >= 0; i--) {
             var code = str.charCodeAt(i);
             if (code > 0x7f && code <= 0x7ff) s++;
-            else if (code > 0x7ff && code <= 0xffff) s+=2;
+            else if (code > 0x7ff && code <= 0xffff) s += 2;
             if (code >= 0xDC00 && code <= 0xDFFF) i--; //trail surrogate
         }
         return s;
+    },
+
+    onSaveConfig: function (button) {
+        var me = this,
+            imagecmp = me.getImagenCmp(),
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
+        Ext.Msg.show({
+            title: APP.core.config.Locale.config.lan.Configuracion.titulo,
+            message: APP.core.config.Locale.config.lan.Configuracion.onSaveConfig,
+            width: 300,
+            buttons: [
+                {
+                    itemId: 'no',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaNo
+                },
+                {
+                    itemId: 'yes',
+                    text: APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
+                    ui: 'action'
+                }
+            ],
+            fn: function (buttonId) {
+                if (buttonId == 'yes') {
+                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
+                        localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
+                        list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
+
+                    } else {
+                        localStorage.setItem('imagenorden','');
+                        list.down('#datos_orden img').dom.setAttribute("src", "");
+                    }
+
+                    var idioma = button.up('configuracionpanel').down('selectfield').getValue();
+console.log(idioma);
+                    switch (idioma){
+                        case 'en':
+                            url = 'app/core/data/en_US.json';
+                            break;
+
+                        case 'es':
+                            url = 'app/core/data/es_MX.json';
+                            break;
+                    }
+
+                    Ext.Ajax.request({
+                        url: url, // Leemos del json
+                        
+                        success: function(response){
+                            var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
+                                trans, // Las traducciones para el menú
+                                idiomas = Ext.decode(text);  // Convertimos text en objeto
+                            
+                            APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
+                            trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
+
+                            APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
+
+                            Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
+                            APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                            
+                            //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                            Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+
+/*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
+                                xtype: 'configuracionpanel'
+                            });   */
+
+                            Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
+                                Object.defineProperty(element.getData(), "name", {
+                                    get: function(){
+                                        return trans[index];
+                                    }
+                                });
+                            });
+                        },
+
+                        failure: function(response, opts) {
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, 
+                                APP.core.config.Locale.config.lan.Configuracion.sinIdioma);
+                        }
+                    });
+                }
+            }
+        });
+    },
+
+    onDeleteImage: function () {
+        var me = this,
+            imagecmp = me.getImagenCmp(),
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
+        imagecmp.setHtml("");
+        //imagecmp.getInnerHtmlElement().down('#imagen_background').dom.setAttribute('src','');
+        //localStorage.setItem('imagenorden','');
     }
 });
 
@@ -86605,29 +88478,137 @@ Ext.define('APP.controller.phone.Prospectos', {
 
     config:{
     	refs:{
-			menuNav:'menunav'
+			menuNav:'menunav',            
+            prospectosForm: 'prospectosform',
+            prospectosList: 'prospectoslist'
     	},
 
     	control:{
             'prospectoslist #agregar': {
                 tap: 'onAgregarProspecto'
             },
-            'prospectosform checkboxfield': {
+            'prospectosform checkboxfield[name=este]':{
                 change: 'toggleFieldSetItems'
             },
             'prospectosform numberfield': {
                 keyup: 'respondeAKeyUp'
-            }    		
-    	}
+            },
+            'prospectosform checkboxfield[name=servicio]':{
+                change: 'muestraConceptos'
+            },
+            'prospectosform #agregarProspecto':{
+                tap: 'agregaProspecto'
+            },
+            'prospectoslist #buscar':{
+                tap: 'buscaProspectoBoton'
+            },
+            'prospectosform #estado':{
+                focus:'estableceOpciones'
+            },
+            'prospectoslist':{
+                activate: function(list){
+                    list.getStore().resetCurrentPage();
+/*                    list.getStore().setParams({
+                        Criterio: localStorage.getItem("CodigoDispositivo")
+                    });*/
+                    list.getStore().load();
+                },
+                itemtap: 'muestraProspectos'
+    	   },
+           'prospectoslist #buscarProspectos':{
+                keyup: 'buscaProspecto',
+                clearicontap: 'limpiaBusquedaProspecto'
+           }/*,
+            'prospectosform textfield':{
+                focus: 'muestraTabIndex'
+           }*/
+        }
     },
 
     onAgregarProspecto: function (btn) {
         var me = this,
-            view = me.getMenuNav();
-            
-        view.push({
-            xtype: 'prospectosform'
+            url =  "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerFolioSiguienteProspecto",            
+            view = me.getMenuNav(),
+            codigo,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),                
+            };
+        Ext.Viewport.getMasked().setMessage('Construyendo folio...');
+        Ext.Viewport.setMasked(true);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {                        
+                   codigo = response.Data[0].Campo1;
+
+                    view.push({
+                        xtype: 'prospectosform'
+                    });
+
+                    me.getProspectosForm().setValues({
+                        CodigoSocio: codigo
+                    });
+
+                    me.getProspectosForm().down("#codigoSocio").setDisabled(true);
+                    Ext.Viewport.setMasked(false);
+
+                } else {                        
+                    Ext.Msg.alert("Error", "No se pudo obtener el código del cliente: " + response.Descripcion);
+                }
+            }
+        });        
+    },
+
+    muestraTabIndex: function (textfield){
+        //var me = this;
+
+        console.log(textfield.getTabIndex());
+    },
+
+    buscaProspectoBoton: function (btn){
+        var me = this,
+            store = me.getProspectosList().getStore(),
+            value = me.getProspectosList().down('searchfield').getValue();
+
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: value
         });
+
+        store.load();
+    },
+
+    buscaProspecto: function (searchfield){
+        if(event.keyCode == 13){
+            var me = this,
+                store = me.getProspectosList().getStore(),
+                value = searchfield.getValue();
+
+            store.resetCurrentPage();
+            store.setParams({
+                Criterio: value
+            });
+
+            store.load();
+        }
+    },
+
+    limpiaBusquedaProspecto: function (){
+        var me = this,
+            store = me.getProspectosList().getStore();
+        
+        store.resetCurrentPage();
+        store.setParams({
+            Criterio: ''
+        });
+
+        store.load();    
     },
 
     toggleFieldSetItems: function (chk, value) {
@@ -86677,9 +88658,314 @@ Ext.define('APP.controller.phone.Prospectos', {
                 padre.down('#total').setValue(suma).setDisabled(true);
                 break;
         }
-    }
+    },
 
-});
+    muestraConceptos: function (checkboxfield, newValue, OldValue){
+        var me = this,
+            i;
+        if(newValue){
+            if(checkboxfield.up('fieldset').getItems().length == 1){
+                var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerConceptos",
+                    idCheck = checkboxfield.getItemId().toString(),
+                    concepto = idCheck.charAt(idCheck.length - 1),
+                    params = {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        Concepto: concepto
+                    };
+
+                Ext.Viewport.getMasked().setMessage('Obteniendo ' + checkboxfield.getLabel());
+                Ext.Viewport.setMasked(true);
+
+                    Ext.data.JsonP.request({
+                        url: url,
+                        params: params,
+                        callbackKey: 'callback',
+                        success: function (response) {
+                            if (response.Procesada) {                        
+                                var checkboxfields = new Array(),
+                                    datos = response.Data,
+                                    i;
+
+                                me.agregaCampos(datos, checkboxfields);
+
+                                checkboxfield.up('fieldset').add(checkboxfields);
+                                me.toggleFieldSetItems(checkboxfield, true);
+                                Ext.Viewport.setMasked(false);
+                            } else {
+                                Ext.Viewport.setMasked(true);
+                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);                                
+                            }
+                        }
+                    });
+            } else {
+                me.toggleFieldSetItems(checkboxfield, true);
+            }
+        } else {
+
+            me.toggleFieldSetItems(checkboxfield, false);
+        }
+    },
+
+    agregaCampos: function(datos, checkboxfields){
+        var i;
+
+        for (i = 0; i < datos.length; i++){
+
+            checkboxfields[i] = Ext.field.Checkbox({
+                xtype: 'checkboxfield',
+                name: datos[i].Nombre,
+                label: datos[i].Nombre,
+                value: datos[i].Codigo                
+            });8
+        }
+    },  
+
+    estableceOpciones: function (selectfield){
+        var me = this;
+
+        if(selectfield.getOptions() == null){ // Checamos si tiene opciones   
+            selectfield.setOptions(me.getMenuNav().estados);
+            selectfield.showPicker(); 
+        }
+    },    
+
+    agregaProspecto: function (button) {
+        var me = this,
+            i, j, k, l = 1,
+            view = me.getMenuNav(),
+            form = me.getProspectosForm(),
+            valores = form.getValues(),
+            msg = 'Se agregó el prospecto exitosamente con folio ',
+            campo, elementos,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                "oProspecto.CodigoSocio": valores.CodigoSocio,
+                "oProspecto.NombreSocio": valores.NombreSocio,
+                "oProspecto.TipoPersona": valores.TipoPersona,
+                "oProspecto.RFC": valores.RFC,
+                "oProspecto.Direcciones[0].Calle": valores.Calle,
+                "oProspecto.Direcciones[0].NoExterior": valores.NoExterior,
+                "oProspecto.Direcciones[0].NoInterior": valores.NoInterior,
+                "oProspecto.Direcciones[0].Colonia": valores.Colonia,
+                "oProspecto.Direcciones[0].Municipio": valores.Municipio,
+                "oProspecto.Direcciones[0].Ciudad": valores.Ciudad,
+                "oProspecto.Direcciones[0].Estado": valores.Estado,
+                //"oProspecto.Direcciones[0].Pais": valores.
+                "oProspecto.Direcciones[0].CodigoPostal": valores.CodigoPostal,
+                "oProspecto.Contacto1.CodigoSocio": valores.CodigoSocio,
+                "oProspecto.Contacto1.CodigoContacto": l++,
+                "oProspecto.Contacto1.Nombre": valores.nombreEncargado,
+                "oProspecto.Contacto1.Telefono1": valores.telOficinaEncargado,
+                "oProspecto.Contacto1.TelefonoMovil": valores.telMovilEncargado,
+                "oProspecto.zonaDeInfluencia": valores.zonaDeInfluencia,
+                "oProspecto.comentarios": valores.comentarios
+            };
+
+        for(i = 2; i < 5; i++){
+            campo = button.up('prospectosform').down('#contactos' + i); // Esto es un checkboxfield
+            
+            if(campo.getChecked()){
+                elementos = campo.up('fieldset').getItems().items; // Obtenemos los hermanos del checkboxfield
+
+                params["oProspecto.Contacto" + i + ".CodigoSocio"] = valores.CodigoSocio;
+                params["oProspecto.Contacto" + i + ".CodigoContacto"] = l++;                    
+                params["oProspecto.Contacto" + i + ".Nombre"] = elementos[1].getValue(); 
+                params["oProspecto.Contacto" + i + ".Telefono1"] = elementos[2].getValue();                    
+            }
+        }
+
+        if (valores.servicio != null){ // Validamos si se seleccionó algún servicio
+            for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
+                if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
+                    campo = button.up('prospectosform').down('#conceptos' + (i+1)); // Esto es un Fieldset
+                    elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
+                    k = 0;
+
+                    for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
+                        if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
+                            params["oProspecto.Conceptos" + (i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
+                        }
+                    }
+                }
+            }
+        }
+
+        campo = button.up('prospectosform').down('#superficieCheck'); // Esto es un Checkboxfield
+
+        if(campo.getChecked()){
+            params["oProspecto.campoAbierto"] = valores.campoAbierto;
+            params["oProspecto.invernadero"] = valores.invernadero;
+            params["oProspecto.macroTunel"] = valores.macroTunel;
+            params["oProspecto.total"] = valores.total;
+        } else {
+            params["oProspecto.campoAbierto"] = 0;
+            params["oProspecto.invernadero"] = 0;
+            params["oProspecto.macroTunel"] = 0;
+            params["oProspecto.total"] = 0;
+        }
+
+        elementos = me.getProspectosForm().getItems().items;
+
+        for(i = 0; i < 3; i++){
+            for(j = 0; j < elementos[i].getInnerItems().length; j++){
+                if(elementos[i].getInnerItems()[j].getRequired()){                    
+                    if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){                        
+                        Ext.Msg.alert("Campo obligatorio", "El campo " + elementos[i].getAt(j).getLabel() + " es obligatorio.");
+                        return;
+                    }
+                }                
+            }                
+        }
+
+        url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
+        
+        Ext.Viewport.getMasked().setMessage('Enviando prospecto...');
+        Ext.Viewport.setMasked(true);
+        console.log(params);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {                        
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
+                    view.pop();                    
+                } else {       
+                    Ext.Viewport.setMasked(false);             
+                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);                    
+                }
+            }
+        });
+    },
+
+    muestraProspectos: function(list, index, target, record){
+        var me = this,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",
+            view = me.getMenuNav(),
+            campo, elementos, i,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                CardCode: record.data.CodigoSocio
+            };
+
+        Ext.Viewport.getMasked().setMessage('Obteniendo prospecto...');
+        Ext.Viewport.setMasked(true);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {
+                    var valores = response.Data[0];
+
+                    view.push({
+                        xtype: 'prospectosform'
+                    }); 
+
+                    //me.estableceOpciones(me.getProspectosForm().down('#estado'));
+                    me.getProspectosForm().down('#estado').setOptions(me.getMenuNav().estados);
+
+                    // Extraemos la dirección
+                    valores = valores.Direcciones[0];
+                    me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
+                    me.getProspectosForm().setValues(valores);
+
+                    // Vamos por los contactos, primero el obligatorio
+                    valores = response.Data[0].Contacto1
+                    campos = me.getProspectosForm().down('#contactos1'); // Esto es un fieldset
+                    elementos = campos.getItems().items; // Obtenemos los items del fieldset en un arreglo
+                    elementos[0].setValue(valores.Nombre);
+                    elementos[1].setValue(valores.Telefono1);
+                    elementos[2].setValue(valores.TelefonoMovil);
+
+                    //Ahora por los otros 3
+
+                    for (i = 2; i < 5; i++){
+                        valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Contacto' + i).value;
+                        
+                        if(valores != null){
+                            if(!(valores.Nombre === "")){
+                                campos = me.getProspectosForm().down('#campo' + i); // Esto es un fieldset
+                                elementos = campos.getItems().items; // Obtenemos a los hijos del fieldset
+                                elementos[0].setChecked(true);
+                                elementos[1].setValue(valores.Nombre);                        
+                                elementos[2].setValue(valores.Telefono1);
+                            }
+                        }
+                    }
+
+                    // Siguen los conceptos.
+                    var checkboxfields = new Array(),
+                        concepto, j;
+
+                    for (i = 1; i < 7; i++){
+                        valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Conceptos' + i).value;
+
+                        if(!(valores.length == 0)){
+                            concepto = me.getProspectosForm().down('#conceptos' + i);
+                            me.agregaCampos(valores, checkboxfields);
+                            concepto.add(checkboxfields);
+                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
+                            elementos = concepto.getItems().items;
+
+                            for (j = 0; j < elementos.length; j++){
+                                elementos[j].setChecked(true);
+                            }
+                        }
+                    }                  
+
+                    // La superficie
+                    valores = response.Data[0];
+                    if(!(valores.total == 0)){
+                        campo = me.getProspectosForm().down('#superficieCheck');
+                        campo.setChecked(true);                        
+                    }   
+
+                    // Ahora los datos básicos como nombre, código, razón social, etc.
+                    valores = response.Data[0];
+                    me.getProspectosForm().setValues(valores);
+
+                    me.getProspectosForm().setValues({
+                        fecha: me.daFormatoAFecha(valores.FechaCreacion)
+                    });                    
+                                        
+                    me.getProspectosForm().setDisabled(true);
+                    me.getProspectosForm().down('button').setHidden(true);
+
+                    setTimeout (function (){
+                        me.getProspectosForm().down('#codigoSocio').focus();
+                        Ext.Viewport.setMasked(false);
+
+                    }, 200);                                
+
+                } else {
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert("Imposible cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
+                }
+            }
+        }); 
+    },
+
+    daFormatoAFecha: function(fecha){
+        anio = fecha.substring(0,4);
+        mes = fecha.substring(5,7);
+        dia = fecha.substring(8,10);
+        
+        return dia + '-' + mes + '-' + anio;
+    }
+}); 
 
 /**
  * Created by th3gr4bb3r on 7/21/14.
@@ -86700,7 +88986,8 @@ Ext.define('APP.view.phone.menu.MenuList', {
             '</div>',
             '</tpl>'
             //'<div style="clear:both"></div>'
-        ].join('')
+        ].join(''),
+        loadingText: 'Cargando...'
     }
 });
 
@@ -86718,9 +89005,453 @@ Ext.define('APP.view.phone.menu.MenuNav', {
                 iconCls: 'logo'
             }]
         },
+/*         masked:{
+            xtype: 'loadmask',
+            message: 'Trabajando...',
+            fullscreen: true,
+            indicator: true
+        },*/
         items: [{
             xtype: 'menulist'
         }]
+    }
+});
+
+/**
+ * Created with JetBrains PhpStorm.
+ * User: Waldix
+ * Date: 16/04/14
+ * Time: 12:01
+ * To change this template use File | Settings | File Templates.
+ */
+Ext.define('APP.view.phone.ordenes.OpcionesOrdenPanel', {
+    extend: 'Ext.tab.Panel',
+    xtype: 'opcionesorden',
+    config: {
+        fullscreen: true,
+        tabBarPosition: 'bottom',
+
+        defaults: {
+            styleHtmlContent: true,
+            background: '#000'
+        }
+    },
+
+    initialize: function(){
+        this.setItems ([
+            {
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.orden,
+                iconCls: 'settings',
+                xtype: 'partidacontainer'
+            },
+            {
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.cliente,
+                iconCls: 'user',
+                xtype: 'clientecontainer'
+            },
+            {
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.editar,
+                itemId: 'editarPedido',
+                iconCls: 'fa fa-pencil-square-o',
+                xtype: 'editarpedidoform'
+            },
+            {
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.eliminar,
+                iconCls: 'fa fa-times',
+                itemId: 'eliminar'
+            },
+            {
+                title: APP.core.config.Locale.config.lan.OpcionesOrdenPanel.terminar,
+                iconCls: 'action',
+                itemId: 'terminar'
+            }
+        ]);
+
+        this.callParent(arguments);
+    }
+});
+
+Ext.define('APP.view.phone.ordenes.NavigationOrden', {
+    extend: 'Ext.NavigationView',
+    xtype: 'navigationorden',
+    config: {                
+        navigationBar: {
+            items:[{
+                xtype: 'button',
+                align: 'right',
+                iconCls: 'logo'
+            },{
+                xtype: 'button',
+                text: APP.core.config.Locale.config.lan.NavigationOrden.agregar,
+                align: 'left',
+                itemId: 'agregarProductos'
+            }]
+        },
+/*        masked:{
+            xtype: 'loadmask',
+            message: 'Trabajando...',
+            fullscreen: true,
+            indicator: true
+        },*/
+        items: [{
+            xtype: 'opcionesorden'
+        }]
+    }
+
+//     initialize: function(){
+//         console.log('NavigationOrden');
+//         var me = this;
+
+//         // me.setNavigationBar({
+//         //     items:[{
+//         //         xtype: 'button',
+//         //         align: 'right',
+//         //         iconCls: 'logo'
+//         //     },{
+//         //         xtype: 'button',
+//         //         text: APP.core.config.Locale.config.lan.NavigationOrden.agregar,
+//         //         align: 'left',
+//         //         itemId: 'agregarProductos'
+//         //     }]
+//         // });
+
+//         //console.log(this.config.items);
+        
+//         me.config.navigationBar.items[1].text=APP.core.config.Locale.config.lan.NavigationOrden.agregar;
+//         // me.config.navigationBar.items.push({
+//         //     xtype: 'button',
+//         //     text: APP.core.config.Locale.config.lan.NavigationOrden.agregar,
+//         //     align: 'left',
+//         //     itemId: 'agregarProductos'
+//         // });
+//         console.log(me.config.navigationBar);
+        
+        
+//         /*({
+//                 xtype: 'button',
+//                 text: APP.core.config.Locale.config.lan.NavigationOrden.agregar,
+//                 align: 'left',
+//                 itemId: 'agregarProductos'
+//             });*/
+
+        
+// /*        me.setNavigationBar({
+//             items:[{
+//                 xtype: 'button',
+//                 align: 'right',
+//                 iconCls: 'logo'
+//             },{
+//                 xtype: 'button',
+//                 text: APP.core.config.Locale.config.lan.NavigationOrden.agregar,
+//                 align: 'left',
+//                 itemId: 'agregarProductos'
+//             }]
+//         });*/
+
+//         // this.setItems([{
+//         //     xtype: 'opcionesorden'
+//         // }]);
+//         // console.log(me.config.navigationBar)
+//          me.callParent(arguments);
+//     }
+});
+
+/**
+ * @class Imobile.view.cobranza.TotalAPagarContainer
+ * @extends extendsClass
+ * Description
+ */
+Ext.define('APP.view.phone.cobranza.TotalAPagarContainer', {
+    extend: 'Ext.Container',    
+    xtype: 'totalapagarcontainer',
+    config: {
+        /*scrollable: {
+            direction: 'vertical',
+            directionLock: true
+        },*/
+        layout: 'vbox'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
+            style:{
+                background: 'gray'
+            },
+            xtype: 'totalapagarlist',
+            flex: 5,
+
+            },{
+                xtype: 'totalescontainer',
+                flex: 1
+            },{
+                xtype: 'container',
+                layout: 'hbox',
+                items:[{
+                    xtype: 'button',
+                    text: APP.core.config.Locale.config.lan.TotalAPagarContainer.terminar,
+                    ui: 'confirm',
+                    itemId: 'terminar',
+                    margin: 10,
+                    flex: 1
+                },{
+                    xtype: 'button',
+                    text: APP.core.config.Locale.config.lan.TotalAPagarContainer.cancelar,
+                    ui: 'decline',
+                    itemId: 'cancelar',
+                    margin: 10,
+                    flex: 1 
+                }]
+            }]);
+
+        me.callParent(arguments);
+    }
+});
+
+Ext.define('APP.view.phone.cobranza.NavigationCobranza', {
+    extend: 'Ext.NavigationView',
+    xtype: 'navigationcobranza',
+    config: {
+        navigationBar: {
+            items:[
+                {
+                    xtype: 'button',
+                    align: 'right',
+                    iconCls: 'logo'
+                },
+                {
+                    xtype: 'button',
+                    text:'Agregar',
+                    align: 'left',
+                    itemId: 'agregarPago'
+                }
+            ]
+        },
+
+/*        masked:{
+            xtype: 'loadmask',
+            message: 'Trabajando...',
+            fullscreen: true,
+            indicator: true
+        },*/
+
+        items: [{
+            xtype: 'totalapagarcontainer'
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.phone.Main
+ * @extends Imobile.view.Main
+ * La vista principal de nuestra version de telefono
+ * @oswaldo@codetlan.com
+ */
+
+Ext.define('APP.view.phone.MainCard',{
+    extend:'Ext.Panel',
+    xtype:'maincard',
+    config: {
+        layout:'card',
+        activeItem:0,
+
+        items: [{
+            xtype: 'menunav'
+        },{
+            xtype: 'navigationorden'
+        },{
+            xtype: 'navigationcobranza'
+        }]
+    }
+
+/*    initialize: function(){        
+        this.setItems([{
+            xtype: 'menunav'
+        },{
+            xtype: 'navigationorden'
+        },
+        {
+            xtype: 'navigationcobranza'
+        }]);
+
+        this.callParent(arguments);
+        console.log('MainCard');
+    }*/
+});
+
+/**
+ * Created by th3gr4bb3r on 7/22/14.
+ */
+Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
+    extend: 'Ext.form.Panel',
+    xtype: 'configuracionpanel',
+    config: {
+        scrollable: {
+            direction: 'vertical',
+            directionLock: true
+        },
+        padding: 10,
+    },
+
+    initialize: function(){
+        this.setItems ([
+            {
+                xtype: 'fieldset',
+                title: APP.core.config.Locale.config.lan.ConfiguracionPanel.imagenEmpresa,
+                flex: 1,
+                items: [
+                    {
+                        xtype: 'component',
+                        id: 'imagencmp',
+                        height: 'auto'
+                    }
+                ]
+            },
+            {
+                xtype: 'container',
+                layout: 'hbox',
+                margin: '0 auto',
+                flex: 1,
+                items: [
+                    {
+                        itemId: 'fileLoadBtn',
+                        xtype: 'button',
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.seleccionarImagen,
+                        action: 'subirimagen',
+                        width: '60%',
+                        style: {
+                            marginTop: '5%',
+                            marginBottom: '5%'
+                        }
+                    },
+                    {
+                        xtype: 'spacer',
+                        flex: 1
+                    },
+                    {
+                        itemId: 'deleteImage',
+                        xtype: 'button',
+                        iconCls: 'delete',
+                        flex: 1,
+                        style: {
+                            marginTop: '5%',
+                            marginBottom: '5%'
+                        }
+                    }
+                ]
+            },
+            {
+                xtype: 'selectfield',
+                name: 'idioma',
+                label: APP.core.config.Locale.config.lan.ConfiguracionPanel.idioma,
+                labelWidth: '40%',
+
+                options: [
+                    {
+                        text: 'Español',
+                        value: 'es'
+                    },
+                    {
+                        text: 'English',
+                        value: 'en'
+                    }
+                ]
+            },
+            {
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'guardar',
+                        //iconCls: 'action',
+                        ui: 'confirm',
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.guardar
+                    }
+                ]
+            }
+        ]);
+        this.callParent(arguments);
+    }    
+});
+
+/**
+ * @class Imobile.view.clientes.ClientesList
+ * @extends Ext.dataview.List
+ * Esta es la lista para listar clientes de la cartera
+ */
+Ext.define('APP.view.phone.clientes.ClientesList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'clienteslist',
+                                                                                   
+    config: {
+        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{CodigoSocio}</p>', '<span style="color: cadetblue;"><b>{NombreSocio}</b></span>', '</div>'].join(''),
+        store: 'Clientes',
+        useSimpleItems: true,
+        emptyText: '<div style="margin-top: 20px; text-align: center">No hay clientes con esos datos</div>',
+        disableSelection: true,
+        onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);
+        }
+    },
+
+    initialize: function(){
+        this.setItems(
+         [{
+            xtype: 'toolbar',
+            docked: 'top',
+            layout:'hbox',
+            items: [{
+                xtype: 'searchfield',
+                itemId: 'buscarClientes',
+                placeHolder: APP.core.config.Locale.config.lan.ClientesList.buscarClientes,
+                flex: 8
+            },{
+                xtype: 'button',
+                iconCls: 'search',
+                itemId: 'btnBuscarClientes',
+                flex: 0.5
+            }]
+        }]);
+
+        this.setPlugins([{
+            xclass: 'Ext.plugin.ListPaging',
+            autoPaging: true,
+            loadMoreText: APP.core.config.Locale.config.lan.ProductosList.verMas
+        }]);
+
+        this.setMasked({
+            xtype: 'loadmask',
+            message: APP.core.config.Locale.config.lan.ClientesList.cargando
+        });
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        this.callParent(arguments);
+    }
+});
+
+/**
+ * @class Imobile.view.clientes.OpcionClienteList
+ * @extends Ext.dataview.List
+ * Esta es la lista de las opciones que tiene un cliente
+ */
+Ext.define('APP.view.phone.ordenes.OpcionOrdenesList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'opcionordeneslist',
+    config: {
+        itemTpl: '{title}'
+    },
+
+    initialize: function(){
+        this.setData([                                                  
+            {title: APP.core.config.Locale.config.lan.OpcionOrdenesList.ordenDeVenta, action: 'orden'},
+            {title: APP.core.config.Locale.config.lan.OpcionOrdenesList.visualizarTransacciones, action: 'visualizar'}
+        ]);
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        this.callParent(arguments);
     }
 });
 
@@ -86736,23 +89467,305 @@ Ext.define('APP.view.phone.ordenes.OrdenList', {
         pressedCls:'testPress',
         itemCls: 'partida',
         height:"100%",
-        itemTpl: ['<section>',
+        store: 'Ordenes',
+    },
+
+    initialize: function(){
+        this.setItemTpl(['<section>',
             '<span id="imagen"><img src="{Imagen}" width="60px" height="60px"></span>',
             '<span>',
             '<p style="margin: 0px;">{CodigoArticulo}</p>',
             '<p style="margin: 0px;"><b>{nombreMostrado}</b></p>',
-            '<p style="margin: 0px; color: red;">Cantidad: <b>{cantidad}</b></p>',
+            '<p style="margin: 0px; color: red;">' + APP.core.config.Locale.config.lan.OrdenList.cantidad +' <b>{cantidad}</b></p>',
             '</span>',
             '<span>',
-            '<p style="margin: 0px;">Precio: {precioConDescuento} </p>',
-            '<p style="margin: 0px;">Desc: {PorcentajeDescuento}</p>',
-            '<p style="margin: 0px;"><b>Total: {importe}</b></p>',
-            '</span></section>'].join(''),
-        store: 'Ordenes'
+            '<p style="margin: 0px;">' + APP.core.config.Locale.config.lan.OrdenList.precio + ' {precioConDescuento} </p>',
+            '<p style="margin: 0px;">' + APP.core.config.Locale.config.lan.OrdenList.descuento + ' {PorcentajeDescuento}</p>',
+            '<p style="margin: 0px;"><b>' + APP.core.config.Locale.config.lan.OrdenList.total + ' {importe}</b></p>',
+            '</span></section>'].join(''));
+
+        this.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        this.callParent(arguments);
     },
 
     onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e); 
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.MonedasList
+ * @extends extendsClass
+ * Description Lista de las monedas
+ */
+Ext.define('APP.view.phone.ordenes.AlmacenList', {
+    extend: 'Ext.dataview.List',
+    requires: [],
+    xtype: 'almacenlist',
+    config: {
+        itemTpl: ['<tpl for="."><tpl if="Predeterminado == true"><div class="imobile-cliente-tpl direc-selected"><tpl else><div class="imobile-cliente-tpl"></tpl>', '<span><p><b>{CodigoAlmacen}</b> {NombreAlmacen}</p></span>', '<i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i></div></tpl>'].join(''),
+        selectedCls: 'direc-selected',
+        loadingText: 'Cargando...'
+        /*onItemDisclosure: function (record, listItem, index, e) {
+         this.fireEvent("tap", record, listItem, index, e);
+         },*/
+    }
+});
+
+/**
+ * Created with JetBrains PhpStorm.
+ * User: Waldix
+ * Date: 16/04/14
+ * Time: 12:23
+ * To change this template use File | Settings | File Templates.
+ */
+Ext.define('APP.form.phone.clientes.ClienteForm', {
+    extend: 'Ext.form.Panel',
+    xtype: 'clienteform',
+               
+                            
+                         
+                          
+      
+    config: {
+        //padding:'0 0 15 0',
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
+            {
+                xtype: 'fieldset',
+                itemId: 'datosCliente',
+                instructions: APP.core.config.Locale.config.lan.ClienteForm.instrucciones,
+                defaults: {
+                    disabled: true,
+                    clearIcon: true,
+                    autoCapitalize: true,
+                    labelWidth: '45%'
+                },
+                layout : {
+                    type  : 'vbox',
+                    align : 'stretch'
+                },
+                flex: 1,
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'CodigoSocio',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.codigo
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'NombreSocio',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.nombre
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'RFC',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.rfc
+                    },
+                    {
+                        xtype: 'numberfield',
+                        name: 'Telefono',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.telefono
+                    },
+                    {
+                        xtype: 'emailfield',
+                        name: 'Correo',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.correo
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'NombreListaPrecio',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.listaPrecios
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'LimiteCredito',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.credito
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'Saldo',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.saldo
+                    },
+                    {
+                        xtype: 'direccioneslist',
+                        height: 80
+                    }
+                ]
+            }
+        ]);
+
+        me.callParent(arguments);
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.ClienteContainer
+ * @extends Ext.Container
+ * Description
+ */
+Ext.define('APP.view.phone.ordenes.ClienteContainer', {
+    extend: 'Ext.Container',
+    requires: [],
+    xtype: 'clientecontainer',
+    config: {
+        layout: 'fit',
+        items: [{
+            padding: 7,
+            xtype: 'clienteform',
+            flex: 1
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionEntregaList
+ * @extends extendsClass
+ * Description Lista de las direcciones para los envíos de los clientes
+ */
+Ext.define('APP.view.phone.ordenes.DireccionEntregaList', {
+    extend: 'Ext.dataview.List',            
+    requires: [],
+    xtype: 'direccionentregalist',
+    config: { 
+    	itemTpl: '{calle}, {colonia}',
+        store: 'Direcciones',
+        loadingText: 'Cargando...'
+    	/*onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },*/
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionEntregaContainer
+ * @extends Ext.Container
+ * Description
+ */
+Ext.define('APP.view.phone.ordenes.DireccionEntregaContainer', {
+    extend: 'Ext.Container',
+    requires: [],
+    xtype: 'direccionentregacontainer',
+    config: {
+        scrollable: {
+            direction: 'vertical',
+            directionLock: true
+        },
+        layout: 'fit',
+        items: [{
+            xtype: 'direccionentregalist'            
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionesList
+ * @extends Ext.dataview.List
+ * Esta es la lista de las opciones que tiene un cliente
+ */
+Ext.define('APP.view.phone.ordenes.DireccionesList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'direccioneslist',
+    config: {
+        striped: true,
+        onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },        
+        itemTpl: '{title}'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.DireccionesList.entrega, action: 'entrega'},
+            {title: APP.core.config.Locale.config.lan.DireccionesList.fiscal, action: 'fiscal'}
+        ]);
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        me.callParent(arguments);
+    }        
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionesContainer
+ * @extends extendsClass
+ * Description
+ */
+Ext.define('APP.view.phone.ordenes.DireccionesContainer', {
+    extend: 'Ext.Container',
+    requires: [],
+    xtype: 'direccionescontainer',
+    config: {
+    	//scrollable: false,
+        layout: 'fit',        
+        items: [{
+            xtype: 'direccioneslist'
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionFiscalList
+ * @extends Ext.dataview.List
+ * Description Lista de las direcciones fiscales de los clientes
+ */
+Ext.define('APP.view.phone.ordenes.DireccionFiscalList', {
+    extend: 'Ext.dataview.List',            
+    requires: [],
+    xtype: 'direccionfiscallist',
+    config: { 
+    	itemTpl: '{calle}, {colonia}',
+        store: 'DireccionesFiscales',
+    	onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },
+        loadingText: 'Cargando...'
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.DireccionFiscalContainer
+ * @extends Ext.Container
+ * Description
+ */
+Ext.define('APP.view.phone.ordenes.DireccionFiscalContainer', {
+    extend: 'Ext.Container',
+    requires: [],
+    xtype: 'direccionfiscalcontainer',
+    config: {
+        scrollable: {
+            direction: 'vertical',
+            directionLock: true
+        },
+        layout: 'fit',
+        items: [{
+            xtype: 'direccionfiscallist'
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.ventas.MonedasList
+ * @extends extendsClass
+ * Description Lista de las monedas
+ */
+Ext.define('APP.view.phone.ordenes.MonedasList', {
+    extend: 'Ext.dataview.List',            
+    requires: [],
+    xtype: 'monedaslist',
+    config: {     	
+         itemTpl: ['<tpl for="."><tpl if ="Predeterminada == true"><div class="imobile-cliente-tpl direc-selected"><tpl else><div class="imobile-cliente-tpl"></tpl>', '<span><p><b>{CodigoMoneda}</b> {NombreMoneda}</p></span>', '<i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i></div></tpl>'].join(''),
+        store: 'Monedas',
+        selectedCls: 'direc-selected',
+        loadingText: 'Cargando...'
+    	/*onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },*/
     }
 });
 
@@ -86762,13 +89775,16 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
     config: {
         layout: 'vbox',
         xtype: 'container',
-        docked: 'bottom',
-        items: {
+        docked: 'bottom'
+    },
+
+    initialize: function(){
+        this.setItems({
             layout: 'hbox',
             items: [
                 {
                     xtype: 'container',
-                    html: 'Descuento',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.descuento,
                     flex: 1.2,
                     height: 50,
                     itemId: 'descuento',
@@ -86784,7 +89800,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Subtotal',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.subTotal,
                     flex: 1,
                     itemId: 'subtotal',
                     style: {
@@ -86798,7 +89814,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Impuesto',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.impuesto,
                     flex: 1,
                     itemId: 'tax',
                     style: {
@@ -86812,7 +89828,7 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                 },
                 {
                     xtype: 'container',
-                    html: 'Total',
+                    html: APP.core.config.Locale.config.lan.OrdenContainer.total,
                     flex: 1,
                     itemId: 'total',
                     style: {
@@ -86825,7 +89841,8 @@ Ext.define('APP.view.phone.ordenes.OrdenContainer', {
                     }
                 }
             ]
-        }
+        });
+        this.callParent(arguments);
     }
 });
 
@@ -86865,772 +89882,6 @@ Ext.define('APP.view.phone.ordenes.PartidaContainer', {
 });
 
 /**
- * @class Imobile.view.ventas.DireccionesList
- * @extends Ext.dataview.List
- * Esta es la lista de las opciones que tiene un cliente
- */
-Ext.define('APP.view.phone.ordenes.DireccionesList', {
-    extend: 'Ext.dataview.List',
-    xtype: 'direccioneslist',
-    config: {
-        striped: true,
-        onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);            
-        },        
-        itemTpl: '{title}',
-        //scrollable: null,
-        data:[
-            {title: 'Dirección de entrega', action: 'entrega'},
-            {title: 'Dirección fiscal', action: 'fiscal'}
-        ]
-    }
-});
-
-/**
- * Created with JetBrains PhpStorm.
- * User: Waldix
- * Date: 16/04/14
- * Time: 12:23
- * To change this template use File | Settings | File Templates.
- */
-Ext.define('APP.form.phone.clientes.ClienteForm', {
-    extend: 'Ext.form.Panel',
-    xtype: 'clienteform',
-               
-                            
-                         
-                          
-      
-    config: {
-        //padding:'0 0 15 0',
-        items: [
-            {
-                xtype: 'fieldset',
-                itemId: 'datosCliente',
-                instructions: 'Datos del Cliente',
-                defaults: {
-                    disabled: true,
-                    clearIcon: true,
-                    autoCapitalize: true,
-                    labelWidth: '45%'
-                },
-                layout : {
-                    type  : 'vbox',
-                    align : 'stretch'
-                },
-                flex: 1,
-                items: [
-                    {
-                        xtype: 'textfield',
-                        name: 'CodigoSocio',
-                        label: 'Código'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'NombreSocio',
-                        label: 'Nombre'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'RFC',
-                        label: 'RFC'
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name: 'Telefono',
-                        label: 'Teléfono'
-                    },
-                    {
-                        xtype: 'emailfield',
-                        name: 'Correo',
-                        label: 'Correo'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'NombreListaPrecio',
-                        label: 'Lista de Precios'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'LimiteCredito',
-                        label: 'Crédito'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'Saldo',
-                        label: 'Saldo'
-                    },
-                    {
-                        xtype: 'direccioneslist',
-                        height: 80
-                    }
-                ]
-            }
-        ]
-    }
-});
-
-/**
- * @class Imobile.view.ventas.ClienteContainer
- * @extends Ext.Container
- * Description
- */
-Ext.define('APP.view.phone.ordenes.ClienteContainer', {
-    extend: 'Ext.Container',
-    requires: [],
-    xtype: 'clientecontainer',
-    config: {
-        layout: 'fit',
-        items: [{
-            padding: 7,
-            xtype: 'clienteform',
-            flex: 1
-        }]
-    }
-});
-
-Ext.define('APP.form.phone.pedidos.EditarPedidoForm', {
-	extend: 'Ext.form.Panel',
-	xtype: 'editarpedidoform',
-	          
-		                    
-		                 
-		                  
-                             
-	  
-	config:{
-		//padding:'15 15 15 15',
-		items:[/*{        
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {                        
-                        itemId:'guardar',
-                        text:'Guardar',
-                        ui: 'confirm'
-                        //ui:'btn-login-ui',
-                        // handler:function(btn){
-                        //     var form = btn.up('formpanel');
-                        //     form.fireEvent('logged', form);
-                        // }
-                    }
-                ]
-            },*/
-            {
-                xtype:'fieldset',
-                itemId:'datos',
-                title:'Editar Pedido',
-                instructions: 'Ingrese los datos',
-                defaults:{
-                    //required:true,
-                    disabled: true,
-                    clearIcon:true,
-                    autoCapitalize:true,
-                    labelWidth: '45%'
-                },
-                items:[
-                    {
-                        xtype:'textfield',
-                        name:'CodigoSocio',
-                        label: 'Código de Cliente',
-                        itemId: 'codepro'
-                        //value: 12345
-                    },{
-                        xtype:'textfield',
-                        name:'NombreSocio',
-                        label:'Nombre de Cliente'
-                    },{
-                        xtype:'textfield',
-                        name:'LimiteCredito',
-                        label:'Límite de Crédito'
-                    },{
-                        xtype:'textfield',
-                        name:'NombreCondicionPago',
-                        label:'Condición de Crédito'
-                    },{
-                        xtype:'textfield',
-                        name:'Saldo',
-                        label:'Saldo'
-                    },{
-                        xtype:'textfield',
-                        name:'NombreListaPrecio',
-                        label:'Lista de Precios'
-                    },{
-                        xtype:'textfield',
-                        name:'NombreVendedor',
-                        label:'Vendedor'
-                    },{
-                        xtype:'textfield',
-                        name:'descuento',
-                        label:'Descuento'
-                    },{
-                        xtype:'textfield',
-                        name:'CodigoMoneda',
-                        label:'Moneda',
-                        disabled: false,
-                        itemId: 'moneda',
-                        //tpl: ['<div style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"</div>'].join('')
-                        inputCls: 'fa-check'
-                    },{
-                        xtype:'textfield',
-                        name:'tipoCambio',
-                        label:'Tipo de Cambio'  
-                    }
-                ]
-            }
-        ]
-	}
-});
-
-/**
- * Created with JetBrains PhpStorm.
- * User: Waldix
- * Date: 16/04/14
- * Time: 12:01
- * To change this template use File | Settings | File Templates.
- */
-Ext.define('APP.view.phone.ordenes.OpcionesOrdenPanel', {
-    extend: 'Ext.tab.Panel',
-    xtype: 'opcionesorden',
-    config: {
-        fullscreen: true,
-        tabBarPosition: 'bottom',
-
-        defaults: {
-            styleHtmlContent: true,
-            background: '#000'
-        },
-        items: [
-            {
-                title: 'Orden',
-                iconCls: 'settings',
-                xtype: 'partidacontainer'
-            },
-            {
-                title: 'Cliente',
-                iconCls: 'user',
-                xtype: 'clientecontainer'
-            },
-            {
-                title: 'Editar',
-                itemId: 'editarPedido',
-                iconCls: 'fa fa-pencil-square-o',
-                xtype: 'editarpedidoform'
-            },
-            {
-                title: 'Eliminar',
-                iconCls: 'fa fa-times',                
-                itemId: 'eliminar'
-            },
-            {
-                title: 'Terminar',
-                iconCls: 'action',
-                itemId: 'terminar'
-
-            }
-        ]
-    }
-});
-
-Ext.define('APP.view.phone.ordenes.NavigationOrden', {
-    extend: 'Ext.NavigationView',
-    xtype: 'navigationorden',
-    config: {
-        navigationBar: {
-            items:[{
-                xtype: 'button',
-                align: 'right',
-                iconCls: 'logo'
-            },{
-                xtype: 'button',
-                text:'Agregar',
-                align: 'left',
-                itemId: 'agregarProductos'
-            }]
-        },
-        masked:{
-            xtype: 'loadmask',
-            message: 'Trabajando...',
-            fullscreen: true,
-            indicator: true
-        },
-        items: [{
-            xtype: 'opcionesorden'
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.cobranza.TotalAPagarList
- * @extends extendsClass
- * Description Lista de los tipos de pago que eligió el cliente
- */
-Ext.define('APP.view.phone.cobranza.TotalAPagarList', {
-    extend: 'Ext.dataview.List',
-    requires: [],
-    xtype: 'totalapagarlist',
-    config: {
-        itemCls: 'factura',
-    	itemTpl: '{tipo}: <b>{monto}</b>',
-        store: 'Totales'
-    	/*onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);            
-        },*/
-    }
-});
-
-Ext.define('APP.view.phone.cobranza.TotalesContainer', {
-    extend: 'Ext.Container',
-    xtype: 'totalescontainer',
-                           
-    config: {
-        layout: 'hbox',        
-        //itemCls: 'factura',
-        items: [{   
-            xtype: 'container',
-            flex: 1,
-            itemId: 'aCobrar',  
-            html: 'A cobrar',            
-            cls: 'aCobrar2'
-            /*style: {
-                background: 'black',
-                'color': 'yellow',
-                'margin-right': '1px',
-                'text-align': 'center',
-                'font-weight':'bold',
-                'vertical-align':'middle'
-            }*/
-        },{
-            xtype: 'container',
-            html: 'Pagado',
-            flex: 1,
-            itemId: 'pagado',
-            style: {
-                background: 'black',
-                'color': 'green',
-                'margin-right': '1px',
-                'text-align': 'center',
-                'font-weight':'bold'
-            }
-        },{
-            xtype: 'container',
-            html: 'Pendiente',
-            flex: 1,
-            itemId: 'pendiente',
-            style: {
-                background: 'black',
-                'color': 'red',
-                'margin-righ': '1px',
-                'text-align': 'center',
-                'font-weight':'bold'
-            }
-/*            items:[{
-                xtype: 'label',
-                itemId: 'pendiente'
-                //docked: 'bottom'
-            }]*/
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.cobranza.TotalAPagarContainer
- * @extends extendsClass
- * Description
- */
-Ext.define('APP.view.phone.cobranza.TotalAPagarContainer', {
-    extend: 'Ext.Container',
-    requires: [],
-    xtype: 'totalapagarcontainer',
-    config: {
-        /*scrollable: {
-            direction: 'vertical',
-            directionLock: true
-        },*/
-        layout: 'vbox',
-        //activeItem: 0,
-        items: [{
-            style:{
-                background: 'gray'
-            },
-            xtype: 'totalapagarlist',
-            flex: 5/*,
-
-            layout: 'fit',
-            items: [{
-                docked: 'bottom',
-                xtype: 'toolbar',
-                items: [{
-                    xtype: 'spacer'
-                }, {
-                    xtype: 'button',
-                    text:'Agregar Orden',
-                    itemId: 'agregarOrden'
-                }, {
-                    xtype: 'spacer'
-                }]
-            }]*/
-        },{
-            xtype: 'totalescontainer',
-            flex: 1
-        },{
-            xtype: 'container',
-            layout: 'hbox',
-            items:[{
-                xtype: 'button',
-                text: 'Terminar',
-                ui: 'confirm',
-                itemId: 'terminar',
-                margin: 10,
-                flex: 1
-            },{
-                xtype: 'button',
-                text: 'Cancelar',
-                ui: 'decline',
-                itemId: 'cancelar',
-                margin: 10,
-                flex: 1 
-            }]
-        }
-        ]
-    }
-});
-
-Ext.define('APP.view.phone.cobranza.NavigationCobranza', {
-    extend: 'Ext.NavigationView',
-    xtype: 'navigationcobranza',
-    config: {
-        navigationBar: {
-            items:[
-                {
-                    xtype: 'button',
-                    align: 'right',
-                    iconCls: 'logo'
-                },
-                {
-                    xtype: 'button',
-                    text:'Agregar',
-                    align: 'left',
-                    itemId: 'agregarPago'
-                }
-            ]
-        },
-
-        masked:{
-            xtype: 'loadmask',
-            message: 'Trabajando...',
-            fullscreen: true,
-            indicator: true
-        },
-
-        items: [{
-            xtype: 'totalapagarcontainer'
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.phone.Main
- * @extends Imobile.view.Main
- * La vista principal de nuestra version de telefono
- * @oswaldo@codetlan.com
- */
-
-Ext.define('APP.view.phone.MainCard',{
-    extend:'Ext.Panel',
-    xtype:'maincard',
-    config: {
-        layout:'card',
-        activeItem:0,
-        items: [{
-            xtype: 'menunav'
-        },{
-            xtype: 'navigationorden'
-        },{
-            xtype: 'navigationcobranza'
-        }]
-    }
-});
-
-/**
- * Created by th3gr4bb3r on 7/22/14.
- */
-Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
-    extend: 'Ext.Panel',
-    xtype: 'configuracionpanel',
-    config: {
-        scrollable: {
-            direction: 'vertical',
-            directionLock: true
-        },
-        items: [{
-            xtype: 'fieldset',
-            title: 'Imagen de la empresa',
-            padding: 10,
-            layout: {
-                type: 'hbox',
-                align: 'stretch'
-            },
-            defaults: {
-                flex: 1
-            },
-            items: [{
-                xtype: 'component',
-                id:'imagencmp'
-            }]
-        },{
-            itemId: 'fileLoadBtn',
-            xtype: 'button',
-            text:'Seleccionar imagen',
-            action:'subirimagen'
-        },{
-            xtype: 'formpanel',
-            height: 132,
-            autoHeight: true,
-            defaults: {
-                labelWidth: '55%'
-            },
-            items: [{
-                xtype: 'selectfield',
-                name: 'idioma',
-                label: 'Idioma',
-                options: [{
-                    text: 'Español',
-                    value: 'es'
-                },{
-                    text: 'Inglés',
-                    value: 'en'
-                },{
-                    text: 'Portugués',
-                    value: 'pes'
-                }]
-            },{
-                    xtype: 'togglefield',
-                    label: 'Opcion 1'
-            },{
-                xtype: 'togglefield',
-                label: 'Opcion x'
-            }]
-        },{
-            xtype: 'fieldset',
-            padding: 10,
-            docked: 'bottom',
-            items: [{
-                xtype: 'button',
-                itemId: 'guardar',
-                iconCls: 'action',
-                ui: 'confirm',
-                text: 'Guardar Cambios'
-            }]
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.clientes.ClientesList
- * @extends Ext.dataview.List
- * Esta es la lista para listar clientes de la cartera
- */
-Ext.define('APP.view.phone.clientes.ClientesList', {
-    extend: 'Ext.dataview.List',
-    xtype: 'clienteslist',
-                                                                                   
-    config: {
-        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{CodigoSocio}</p>', '<span style="color: cadetblue;"><b>{NombreSocio}</b></span>', '</div>'].join(''),
-        store: 'Clientes',
-        useSimpleItems: true,
-        emptyText: '<div style="margin-top: 20px; text-align: center">No hay clientes con esos datos</div>',
-        disableSelection: true,
-        onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);
-        },
-        items: [{
-            xtype: 'toolbar',
-            docked: 'top',
-            layout:'hbox',
-            items: [{
-                xtype: 'searchfield',
-                itemId: 'buscarClientes',
-                placeHolder: ' Buscar cliente...',
-                flex: 8
-            },{
-                xtype: 'button',
-                iconCls: 'search',
-                itemId: 'btnBuscarClientes',
-                flex: 0.5
-            }]
-        }],
-        plugins: [{
-            xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }],
-        masked: {
-            xtype: 'loadmask',
-            message: 'Cargando...'
-        }
-    }
-});
-
-/**
- * @class Imobile.view.clientes.OpcionClienteList
- * @extends Ext.dataview.List
- * Esta es la lista de las opciones que tiene un cliente
- */
-Ext.define('APP.view.phone.ordenes.OpcionOrdenesList', {
-    extend: 'Ext.dataview.List',
-    xtype: 'opcionordeneslist',
-    config: {
-        itemTpl: '{title}',
-        data:[
-            {title: 'Orden de venta', action: 'orden'},
-            {title: 'Visualizar transacciones', action: 'visualizar'}
-        ]
-    }
-});
-
-/**
- * @class Imobile.view.ventas.MonedasList
- * @extends extendsClass
- * Description Lista de las monedas
- */
-Ext.define('APP.view.phone.ordenes.AlmacenList', {
-    extend: 'Ext.dataview.List',
-    requires: [],
-    xtype: 'almacenlist',
-    config: {
-        itemTpl: ['<tpl for="."><tpl if="Predeterminado == true"><div class="imobile-cliente-tpl direc-selected"><tpl else><div class="imobile-cliente-tpl"></tpl>', '<span><p><b>{CodigoAlmacen}</b> {NombreAlmacen}</p></span>', '<i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i></div></tpl>'].join(''),
-        selectedCls: 'direc-selected'
-        /*onItemDisclosure: function (record, listItem, index, e) {
-         this.fireEvent("tap", record, listItem, index, e);
-         },*/
-    }
-});
-
-/**
- * @class Imobile.view.ventas.DireccionEntregaList
- * @extends extendsClass
- * Description Lista de las direcciones para los envíos de los clientes
- */
-Ext.define('APP.view.phone.ordenes.DireccionEntregaList', {
-    extend: 'Ext.dataview.List',            
-    requires: [],
-    xtype: 'direccionentregalist',
-    config: { 
-    	itemTpl: '{calle}, {colonia}',
-        store: 'Direcciones'        
-    	/*onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);            
-        },*/
-    }
-});
-
-/**
- * @class Imobile.view.ventas.DireccionEntregaContainer
- * @extends Ext.Container
- * Description
- */
-Ext.define('APP.view.phone.ordenes.DireccionEntregaContainer', {
-    extend: 'Ext.Container',
-    requires: [],
-    xtype: 'direccionentregacontainer',
-    config: {
-        scrollable: {
-            direction: 'vertical',
-            directionLock: true
-        },
-        layout: 'fit',
-        items: [{
-            xtype: 'direccionentregalist'            
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.ventas.DireccionesContainer
- * @extends extendsClass
- * Description
- */
-Ext.define('APP.view.phone.ordenes.DireccionesContainer', {
-    extend: 'Ext.Container',
-    requires: [],
-    xtype: 'direccionescontainer',
-    config: {
-    	//scrollable: false,
-        layout: 'fit',        
-        items: [{
-            xtype: 'direccioneslist'
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.ventas.DireccionFiscalList
- * @extends Ext.dataview.List
- * Description Lista de las direcciones fiscales de los clientes
- */
-Ext.define('APP.view.phone.ordenes.DireccionFiscalList', {
-    extend: 'Ext.dataview.List',            
-    requires: [],
-    xtype: 'direccionfiscallist',
-    config: { 
-    	itemTpl: '{calle}, {colonia}',
-        store: 'DireccionesFiscales',
-    	onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);            
-        }
-    }
-});
-
-/**
- * @class Imobile.view.ventas.DireccionFiscalContainer
- * @extends Ext.Container
- * Description
- */
-Ext.define('APP.view.phone.ordenes.DireccionFiscalContainer', {
-    extend: 'Ext.Container',
-    requires: [],
-    xtype: 'direccionfiscalcontainer',
-    config: {
-        scrollable: {
-            direction: 'vertical',
-            directionLock: true
-        },
-        layout: 'fit',
-        items: [{
-            xtype: 'direccionfiscallist'
-        }]
-    }
-});
-
-/**
- * @class Imobile.view.ventas.MonedasList
- * @extends extendsClass
- * Description Lista de las monedas
- */
-Ext.define('APP.view.phone.ordenes.MonedasList', {
-    extend: 'Ext.dataview.List',            
-    requires: [],
-    xtype: 'monedaslist',
-    config: {     	
-         itemTpl: ['<tpl for="."><tpl if ="Predeterminada == true"><div class="imobile-cliente-tpl direc-selected"><tpl else><div class="imobile-cliente-tpl"></tpl>', '<span><p><b>{CodigoMoneda}</b> {NombreMoneda}</p></span>', '<i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i></div></tpl>'].join(''),
-        store: 'Monedas',
-        selectedCls: 'direc-selected'
-    	/*onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);            
-        },*/
-    }
-});
-
-/**
  * @class Imobile.view.ventas.TplDirecciones
  * @extends Ext.dataview.List
  * Esta es la lista para listar las direcciones
@@ -87663,21 +89914,35 @@ Ext.define('APP.view.phone.ordenes.TplDirecciones', {
 Ext.define('APP.view.phone.ordenes.TransaccionList', {
     extend: 'Ext.dataview.List',
     xtype: 'transaccionlist',
-    config: {
-        itemTpl: 'Folio: {NumeroDocumento} <br> Tipo de transacción: Orden de venta', //{TipoTransaccion}',
+    config: {        
         store: 'Transacciones',
+        cls: 'factura',
         /*data:[
             {folio: 'F001', transaccion: 'Ordenes de Venta', cliente: 'C091 Oswaldo Lopez'},
             {folio: 'F002', transaccion: 'Ordenes de Venta', cliente: 'C032 Ali Hernandez'}
         ],*/
-        items: [{
+
+        plugins: [{
+            xclass: 'Ext.plugin.ListPaging',
+            autoPaging: true
+        }]
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItemTpl('<b>' + APP.core.config.Locale.config.lan.TransaccionList.folio + ': ' + '</b> {NumeroDocumento} <br> <b>' + 
+            APP.core.config.Locale.config.lan.TransaccionList.tipoTransaccion + ': ' + 
+            '</b>' + APP.core.config.Locale.config.lan.TransaccionList.orden);
+
+        me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
             layout:'hbox',
             items: [{
                 xtype: 'searchfield',
                 itemId: 'buscarTransacciones',
-                placeHolder: ' Buscar transaccion...',
+                placeHolder: APP.core.config.Locale.config.lan.TransaccionList.buscar,
                 flex: 8
             },{
                 xtype: 'button',
@@ -87685,53 +89950,16 @@ Ext.define('APP.view.phone.ordenes.TransaccionList', {
                 itemId: 'btnBuscarTransaccion',
                 flex: 0.5
             }]
-        }],
-        plugins: [{
-            xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true
-        }]
-    }
-});
+        }]);
 
-/**
- * @class Imobile.view.clientes.ClientesList
- * @extends Ext.dataview.List
- * Esta es la lista para listar clientes de la cartera
- */
-Ext.define('APP.view.phone.productos.ProductosList', {
-    extend: 'Ext.dataview.List',
-    xtype: 'productoslist',
-                                                                              
-    config: {
-        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{CodigoArticulo}</p>', '<span><b>{NombreArticulo}</b></span> </br>', '<span style="color: red;">Cantidad: <b>{cantidad}</b></span>', '</div>'].join(''),
-        store: 'Productos',
-        useSimpleItems: true,
-        emptyText: '<div style="margin-top: 20px; text-align: center">No hay productos con esos datos</div>',
-        disableSelection: true,
-        onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e);
-        },
-        items: [{
-            xtype: 'toolbar',
-            docked: 'top',
-            layout:'hbox',
-            items: [{
-                xtype: 'searchfield',
-                itemId: 'buscarProductos',
-                placeHolder: ' Buscar producto...',
-                flex: 8
-            },{
-                xtype: 'button',
-                iconCls: 'search',
-                itemId: 'btnBuscarProductos',
-                flex: 0.5
-            }]
-         }],
-        plugins: [{
-            xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }]
+        this.setMasked({
+            xtype: 'loadmask',
+            message: APP.core.config.Locale.config.lan.ClientesList.cargando
+        });
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87746,8 +89974,13 @@ Ext.define('APP.view.phone.productos.ProductosOrden', {
                                                     
     config: {
         layout: 'fit',
-        itemId: 'principal',
-        items:[{
+        itemId: 'principal'        
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype:'toolbar',
             docked: 'top',
             items:[{
@@ -87755,20 +89988,21 @@ Ext.define('APP.view.phone.productos.ProductosOrden', {
             },{
                 xtype:'segmentedbutton',
                 items:[{
-                    text:'Lista',
+                    text: APP.core.config.Locale.config.lan.ProductosOrden.lista,
                     itemId: 'listaProductos',
                     pressed: true
                 },{
-                    text:'Panel',
+                    text: APP.core.config.Locale.config.lan.ProductosOrden.panel,
                     itemId: 'panelProductos'
                 }]
             },{
                 xtype:'spacer'
             }]
         },{
-            xtype:'productoslist'
-            //html:'Lista de productos'
-        }]
+            xtype:'productoslist'            
+        }]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87802,7 +90036,74 @@ Ext.define('APP.view.phone.productos.ProductosView', {
         store: 'Productos',
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        }
+        },
+        loadingText: 'Cargando...'
+    }
+});
+
+/**
+ * @class Imobile.view.clientes.ClientesList
+ * @extends Ext.dataview.List
+ * Esta es la lista para listar los productos
+ */
+Ext.define('APP.view.phone.productos.ProductosList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'productoslist',
+                                                                              
+    config: {        
+        store: 'Productos',
+        useSimpleItems: true,        
+        disableSelection: true,
+        onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);
+        },
+
+/*        masked: {
+            xtype: 'loadmask',
+            message: 'Cargando...'
+        },
+        loadingText: 'Cargando...'*/
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItemTpl(['<div class="imobile-cliente-tpl">', '<p>{CodigoArticulo}</p>', '<span><b>{NombreArticulo}</b></span> </br>', 
+                    '<span style="color: red;">' + APP.core.config.Locale.config.lan.OrdenList.cantidad + ' ' + '<b>{cantidad}</b></span>', '</div>'].join(''));
+
+        me.setEmptyText('<div style="margin-top: 20px; text-align: center">' + APP.core.config.Locale.config.lan.ProductosList.textoVacio + ' ' + '</div>');
+
+        me.setItems([{
+            xtype: 'toolbar',
+            docked: 'top',
+            layout:'hbox',
+            items: [{
+                xtype: 'searchfield',
+                itemId: 'buscarProductos',
+                placeHolder: APP.core.config.Locale.config.lan.ProductosList.buscar,
+                flex: 8
+            },{
+                xtype: 'button',
+                iconCls: 'search',
+                itemId: 'btnBuscarProductos',
+                flex: 0.5
+            }]
+         }]);
+
+        me.setPlugins([{
+            xclass: 'Ext.plugin.ListPaging',
+            autoPaging: true,
+            loadMoreText: APP.core.config.Locale.config.lan.ProductosList.verMas
+        }]);
+
+        me.setMasked({
+            xtype: 'loadmask',
+            message: APP.core.config.Locale.config.lan.ClientesList.cargando
+        });
+
+//        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87818,33 +90119,21 @@ Ext.define('APP.view.phone.cobranza.CobranzaList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },
-        itemTpl: '{title}',
-        data:[
-            {title: 'Cobranza de facturas', action: 'cobranzaFacturas'},
-            {title: 'Anticipo de pedido', action: 'anticipo'},
-            {title: 'Visualizar cobranzas', action: 'visualizarCobranza'}
-        ]
-    }
-});
-
-Ext.define('APP.view.phone.cobranza.FacturasList', {
-    extend: 'Ext.dataview.List',
-    xtype: 'facturaslist',
-    requires: [],
-    config: {
-        //itemCls: 'partida',
-        itemTpl: ['<div class="factura">', '<div> <p>Número: <b>{Folio}</b> Saldo: <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
-                  '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
-/*            '<p style="margin: 0px; color: red;">Quantity: <b>{cantidad}</b></p>',            */
-            '</div>'].join(''),
-        store: 'Facturas',
-        selectedCls: 'direc-selected',
-        mode: 'MULTI',
-        emptyText: '<div style="margin-top: 20px; text-align: center">No hay facturas pendientes</div>'
+        itemTpl: '{title}'
     },
 
-    onItemDisclosure: function (record, listItem, index, e) {
-            this.fireEvent("tap", record, listItem, index, e); 
+    initialize: function(){
+        var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.CobranzaList.cobranzaFacturas, action: 'cobranzaFacturas'},
+            {title: APP.core.config.Locale.config.lan.CobranzaList.anticipoPedidos, action: 'anticipo'},
+            {title: APP.core.config.Locale.config.lan.CobranzaList.visualizarCobranza, action: 'visualizarCobranza'}
+        ]);
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87858,21 +90147,64 @@ Ext.define('APP.view.phone.cobranza.FacturasContainer', {
     requires: [],
     xtype: 'facturascontainer',
     config: {
-        scrollable: {
+        /*scrollable: {
             direction: 'vertical',
             directionLock: true
-        },
-        layout: 'vbox',
-        items: [{
+        },*/
+        layout: 'vbox'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'facturaslist',
             flex: 5
         },{
             xtype: 'button',
-            text: 'Aplicar pago',
+            text: APP.core.config.Locale.config.lan.FacturasContainer.aplicarPago,
             ui: 'confirm',
             itemId: 'aplicarPago',
+            //iconCls: 'action',
             margin: 10
-        }]
+        }]);
+
+        me.callParent(arguments)
+    }
+});
+
+Ext.define('APP.view.phone.cobranza.FacturasList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'facturaslist',
+    requires: [],
+    config: {
+        //itemCls: 'partida',
+        store: 'Facturas',
+        selectedCls: 'direc-selected',
+        mode: 'MULTI'        
+    },
+
+    onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e); 
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.FacturasList.numero +
+         ': <b>{Folio}</b> ' + APP.core.config.Locale.config.lan.FacturasList.saldo +  
+         ': <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+                  '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.FacturasList.fecha + 
+                  ' :<b>{FechaCreacion}</b> ' + APP.core.config.Locale.config.lan.FacturasList.vencimiento + 
+                  ': <b>{FechaFin}</b> </div>',
+            '</div>'].join(''));
+
+        me.setEmptyText('<div style="margin-top: 20px; text-align: center">' + 
+            APP.core.config.Locale.config.lan.FacturasList.noFacturasPendientes + '</div>');
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87889,12 +90221,20 @@ Ext.define('APP.view.phone.cobranza.FormasDePagoList', {
             this.fireEvent("tap", record, listItem, index, e);            
         },
         itemTpl: '{Nombre}',
-        store: 'FormasDePago'
+        store: 'FormasDePago'        
         /*data:[
             {title: 'Efectivo', action: 'efectivo'},
             {title: 'Tarjeta de Crédito', action: 'credito'},
             {title: 'Tarjeta de Regalo', action: 'regalo'}
         ]*/
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87903,7 +90243,7 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
     xtype: 'montoapagarform',
     //requires: ['Ext.form.FieldSet', 'Ext.field.Email', 'Ext.field.Password'],
     config: {
-        padding: '0 15 15 15',        
+        padding: '0 15 15 15'
 
         
 /*        defaults: {
@@ -87911,7 +90251,13 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             clearIcon: true
         },*/
         //centered: true,
-        items: [{
+
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'fieldset',
             title: 'Title',
             defaults:{
@@ -87923,15 +90269,15 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             items:[{
                 xtype: 'numberfield',
                 name: 'monto',
-                placeHolder: 'Ingrese el monto a pagar',
-                label: 'Monto'
+                placeHolder: APP.core.config.Locale.config.lan.MontoAPagarForm.monto,
+                label: APP.core.config.Locale.config.lan.MontoAPagarForm.etiquetaMonto
             }]
         },{
             xtype:'component',
             height:10
         }, {
             xtype: 'button',
-            text: 'Pagar',
+            text: APP.core.config.Locale.config.lan.MontoAPagarForm.pagar,
             ui: 'action',
             itemId: 'pagar'
         }/*,  {
@@ -87944,7 +90290,9 @@ Ext.define('APP.form.phone.cobranza.MontoAPagarForm', {
             xtype:'component',
             cls:'imobile-version',
             html:'<i class="icon-help-circled"></i>'
-        }*/]
+        }*/]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -87970,6 +90318,62 @@ Ext.define('APP.view.phone.cobranza.MontoAPagarFormContainer', {
     }
 });
 
+Ext.define('APP.view.phone.cobranza.TotalesContainer', {
+    extend: 'Ext.Container',
+    xtype: 'totalescontainer',
+                           
+    config: {
+        layout: 'hbox'
+        //itemCls: 'factura',
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{   
+            xtype: 'container',
+            flex: 1,
+            itemId: 'aCobrar',  
+            html: APP.core.config.Locale.config.lan.TotalesContainer.aCobrar,
+            cls: 'aCobrar2'
+            /*style: {
+                background: 'black',
+                'color': 'yellow',
+                'margin-right': '1px',
+                'text-align': 'center',
+                'font-weight':'bold',
+                'vertical-align':'middle'
+            }*/
+        },{
+            xtype: 'container',
+            html: APP.core.config.Locale.config.lan.TotalesContainer.pagado,
+            flex: 1,
+            itemId: 'pagado',
+            style: {
+                background: 'black',
+                'color': 'green',
+                'margin-right': '1px',
+                'text-align': 'center',
+                'font-weight':'bold'
+            }
+        },{
+            xtype: 'container',
+            html: APP.core.config.Locale.config.lan.TotalesContainer.pendiente,
+            flex: 1,
+            itemId: 'pendiente',
+            style: {
+                background: 'black',
+                'color': 'red',
+                'margin-righ': '1px',
+                'text-align': 'center',
+                'font-weight':'bold'
+            }
+        }]);
+
+    me.callParent(arguments);
+    }
+});
+
 /**
  * @class Imobile.view.ventas.VisualizacionCobranzaList
  * @extends Ext.dataview.List
@@ -87979,20 +90383,42 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
     extend: 'Ext.dataview.List',
     xtype: 'visualizacioncobranzalist',
     config: {
-        itemTpl: 'Folio: {NumeroDocumento} <br> Tipo de transacción: Cobranza de factura <br> Cliente: {CodigoSocio} {NombreCliente}', //{TipoTransaccion}',
         store: 'Transacciones',
-        /*data:[
-            {folio: 'F001', transaccion: 'Ordenes de Venta', cliente: 'C091 Oswaldo Lopez'},
-            {folio: 'F002', transaccion: 'Ordenes de Venta', cliente: 'C032 Ali Hernandez'}
-        ],*/
-        items: [{
+        cls: 'factura',
+
+        plugins: [{
+            xclass: 'Ext.plugin.ListPaging',
+            autoPaging: true,
+            loadMoreText: 'Ver Más...'
+        }]
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItemTpl('<b>' + APP.core.config.Locale.config.lan.TransaccionList.folio + 
+        ': </b> {CodigoCobranza} <b> <br>' + APP.core.config.Locale.config.lan.TransaccionList.tipoTransaccion +
+         ': </b> {TipoTransaccion} <br> <b> ' + APP.core.config.Locale.config.lan.OpcionesOrdenPanel.cliente +
+          ': </b> {CodigoCliente} {NombreCliente}');
+
+        me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
-            layout:'hbox',
+            layout:'hbox',        
+
             items: [{
                 xtype: 'searchfield',
-                itemId: 'buscarCobranzas',
-                placeHolder: ' Buscar cobranza...',
+                itemId: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.buscarCobranza,
+                placeHolder: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.criterio,
+                flex: 8
+            },{
+                xtype: 'selectfield',
+                itemId: 'buscarTipo',
+                options: [
+                    {text: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.seleccionaOpcion, value: ''},
+                    {text: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.cobranzaFactura,  value: 'C'},
+                    {text: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.anticipoPedido, value: 'A'}
+                ],
                 flex: 8
             },{
                 xtype: 'button',
@@ -88000,16 +90426,41 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
                 itemId: 'btnBuscarCobranza',
                 flex: 0.5
             }]
-        }],        
-        plugins: [{
-            xclass: 'Ext.plugin.ListPaging',
-            autoPaging: true
-        }]
+        }]);
+
+        me.callParent(arguments);
     }
 });
 
 /**
- * @class Imobile.view.prospectos.ClientesList
+ * @class Imobile.view.cobranza.TotalAPagarList
+ * @extends extendsClass
+ * Description Lista de los tipos de pago que eligió el cliente
+ */
+Ext.define('APP.view.phone.cobranza.TotalAPagarList', {
+    extend: 'Ext.dataview.List',
+    requires: [],
+    xtype: 'totalapagarlist',
+    config: {
+        itemCls: 'factura',
+    	itemTpl: '{tipo}: <b>{monto}</b>',
+        store: 'Totales'
+    	/*onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },*/
+    },
+
+    initialze: function(){
+        var me = this;
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
+    }
+});
+
+/**
+ * @class Imobile.view.prospectos.ProspectosList
  * @extends Ext.dataview.List
  * Esta es la lista para listar prospectos.
  */
@@ -88018,7 +90469,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
     xtype: 'prospectoslist',
                                                                                    
     config: {
-        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{codigo}</p>', '<span style="color: cadetblue;"><b>{razonSocial}</b></span>', '</div>'].join(''),
+        itemTpl: ['<div class="imobile-cliente-tpl">', '<p>{CodigoSocio}</p>', '<span style="color: cadetblue;"><b>{NombreSocio}</b></span>', '</div>'].join(''),
         store: 'Prospectos',
         useSimpleItems: true,
         emptyText: '<div style="margin-top: 20px; text-align: center">No hay prospectos con esos datos</div>',
@@ -88034,8 +90485,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 xtype: 'searchfield',
                 itemId: 'buscarProspectos',
                 placeHolder: ' Buscar prospecto...',                
-                flex: 12,
-                cls: 'list-search'
+                flex: 12                
             },/*{
                 xtype: 'button',
                 iconCls: 'search',
@@ -88043,16 +90493,187 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 flex: 1
             },*/{
                 xtype: 'button',
-                iconCls: 'add',
-                itemId: 'agregar',
+                iconCls: 'search',
+                itemId: 'buscar',
                 flex: 1
             }]
-        }],
+        },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregar',                        
+                        ui: 'action',
+                        text: 'Agregar prospecto'
+                    }
+                ]
+            }],
         plugins: [{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
             loadMoreText: 'Ver Más...'
-        }]
+        }],
+        masked: {
+            xtype: 'loadmask',
+            message: 'Cargando...'
+        },
+        loadingText: 'Obteniendo prospectos...'    
+    }
+});
+
+/**
+ * Esta es la lista de las opciones de informes.
+ */
+Ext.define('APP.view.phone.informes.InformesList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'informeslist',
+    config: {
+        onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },
+        itemTpl: '{title}',
+        data:[
+            {title: 'Bitácora de vendedores', action: 'bitacoraVendedores'},
+            {title: 'Análisis de Ventas', action: 'analisisVentas'}            
+        ],        
+    }
+});
+
+/**
+ * Esta es la lista de las opciones de Análisis de Ventas.
+ */
+Ext.define('APP.view.phone.informes.AnalisisVentasList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'analisisventaslist',
+    config: {
+        onItemDisclosure: function (record, listItem, index, e) {
+            this.fireEvent("tap", record, listItem, index, e);            
+        },
+        itemTpl: '{title}',
+        data:[
+            {title: 'Clientes', action: 'analisisClientes'},
+            {title: 'Artículos', action: 'analisisArticulos'}
+        ],
+    }
+});
+
+Ext.define('APP.form.phone.informes.InformesForm', {
+    extend: 'Ext.form.Panel',
+    xtype: 'informesform',
+              
+                            
+                         
+                           
+                          
+                          
+      
+    config:{        
+        padding:'0 15 15 15',
+        scrollable: 'vertical',        
+        items:[
+            {
+                xtype:'fieldset',
+                title: 'Fecha',
+                itemId:'fecha',                                
+                defaults:{
+                    //required:true,
+                    //disabled: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    cls: 'factura',
+                    labelWrap: true,
+                    labelWidth: '40%'                    
+                },
+                items:[
+                    {
+                        xtype:'datepickerfield',
+                        name:'fechaDesde',
+                        label: 'Desde',
+                        itemId: 'fechaDesde',
+                        value: Ext.Date.add(new Date(), Ext.Date.MONTH, -1)
+                    },{
+                        xtype:'datepickerfield',
+                        name:'fechaHasta',
+                        label:'Hasta',
+                        itemId: 'fechaHasta',
+                        value: new Date()
+                    }
+                ]
+            },{            
+                xtype:'fieldset',
+                title: 'Código',
+                itemId:'codigo',                                
+                defaults:{
+                    //required:true,
+                    //disabled: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    cls: 'factura',
+                    labelWrap: true,
+                    labelWidth: '40%'                    
+                },
+                items:[
+                    {
+                        xtype:'selectfield',
+                        name:'codigoDesde',
+                        label: 'Desde',
+                        itemId: 'codigoDesde',
+                    },{
+                        xtype:'selectfield',
+                        name:'codigoHasta',
+                        label:'Hasta',
+                        itemId: 'codigoHasta',                        
+                    }]
+            },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'crearInforme',                        
+                        ui: 'action',
+                        text: 'Crear Informe'
+                    }
+                ]
+            }
+        ]
+    }
+});
+
+Ext.define('APP.view.phone.informes.InformesGeneradosList', {
+    extend: 'Ext.dataview.List',
+    xtype: 'informesgeneradoslist',
+    requires: [],
+    config: {
+        //itemCls: 'partida',
+        store: 'Informes',
+        disableSelection: true
+
+//         itemTpl: ['<div class="factura">', '<div> <p>Código: <b>{codigo}</b> Total: <b>{cantidad}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+//                   '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
+// /*            '<p style="margin: 0px; color: red;">Quantity: <b>{cantidad}</b></p>',            */
+//             '</div>'].join(''),
+    },
+
+    initialize: function (){
+        var me = this;
+
+        me.setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
+         ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
+         ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
+                  '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.articulos + 
+                  ' :<b>{cantidad}</b> </div>',
+            '</div>'].join(''));
+
+        me.setEmptyText('<div style="margin-top: 20px; text-align: center">' + 
+            APP.core.config.Locale.config.lan.InformesGeneradosList.sinPendientes + '</div>');
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ClientesList.cargando);
+
+        me.callParent(arguments);
     }
 });
 
@@ -88061,7 +90682,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
-Ext.define('APP.view.phone.rutas.actividades.OpcionRutasActividades', {
+Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
     extend: 'Ext.dataview.List',
     xtype: 'opcionrutasactividades',
     config: {
@@ -88070,32 +90691,6 @@ Ext.define('APP.view.phone.rutas.actividades.OpcionRutasActividades', {
             {title: 'Rutas', action: 'rutas'},
             {title: 'Actividades', action: 'actividades'}
         ]
-    }
-});
-
-/**
- * @class Imobile.store.Clientes
- * @extends Ext.data.Store
- * Este es el store para los clientes
- */
-Ext.define('APP.store.phone.ActividadesCalendario', {
-    extend: 'APP.core.data.Store',
-    //extend: 'Ext.data.Store',
-
-    config: {
-        model: 'APP.model.phone.ActividadCalendario',
-        proxy: {
-            url: "/iMobile/COK1_CL_Actividades/ObtenerActividades",
-            type: 'jsonp',
-            callbackKey: 'callback',
-            reader: {
-                type: 'json',
-                rootProperty: 'Data'
-            },
-            extraParams:{
-                format:'json'
-            }
-        }
     }
 });
 
@@ -88124,15 +90719,208 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendario', {
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
-Ext.define('APP.view.phone.rutas.OpcionRutasList', {
+Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioCont', {
+    extend: 'Ext.Container',
+    xtype: 'actividadescalendariocont',
+    config:{
+        layout:{
+            type:'vbox',
+            align:'stretch'
+        }
+    }
+});
+
+/**
+ * @class Imobile.view.clientes.OpcionClienteList
+ * @extends Ext.dataview.List
+ * Esta es la lista de las opciones que tiene un cliente
+ */
+Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
     extend: 'Ext.dataview.List',
-    xtype: 'opcionrutaslist',
+    xtype: 'actividadescalendariodia',
     config: {
-        itemTpl: '{title}',
-        data:[
-            {title: 'Calendario', action: 'calendario'},
-            {title: 'Registrar visita', action: 'registrar'}
-        ]
+        emptyText:'No tiene actividades este día',
+        itemTpl:new Ext.XTemplate(
+            '<tpl>',
+
+            '<div style="border-left:5px solid {[this.backColor(values.Estatus,values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)]}; padding-left:5px;">',
+                '<div style="text-align: right; color:#999999; font-size:14px;">',
+                   '{FechaInicio} {[this.dateParser(values.HoraInicio)]} - {FechaFin} {[this.dateParser(values.HoraFin)]}',
+                '</div>',
+                '<div>{title}</div>',
+            '</div>',
+            '</tpl>',{
+                dateParser: function(data){
+                    return data.substr(0,data.length - 3);
+                },
+                backColor:function(status){
+
+                    switch(status){
+                        case 0:
+                            return "lightred";
+                            break;
+                        case 1:
+                            return "lightblue";
+                            break;
+                        case 2:
+                            return "lightgreen";
+                            break;
+                        case 3:
+                            return "#ff6600";
+                            break;
+
+                    }
+                }
+            }
+        ),
+        store: new Ext.data.Store({
+            model: 'APP.model.phone.ActividadCalendario',
+            data: []
+        })
+    }
+});
+
+/**
+ * Created with JetBrains PhpStorm.
+ * User: Waldix
+ * Date: 16/04/14
+ * Time: 12:23
+ * To change this template use File | Settings | File Templates.
+ */
+Ext.define('APP.form.phone.rutas.ActividadesForm', {
+    extend: 'Ext.form.Panel',
+    xtype: 'actividadesform',
+    config: {
+        layout:'fit',
+        items:[{
+            xtype:'fieldset',
+            scrollable: {
+                direction: 'vertical',
+                directionLock: true
+            },
+            defaults:{
+                labelWidth:'30%',
+                required:true,
+                labelCls: 'labels',
+                inputCls: 'labels'
+            },
+            items:[{
+                xtype:'hiddenfield',
+                name:'CodigoActividad'
+            },{
+                xtype: 'textfield',
+                name: 'Descripcion',
+                label:'Título'
+            },{
+                xtype:'fieldset',
+                title:'Empieza',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
+                },
+                items:[{
+                    xtype:'datepickerfield',
+                    border:0,
+                    name:'FechaInicio',
+                    readOnly:true
+                },{
+                    xtype: 'timepickerfield',
+                    name: 'HoraInicio',
+                    value: new Date()
+                }]
+            },{
+                xtype:'fieldset',
+                title:'Termina',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
+                },
+                items:[{
+                    xtype:'datepickerfield',
+                    name:'FechaFin',
+                    value:new Date()
+                },{
+                    xtype: 'timepickerfield',
+                    name: 'HoraFin',
+                    value: new Date()
+                }]
+
+            },{
+                xtype: 'checkboxfield',
+                name: 'Repetir',
+                label: 'Repetir',
+                required:false
+            },{
+                xtype:'fieldset',
+                id:'actividadesrepetir',
+                hidden:true,
+                defaults:{
+                    labelWidth:'30%',
+                    labelCls: 'labels',
+                    inputCls: 'labels'
+                },
+                items:[{
+                    xtype: 'checkboxfield',
+                    name: 'Lunes',
+                    label: 'Lunes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Martes',
+                    label: 'Martes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Miercoles',
+                    label: 'Miercoles'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Jueves',
+                    label: 'Jueves'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Viernes',
+                    label: 'Viernes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Sabado',
+                    label: 'Sabado'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Domingo',
+                    label: 'Domingo'
+                }]
+            },{
+                xtype: 'textareafield',
+                name: 'Notas',
+                label: 'Notas',
+                labelAlign:'top',
+                required:false
+            },{
+                xtype:'container',
+                items:[{
+                    xtype:'button',
+                    margin:'10',
+                    text:'Guardar',
+                    action:'guardar'
+                }]
+            }]
+        }]
+    }
+});
+
+/**
+ * @class Imobile.view.clientes.OpcionClienteList
+ * @extends Ext.dataview.List
+ * Esta es la lista de las opciones que tiene un cliente
+ */
+Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioCont', {
+    extend: 'Ext.Container',
+    xtype: 'rutascalendariocont',
+    id: 'rutasccont',
+    config:{
+        layout:{
+            type:'vbox',
+            align:'stretch'
+        }
     }
 });
 
@@ -88141,7 +90929,8 @@ Ext.define('APP.view.phone.rutas.OpcionRutasList', {
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
-Ext.define('APP.view.phone.rutas.RutasCalendario', {
+
+Ext.define('APP.view.phone.rutas.rutas.RutasCalendario', {
     extend: 'Ext.ux.calendar.TouchCalendar',
     xtype: 'rutascalendario',
     idCliente:undefined,
@@ -88162,49 +90951,44 @@ Ext.define('APP.view.phone.rutas.RutasCalendario', {
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
-Ext.define('APP.view.phone.rutas.RutasCalendarioCont', {
-    extend: 'Ext.Container',
-    xtype: 'rutascalendariocont',
-    initialize : function() {
-        this.callParent();
-        this.setItems([{
-            xtype:'button',
-            action:'agregar',
-            text: 'Agregar'
-        },{
-            xtype:'container',
-            html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(this.nd,"l d/m/y") + "</div>"
-        },{
-            xtype:'rutascalendariodia',
-            flex:1
-        }]);
-
-
-    },
-    config:{
-        layout:{
-            type:'vbox',
-            align:'stretch'
-        }
-    }
-});
-
-/**
- * @class Imobile.view.clientes.OpcionClienteList
- * @extends Ext.dataview.List
- * Esta es la lista de las opciones que tiene un cliente
- */
-Ext.define('APP.view.phone.rutas.RutasCalendarioDia', {
+Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioDia', {
     extend: 'Ext.dataview.List',
     xtype: 'rutascalendariodia',
+    nd:undefined,
+    idCliente:undefined,
+    direcciones:undefined,
     config: {
+        emptyText:'No tiene rutas este día',
         itemTpl:new Ext.XTemplate(
             '<tpl>',
-            '<div style="padding:0 3px;">{[this.dateParser(values.start)]} - {[this.dateParser(values.end)]} {title}</div>',
+
+            '<div style="border-left:5px solid {[this.backColor(values.Estatus,values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)]}; padding-left:5px;">',
+                '<div style="text-align: right; color:#999999; font-size:14px;">',
+                   '{FechaInicio} {[this.dateParser(values.HoraInicio)]} - {FechaFin} {[this.dateParser(values.HoraFin)]}',
+                '</div>',
+                '<div>{title}</div>',
+            '</div>',
             '</tpl>',{
                 dateParser: function(data){
-                    console.log(data);
-                    return Ext.util.Format.date(data,"H:i");
+                    return data.substr(0,data.length - 3);
+                },
+                backColor:function(status){
+
+                    switch(status){
+                        case 0:
+                            return "lightred";
+                            break;
+                        case 1:
+                            return "lightblue";
+                            break;
+                        case 2:
+                            return "lightgreen";
+                            break;
+                        case 3:
+                            return "#ff6600";
+                            break;
+
+                    }
                 }
             }
         ),
@@ -88216,54 +91000,280 @@ Ext.define('APP.view.phone.rutas.RutasCalendarioDia', {
 });
 
 /**
- * @class Imobile.view.clientes.OpcionClienteList
+ * @class Imobile.view.rutas.Calentario
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
-Ext.define('APP.view.phone.rutas.RutasMapa', {
-    extend: 'Ext.Container',
-    xtype: 'rutasmapa',
 
-    config: {
-        layout: {
-            type: 'fit'
+Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioDirecciones', {
+    extend: 'Ext.dataview.List',
+    xtype: 'rutascalendariodirecciones',
+    config:{
+        height:120,
+        itemTpl:new Ext.XTemplate(
+            '<tpl>',
+                '<div style="font-size:10px;">{Calle} {NoExterior} {NoInterior} {Colonia} {Ciudad} {Municipio} {Estado} </div>',
+            '</tpl>'
+        ),
+        store: new Ext.data.Store({
+            model:'APP.model.phone.RutaCalendarioDirecciones',
+            data: []
+        })
+    }
+});
+
+/**
+ * @class Imobile.view.rutas.Calentario
+ * @extends Ext.dataview.List
+ * Esta es la lista de las opciones que tiene un cliente
+ */
+
+Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioMapa', {
+    extend: 'Ext.Map',
+    xtype: 'rutascalendariomapa',
+   	nd: undefined,
+    config:{
+        height:350,
+        mapOptions:{
+            center:{lat: 19.43261, lng: -99.13321}
         },
-        items: [
-            {
-                xtype: 'map',
-                mapOptions: {
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                    zoom: 14
+        margin:'10px 0'
+    }
+});
+
+/**
+ * Created with JetBrains PhpStorm.
+ * User: Waldix
+ * Date: 16/04/14
+ * Time: 12:23
+ * To change this template use File | Settings | File Templates.
+ */
+Ext.define('APP.form.phone.rutas.RutasForm', {
+    extend: 'Ext.form.Panel',
+    xtype: 'rutasform',
+    config: {
+        layout:'fit',
+        items:[{
+            xtype:'fieldset',
+            scrollable: {
+                direction: 'vertical',
+                directionLock: true
+            },
+            defaults:{
+                labelWidth:'30%',
+                required:true,
+                labelCls: 'labels',
+                inputCls: 'labels'
+            },
+            items:[{
+                xtype:'hiddenfield',
+                name:'CodigoRuta'
+            },{
+                xtype:'hiddenfield',
+                name:'CodigoCliente'
+            },{
+                xtype:'hiddenfield',
+                name:'TipoDireccion'
+            },{
+                xtype:'hiddenfield',
+                name:'CodigoDireccion'
+            },{
+                xtype:'hiddenfield',
+                name:'LatitudOrigen'
+            },{
+                xtype:'hiddenfield',
+                name:'LongitudOrigen'
+            },{
+                xtype: 'textfield',
+                name: 'Descripcion',
+                label:'Título'
+            },{
+                xtype:'fieldset',
+                title:'Empieza',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
                 },
-                useCurrentLocation: true
-            }
-        ]
-    },
+                items:[{
+                    xtype:'datepickerfield',
+                    border:0,
+                    name:'FechaInicio',
+                    readOnly:true
+                },{
+                    xtype: 'timepickerfield',
+                    name: 'HoraInicio',
+                    value: new Date()
+                }]
+            },{
+                xtype:'fieldset',
+                title:'Termina',
+                layout:{
+                    type:'hbox',
+                    align:'stretch'
+                },
+                items:[{
+                    xtype:'datepickerfield',
+                    name:'FechaFin',
+                    value:new Date()
+                },{
+                    xtype: 'timepickerfield',
+                    name: 'HoraFin',
+                    value: new Date()
+                }]
+
+            },{
+                xtype: 'checkboxfield',
+                name: 'Repetir',
+                label: 'Repetir',
+                required:false
+            },{
+                xtype:'fieldset',
+                id:'rutasrepetir',
+                hidden:true,
+                defaults:{
+                    labelWidth:'30%',
+                    labelCls: 'labels',
+                    inputCls: 'labels'
+                },
+                items:[{
+                    xtype: 'checkboxfield',
+                    name: 'Lunes',
+                    label: 'Lunes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Martes',
+                    label: 'Martes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Miercoles',
+                    label: 'Miercoles'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Jueves',
+                    label: 'Jueves'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Viernes',
+                    label: 'Viernes'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Sabado',
+                    label: 'Sabado'
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'Domingo',
+                    label: 'Domingo'
+                }]
+            },{
+                xtype: 'textareafield',
+                name: 'Notas',
+                label: 'Notas',
+                labelAlign:'top',
+                required:false
+            },{
+                xtype:'fieldset',
+                title:'Seleccione una dirección',
+                layout:{
+                    type:'vbox',
+                    align:'stretch'
+                },
+                items:[{
+                    xtype:'rutascalendariodirecciones'
+                },{
+                    xtype:'rutascalendariomapa'
+                }]
+            },{
+                xtype:'container',
+                items:[{
+                    xtype:'button',
+                    margin:'10',
+                    text:'Guardar',
+                    action:'guardar'
+                }]
+            }]
+        }]
+    }
+});
+
+Ext.define('APP.form.phone.pedidos.EditarPedidoForm', {
+	extend: 'Ext.form.Panel',
+	xtype: 'editarpedidoform',
+	          
+		                    
+		                 
+		                  
+	  
+	config:{
+		//padding:'15 15 15 15',
+
+	},
 
     initialize: function(){
         var me = this;
+        me.setItems([
+            {
+                xtype:'fieldset',
+                itemId:'datos',                
+                instructions: APP.core.config.Locale.config.lan.EditarPedidoForm.instrucciones,
+                defaults:{
+                    //required:true,
+                    disabled: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWrap: true,
+                    labelWidth: '45%'
+                },
+                items:[
+                    {
+                        xtype:'textfield',
+                        name:'CodigoSocio',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.codigoCliente,
+                        itemId: 'codepro'                        
+                    },{
+                        xtype:'textfield',
+                        name:'NombreSocio',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.nombreCliente
+                    },{
+                        xtype:'textfield',
+                        name:'LimiteCredito',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.limiteCredito
+                    },{
+                        xtype:'textfield',
+                        name:'NombreCondicionPago',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.condicionCredito
+                    },{
+                        xtype:'textfield',
+                        name:'Saldo',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.saldo
+                    },{
+                        xtype:'textfield',
+                        name:'NombreListaPrecio',
+                        label: APP.core.config.Locale.config.lan.ClienteForm.listaPrecios
+                    },{
+                        xtype:'textfield',
+                        name:'NombreVendedor',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.vendedor
+                    },{
+                        xtype:'textfield',
+                        name:'descuento',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.descuento
+                    },{
+                        xtype:'textfield',
+                        name:'CodigoMoneda',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.moneda,
+                        disabled: false,
+                        itemId: 'moneda',                        
+                        inputCls: 'fa-check'
+                    },{
+                        xtype:'textfield',
+                        name:'tipoCambio',
+                        label: APP.core.config.Locale.config.lan.EditarPedidoForm.tipoCambio
+                    }
+                ]
+            }
+        ]);
+
         me.callParent(arguments);
-        this.initMap();
-    },
-
-    initMap: function(){
-
-        var mapPanel = this.down('map');
-        var gMap = mapPanel.getMap();
-
-        var geo = Ext.create('Ext.util.Geolocation');
-        geo.updateLocation(function (g) {
-            var marker = new google.maps.Marker({
-                map: gMap,
-                animation: google.maps.Animation.DROP,
-                position: new google.maps.LatLng(g._latitude, g._longitude)
-            });
-        },this);
-
-
-
-
-
     }
 });
 
@@ -88278,88 +91288,70 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                           
 	  
 	config:{        
-		padding:'10 15 15 15',
+		padding:'0 15 15 15',
         scrollable: 'vertical',
-		items:[
-            {
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {
-                        itemId:'agregar',
-                        text:'Guardar',
-                        ui: 'confirm'
-                    }
-                ]
+	},
 
-            },
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
                 itemId:'datos',
-                title:'Agregar Productos',
-                instructions: 'Ingrese los datos',
+                title: APP.core.config.Locale.config.lan.AgregarProductosForm.titulo,
+                instructions: APP.core.config.Locale.config.lan.AgregarProductosForm.instrucciones,
                 defaults:{
                     //required:true,
                     disabled: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '45%'
+                    cls: 'factura',
+                    labelWrap: true,
+                    labelWidth: '40%'
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'CodigoArticulo',
-                        label: 'Código',
-                        itemId: 'codepro'
-                        //value: 12345
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.codigo,
+                        itemId: 'codepro'                        
                     },{
                         xtype:'textfield',
                         name:'NombreArticulo',
-                        label:'Descripción',
+                        label:APP.core.config.Locale.config.lan.AgregarProductosForm.descripcion,
                         itemId: 'descripcion'
                     },{
                         xtype:'numberfield',
                         name:'cantidad',
-                        label:'Cantidad',
+                        label: APP.core.config.Locale.config.lan.OrdenList.cantidad,
                         disabled: false,
                         minValue: 0.1,
                         itemId: 'cantidad'
-                        //maxValue: 100,
-                        //stepValue: .1
-                        //ui: 'spinner'
                     },{
                         xtype:'textfield',
                         name:'Precio',
-                        label:'Precio'
+                        label:APP.core.config.Locale.config.lan.OrdenList.precio
                     },{
                         xtype:'textfield',
                         name:'moneda',
-                        label:'Moneda'
-                        //itemId: 'moneda'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.moneda
                     },{
                         xtype:'textfield',
                         name:'PorcentajeDescuento',
-                        label:'Descuento'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.descuento
                     },{
                         xtype:'textfield',
                         name:'precioConDescuento',
-                        label:'Precio con Descuento'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.precioConDescuento
                     },{
                         xtype:'textfield',
                         name:'importe',
-                        label:'Importe'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.importe
                     },{
                         xtype:'textfield',
                         name:'NombreAlmacen',
-                        label:'Almacen',
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.almacen,
                         disabled: false,
                         itemId: 'almacenProducto'
                     },{
@@ -88368,12 +91360,26 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
                     },{
                         xtype:'textfield',
                         name:'Disponible',
-                        label:'Disponible'
+                        label: APP.core.config.Locale.config.lan.AgregarProductosForm.disponible
+                    }
+                ]
+            },{
+                xtype: 'fieldset',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregar',                        
+                        ui: 'action',
+                        text: APP.core.config.Locale.config.lan.ConfiguracionPanel.guardar
                     }
                 ]
             }
-        ]
-	}
+        ]);
+
+        me.callParent(arguments);
+    }
 });
 
 Ext.define('APP.form.phone.prospectos.ProspectosForm', {
@@ -88386,33 +91392,10 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                              
 	  
 	config:{
-		padding:'10 15 15 15',
-        scrollable: 'vertical', 
-		items:[{        
-                xtype:'container',
-                padding: '0 0 0 200',
-                defaults:{
-                    xtype:'button',
-                    style: 'margin: .5em',
-                    flex: 1
-                },
-                layout:{
-                    type:'hbox'
-                },
-                items:[
-                    {                        
-                        //xtype: 'button',
-                        itemId:'agregarProspecto',
-                        text:'Agregar',
-                        ui: 'confirm'
-                        //ui:'btn-login-ui',
-                        // handler:function(btn){
-                        //     var form = btn.up('formpanel');
-                        //     form.fireEvent('logged', form);
-                        // }
-                    }
-                ]
-            },
+		padding:'0 15 15 15',
+        scrollable: 'vertical',
+        modal: true,
+		items:[
             {
                 xtype:'fieldset',
                 itemId:'datos',
@@ -88422,6 +91405,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     required:true,
                     //disabled: true,
                     clearIcon:true,
+                    cls: 'factura',
+                    labelWrap: true,
                     autoCapitalize:true,
                     labelWidth: '45%'
                 },
@@ -88432,23 +91417,37 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         label: 'Fecha',
                         required:false,
                         disabled: true,
-                        value: Ext.Date.format(new Date(), "d-m-Y")
+                        value: Ext.Date.format(new Date(), "d-m-Y"),
+                        itemId: 'fecha'
                     },{
                         xtype:'textfield',
-                        name:'codigo',
+                        name:'CodigoSocio',
+                        itemId: 'codigoSocio',
+                        tabIndex: 1,
                         label:'Código'
                     },{
                         xtype:'textfield',
-                        name:'razonSocial',
+                        name:'NombreSocio',
+                        tabIndex: 2,
                         label:'Razón Social'
                     },{
-                        xtype:'textfield',
-                        name:'tipoPersona',
-                        label:'Tipo de persona'
+                        xtype:'selectfield',
+                        name:'TipoPersona',
+                        label:'Tipo de persona',
+                        options:[{
+                                text: 'Física',
+                                value: 'F'
+                            },{
+                                text: 'Moral',
+                                value: 'M'
+                            }],
+                        tabIndex: 3,
+                        autoSelect: false
                     },{
                         xtype:'textfield',
-                        name:'rfc',
+                        name:'RFC',
                         label:'RFC',
+                        tabIndex: 4,
                         required:false
                     }
                 ]
@@ -88458,7 +91457,8 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     title:'Dirección',                    
                     defaults:{
                         required:true,
-                        //disabled: true,
+                        cls: 'factura',
+                        labelWrap: true,                        
                         clearIcon:true,
                         autoCapitalize:true,
                         labelWidth: '45%'
@@ -88466,47 +91466,57 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     items:[
                         {
                             xtype:'textfield',
-                            name:'calle',
+                            name:'Calle',
+                            tabIndex: 5,
                             label:'Calle'
                         },{
                             xtype:'textfield',
-                            name:'noExt',
+                            name:'NoExterior',
                             label:'No. Ext',
+                            tabIndex: 6,
                             required:false
                         },{
                             xtype:'textfield',
-                            name:'noInt',
+                            name:'NoInterior',
                             label:'No.Int',
+                            tabIndex: 7,
                             required:false
                         },{
                             xtype:'textfield',
-                            name:'colonia',
+                            name:'Colonia',
+                            tabIndex: 8,
                             label:'Colonia'
                         },{
                             xtype:'textfield',
-                            name:'ciudad',
+                            name:'Ciudad',
+                            tabIndex: 9,
                             label:'Ciudad'  
                         },{
                             xtype:'textfield',
-                            name:'municipio',
+                            name:'Municipio',
+                            tabIndex: 10,
                             label:'Municipio' 
                         },{
                             xtype:'textfield',
-                            name:'cp',
+                            name:'CodigoPostal',
+                            tabIndex: 11,
                             label:'C.P.' 
                         },{
-                            xtype:'textfield',
-                            name:'estado',
-                            label:'Estado' 
+                            xtype:'selectfield',                            
+                            name:'Estado',
+                            label:'Estado',
+                            tabIndex: 12,
+                            itemId: 'estado'
                         }
                     ]
             },{
                 xtype:'fieldset',
-                itemId:'encargado',
-                title:'Encargado',                    
+                itemId:'contactos1',
+                title:'Encargado',                                 
                 defaults:{
                     required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%'                
@@ -88514,15 +91524,18 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[
                     {
                         xtype:'textfield',
-                        name:'nombre',
+                        name:'nombreEncargado',
+                        tabIndex: 13,
                         label:'Nombre'
                     },{
-                        xtype:'textfield',
-                        name:'telOficina',
+                        xtype:'numberfield',
+                        name:'telOficinaEncargado',
+                        tabIndex: 14,
                         label:'Tel. Oficina'                    
                     },{
-                        xtype:'textfield',
-                        name:'telMovil',
+                        xtype:'numberfield',
+                        name:'telMovilEncargado',
+                        tabIndex: 15,
                         label:'Tel. Móvil',
                         required:false
                     }
@@ -88532,63 +91545,59 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 title:'Productor'
             },{
                 xtype:'fieldset',
-                itemId:'cultivos',                    
+                itemId: 'conceptos1',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%',
                     hidden: true
                 },
-                items:[
-                    /*{
-                        xtype:'textfield',
-                        name:'cultivos',
-                        label:'Cultivos'
-                    },*/
+                items:[                    
                     {
                         xtype: 'checkboxfield',
-                        name: 'cultivos',
+                        name: 'servicio',
                         label: 'Cultivos',
-                        hidden: false,
-                        itemId: 'cultivos'
-                    }/*,{
-                        xtype:'textfield',
-                        name:'superficie',
-                        label:'Superficie',                    
-                    }*/
+                        itemId: 'cultivos1',
+                        hidden: false
+                    }
                 ]
             },{
                 xtype:'fieldset',
                 itemId: 'superficie',
+                margin: '3 0 0 0',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '70%',
+                    labelWidth: '45%',
                     hidden: true
                 },
                 items:[{
                         xtype: 'checkboxfield',
-                        name: 'superficie',
+                        name: 'este',
+                        itemId: 'superficieCheck',
                         label: 'Superficie',
                         hidden: false
                     },{
                         xtype:'numberfield',
                         name:'campoAbierto',
                         label:'Campo Abierto',
+                        tabIndex: 16,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
                         label:'Invernadero',
+                        tabIndex: 17,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
                         label:'Macro Túnel',
+                        tabIndex: 18,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
@@ -88602,217 +91611,248 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 itemId:'distribuidor',
                 title:'Distribuidor',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '65%'                
+                    labelWidth: '50%'
                 },
                 items:[
                     {
                         xtype:'textfield',
                         name:'zonaDeInfluencia',
+                        tabIndex: 19,
                         label:'Zona de influencia'
-                    },{
-                        xtype:'textfield',
-                        name:'comercializa',
-                        label:'Comercializa'
-                    },{
-                        xtype:'textfield',
-                        name:'encargadoCompras',
-                        label:'Encargado de compras'
-                    },{
-                        xtype:'textfield',
-                        name:'encargadoPagos',
-                        label:'Encargado de pagos'
-                    },{
-                        xtype:'textfield',
-                        name:'responsableTecnico',
-                        label:'Responsable Técnico'
                     }
                 ]
             },{
                 xtype:'fieldset',
-                itemId:'productosUtilizados',
-                title:'Productos utilizados',
+                itemId: 'conceptos2',
+                margin: '3 0 0 0',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
-                    labelWidth: '45%'                
+                    labelWidth: '80%'                
                 },
-                items:[
-                    {
-                        xtype:'textfield',
-                        name:'productos',
-                        label:'Productos'
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Comercializa',
+                        itemId: 'comercializa2',
+                        hidden: false
                     }
                 ]
             },{
                 xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'campo2',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Encargado de compras',
+                        hidden: false,
+                        itemId: 'contactos2'
+                    },{
+                        xtype:'textfield',
+                        name:'nombreEncargadoCompras',
+                        label:'Nombre',
+                        tabIndex: 20,
+                        itemId: 'nombreEncargadoCompras'
+                    },{
+                        xtype:'numberfield',
+                        name:'telEncargadoCompras',
+                        label:'Teléfono',
+                        tabIndex: 21,
+                        itemId: 'telEncargadoCompras'
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'campo3',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Encargado de pagos',
+                        hidden: false,
+                        itemId: 'contactos3',
+                    },{
+                        xtype:'textfield',
+                        name:'nombreEncargadoPagos',
+                        label:'Nombre',
+                        tabIndex: 22,
+                        itemId: 'nombreEncargadoPagos'
+                    },{
+                        xtype:'numberfield',
+                        name:'telEncargadoPagos',
+                        label:'Teléfono',
+                        tabIndex: 23,
+                        itemId: 'telEncargadoPagos'
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'campo4',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '45%',
+                    hidden: true
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'este',
+                        label: 'Responsable técnico',
+                        hidden: false,
+                        itemId: 'contactos4',
+                    },{
+                        xtype:'textfield',
+                        name:'nombreResponsableTecnico',
+                        label:'Nombre',
+                        tabIndex: 24,
+                        itemId: 'nombreResponsableTecnico'
+                    },{
+                        xtype:'numberfield',
+                        name:'telResponsableTecnico',
+                        label:'Teléfono',
+                        tabIndex: 25,
+                        itemId: 'telResponsableTecnico'
+                    }
+                ]
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                title:'Productos utilizados',
+            },{
+                xtype:'fieldset',
+                itemId: 'conceptos3',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Solubles',
+                        itemId: 'solubles3',
+                        hidden: false
+                    }
+                ]
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'conceptos4',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Granulares',
+                        itemId: 'granulares4',
+                        hidden: false
+                    }
+                ] 
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'conceptos5',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Ácidos',
+                        itemId: 'acidos5',
+                        hidden: false                        
+                    }
+                ]
+            },{
+                xtype:'fieldset',
+                margin: '3 0 0 0',
+                itemId: 'conceptos6',
+                defaults:{
+                    cls: 'factura',
+                    labelWrap: true,
+                    clearIcon:true,
+                    autoCapitalize:true,
+                    labelWidth: '80%'                
+                },
+                items:[{
+                        xtype: 'checkboxfield',
+                        name: 'servicio',
+                        label: 'Otros',
+                        itemId: 'otros6',
+                        hidden: false                        
+                    }
+                ]
+            },{
+                xtype:'fieldset',                
                 itemId:'comentarios',
                 title:'Comentarios',
                 defaults:{
-                    //required:true,
-                    //disabled: true,
+                    cls: 'factura',
+                    labelWrap: true,
                     clearIcon:true,
                     autoCapitalize:true,
                     labelWidth: '45%'
                 },
                 items:[
                     {
-                        xtype:'textareafield'
-                        //name:'productos',
-                        //label:'Productos'
+                        xtype:'textareafield',
+                        tabIndex: 26,
+                        name:'comentarios'                     
+                    }
+                ]
+            },{
+                xtype: 'fieldset',
+                itemId: 'fieldButton',
+                padding: 10,
+                docked: 'bottom',
+                items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'agregarProspecto', 
+                        ui: 'action',
+                        text: 'Agregar prospecto'
                     }
                 ]
             }
         ]
 	}
-});
-
-/**
- * Created with JetBrains PhpStorm.
- * User: Waldix
- * Date: 16/04/14
- * Time: 12:23
- * To change this template use File | Settings | File Templates.
- */
-Ext.define('APP.form.phone.rutas.RutasForm', {
-    extend: 'Ext.form.Panel',
-    xtype: 'rutasform',
-    initialize : function() {
-        this.callParent();
-        this.setItems([{
-            xtype:'fieldset',
-            scrollable: {
-                direction: 'vertical',
-                directionLock: true
-            },
-            defaults:{
-                labelWidth:'30%',
-                required:true,
-                labelCls: 'labels',
-                inputCls: 'labels'
-            },
-            items:[{
-                xtype:'container',
-                layout:{
-                    type:'hbox',
-                    align:'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    action:'showrutasform',
-                    text:'Rutas',
-                    flex:1
-                },{
-                    xtype:'button',
-                    action:'showactividadesform',
-                    text:'Actividades',
-                    flex:1
-                }]
-            },{
-                xtype: 'textfield',
-                name: 'titulo',
-                label:'Título'
-            },{
-                xtype:'fieldset',
-                title:'Empieza',
-                layout:{
-                    type:'hbox',
-                    align:'stretch'
-                },
-                items:[{
-                    xtype:'datepickerfield',
-                    value:new Date(),
-                    border:0,
-                    name:'empiezafecha',
-                    readOnly:true
-                },{
-                    xtype: 'timepickerfield',
-                    name: 'empiezahora',
-                    value: new Date()
-                }]
-            },{
-                xtype:'fieldset',
-                title:'Termina',
-                layout:{
-                    type:'hbox',
-                    align:'stretch'
-                },
-                items:[{
-                    xtype:'datepickerfield',
-                    value:new Date(),
-                    name:'terminafecha'
-                },{
-                    xtype: 'timepickerfield',
-                    name: 'terminahora',
-                    value: new Date()
-                }]
-
-            },{
-                xtype: 'checkboxfield',
-                name: 'repetir',
-                label: 'Repetir'
-            },{
-                xtype:'container',
-                id:'rutasrepetir',
-                hidden:true,
-                items:[{
-                    xtype: 'checkboxfield',
-                    name: 'lunes',
-                    label: 'Lunes'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'martes',
-                    label: 'Martes'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'miercoles',
-                    label: 'Miercoles'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'jueves',
-                    label: 'Jueves'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'viernes',
-                    label: 'Viernes'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'sabado',
-                    label: 'Sabado'
-                },{
-                    xtype: 'checkboxfield',
-                    name: 'domingo',
-                    label: 'Domingo'
-                }]
-            },{
-                xtype: 'textareafield',
-                name: 'notas',
-                label: 'Notas',
-                labelAlign:'top'
-            },{
-                xtype:'rutasmapa',
-                useCurrentLocation: true,
-                height:400,
-                width:'98%'
-            },{
-                xtype:'container',
-                items:[{
-                    xtype:'button',
-                    margin:'10',
-                    text:'Guardar',
-                    action:'guardar'
-                }]
-            }]
-        }]);
-    },
-    config: {
-        layout:'fit'
-    }
 });
 
 /**
@@ -88824,7 +91864,7 @@ Ext.define('APP.store.phone.Menu',{
         autoload: true,
         model:'APP.model.phone.Menu',
         data: [
-            {name: 'Ordenes de venta',  icon: 'package.png', action: 'ordenes'},
+            {name: 'Órdenes de venta',  icon: 'package.png', action: 'ordenes'},
             {name: 'Rutas y Actividades',   icon: 'map.png', action: 'rutas'},
             {name: 'Cobranza', icon: 'briefcase.png', action: 'cobranza'},
             {name: 'Informes', icon: 'graph.png', action: 'informes'},
@@ -88873,8 +91913,7 @@ Ext.define('APP.store.phone.Productos', {
     config: {
         model:'APP.model.phone.Producto',
         proxy: {            
-            url: '/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',
-            //url: 'http://25.15.241.121:88/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',
+            url: '/iMobile/COK1_CL_Articulo/ObtenerListaArticulosiMobile',            
                  
             type: 'jsonp',
             callbackKey: 'callback',
@@ -88949,14 +91988,11 @@ Ext.define('APP.store.phone.Monedas', {
  */
 Ext.define('APP.store.phone.Facturas', {
     extend: 'APP.core.data.Store',
-    //requires: ['Imobile.model.Factura'],
 
     config: {
         model: 'APP.model.phone.Factura',        
         proxy: {
-            //url: 'http://ferman.ddns.net:88/iMobile/COK1_CL_Consultas/ObtenerFacturasAbiertasiMobile',
             url: "/iMobile/COK1_CL_Consultas/ObtenerFacturasAbiertasiMobile",
-            //url: 'http://25.15.241.121:88/iMobile/COK1_CL_Consultas/ObtenerFacturasAbiertasiMobile',
             type: 'jsonp',
             callbackKey: 'callback',
             reader: {
@@ -88965,13 +92001,6 @@ Ext.define('APP.store.phone.Facturas', {
 
             }
         }
-/*        data: [
-            {id: '0001', fecha: '23-May-2014', saldo: 10000.00, vencimiento: '12-Dic-2014'},
-            {id: '0002', fecha: '12-Abr-2014', saldo: 20000.00, vencimiento: '14-Jun-2014'},
-            {id: '0003', fecha: '28-Ene-2014', saldo: 30000.00, vencimiento: '23-Jul-2014'},
-            {id: '0004', fecha: '30-Mar-2013', saldo: 40000.00, vencimiento: '13-Ago-2014'},
-            {id: '0005', fecha: '23-Oct-2013', saldo: 50000.00, vencimiento: '15-Dic-2014'}
-        ]*/
     }
 });
 
@@ -88987,9 +92016,7 @@ Ext.define('APP.store.phone.Anticipos', {
     config: {
         model: 'APP.model.phone.Factura',
         proxy: {
-            //url: 'http://ferman.ddns.net:88/iMobile/COK1_CL_Consultas/RegresarOrdenVentaAbiertaiMobile',
             url: "/iMobile/COK1_CL_Consultas/RegresarOrdenVentaAbiertaiMobile",
-            //url: 'http://25.15.241.121:88/iMobile/COK1_CL_Consultas/ObtenerFacturasAbiertasiMobile',
             type: 'jsonp',
             callbackKey: 'callback',
             reader: {
@@ -88998,13 +92025,6 @@ Ext.define('APP.store.phone.Anticipos', {
 
             }
         }
-/*        data: [
-            {id: '0001', fecha: '23-May-2014', saldo: 10000.00, vencimiento: '12-Dic-2014'},
-            {id: '0002', fecha: '12-Abr-2014', saldo: 20000.00, vencimiento: '14-Jun-2014'},
-            {id: '0003', fecha: '28-Ene-2014', saldo: 30000.00, vencimiento: '23-Jul-2014'},
-            {id: '0004', fecha: '30-Mar-2013', saldo: 40000.00, vencimiento: '13-Ago-2014'},
-            {id: '0005', fecha: '23-Oct-2013', saldo: 50000.00, vencimiento: '15-Dic-2014'}
-        ]*/
     }
 });
 
@@ -89045,8 +92065,6 @@ Ext.define('APP.store.phone.FormasDePago', {
     config: {
         model: 'APP.model.phone.FormaDePago',
         proxy: {
-            //url: 'http://25.15.241.121:88/iMobile/COK1_CL_Catalogos/ObtenerFormasPagoiMobile',
-            //url: 'http://ferman.ddns.net:88/iMobile/COK1_CL_Catalogos/ObtenerFormasPagoiMobile',
             url: "/iMobile/COK1_CL_Catalogos/ObtenerFormasPagoiMobile",
             type: 'jsonp',
             callbackKey: 'callback',
@@ -89064,14 +92082,14 @@ Ext.define('APP.store.phone.FormasDePago', {
  * Este es el store para prospectos
  */
 Ext.define('APP.store.phone.Prospectos', {
-    extend: 'Ext.data.Store',
+    extend: 'APP.core.data.Store',
     //requires: ['Imobile.model.Prospecto'],
 
     config: {
         model: 'APP.model.phone.Prospecto',
-        autoLoad: true
-/*        proxy: {
-            url: "http://25.15.241.121:88/iMobile/COK1_CL_Socio/ObtenerListaSociosiMobile",
+        //autoLoad: true
+        proxy: {
+            url: "/iMobile/COK1_CL_Socio/ObtenerListaProspectosiMobile",
             type: 'jsonp',
             callbackKey: 'callback',
             reader: {
@@ -89081,13 +92099,7 @@ Ext.define('APP.store.phone.Prospectos', {
             extraParams:{
                 format:'json'
             }
-        }*/
-
-/*         data: [
-            {fecha: 'hoy',  codigo: '1234', razonSocial: 'FMS'},
-            {fecha: 'ayer',  codigo: '4321', razonSocial: 'ASDF'},
-            {fecha: 'mañana',  codigo: '2467', razonSocial: 'TYE'}
-        ]*/
+        }
     }
 });
 
@@ -89118,6 +92130,29 @@ Ext.define('APP.store.phone.Transacciones', {
 });
 
 /**
+ * @class APP.store.phone.Informes
+ * @extends Ext.data.Store
+ * Este es el store para los anticipos.
+ */
+Ext.define('APP.store.phone.Informes', {
+    extend: 'APP.core.data.Store',    
+
+    config: {
+        model: 'APP.model.phone.Informe',
+        proxy: {
+            url: "/iMobile/COK1_CL_Informes/obtenInformeClientes",
+            type: 'jsonp',
+            callbackKey: 'callback',
+            reader: {
+                type: 'json',
+                rootProperty: 'Data'
+
+            }
+        }
+    }
+});
+
+/**
  * Created by th3gr4bb3r on 7/21/14.
  */
 Ext.define('APP.profile.Phone',{
@@ -89131,7 +92166,10 @@ Ext.define('APP.profile.Phone',{
             'Menu',
             'Clientes',
             'Ordenes',
+
+            //Rutas y Actividadaes
             'Rutas',
+
             'Cobranza',
             'Informes',
             'Configuracion',
@@ -89149,9 +92187,16 @@ Ext.define('APP.profile.Phone',{
             'FormaDePago',
             'Prospecto',
             'Transaccion',
-            'RutaCalendario',
 
-            'ActividadCalendario'
+            'RutaCalendario',
+            'Informe',
+
+            // Actividades
+            'ActividadCalendario',
+
+            // Rutas
+            'RutaCalendario',
+            'RutaCalendarioDirecciones'
         ],
         stores:[
             'Menu',
@@ -89166,9 +92211,15 @@ Ext.define('APP.profile.Phone',{
             'FormasDePago',
             'Prospectos',
             'Transacciones',
-            'RutasCalendario',
 
-            'ActividadesCalendario'
+            'RutasCalendario',
+            'Informes',
+            
+            // Actividades
+            'ActividadesCalendario',
+
+            // Rutas
+            'RutasCalendario'
         ],
         views:[
             'MainCard',
@@ -89211,22 +92262,35 @@ Ext.define('APP.profile.Phone',{
             'cobranza.TotalAPagarList',            
             'prospectos.ProspectosList',
 
-            'rutas.actividades.OpcionRutasActividades',
-            'rutas.actividades.ActividadesCalendario',
+            'informes.InformesList',
+            'informes.AnalisisVentasList',            
+            'APP.form.phone.informes.InformesForm',
+            'APP.view.phone.informes.InformesGeneradosList',
 
-            'rutas.OpcionRutasList',
-            'rutas.RutasCalendario',
-            'rutas.RutasCalendarioCont',
-            'rutas.RutasCalendarioDia',
-            'rutas.RutasMapa',
+            //Rutas y actividades
+            'rutas.OpcionRutasActividades',
+
+            //Actividades
+            'rutas.actividades.ActividadesCalendario',
+            'rutas.actividades.ActividadesCalendarioCont',
+            'rutas.actividades.ActividadesCalendarioDia',
+            'APP.form.phone.rutas.ActividadesForm',
+
+            //Rutas
+            'rutas.rutas.RutasCalendarioCont',
+            'rutas.rutas.RutasCalendario',
+            'rutas.rutas.RutasCalendarioDia',
+            'rutas.rutas.RutasCalendarioDirecciones',
+            'rutas.rutas.RutasCalendarioMapa',
+            'APP.form.phone.rutas.RutasForm',
 
             'APP.form.phone.pedidos.EditarPedidoForm',
             'APP.form.phone.clientes.ClienteForm',
             'APP.form.phone.productos.AgregarProductosForm',
             'APP.form.phone.cobranza.MontoAPagarForm',
-            'APP.form.phone.prospectos.ProspectosForm',
+            'APP.form.phone.prospectos.ProspectosForm'
 
-            'APP.form.phone.rutas.RutasForm'
+
         ]
     },
 
@@ -89269,6 +92333,7 @@ Ext.application({
                   
 
                                           
+                                                
 
                         
 
@@ -89280,7 +92345,8 @@ Ext.application({
                                        
 
                               
-                                 
+                                  
+                                
       
 
     icon: {

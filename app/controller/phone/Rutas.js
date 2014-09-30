@@ -855,9 +855,47 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                     draggable:true
                 });
 
-                bounds.extend(extMapa.marker.position); 
+                var infowindow = new google.maps.InfoWindow({
+                    content: 'Hola, probando marcadores!'
+                });
 
-                mapa.setCenter(bounds.getCenter());
+                var popup = Ext.create('Ext.Panel', {                    
+                    alias: 'widget.Popup',
+                 
+                    config: {
+                        height: '30%',
+                        html: 'I am Panel Popup',
+                        itemId: 'popup',
+                        //left: '5%',
+                        padding: 10,
+                        top: '0%',
+                        width: '40%',
+                        hideOnMaskTap: true,
+                        modal: true
+                    }
+                });
+
+                var chetito = me.getMenuNav().getActiveItem().down('button');
+
+
+                google.maps.event.addListener(extMapa.marker, 'click', function(){
+                    //infowindow.open(mapa, extMapa.marker);
+                    //popup.showBy(extMapa.marker);
+                    me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
+                    function (buttonId) {
+                        if (buttonId == 'editar') {
+
+                            me.dameDirecciones(ruta);
+                            
+                        } else {
+                            console.log('se eligió trazar una ruta')
+                        }
+            });
+                });
+
+                bounds.extend(extMapa.marker.position);            
+
+                //mapa.setCenter(bounds.getCenter());
 
                 //extMapa.setMapOptions({zoom:15});
 
@@ -1002,7 +1040,7 @@ console.log(calendar.eventStore.getCount(), " Rutas");
 
     },
 
-    onRutasEdit:function(list,index,target,record){
+    onRutasEdit2:function(list,index,target,record){
         var form = this.getRutasForm();
         var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
@@ -1100,5 +1138,185 @@ console.log(calendar.eventStore.getCount(), " Rutas");
             form.down("checkboxfield[name=Domingo]").disable();
 
         }
+    },
+
+    onRutasEdit:function(ruta, direcciones){
+        var form = this.getRutasForm();
+        //var direcciones = this.getRutasCalendarioDia().config.direcciones;
+
+        var items=[{
+            xtype:'rutasform',
+            flex:1//,
+            //nd:this.getActividadesCalendarioCont().nd
+        }];
+
+        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
+
+            items.push({
+                xtype:'container',
+                padding:'0 10px 10px 10px',
+                layout:{
+                    type:'hbox',
+                    align: 'stretch'
+                },
+                items:[{
+                    xtype:'button',
+                    text:'Realizada',
+                    action:'realizarruta',
+                    flex:1
+                },{
+                    xtype:'button',
+                    text:'Cancelar',
+                    action:'cancelarruta',
+                    flex:1
+                }]
+            });
+        }
+        else{
+            if(ruta.Estatus == 2){
+
+            }
+        }
+
+
+        this.getMenuNav().push({
+            xtype:'container',
+            layout:{
+                type:'vbox'
+            },
+            items:items
+        })
+
+        //this.getMenuNav().getActiveItem().down('#btnGuardar').hide();
+
+        var form = this.getRutasForm();
+
+        var horaInicio = new Date();
+        horaInicio.setHours(ruta.HoraInicio.substr(0,2));
+        horaInicio.setMinutes(ruta.HoraInicio.substr(3,2));
+        horaInicio.setMilliseconds(ruta.HoraInicio.substr(6,2));
+
+        var horaFin = new Date();
+        horaFin.setHours(ruta.HoraFin.substr(0,2));
+        horaFin.setMinutes(ruta.HoraFin.substr(3,2));
+        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));
+
+        form.setValues({
+            CodigoRuta:ruta.CodigoRuta,
+            CodigoCliente : ruta.CodigoCliente,
+            CodigoDireccion : ruta.CodigoDireccion,
+            TipoDireccion : ruta.TipoDireccion,
+            Descripcion:ruta.title,
+            FechaInicio:ruta.start,
+            HoraInicio: horaInicio,
+            FechaFin:ruta.end,
+            HoraFin: horaFin,
+            Notas:ruta.Notas,
+            Repetir:ruta.Repetir,
+            Lunes:ruta.Lunes,
+            Martes:ruta.Martes,
+            Miercoles:ruta.Miercoles,
+            Jueves:ruta.Jueves,
+            Viernes:ruta.Viernes,
+            Sabado:ruta.Sabado,
+            Domingo:ruta.Domingo
+        });
+
+        this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
+
+        if(ruta.Estatus != 2){
+            var btnGuardar = form.down("button[action=guardar]").destroy();
+            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
+            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
+            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
+            form.down("checkboxfield[name=Repetir]").disable();
+            form.down("checkboxfield[name=Lunes]").disable();
+            form.down("checkboxfield[name=Martes]").disable();
+            form.down("checkboxfield[name=Miercoles]").disable();
+            form.down("checkboxfield[name=Jueves]").disable();
+            form.down("checkboxfield[name=Viernes]").disable();
+            form.down("checkboxfield[name=Sabado]").disable();
+            form.down("checkboxfield[name=Domingo]").disable();
+
+        }
+    },
+
+    eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
+        Ext.Msg.show({
+            title: titulo,
+            message: mensaje,
+            width: ancho,
+            buttons: [
+                {
+                    itemId: 'editar',
+                    text: 'Editar ruta'//APP.core.config.Locale.config.lan.Ordenes.confirmaNo
+                },
+                {
+                    itemId: 'trazar',
+                    text: 'Trazar ruta',//APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
+                    ui: 'action'
+                }
+            ],
+            fn: funcion
+        });
+    },
+
+    dameDirecciones: function(ruta){
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
+            params: {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                CardCode: ruta.CodigoCliente
+            },
+            callbackKey: 'callback',
+            success: function (response) {
+                if (response.Procesada) {
+                    var direcciones = response.Data[0].Direcciones;
+                    if (direcciones.length > 0){
+                        var name = response.Data[0].NombreSocio,
+                            idCliente = ruta.CodigoCliente,
+                            titulo = name,
+
+                        barraTitulo = ({
+                            xtype: 'toolbar',
+                            docked: 'top',
+                            title: titulo
+                        });
+console.log(direcciones);
+                        // this.getMenuNav().push({
+                        //     xtype: 'rutascalendario',
+                        //     title: idCliente,
+                        //     idCliente: idCliente,
+                        //     direcciones: direcciones
+                        // });
+
+                        //this.showFormRutas(idCliente, direcciones);
+                        this.onRutasEdit(ruta, direcciones);
+
+                        //this.getMenuNav().add(barraTitulo);
+
+                        // var date = new Date();
+
+                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+
+                        // //this.loadRutasCalendario(firstDay,lastDay);
+                    }
+                    else{
+                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                    }
+                } else {
+                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                }
+            },
+            scope: this
+        });
     }
+
 });

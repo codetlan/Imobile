@@ -136,7 +136,7 @@
 	 * @cfg  sdkPath
 	 * This is the path to the Android SDK, if you are developing an Android application.
 	 */
-	"sdkPath":"/Users/Waldix/Documents/android/adt-bundle-mac-x86_64-20130917/sdk",
+	"sdkPath":"C:/Android/sdk",
 
 	/**
 	 * @cfg  androidAPILevel
