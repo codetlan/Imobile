@@ -857,7 +857,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
 
                 bounds.extend(extMapa.marker.position); 
 
-                mapa.setCenter(bounds.getCenter());
+                //mapa.setCenter(bounds.getCenter());
 
                 //extMapa.setMapOptions({zoom:15});
 

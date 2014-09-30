@@ -69,6 +69,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.controller.phone.Rutas": [],
   "APP.controller.tablet.Main": [],
   "APP.core.FormatCurrency": [],
+  "APP.core.config.Locale": [],
   "APP.core.data.Store": [],
   "APP.form.phone.clientes.ClienteForm": [],
   "APP.form.phone.cobranza.MontoAPagarForm": [],
@@ -83,6 +84,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.model.phone.Direccion": [],
   "APP.model.phone.Factura": [],
   "APP.model.phone.FormaDePago": [],
+  "APP.model.phone.Informe": [],
   "APP.model.phone.Menu": [],
   "APP.model.phone.Moneda": [],
   "APP.model.phone.Orden": [],
@@ -100,6 +102,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.store.phone.Direcciones": [],
   "APP.store.phone.Facturas": [],
   "APP.store.phone.FormasDePago": [],
+  "APP.store.phone.Informes": [],
   "APP.store.phone.Menu": [],
   "APP.store.phone.Monedas": [],
   "APP.store.phone.Ordenes": [],
@@ -122,6 +125,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "APP.view.phone.cobranza.VisualizacionCobranzaList": [],
   "APP.view.phone.configuracion.ConfiguracionPanel": [],
   "APP.view.phone.informes.AnalisisVentasList": [],
+  "APP.view.phone.informes.InformesGeneradosList": [],
   "APP.view.phone.informes.InformesList": [],
   "APP.view.phone.login.ConfiguracionForm": [],
   "APP.view.phone.login.LoginForm": [],
@@ -787,11 +791,6 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "Imobile.model.DireccionFiscal": [],
   "Imobile.model.Menu": [],
-  "Imobile.view.configuracion.ConfiguracionContainer": [],
-  "Imobile.view.configuracion.ConfiguracionList": [],
-  "Imobile.view.configuracion.InitializeContainer": [],
-  "Imobile.view.configuracion.ServidorContainer": [],
-  "Imobile.view.configuracion.SincronizarContainer": [],
   "Imobile.view.favoritos.SeleccionadorProFav": [],
   "Imobile.view.menu.Menu": [],
   "Imobile.view.menu.MenuList": [],
@@ -809,6 +808,7 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.controller.phone.Rutas": [],
   "APP.controller.tablet.Main": [],
   "APP.core.FormatCurrency": [],
+  "APP.core.config.Locale": [],
   "APP.core.data.Store": [],
   "APP.form.phone.clientes.ClienteForm": [
     "widget.clienteform"
@@ -839,6 +839,7 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.model.phone.Direccion": [],
   "APP.model.phone.Factura": [],
   "APP.model.phone.FormaDePago": [],
+  "APP.model.phone.Informe": [],
   "APP.model.phone.Menu": [],
   "APP.model.phone.Moneda": [],
   "APP.model.phone.Orden": [],
@@ -856,6 +857,7 @@ Ext.ClassManager.addNameAliasMappings({
   "APP.store.phone.Direcciones": [],
   "APP.store.phone.Facturas": [],
   "APP.store.phone.FormasDePago": [],
+  "APP.store.phone.Informes": [],
   "APP.store.phone.Menu": [],
   "APP.store.phone.Monedas": [],
   "APP.store.phone.Ordenes": [],
@@ -905,6 +907,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "APP.view.phone.informes.AnalisisVentasList": [
     "widget.analisisventaslist"
+  ],
+  "APP.view.phone.informes.InformesGeneradosList": [
+    "widget.informesgeneradoslist"
   ],
   "APP.view.phone.informes.InformesList": [
     "widget.informeslist"
@@ -1752,21 +1757,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.WindowsPhone": [],
   "Imobile.model.DireccionFiscal": [],
   "Imobile.model.Menu": [],
-  "Imobile.view.configuracion.ConfiguracionContainer": [
-    "widget.configuracioncontainer"
-  ],
-  "Imobile.view.configuracion.ConfiguracionList": [
-    "widget.configuracionlist"
-  ],
-  "Imobile.view.configuracion.InitializeContainer": [
-    "widget.initializecontainer"
-  ],
-  "Imobile.view.configuracion.ServidorContainer": [
-    "widget.servidorcontainer"
-  ],
-  "Imobile.view.configuracion.SincronizarContainer": [
-    "widget.sincronizarcontainer"
-  ],
   "Imobile.view.favoritos.SeleccionadorProFav": [
     "widget.seleccionadorprofav"
   ],
