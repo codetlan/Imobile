@@ -14,6 +14,12 @@ Ext.define('APP.controller.phone.Informes', {
     		},
             'informesform #crearInforme':{
                 tap: 'generaInforme'
+            },
+            'informesform textfield[itemId = codigoDesde]':{
+                focus: 'muestraCodigos'
+            },
+            'informesform textfield[itemId = codigoHasta]':{
+                focus: 'muestraCodigos'
             }
     	}
     },
@@ -22,41 +28,51 @@ Ext.define('APP.controller.phone.Informes', {
     	var me = this,
     		view = me.getMenuNav();
 
-    	switch (record.data.action){
-    		case 'bitacoraVendedores':
-                if(view.getActiveItem().isXType('container')){
-                    return;
-                }
-                
-    			view.push({
-    				html: 'Bitácora de vendedores'
-    			});
+        if(list.xtype == 'clienteslist' || list.xtype == 'productoslist'){
+            var codigo = list.xtype == 'clienteslist'? record.data.CodigoSocio : record.data.CodigoArticulo,
+                id = view.getActiveItem().getId();
+            
+            view.pop();
 
-    			break;
+            view.getActiveItem().down('#' + id).setValue(codigo);
 
-    		case 'analisisVentas':
+        } else {
+            switch (record.data.action){
+                case 'bitacoraVendedores':
+                    if(view.getActiveItem().isXType('container')){
+                        return;
+                    }
+                    
+                    view.push({
+                        html: 'Bitácora de vendedores'
+                    });
 
-                if(view.getActiveItem().isXType('analisisventaslist')){
-                    return;
-                }
+                    break;
 
-    			view.push({
-    				xtype: 'analisisventaslist',
-    				title: 'Análisis de Ventas'
-    			});
+                case 'analisisVentas':
 
-                me.agregaOpciones('clientes');
-    			break;
+                    if(view.getActiveItem().isXType('analisisventaslist')){
+                        return;
+                    }
 
-    		case 'analisisClientes':
-                me.auxiliarPonCodigos('Clientes');
+                    view.push({
+                        xtype: 'analisisventaslist',
+                        title: 'Análisis de Ventas'
+                    });
 
-                break;
+                    me.agregaOpciones('clientes');
+                    break;
 
-            case 'analisisArticulos':
-                me.auxiliarPonCodigos('Articulos');
-                break;
-    	}
+                case 'analisisClientes':
+                    me.auxiliarPonCodigos('Clientes');
+
+                    break;
+
+                case 'analisisArticulos':
+                    me.auxiliarPonCodigos('Articulos');
+                    break;
+            }
+        }
     },
 
     agregaOpciones: function(criterio){
@@ -119,8 +135,8 @@ Ext.define('APP.controller.phone.Informes', {
             last = criterio == 'Clientes'? me.getMenuNav().clientes[me.getMenuNav().clientes.length-1].value : me.getMenuNav().articulos[me.getMenuNav().articulos.length-1].value;
             codigos = Object.getOwnPropertyDescriptor(me.getMenuNav(), criterio.substring(0,1).toLowerCase() + criterio.substring(1, criterio.length)).value;
                 
-        form.down('#codigoDesde').setOptions(codigos);
-        form.down('#codigoHasta').setOptions(codigos);
+        form.down('#codigoDesde').setValue(codigos[0].text);
+        //form.down('#codigoHasta').setOptions(codigos);
         form.down('#codigoHasta').setValue(last);
     },
 
@@ -136,6 +152,11 @@ Ext.define('APP.controller.phone.Informes', {
             url;
 
         if(view.getActiveItem().isXType('informesgeneradoslist')){
+            return;
+        }
+
+        if(codigoDesde > codigoHasta){
+            Ext.Msg.alert('Error', 'El código ' + codigoDesde + ' es mayor que ' + codigoHasta + '.');
             return;
         }
 
@@ -186,5 +207,32 @@ Ext.define('APP.controller.phone.Informes', {
 
         me.getMenuNav().titulo = criterio;        
         me.ponCodigos(criterio);
+    },
+
+    muestraCodigos: function (textfield){
+        var me = this,
+            view = me.getMenuNav(),
+            codigos,
+            store;
+            //codigos = Object.getOwnPropertyDescriptor(me.getMenuNav(), criterio.substring(0,1).toLowerCase() + criterio.substring(1, criterio.length)).value;
+
+        if(view.titulo == 'Clientes'){
+            codigos = 'clienteslist'
+        } else {
+            codigos = 'productoslist'
+            store = Ext.getStore('Productos');
+            store.load();
+        }
+console.log(textfield.getItemId());
+        view.push({
+            xtype: 'container',
+            id: textfield.getItemId(),
+            layout: 'fit',
+            //itemId: textfield.itemId,//'informescont',
+            items: [{
+                xtype: codigos,
+                title: APP.core.config.Locale.config.lan.menu.Informes
+            }]        
+        });      
     }
 });

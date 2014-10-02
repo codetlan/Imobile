@@ -795,13 +795,6 @@ console.log(nd);
                     draggable:true
                 });
 
-
-            //     extMapa.marker = new google.maps.Marker({
-            //     map: mapa,
-            //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
-            //     draggable:true
-            // });
-
              bounds.extend(extMapa.marker.position); 
 
             mapa.setCenter(bounds.getCenter());
@@ -859,25 +852,6 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                     content: 'Hola, probando marcadores!'
                 });
 
-                var popup = Ext.create('Ext.Panel', {                    
-                    alias: 'widget.Popup',
-                 
-                    config: {
-                        height: '30%',
-                        html: 'I am Panel Popup',
-                        itemId: 'popup',
-                        //left: '5%',
-                        padding: 10,
-                        top: '0%',
-                        width: '40%',
-                        hideOnMaskTap: true,
-                        modal: true
-                    }
-                });
-
-                var chetito = me.getMenuNav().getActiveItem().down('button');
-
-
                 google.maps.event.addListener(extMapa.marker, 'click', function(){
                     //infowindow.open(mapa, extMapa.marker);
                     //popup.showBy(extMapa.marker);
@@ -889,6 +863,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                             
                         } else {
                             console.log('se eligió trazar una ruta')
+                            me.trazaRuta(ruta.lat, ruta.lon, mapa);
                         }
             });
                 });
@@ -902,7 +877,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                 google.maps.event.addListener(extMapa.marker,"dragend",function(){
                     var point = extMapa.marker.getPosition();
                     mapa.panTo(point);
-                });  
+                });
             });
         }
 
@@ -924,7 +899,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
         var form = this.getRutasForm(),
             values = form.getValues(),
             nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
-
+console.log(nd);
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
             if(values.Descripcion == ""){
@@ -942,36 +917,40 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                         var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/AgregarRuta"
                     }
 
+            var params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                "Ruta.CodigoRuta" : values.CodigoRuta,
+                "Ruta.CodigoCliente" : values.CodigoCliente,
+                "Ruta.CodigoDireccion" : values.CodigoDireccion,
+                "Ruta.TipoDireccion" : values.TipoDireccion,
+                "Ruta.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
+                "Ruta.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                "Ruta.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
+                "Ruta.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                "Ruta.Descripcion" : values.Descripcion,
+                "Ruta.Notas" : values.Notas,
+                "Ruta.Repetir" : values.Repetir?true:false,
+                "Ruta.Lunes" : values.Lunes?true:false,
+                "Ruta.Martes" : values.Martes?true:false,
+                "Ruta.Miercoles" : values.Miercoles?true:false,
+                "Ruta.Jueves" : values.Jueves?true:false,
+                "Ruta.Viernes" : values.Viernes?true:false,
+                "Ruta.Sabado" : values.Sabado?true:false,
+                "Ruta.Domingo" : values.Domingo?true:false,
+                "Ruta.Notas"   : values.Notas,
+                "Ruta.LatitudOrigen": values.LatitudOrigen,
+                "Ruta.LongitudOrigen": values.LongitudOrigen,
+                "Ruta.Estatus" : 2
+            }          
+console.log(url);
+console.log(params);
                     Ext.data.JsonP.request({
                         url: url,
-                        params: {
-                            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                            Token: localStorage.getItem("Token"),
-                            "Ruta.CodigoRuta" : values.CodigoRuta,
-                            "Ruta.CodigoCliente" : values.CodigoCliente,
-                            "Ruta.CodigoDireccion" : values.CodigoDireccion,
-                            "Ruta.TipoDireccion" : values.TipoDireccion,
-                            "Ruta.FechaInicio" : Ext.util.Format.date(values.FechaInicio,"Y-m-d"),
-                            "Ruta.HoraInicio" : Ext.util.Format.date(values.HoraInicio,"H:i:s"),
-                            "Ruta.FechaFin" : Ext.util.Format.date(values.FechaFin,"Y-m-d"),
-                            "Ruta.HoraFin" : Ext.util.Format.date(values.HoraFin,"H:i:s"),
-                            "Ruta.Descripcion" : values.Descripcion,
-                            "Ruta.Notas" : values.Notas,
-                            "Ruta.Repetir" : values.Repetir?true:false,
-                            "Ruta.Lunes" : values.Lunes?true:false,
-                            "Ruta.Martes" : values.Martes?true:false,
-                            "Ruta.Miercoles" : values.Miercoles?true:false,
-                            "Ruta.Jueves" : values.Jueves?true:false,
-                            "Ruta.Viernes" : values.Viernes?true:false,
-                            "Ruta.Sabado" : values.Sabado?true:false,
-                            "Ruta.Domingo" : values.Domingo?true:false,
-                            "Ruta.Notas"   : values.Notas,
-                            "Ruta.LatitudOrigen": values.LatitudOrigen,
-                            "Ruta.LongitudOrigen": values.LongitudOrigen,
-                            "Ruta.Estatus" : 2
-                        },
+                        params: params,
+
                         callbackKey: 'callback',
                         success: function (response) {
                             var procesada = response.Procesada
@@ -990,7 +969,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                                 });
                             }
                             else {
-                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);                                
                                 Ext.Viewport.setMasked(false);
                             }
 
@@ -1001,7 +980,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                             });
                             Ext.Viewport.setMasked(false);
                         },
-                        scope: this
+                        scope: this                        
                     });
                 }
                 else{
@@ -1150,7 +1129,9 @@ console.log(calendar.eventStore.getCount(), " Rutas");
             //nd:this.getActividadesCalendarioCont().nd
         }];
 
-        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
+        console.log(ruta);
+
+/*        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
 
             items.push({
                 xtype:'container',
@@ -1176,7 +1157,7 @@ console.log(calendar.eventStore.getCount(), " Rutas");
             if(ruta.Estatus == 2){
 
             }
-        }
+        }*/
 
 
         this.getMenuNav().push({
@@ -1219,10 +1200,27 @@ console.log(calendar.eventStore.getCount(), " Rutas");
             Jueves:ruta.Jueves,
             Viernes:ruta.Viernes,
             Sabado:ruta.Sabado,
-            Domingo:ruta.Domingo
+            Domingo:ruta.Domingo,
+            LatitudOrigen: ruta.lat,
+            LongitudOrigen: ruta.lon
         });
 
         this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
+
+        var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
+            mapa = extMapa.getMap();
+
+        extMapa.marker = new google.maps.Marker({
+            map: mapa,
+            position: new google.maps.LatLng(ruta.lat, ruta.lon),
+            draggable:true
+        });
+
+        google.maps.event.addListener(extMapa.marker,"dragend",function(){
+            var point = extMapa.marker.getPosition();
+            mapa.panTo(point);
+        });
+
 
         if(ruta.Estatus != 2){
             var btnGuardar = form.down("button[action=guardar]").destroy();
@@ -1317,6 +1315,49 @@ console.log(direcciones);
             },
             scope: this
         });
-    }
+    },
 
+    trazaRuta: function(lat, lng, map){
+        var me = this;
+
+        var geo = Ext.create('Ext.util.Geolocation',{
+            autoUpdate: false,
+            listeners: {
+                locationupdate: function (geo) {
+                    var latitude = geo.getLatitude(),
+                    longitude = geo.getLongitude();
+
+                    console.log(latitude, longitude);
+
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+                    directionsDisplay.setMap(map);
+
+                    var origin = new google.maps.LatLng(latitude, longitude);
+                    var destination = new google.maps.LatLng(lat, lng);
+
+                    var request = {
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    };
+
+                    directionsService.route(request, function (result, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setMap(map);
+                            directionsDisplay.setDirections(result);
+                        }
+                    });
+                },
+                locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                    Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+
+                }
+            }
+        });
+
+        geo.updateLocation();
+
+    }
 });
