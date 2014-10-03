@@ -5,7 +5,8 @@ Ext.define('APP.view.phone.informes.InformesGeneradosList', {
     config: {
         //itemCls: 'partida',
         store: 'Informes',
-        disableSelection: true
+        disableSelection: true,
+        modulo: 'informes'
 
 //         itemTpl: ['<div class="factura">', '<div> <p>Código: <b>{codigo}</b> Total: <b>{cantidad}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
 //                   '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',

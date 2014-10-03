@@ -124,7 +124,13 @@ Ext.define('APP.controller.phone.Rutas', {
             },
             'rutascalendariodia':{
                 itemtap:'onRutasEdit'
-            }
+            },
+              'container[xtype=rutascalendariocont] button': {
+                tap:'cambiaStatusRuta'
+            }/*,
+              'container[xtype=rutascalendariocont] button[action = cancelarRuta]': {
+                tap:'prueba'
+            },*/
 
         }
     },
@@ -565,9 +571,9 @@ Ext.define('APP.controller.phone.Rutas', {
                 if (response.Procesada) {
                     var direcciones = response.Data[0].Direcciones;
                     if (direcciones.length > 0){
-                        var name = record.get('NombreSocio'),
-                            idCliente = record.get('CodigoSocio'),
-                            titulo = name,
+                        // var name = record.get('NombreSocio'),
+                        //     idCliente = record.get('CodigoSocio'),
+                        //     titulo = name,
 
                         barraTitulo = ({
                             xtype: 'toolbar',
@@ -678,8 +684,8 @@ console.log(direcciones);
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
-        var rc = this.getRutasCalendario(),
-            rutas = rc.view.eventStore;
+        // var rc = this.getRutasCalendario(),
+        //     rutas = rc.view.eventStore;
 
 
         this.getMenuNav().push({
@@ -715,7 +721,7 @@ console.log(direcciones);
     showFormRutas:function(idCliente, direcciones){        
         var rc = this.getRutasCalendario(),
             rutas = rc.view.eventStore,
-            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
+            nd = this.getRutasCalendarioMapa().config.nd;
         // var idCliente = this.getRutasCalendarioDia().config.idCliente;
         // var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
@@ -820,13 +826,14 @@ console.log(nd);
 
     colocaMarcadores:function(){
         var me = this,
-            ac = me.getRutasCalendario(),
+            ac = me.getRutasCalendario(),            
             rutas = ac.view.eventStore;
+            marcadoresArray = new Array();
 console.log(rutas.getCount(), ' en colocaMarcadores')
         if(rutas.getCount() > 0){
             var extMapa = this.getRutasCalendarioMapa(),
                 mapa = extMapa.getMap(),
-                ruta,
+                ruta, icono,
                 bounds = new google.maps.LatLngBounds();
 
             Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
@@ -838,35 +845,55 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
         
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
-                ruta = item.getData();  //rutas.getAt(0).getData();
-
+                ruta = item.getData();  //rutas.getAt(0).getData();                
                 console.log(ruta);
 
-                extMapa.marker = new google.maps.Marker({
-                    map: mapa,
-                    position: new google.maps.LatLng(ruta.lat, ruta.lon),
-                    draggable:true
-                });
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: 'Hola, probando marcadores!'
-                });
 
-                google.maps.event.addListener(extMapa.marker, 'click', function(){
-                    //infowindow.open(mapa, extMapa.marker);
-                    //popup.showBy(extMapa.marker);
-                    me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
-                    function (buttonId) {
-                        if (buttonId == 'editar') {
+                var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').nd,
+                    today = new Date(),
+                    horaInicio = ruta.HoraInicio.split(":", 2);
 
-                            me.dameDirecciones(ruta);
-                            
-                        } else {
-                            console.log('se eligió trazar una ruta')
-                            me.trazaRuta(ruta.lat, ruta.lon, mapa);
-                        }
-            });
-                });
+                    nd.setHours(parseInt(horaInicio[0]), parseInt(horaInicio[1]));
+
+                if(nd < today){
+                    if(ruta.Estatus == 2){
+                        ruta.Estatus = 0;
+                    }                    
+                }
+
+                me.recuperaMarcador(extMapa, ruta);
+
+                marcadoresArray.push(extMapa.marker);
+
+                // extMapa.marker = new google.maps.Marker({
+                //     map: mapa,
+                //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
+                //     icon: icono,
+                //     draggable:true
+                // });
+
+                // google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                //     var point = extMapa.marker.getPosition();
+                //     mapa.panTo(point);
+                // });
+
+                //var marcador = item.getData()
+
+                if(ruta.Estatus == 0 || ruta.Estatus == 2){
+                    google.maps.event.addListener(extMapa.marker, 'click', function(){
+                        //infowindow.open(mapa, extMapa.marker);
+                        //popup.showBy(extMapa.marker);
+                        me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
+                        function (buttonId) {
+                            if (buttonId == 'editar') {                                
+                                me.dameDirecciones(item.data);
+                            } else {
+                                me.trazaRuta(item.data);
+                            }
+                        });
+                    });                
+                }
 
                 bounds.extend(extMapa.marker.position);            
 
@@ -874,31 +901,59 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
 
                 //extMapa.setMapOptions({zoom:15});
 
-                google.maps.event.addListener(extMapa.marker,"dragend",function(){
-                    var point = extMapa.marker.getPosition();
-                    mapa.panTo(point);
-                });
             });
+
+            me.getRutasCalendario().marcadores = marcadoresArray;
+
+            // for(var i = 0; i < marcadoresArray.length; i++){
+            //     google.maps.event.addListener(marcadoresArray[i], 'click', function(){
+            //         //infowindow.open(mapa, extMapa.marker);
+            //         //popup.showBy(extMapa.marker);
+            //         me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
+            //         function (buttonId) {
+            //             if (buttonId == 'editar') {
+            //                 //rutas.find()
+            //                 console.log(rutas.getAt(i));
+            //                 //me.dameDirecciones(rutasArray[]);
+            //             } else {
+            //                 me.trazaRuta(ruta);
+            //             }
+            //         });
+            //     });
+            // }
+
         }
 
         Ext.Viewport.setMasked(false);
     },
 
-    muestraClientes: function() {
-        this.getMenuNav().push({
-            xtype:'rutascalendariocont',
-            layout:'fit',
-            items:[{
-                xtype:'clienteslist'
-            }]
-        });
+    muestraClientes: function(button) {
+        var me = this,
+            nd = button.getParent().down('rutascalendariomapa').nd,
+            today = new Date();
+
+        nd = Ext.Date.add(nd, Ext.Date.DAY, 1);
+
+console.log(nd, today);
+        if(today <= nd){
+            me.getMenuNav().push({
+                xtype:'rutascalendariocont',
+                layout:'fit',
+                items:[{
+                    xtype:'clienteslist'
+                }]
+            });
+        } else {
+            Ext.Msg.alert('Error', 'Imposible agregar rutas en días anteriores');
+        }
     },
 
     onRutasAdd:function(btn){
 
-        var form = this.getRutasForm(),
+        var form = this.getRutasForm(),            
             values = form.getValues(),
-            nd = this.getRutasCalendarioDia() == undefined ? this.getRutasCalendarioMapa().config.nd : this.getRutasCalendarioDia().config.nd;
+            view = this.getMenuNav(),
+            nd = this.getRutasCalendarioMapa().config.nd;
 console.log(nd);
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
 
@@ -943,10 +998,12 @@ console.log(nd);
                 "Ruta.Notas"   : values.Notas,
                 "Ruta.LatitudOrigen": values.LatitudOrigen,
                 "Ruta.LongitudOrigen": values.LongitudOrigen,
-                "Ruta.Estatus" : 2
-            }          
-console.log(url);
-console.log(params);
+                "Ruta.Estatus" : form.accion != undefined ? form.accion : 2
+            }
+
+        Ext.Viewport.setMasked(true);
+        console.log(params);
+
                     Ext.data.JsonP.request({
                         url: url,
                         params: params,
@@ -962,15 +1019,15 @@ console.log(params);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2);
-                                        Ext.Viewport.setMasked(false);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2, values.CodigoRuta > 0);
                                     },
                                     scope:this
                                 });
                             }
                             else {
-                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);                                
+                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
                                 Ext.Viewport.setMasked(false);
+                                view.pop();
                             }
 
                         },
@@ -979,41 +1036,49 @@ console.log(params);
                                 Ext.Viewport.setMasked(false);
                             });
                             Ext.Viewport.setMasked(false);
+                            view.pop();
                         },
                         scope: this                        
                     });
                 }
                 else{
-                    Ext.Msg.alert('Datos Incorrectos', "Debe de selecciona una dirección válida", Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
+                    view.pop();
+                    Ext.Msg.alert('Datos Incorrectos', "Debe seleccionar una dirección válida", Ext.emptyFn);
                 }
             }
         }
         else{
+            Ext.Viewport.setMasked(false);
+            view.pop();
             Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop){
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop, esActualizacion){
+        nd.setHours(0, 0);        
+
         var nd = new Date(nd),
             titulo = this.getMenuNav().down('toolbar')
 
-        calendar.eventStore.clearFilter();
+        calendar.eventStore.clearFilter();        
 
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
-        }, this);
+        }, this);        
 
         console.log(codigoCliente, ' El código del cliente');
-        //console.log(calendar.eventStore.getCount(), " Rutas antes de filtrar por código");
 
-        calendar.eventStore.filter('CodigoCliente', codigoCliente);
-
-console.log(calendar.eventStore.getCount(), " Rutas");
+        if(!esActualizacion){
+            calendar.eventStore.filter('CodigoCliente', codigoCliente);
+        }
 
         this.getMenuNav().pop(pop);
         this.getMenuNav().remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
+        this.quitaMarcadores();
         this.colocaMarcadores();
+        Ext.Viewport.setMasked(false);
 
         //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
 
@@ -1119,7 +1184,7 @@ console.log(calendar.eventStore.getCount(), " Rutas");
         }
     },
 
-    onRutasEdit:function(ruta, direcciones){
+    onRutasEdit:function(ruta, direcciones, accion){
         var form = this.getRutasForm();
         //var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
@@ -1131,7 +1196,7 @@ console.log(calendar.eventStore.getCount(), " Rutas");
 
         console.log(ruta);
 
-/*        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
+        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
 
             items.push({
                 xtype:'container',
@@ -1142,22 +1207,22 @@ console.log(calendar.eventStore.getCount(), " Rutas");
                 },
                 items:[{
                     xtype:'button',
-                    text:'Realizada',
-                    action:'realizarruta',
+                    text:'Actualizar',
+                    action:'actualizaRuta',
                     flex:1
-                },{
+                }]/*,{
                     xtype:'button',
                     text:'Cancelar',
                     action:'cancelarruta',
                     flex:1
-                }]
+                }]*/
             });
         }
         else{
             if(ruta.Estatus == 2){
 
             }
-        }*/
+        }
 
 
         this.getMenuNav().push({
@@ -1210,17 +1275,7 @@ console.log(calendar.eventStore.getCount(), " Rutas");
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             mapa = extMapa.getMap();
 
-        extMapa.marker = new google.maps.Marker({
-            map: mapa,
-            position: new google.maps.LatLng(ruta.lat, ruta.lon),
-            draggable:true
-        });
-
-        google.maps.event.addListener(extMapa.marker,"dragend",function(){
-            var point = extMapa.marker.getPosition();
-            mapa.panTo(point);
-        });
-
+        this.recuperaMarcador(extMapa, ruta);
 
         if(ruta.Estatus != 2){
             var btnGuardar = form.down("button[action=guardar]").destroy();
@@ -1238,7 +1293,23 @@ console.log(calendar.eventStore.getCount(), " Rutas");
             form.down("checkboxfield[name=Sabado]").disable();
             form.down("checkboxfield[name=Domingo]").disable();
 
+        }        
+
+        if(accion != undefined){
+            switch(accion){
+                case 'realizarRuta':                    
+                    this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1
+                    break;
+
+                case 'cancelarRuta':
+                    this.getRutasForm().accion = 4
+                    break;
+            }
+
+            this.onRutasAdd()
         }
+
+        Ext.Viewport.setMasked(false);
     },
 
     eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
@@ -1261,8 +1332,8 @@ console.log(calendar.eventStore.getCount(), " Rutas");
         });
     },
 
-    dameDirecciones: function(ruta){
-
+    dameDirecciones: function(ruta, accion){
+        Ext.Viewport.setMasked(true);
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
             params: {
@@ -1295,7 +1366,7 @@ console.log(direcciones);
                         // });
 
                         //this.showFormRutas(idCliente, direcciones);
-                        this.onRutasEdit(ruta, direcciones);
+                        this.onRutasEdit(ruta, direcciones, accion);                        
 
                         //this.getMenuNav().add(barraTitulo);
 
@@ -1306,59 +1377,218 @@ console.log(direcciones);
 
                         // //this.loadRutasCalendario(firstDay,lastDay);
                     }
-                    else{
+                    else{                    
                         Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                        Ext.Viewport.setMasked(false);
                     }
                 } else {
                     Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
                 }
             },
             scope: this
         });
     },
 
-    trazaRuta: function(lat, lng, map){
+    trazaRuta: function(ruta){
         var me = this,
-            latitude,
-            longitude;
+            view = me.getMenuNav(),
+            nd = view.getActiveItem().down('rutascalendariomapa').nd;
 
-        Ext.device.Geolocation.getCurrentPosition({
-            success: function(position) {
-                latitude = position.coords.latitude;
-                longitude = position.coords.longitude;
+        if(ruta.Estatus != 1 && ruta.Estatus != 3 && ruta.Estatus != 4){ // Si la ruta no ha sido visitada ni visitada tardíamente, ni cancelada            
 
-                console.log(latitude, longitude);
+            this.getMenuNav().push({
+                xtype:'rutascalendariocont',
+                items:[{
+                    xtype:'container',
+                    html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
+                },{
+                    xtype:'hiddenfield',
+                    name:'ndhf',
+                    value:nd
+                },{
+                    xtype:'rutascalendariomapa',
+                    flex:1
+                },{
+                    xtype:'container',
+                    padding:'0 10px 10px 10px',
+                    layout:{
+                        type:'hbox',
+                        align: 'stretch'
+                    },
+                    items:[{
+                        xtype:'button',
+                        text:'Realizada',
+                        action:'realizarRuta',
+                        flex:1
+                    },{
+                        xtype:'button',
+                        text:'Cancelar Ruta',
+                        action:'cancelarRuta',
+                        flex:1
+                    }]
+                }]
+            });
 
-                var directionsService = new google.maps.DirectionsService();
-                var directionsDisplay = new google.maps.DirectionsRenderer();
+            me.getRutasCalendarioCont().ruta = ruta;
+        }
+        else {
 
-                directionsDisplay.setMap(map);
+            if(ruta.Estatus == 2){
 
-                var origin = new google.maps.LatLng(latitude, longitude);
-                var destination = new google.maps.LatLng(lat, lng);
+            }
+        }
 
-                var request = {
-                    origin: origin,
-                    destination: destination,
-                    travelMode: google.maps.DirectionsTravelMode.DRIVING
-                };
+        var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
+            map = extMapa.getMap();
 
-                directionsService.route(request, function (result, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        directionsDisplay.setMap(map);
-                        directionsDisplay.setDirections(result);
-                    }
-                });
+        //me.recuperaMarcador(extMapa, ruta);
 
+        var geo = Ext.create('Ext.util.Geolocation',{
+            autoUpdate: false,
+            listeners: {
+                locationupdate: function (geo) {
+                    var latitude = geo.getLatitude(),
+                    longitude = geo.getLongitude();
 
-                //me.onLoadStores('Searchs', '', me.latitude + ',' + me.longitude);
-            },
-            failure: function() {
-                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
-                /*me.latitude = geo.getLatitude();
-                me.longitude = geo.getLongitude();
-                me.onLoadStores(store, '', me.latitude + ',' + me.longitude);*/
+                    console.log(latitude, longitude);
+
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+                    directionsDisplay.setMap(map);
+
+                    var origin = new google.maps.LatLng(latitude, longitude);
+                    var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
+
+                    var request = {
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    };
+
+                    directionsService.route(request, function (result, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setMap(map);
+                            directionsDisplay.setDirections(result);
+                        }
+                    });
+                },
+                locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                    Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+
+                }
             }
         });
-    }
+
+        geo.updateLocation();
+    },
+
+    recuperaMarcador: function(extMapa, ruta){
+        var me = this,
+            map = extMapa.getMap(),
+            icono = me.defineColorDeMarcador(ruta);
+
+        extMapa.marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(ruta.lat, ruta.lon),
+            icon: icono,
+            draggable:true
+        });           
+
+        google.maps.event.addListener(extMapa.marker,"dragend",function(){
+            var point = extMapa.marker.getPosition();
+            map.panTo(point);
+        });
+    },
+
+    defineColorDeMarcador: function(ruta){
+        switch(ruta.Estatus){
+            case 0:
+                icono = "http://www.googlemapsmarkers.com/v1/F90000/"
+                break;
+
+            case 1:
+                icono = "http://www.googlemapsmarkers.com/v1/1D7A28/"
+                break;
+
+            case 2:
+                icono = "http://www.googlemapsmarkers.com/v1/FFFF00/"
+                break;
+
+            case 3:
+                icono = "http://www.googlemapsmarkers.com/v1/FF8000/"
+                break;
+
+            case 4:
+                icono = "http://www.googlemapsmarkers.com/v1/C0C0C0/"
+                break;
+        }
+
+        return icono;
+    },
+
+    // trazaRuta: function(lat, lng, map){
+    //     var me = this,
+    //         latitude,
+    //         longitude;
+
+    //     Ext.device.Geolocation.getCurrentPosition({
+    //         success: function(position) {
+    //             latitude = position.coords.latitude;
+    //             longitude = position.coords.longitude;
+
+    //             console.log(latitude, longitude);
+
+    //             var directionsService = new google.maps.DirectionsService();
+    //             var directionsDisplay = new google.maps.DirectionsRenderer();
+
+    //             directionsDisplay.setMap(map);
+
+    //             var origin = new google.maps.LatLng(latitude, longitude);
+    //             var destination = new google.maps.LatLng(lat, lng);
+
+    //             var request = {
+    //                 origin: origin,
+    //                 destination: destination,
+    //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
+    //             };
+
+    //             directionsService.route(request, function (result, status) {
+    //                 if (status == google.maps.DirectionsStatus.OK) {
+    //                     directionsDisplay.setMap(map);
+    //                     directionsDisplay.setDirections(result);
+    //                 }
+    //             });
+
+
+    //             //me.onLoadStores('Searchs', '', me.latitude + ',' + me.longitude);
+    //         },
+    //         failure: function() {
+    //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+    //             /*me.latitude = geo.getLatitude();
+    //             me.longitude = geo.getLongitude();
+    //             me.onLoadStores(store, '', me.latitude + ',' + me.longitude);*/
+    //         }
+    //     });
+    // }
+
+    cambiaStatusRuta: function(button){
+        var me = this,
+            view = me.getMenuNav().getActiveItem(),
+            ruta = me.getRutasCalendarioCont().ruta;
+        
+        me.dameDirecciones(ruta, button.action);        
+    },
+
+    quitaMarcadores: function () {
+        var me = this,
+            marcadores = me.getRutasCalendario().marcadores
+
+        if (marcadores != undefined){
+            for (i = 0; i < marcadores.length; i++) {
+                marcadores[i].setMap(null);
+            }            
+        }
+    },
 });

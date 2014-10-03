@@ -12,6 +12,7 @@ Ext.define('APP.view.phone.informes.InformesList', {
         data:[
             {title: 'Bitácora de vendedores', action: 'bitacoraVendedores'},
             {title: 'Análisis de Ventas', action: 'analisisVentas'}            
-        ],        
+        ],
+        modulo: 'informes'
     }
 });

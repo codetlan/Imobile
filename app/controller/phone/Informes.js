@@ -9,9 +9,21 @@ Ext.define('APP.controller.phone.Informes', {
     	},
 
     	control: {
-    		'list':{
-    			itemtap: 'muestraOpcionElegida'
+    		'list[modulo = informes]':{
+    			itemsingletap: 'muestraOpcionElegida'
     		},
+            'container[itemId = informes] list': {
+                itemsingletap: 'muestraOpcionElegida'
+            },
+            // 'analisisventaslist':{
+            //     itemsingletap: 'muestraOpcionElegida'
+            // },
+            // 'informesgeneradoslist':{
+            //     itemsingletap: 'muestraOpcionElegida'
+            // },
+            // 'informelist':{
+            //     itemtap: 'muestraOpcionElegida'
+            // },
             'informesform #crearInforme':{
                 tap: 'generaInforme'
             },
@@ -227,6 +239,7 @@ console.log(textfield.getItemId());
         view.push({
             xtype: 'container',
             id: textfield.getItemId(),
+            itemId: 'informes',
             layout: 'fit',
             //itemId: textfield.itemId,//'informescont',
             items: [{
