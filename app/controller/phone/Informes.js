@@ -69,7 +69,7 @@ Ext.define('APP.controller.phone.Informes', {
 
                     view.push({
                         xtype: 'analisisventaslist',
-                        title: 'Análisis de Ventas'
+                        title: APP.core.config.Locale.config.lan.Informes.analisisVentas
                     });
 
                     me.agregaOpciones('clientes');
@@ -129,14 +129,15 @@ Ext.define('APP.controller.phone.Informes', {
                             me.getMenuNav().articulos = opciones;
                             Ext.Viewport.setMasked(false);
                             me.agregaOpciones('clientes');
-                        }                                                                        
+                        }
 
                     } else {
-                        Ext.Msg.alert("No se pudieron obtener los códigos", "Se presentó un problema al intentar obtener los códigos: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Informes.noCodigosTitulo,
+                        APP.core.config.Locale.config.lan.Informes.noCodigosMensaje + ": " + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
-                  });
+            });
         }
     },
 
@@ -168,13 +169,15 @@ Ext.define('APP.controller.phone.Informes', {
         }
 
         if(codigoDesde > codigoHasta){
-            Ext.Msg.alert('Error', 'El código ' + codigoDesde + ' es mayor que ' + codigoHasta + '.');
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Informes.codigoMayorTitulo,
+            APP.core.config.Locale.config.lan.Informes.codigoMayorMensaje1 + codigoDesde + 
+            APP.core.config.Locale.config.lan.Informes.codigoMayorMensaje2 + codigoHasta + '.');
             return;
         }
 
         view.push({            
             xtype: 'informesgeneradoslist',
-            title: view.titulo
+            title: view.titulo  == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
         });
 
         console.log(view.titulo == 'Articulos');
@@ -210,14 +213,15 @@ Ext.define('APP.controller.phone.Informes', {
 
         if(view.getActiveItem().isXType('informesform')){
             return;
-        }                   
+        }
+
+        me.getMenuNav().titulo = criterio;
 
         view.push({
             xtype: 'informesform',
-            title: criterio
+            title: criterio == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
         });
 
-        me.getMenuNav().titulo = criterio;        
         me.ponCodigos(criterio);
     },
 

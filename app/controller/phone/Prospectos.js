@@ -177,12 +177,13 @@ Ext.define('APP.controller.phone.Prospectos', {
         switch (opcion) {
             case 'superficie':
                 var items = padre.getItems().items,
-                    i, suma = 0;
+                    i, suma = 0.00;
 
                 for (i = 1; i < items.length - 1; i++) {
                     suma += items[i].getValue();
                 }
 
+                suma = Ext.Number.toFixed(suma, 2);
                 padre.down('#total').setValue(suma).setDisabled(true);
                 break;
         }
@@ -306,47 +307,50 @@ Ext.define('APP.controller.phone.Prospectos', {
     },
 
     obtenEstados: function(selectfield, newValue){
-        var me = this,
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-            params = {
-                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token"),
-                Criterio: newValue
-            };
+        console.log(!this.getMenuNav().esRecuperado);
+        if(!this.getMenuNav().esRecuperado){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+                params = {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token"),
+                    Criterio: newValue
+                };
 
-    Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
-    Ext.Viewport.setMasked(true);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
 
-        Ext.data.JsonP.request({
-            url: url,
-            params: params,
-            callbackKey: 'callback',
-            success: function (response) {
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
 
-                if (response.Procesada) {
-                    var opciones = new Array(),
-                        datos = response.Data,
-                        i;
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
 
-                    for (i = 0; i < datos.length; i++){
-                        opciones[i] = {
-                            text: datos[i].NombreEstado,
-                            value: datos[i].CodigoEstado
-                        };
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].NombreEstado,
+                                value: datos[i].CodigoEstado
+                            };
+                        }
+
+                        //me.getMenuNav().paises = opciones;
+                        selectfield.getParent().down('#estado').setOptions(opciones);
+                        //selectfield.getParent().down('#estado').showPicker(); 
+                        Ext.Viewport.setMasked(false);
+                    } else {                    
+                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
                     }
-
-                    //me.getMenuNav().paises = opciones;
-                    selectfield.getParent().down('#estado').setOptions(opciones);
-                    //selectfield.getParent().down('#estado').showPicker(); 
-                    Ext.Viewport.setMasked(false);
-                } else {                    
-                    Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
-                    Ext.Viewport.setMasked(false);
                 }
-            }
-        });
+            });
+        }
     },
 
     agregaProspecto: function (button) {
@@ -540,16 +544,18 @@ Ext.define('APP.controller.phone.Prospectos', {
                     }
 
                     // Siguen los conceptos.
-                    var checkboxfields = new Array(),
+                    var checkboxfields,// = new Array(),
                         concepto, j;
 
                     for (i = 1; i < 7; i++){
+                        checkboxfields = new Array(),
                         valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Conceptos' + i).value;
-
+console.log(valores);
                         if(!(valores.length == 0)){
                             concepto = me.getProspectosForm().down('#conceptos' + i);
                             me.agregaCampos(valores, checkboxfields);
                             concepto.add(checkboxfields);
+                        console.log(concepto.getItems().items);
                             me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
                             elementos = concepto.getItems().items;
 
@@ -557,17 +563,22 @@ Ext.define('APP.controller.phone.Prospectos', {
                                 elementos[j].setChecked(true);
                             }
                         }
-                    }                  
+                    }
 
                     // La superficie
                     valores = response.Data[0];
                     if(!(valores.total == 0)){
                         campo = me.getProspectosForm().down('#superficieCheck');
-                        campo.setChecked(true);                        
+                        campo.setChecked(true);
                     }   
 
                     // Ahora los datos básicos como nombre, código, razón social, etc.
                     valores = response.Data[0];
+                    valores.campoAbierto = parseFloat(valores.campoAbierto).toFixed(2).toString();
+                    valores.invernadero = parseFloat(valores.invernadero).toFixed(2).toString();
+                    valores.macroTunel = parseFloat(valores.macroTunel).toFixed(2).toString();
+                    valores.total = parseFloat(valores.total).toFixed(2).toString();
+
                     me.getProspectosForm().setValues(valores);
 
                     me.getProspectosForm().setValues({
@@ -600,9 +611,8 @@ Ext.define('APP.controller.phone.Prospectos', {
     },
 
     validaRFC: function(textfield, newValue){
-console.log(!this.getMenuNav().esRecuperado);
         if(!this.getMenuNav().esRecuperado){
-            var me = this,
+            var me = this;
                 tipoPersona = textfield.getParent().down('#tipoPersona').getValue();
 
             if(Ext.isEmpty(tipoPersona)){
@@ -610,11 +620,11 @@ console.log(!this.getMenuNav().esRecuperado);
                 textfield.reset();            
             } else {
                 if(tipoPersona == 'F'){
-                    if(tipoPersona.length != 13){                    
+                    if(newValue.length != 13){                    
                         Ext.Msg.alert('Longitud errónea', 'El RFC de una persona física debe tener una longitud de 13 caracteres.');                    
                     }
                 } else {
-                    if(tipoPersona.length != 12){
+                    if(newValue.length != 12){
                         Ext.Msg.alert('Longitud errónea', 'El RFC de una persona moral debe tener una longitud de 12 caracteres.');    
                     }
                 }

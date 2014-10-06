@@ -116,48 +116,73 @@ Ext.define('APP.controller.phone.Configuracion', {
                         list.down('#datos_orden img').dom.setAttribute("src", "");
                     }
 
-                    var idioma = button.up('configuracionpanel').down('selectfield').getValue();
+                    var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
+                        url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
+                        params = {
+                            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                            Token: localStorage.getItem("Token")
+                        };                    
+
 console.log(idioma);
                     switch (idioma){
-                        case 'en':
-                            url = 'app/core/data/en_US.json';
+                        case 'en':                            
+                            params["Criterio"] =  'en_US';
                             break;
 
                         case 'es':
-                            url = 'app/core/data/es_MX.json';
+                            params["Criterio"] = 'es_MX';
                             break;
                     }
+console.log(params);
 
-                    Ext.Ajax.request({
+                    Ext.data.JsonP.request({
+                    //Ext.Ajax.request({
                         url: url, // Leemos del json
+                        //url: 'app/core/data/en_US.json',
+                        params: params,
                         
                         success: function(response){
-                            var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
-                                trans, // Las traducciones para el menú
-                                idiomas = Ext.decode(text);  // Convertimos text en objeto
-                            
-                            APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
-                            trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
+                            if (response.Procesada) {
+                                var text = response.Data[0].Idioma,
+                                    pinta = "", i;  
+                                // console.log(text.length, 'elementos en cadena');
+                                // for(i = 0; i < text.length; i++){
+                                //     pinta += text.charCodeAt(i).toString() + " ";
+                                //     console.log(text.charCodeAt(i));
+                                // }
 
-                            APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
-                            Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                            APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
-                            
-                            //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
-                            Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+                                //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
+                                var trans; // Las traducciones para el menú
+                                console.log(text);
+                                console.log(pinta);
+                                var idiomas = Ext.decode(text);  // Convertimos text en objeto
+                                
+                                APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
+                                trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-/*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
-                                xtype: 'configuracionpanel'
-                            });   */
+                                APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
-                            Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
-                                Object.defineProperty(element.getData(), "name", {
-                                    get: function(){
-                                        return trans[index];
-                                    }
+                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
+                                APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                                
+                                //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                                Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+
+    /*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
+                                    xtype: 'configuracionpanel'
+                                });   */
+
+                                Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
+                                    Object.defineProperty(element.getData(), "name", {
+                                        get: function(){
+                                            return trans[index];
+                                        }
+                                    });
                                 });
-                            });
+                            }
                         },
 
                         failure: function(response, opts) {
