@@ -306,8 +306,7 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
-    obtenEstados: function(selectfield, newValue){
-        console.log(!this.getMenuNav().esRecuperado);
+    obtenEstados: function(selectfield, newValue){        
         if(!this.getMenuNav().esRecuperado){
             var me = this,
                 url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
@@ -550,12 +549,12 @@ Ext.define('APP.controller.phone.Prospectos', {
                     for (i = 1; i < 7; i++){
                         checkboxfields = new Array(),
                         valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Conceptos' + i).value;
-console.log(valores);
+
                         if(!(valores.length == 0)){
                             concepto = me.getProspectosForm().down('#conceptos' + i);
                             me.agregaCampos(valores, checkboxfields);
                             concepto.add(checkboxfields);
-                        console.log(concepto.getItems().items);
+                        
                             me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
                             elementos = concepto.getItems().items;
 
