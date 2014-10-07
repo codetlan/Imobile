@@ -235,6 +235,34 @@ Ext.define('APP.core.config.Locale', {
         pagar: "Pagar"
       },
 
+      Cobranza:{
+        sinAnticiposPendientes: "No hay anticipos pendientes",
+        anticiposNumero: "Número",        
+        saldo: "Saldo",
+        fecha: "Fecha",
+        vencimiento: "Expiration",
+        sinCobrosPendientes: "No existen cobros para este cliente",
+        monedasDiferentesTitulo: "Monedas diferentes",
+        monedasDiferentesMensaje: "Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.",
+        sinSeleccionTitulo: "Sin selección",
+        sinSeleccionMensaje: "Seleccione al menos una factura para continuar.",
+        numeroCheque: "Ingrese el número de cheque",
+        banco: "Ingrese el nombre del banco",
+        noAutorizacion: "Ingrese el número de autorización",
+        tarjeta: "Ingrese el número de tarjeta",
+        errorNoNumericoTitulo: "Datos erróneos",
+        erroNoNumericoMensaje: "Ingrese datos numéricos",
+        sinCambioTitulo: "Sin cambio",
+        sinCambioMensaje: "Esta forma de pago no permite dar cambio, disminuya la canticad.",
+        cobroExitoso: "Se realizó el cobro exitosamente con folio ",
+        enviandoCobro: "Enviando cobro...",
+        cobroNoProcesadoTitulo: "Cobro no procesado",
+        cobroNoProcesadoMensaje: "No se procesó el cobro correctamente: ",
+        sinPagoTitulo: "Sin pago",
+        sinPagoMensaje: "Agregue por lo menos un pago.",
+        noCobrosCliente: "No existen cobros para este cliente"        
+      },
+
       InformesGeneradosList: {
         codigo: "Código",
         descripcion: "Descripción",
@@ -244,9 +272,38 @@ Ext.define('APP.core.config.Locale', {
         articulos: "Artículos",
         total: "Total",
         sinPendientes: "No existen informes con los datos proporcionados."
-      }
+      },
+
+      AnalisisVentasList: {
+        clientes: "Clientes",
+        articulos: "Artículos"
+      },
+
+      InformesList: {
+        bitacoraVendedores: "Bitácora de Vendedores",
+        analisisVentas: "Análisis de Ventas",      
+    },
+
+    InformesForm: {
+      fecha: "Fecha",
+      desde: "Desde",
+      hasta: "Hasta",
+      codigo: "Código",
+      crearInforme: "Crear Informe"
+    },
+
+    Informes: {
+      noCodigosTitulo: "No se pudieron obtener los códigos",
+      noCodigosMensaje: "Se presentó un problema al intentar obtener los códigos",
+      codigoMayorTitulo: "Error",
+      codigoMayorMensaje1: "El código ",
+      codigoMayorMensaje2: " es mayor que ",
+      clientes: "Clientes",
+      articulos: "Artículos",
+      analisisVentas: "Análisis de Ventas"
     }
-  },
+  }
+},
 
   localize: function() {
     console.log(this.config);

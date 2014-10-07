@@ -83348,6 +83348,34 @@ Ext.define('APP.core.config.Locale', {
         pagar: "Pagar"
       },
 
+      Cobranza:{
+        sinAnticiposPendientes: "No hay anticipos pendientes",
+        anticiposNumero: "Número",        
+        saldo: "Saldo",
+        fecha: "Fecha",
+        vencimiento: "Expiration",
+        sinCobrosPendientes: "No existen cobros para este cliente",
+        monedasDiferentesTitulo: "Monedas diferentes",
+        monedasDiferentesMensaje: "Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.",
+        sinSeleccionTitulo: "Sin selección",
+        sinSeleccionMensaje: "Seleccione al menos una factura para continuar.",
+        numeroCheque: "Ingrese el número de cheque",
+        banco: "Ingrese el nombre del banco",
+        noAutorizacion: "Ingrese el número de autorización",
+        tarjeta: "Ingrese el número de tarjeta",
+        errorNoNumericoTitulo: "Datos erróneos",
+        erroNoNumericoMensaje: "Ingrese datos numéricos",
+        sinCambioTitulo: "Sin cambio",
+        sinCambioMensaje: "Esta forma de pago no permite dar cambio, disminuya la canticad.",
+        cobroExitoso: "Se realizó el cobro exitosamente con folio ",
+        enviandoCobro: "Enviando cobro...",
+        cobroNoProcesadoTitulo: "Cobro no procesado",
+        cobroNoProcesadoMensaje: "No se procesó el cobro correctamente: ",
+        sinPagoTitulo: "Sin pago",
+        sinPagoMensaje: "Agregue por lo menos un pago.",
+        noCobrosCliente: "No existen cobros para este cliente"        
+      },
+
       InformesGeneradosList: {
         codigo: "Código",
         descripcion: "Descripción",
@@ -83357,9 +83385,38 @@ Ext.define('APP.core.config.Locale', {
         articulos: "Artículos",
         total: "Total",
         sinPendientes: "No existen informes con los datos proporcionados."
-      }
+      },
+
+      AnalisisVentasList: {
+        clientes: "Clientes",
+        articulos: "Artículos"
+      },
+
+      InformesList: {
+        bitacoraVendedores: "Bitácora de Vendedores",
+        analisisVentas: "Análisis de Ventas",      
+    },
+
+    InformesForm: {
+      fecha: "Fecha",
+      desde: "Desde",
+      hasta: "Hasta",
+      codigo: "Código",
+      crearInforme: "Crear Informe"
+    },
+
+    Informes: {
+      noCodigosTitulo: "No se pudieron obtener los códigos",
+      noCodigosMensaje: "Se presentó un problema al intentar obtener los códigos",
+      codigoMayorTitulo: "Error",
+      codigoMayorMensaje1: "El código ",
+      codigoMayorMensaje2: " es mayor que ",
+      clientes: "Clientes",
+      articulos: "Artículos",
+      analisisVentas: "Análisis de Ventas"
     }
-  },
+  }
+},
 
   localize: function() {
     console.log(this.config);
@@ -87410,10 +87467,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
                 ruta = item.getData();  //rutas.getAt(0).getData();                
-                console.log(ruta);
 
-                console.log(extMapa, 'mapaaaa');
-                console.log(me.getMenuNav().getActiveItem().down('rutascalendariomapa'), 'mapaaaa2222');
                 var nd = extMapa.config.nd,
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
@@ -88338,10 +88392,10 @@ Ext.define('APP.controller.phone.Cobranza', {
 
                 anticiposlist = view.getActiveItem().down('facturaslist');
 
-                anticiposlist.setStore(store);
-                anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">No hay anticipos pendientes</div>');
-                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>Número: <b>{NumeroDocumento}</b> Saldo: <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
-                  '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
+                anticiposlist.setStore(store); 
+                anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">' + APP.core.config.Locale.config.lan.Cobranza.sinAnticiposPendientes + '</div>');
+                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.Cobranza.anticiposNumero +': <b>{NumeroDocumento}</b>' +  APP.core.config.Locale.config.lan.Cobranza.saldo + ': <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+                  '<div style="font-size: 90%"> <div><p>' + APP.core.config.Locale.config.lan.Cobranza.fecha + ': <b>{FechaCreacion}</b>' + APP.core.config.Locale.config.lan.Cobranza.vencimiento + ': <b>{FechaFin}</b> </div>',
             '</div>']);
                 anticiposlist.setMode('SINGLE');
 
@@ -88372,7 +88426,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                     title: idCliente
                 });
 
-            view.getActiveItem().setEmptyText('No existen cobros para este cliente');
+            view.getActiveItem().setEmptyText(APP.core.config.Locale.config.lan.Cobranza.sinCobrosPendientes);
 
             store.load({                
                 callback: function(){
@@ -88400,6 +88454,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             facturas = facturaslist.getStore(),//Ext.getStore('Facturas'),
             aPagar,
             pagado = 0,
+            boton = me.getNavigationCobranza().getNavigationBar().down('#agregarPago'),
             barraTitulo = ({
                 xtype: 'toolbar',                
                 docked: 'top',
@@ -88419,7 +88474,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                 //total += seleccion[i].data.Saldo;
 
                 if(moneda != seleccion[i].data.CodigoMoneda + ' '){
-                    Ext.Msg.alert("Monedas diferentes", 'Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.');
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesTitulo, APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesMensaje);
                     return;
                 }
                 
@@ -88433,7 +88488,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             aPagar = total;
 
             view.getAt(2).setMasked(false); // Desactivamos la máscara.
-            view.setActiveItem(2);            
+            boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
+            view.setActiveItem(2);
             //navigationCobranza = view.getActiveItem();
 
             navigationCobranza.getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
@@ -88444,7 +88500,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             me.getTotales().down('#pendiente').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar - pagado, moneda)});
 
         } else {
-            Ext.Msg.alert("Sin selección", "Seleccione al menos una factura para continuar.");
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinSeleccionTitulo,
+                 APP.core.config.Locale.config.lan.Cobranza.sinSeleccionMensaje);
         }
     },
 
@@ -88456,7 +88513,7 @@ Ext.define('APP.controller.phone.Cobranza', {
     onAgregarPago: function (btn) {
         var me = this,
             view = me.getMainCard().getActiveItem(),
-            idCliente = view.getNavigationBar().getTitle();
+            idCliente = view.getNavigationBar().getTitle();            
     
         view.push({
             xtype: 'formasdepagolist',
@@ -88464,7 +88521,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             //idCliente: idCliente
             //opcion: me.getMenu().getActiveItem().opcion
         });
-
+        
         view.getActiveItem().getStore().load();
         view.getNavigationBar().down('#agregarPago').hide();
     },
@@ -88508,12 +88565,12 @@ Ext.define('APP.controller.phone.Cobranza', {
                     {
                         xtype: 'numberfield',
                         name: 'NumeroCheque',
-                        placeHolder: 'Ingrese el número de cheque',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.numeroCheque,
                         label: 'No. Cheque'
                     },{
                         xtype: 'textfield',
                         name: 'Banco',
-                        placeHolder: 'Ingrese el nombre del banco',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.cheque,
                         label: 'Banco'
                     }
                 ]);
@@ -88523,13 +88580,13 @@ Ext.define('APP.controller.phone.Cobranza', {
                     {
                         xtype: 'numberfield',
                         name: 'NumeroAutorizacion',
-                        placeHolder: 'Ingrese el número de autorización',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.noAutorizacion,
                         label: 'No. Autorización'
                     },
                     {
                         xtype: 'numberfield',
                         name: 'NumeroTarjeta',
-                        placeHolder: 'Ingrese el número de tarjeta',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.tarjeta,
                         label: 'No. Tarjeta'
                     }
                 ]);
@@ -88575,7 +88632,7 @@ Ext.define('APP.controller.phone.Cobranza', {
          if(opcion == 'cobranzaFacturas'){
             moneda = Ext.getStore('Facturas').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
          } else {
-            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
+            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipoas, por eso se elige la primera.
          }
 
 /*        console.log(moneda);
@@ -88586,7 +88643,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
             if (value === null) { 
                 esVacio = true;
-                Ext.Msg.alert('Datos erróneos', 'Ingrese datos numéricos.');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.errorNoNumericoTitulo, APP.core.config.Locale.config.lan.Cobranza.errorNoNumericoMensaje);
                 return false; // stop the iteration
             }
         });
@@ -88596,7 +88653,7 @@ Ext.define('APP.controller.phone.Cobranza', {
         } else {
             if (permiteCambio === 'false') {
                 if (entrada > pendiente) {
-                    Ext.Msg.alert('Sin cambio', 'Esta forma de pago no permite dar cambio, disminuya la cantidad.');
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinCambioTitulo, APP.core.config.Locale.config.lan.Cobranza.sinCambioMensaje);
                 } else {
                     //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
                     me.sumaCobros(form, datos, moneda);
@@ -88715,14 +88772,13 @@ Ext.define('APP.controller.phone.Cobranza', {
             hora = me.daFormatoAHora(fecha.getHours(), fecha.getMinutes(), fecha.getSeconds()),
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
-            msg = 'Se realizó el cobro exitosamente con folio ';
+            msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
 
-        me.getMainCard().getActiveItem().getMasked().setMessage('Enviando Cobro...');
+        me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
         me.getMainCard().getActiveItem().setMasked(true);
         
         if (totales.getCount() > 0) {
             //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
-
 
             var params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -88734,7 +88790,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                 "Cobranza.CodigoVendedor": localStorage.getItem("CodigoUsuario"),
                 "Cobranza.Tipo": 'C',
                 "Cobranza.CodigoCliente": idCliente
-            };            
+            };
 
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
@@ -88804,14 +88860,16 @@ Ext.define('APP.controller.phone.Cobranza', {
                         me.getMainCard().getActiveItem().pop();
                     } else {
                         me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("Cobro no procesado", "No se proceso el cobro correctamente: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoTitulo,
+                        APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoMensaje + response.Descripcion);
                     }
                 }
             });
 
         } else {
             me.getMainCard().getActiveItem().setMasked(false);
-            Ext.Msg.alert("Sin pago", "Agrega por lo menos un pago.");
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
+            APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
         }
         //me.getMainCard().getActiveItem().setMasked(false);
     },
@@ -88871,7 +88929,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             tipo = button.up('toolbar').down('#buscarTipo').getValue(),
             list = button.up('visualizacioncobranzalist');
 
-            list.setEmptyText('No existen cobros para este cliente');
+            list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();
         store.setParams({
@@ -88945,8 +89003,9 @@ Ext.define('APP.controller.phone.Cobranza', {
             value = t.up('toolbar').down('#buscarCobranzas').getValue(),
             tipo = newValue,
             list = t.up('visualizacioncobranzalist');
-
-        list.setEmptyText('No existen cobros para este cliente');
+        console.log(list);
+        console.log(value);
+        list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();
         store.setParams({
@@ -89034,7 +89093,7 @@ Ext.define('APP.controller.phone.Informes', {
 
                     view.push({
                         xtype: 'analisisventaslist',
-                        title: 'Análisis de Ventas'
+                        title: APP.core.config.Locale.config.lan.Informes.analisisVentas
                     });
 
                     me.agregaOpciones('clientes');
@@ -89094,14 +89153,15 @@ Ext.define('APP.controller.phone.Informes', {
                             me.getMenuNav().articulos = opciones;
                             Ext.Viewport.setMasked(false);
                             me.agregaOpciones('clientes');
-                        }                                                                        
+                        }
 
                     } else {
-                        Ext.Msg.alert("No se pudieron obtener los códigos", "Se presentó un problema al intentar obtener los códigos: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Informes.noCodigosTitulo,
+                        APP.core.config.Locale.config.lan.Informes.noCodigosMensaje + ": " + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
-                  });
+            });
         }
     },
 
@@ -89133,13 +89193,15 @@ Ext.define('APP.controller.phone.Informes', {
         }
 
         if(codigoDesde > codigoHasta){
-            Ext.Msg.alert('Error', 'El código ' + codigoDesde + ' es mayor que ' + codigoHasta + '.');
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Informes.codigoMayorTitulo,
+            APP.core.config.Locale.config.lan.Informes.codigoMayorMensaje1 + codigoDesde + 
+            APP.core.config.Locale.config.lan.Informes.codigoMayorMensaje2 + codigoHasta + '.');
             return;
         }
 
         view.push({            
             xtype: 'informesgeneradoslist',
-            title: view.titulo
+            title: view.titulo  == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
         });
 
         console.log(view.titulo == 'Articulos');
@@ -89175,14 +89237,15 @@ Ext.define('APP.controller.phone.Informes', {
 
         if(view.getActiveItem().isXType('informesform')){
             return;
-        }                   
+        }
+
+        me.getMenuNav().titulo = criterio;
 
         view.push({
             xtype: 'informesform',
-            title: criterio
+            title: criterio == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
         });
 
-        me.getMenuNav().titulo = criterio;        
         me.ponCodigos(criterio);
     },
 
@@ -89333,48 +89396,73 @@ Ext.define('APP.controller.phone.Configuracion', {
                         list.down('#datos_orden img').dom.setAttribute("src", "");
                     }
 
-                    var idioma = button.up('configuracionpanel').down('selectfield').getValue();
+                    var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
+                        url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
+                        params = {
+                            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                            Token: localStorage.getItem("Token")
+                        };                    
+
 console.log(idioma);
                     switch (idioma){
-                        case 'en':
-                            url = 'app/core/data/en_US.json';
+                        case 'en':                            
+                            params["Criterio"] =  'en_US';
                             break;
 
                         case 'es':
-                            url = 'app/core/data/es_MX.json';
+                            params["Criterio"] = 'es_MX';
                             break;
                     }
+console.log(params);
 
-                    Ext.Ajax.request({
+                    Ext.data.JsonP.request({
+                    //Ext.Ajax.request({
                         url: url, // Leemos del json
+                        //url: 'app/core/data/en_US.json',
+                        params: params,
                         
                         success: function(response){
-                            var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
-                                trans, // Las traducciones para el menú
-                                idiomas = Ext.decode(text);  // Convertimos text en objeto
-                            
-                            APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
-                            trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
+                            if (response.Procesada) {
+                                var text = response.Data[0].Idioma,
+                                    pinta = "", i;  
+                                // console.log(text.length, 'elementos en cadena');
+                                // for(i = 0; i < text.length; i++){
+                                //     pinta += text.charCodeAt(i).toString() + " ";
+                                //     console.log(text.charCodeAt(i));
+                                // }
 
-                            APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
-                            Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                            APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
-                            
-                            //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
-                            Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+                                //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
+                                var trans; // Las traducciones para el menú
+                                console.log(text);
+                                console.log(pinta);
+                                var idiomas = Ext.decode(text);  // Convertimos text en objeto
+                                
+                                APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
+                                trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-/*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
-                                xtype: 'configuracionpanel'
-                            });   */
+                                APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
-                            Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
-                                Object.defineProperty(element.getData(), "name", {
-                                    get: function(){
-                                        return trans[index];
-                                    }
+                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
+                                APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                                
+                                //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                                Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
+
+    /*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
+                                    xtype: 'configuracionpanel'
+                                });   */
+
+                                Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
+                                    Object.defineProperty(element.getData(), "name", {
+                                        get: function(){
+                                            return trans[index];
+                                        }
+                                    });
                                 });
-                            });
+                            }
                         },
 
                         failure: function(response, opts) {
@@ -89577,12 +89665,13 @@ Ext.define('APP.controller.phone.Prospectos', {
         switch (opcion) {
             case 'superficie':
                 var items = padre.getItems().items,
-                    i, suma = 0;
+                    i, suma = 0.00;
 
                 for (i = 1; i < items.length - 1; i++) {
                     suma += items[i].getValue();
                 }
 
+                suma = Ext.Number.toFixed(suma, 2);
                 padre.down('#total').setValue(suma).setDisabled(true);
                 break;
         }
@@ -89705,48 +89794,50 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
-    obtenEstados: function(selectfield, newValue){
-        var me = this,
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-            params = {
-                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token"),
-                Criterio: newValue
-            };
+    obtenEstados: function(selectfield, newValue){        
+        if(!this.getMenuNav().esRecuperado){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+                params = {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token"),
+                    Criterio: newValue
+                };
 
-    Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
-    Ext.Viewport.setMasked(true);
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
 
-        Ext.data.JsonP.request({
-            url: url,
-            params: params,
-            callbackKey: 'callback',
-            success: function (response) {
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
 
-                if (response.Procesada) {
-                    var opciones = new Array(),
-                        datos = response.Data,
-                        i;
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
 
-                    for (i = 0; i < datos.length; i++){
-                        opciones[i] = {
-                            text: datos[i].NombreEstado,
-                            value: datos[i].CodigoEstado
-                        };
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].NombreEstado,
+                                value: datos[i].CodigoEstado
+                            };
+                        }
+
+                        //me.getMenuNav().paises = opciones;
+                        selectfield.getParent().down('#estado').setOptions(opciones);
+                        //selectfield.getParent().down('#estado').showPicker(); 
+                        Ext.Viewport.setMasked(false);
+                    } else {                    
+                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
                     }
-
-                    //me.getMenuNav().paises = opciones;
-                    selectfield.getParent().down('#estado').setOptions(opciones);
-                    //selectfield.getParent().down('#estado').showPicker(); 
-                    Ext.Viewport.setMasked(false);
-                } else {                    
-                    Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
-                    Ext.Viewport.setMasked(false);
                 }
-            }
-        });
+            });
+        }
     },
 
     agregaProspecto: function (button) {
@@ -89940,16 +90031,18 @@ Ext.define('APP.controller.phone.Prospectos', {
                     }
 
                     // Siguen los conceptos.
-                    var checkboxfields = new Array(),
+                    var checkboxfields,// = new Array(),
                         concepto, j;
 
                     for (i = 1; i < 7; i++){
+                        checkboxfields = new Array(),
                         valores = Object.getOwnPropertyDescriptor(response.Data[0], 'Conceptos' + i).value;
 
                         if(!(valores.length == 0)){
                             concepto = me.getProspectosForm().down('#conceptos' + i);
                             me.agregaCampos(valores, checkboxfields);
                             concepto.add(checkboxfields);
+                        
                             me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
                             elementos = concepto.getItems().items;
 
@@ -89957,17 +90050,22 @@ Ext.define('APP.controller.phone.Prospectos', {
                                 elementos[j].setChecked(true);
                             }
                         }
-                    }                  
+                    }
 
                     // La superficie
                     valores = response.Data[0];
                     if(!(valores.total == 0)){
                         campo = me.getProspectosForm().down('#superficieCheck');
-                        campo.setChecked(true);                        
+                        campo.setChecked(true);
                     }   
 
                     // Ahora los datos básicos como nombre, código, razón social, etc.
                     valores = response.Data[0];
+                    valores.campoAbierto = parseFloat(valores.campoAbierto).toFixed(2).toString();
+                    valores.invernadero = parseFloat(valores.invernadero).toFixed(2).toString();
+                    valores.macroTunel = parseFloat(valores.macroTunel).toFixed(2).toString();
+                    valores.total = parseFloat(valores.total).toFixed(2).toString();
+
                     me.getProspectosForm().setValues(valores);
 
                     me.getProspectosForm().setValues({
@@ -90000,9 +90098,8 @@ Ext.define('APP.controller.phone.Prospectos', {
     },
 
     validaRFC: function(textfield, newValue){
-console.log(!this.getMenuNav().esRecuperado);
         if(!this.getMenuNav().esRecuperado){
-            var me = this,
+            var me = this;
                 tipoPersona = textfield.getParent().down('#tipoPersona').getValue();
 
             if(Ext.isEmpty(tipoPersona)){
@@ -90010,11 +90107,11 @@ console.log(!this.getMenuNav().esRecuperado);
                 textfield.reset();            
             } else {
                 if(tipoPersona == 'F'){
-                    if(tipoPersona.length != 13){                    
+                    if(newValue.length != 13){                    
                         Ext.Msg.alert('Longitud errónea', 'El RFC de una persona física debe tener una longitud de 13 caracteres.');                    
                     }
                 } else {
-                    if(tipoPersona.length != 12){
+                    if(newValue.length != 12){
                         Ext.Msg.alert('Longitud errónea', 'El RFC de una persona moral debe tener una longitud de 12 caracteres.');    
                     }
                 }
@@ -91590,12 +91687,19 @@ Ext.define('APP.view.phone.informes.InformesList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
         },
-        itemTpl: '{title}',
-        data:[
-            {title: 'Bitácora de vendedores', action: 'bitacoraVendedores'},
-            {title: 'Análisis de Ventas', action: 'analisisVentas'}
-        ],
+        itemTpl: '{title}',        
         modulo: 'informes'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
+            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}            
+        ]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -91609,12 +91713,19 @@ Ext.define('APP.view.phone.informes.AnalisisVentasList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },
-        itemTpl: '{title}',
-        data:[
-            {title: 'Clientes', action: 'analisisClientes'},
-            {title: 'Artículos', action: 'analisisArticulos'}
-        ],
+        itemTpl: '{title}',        
         modulo: 'informes'
+    },
+
+    initialize: function(){
+        var me =this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.clientes, action: 'analisisClientes'},
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.articulos, action: 'analisisArticulos'}
+        ]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -91630,12 +91741,17 @@ Ext.define('APP.form.phone.informes.InformesForm', {
       
     config:{        
         padding:'0 15 15 15',
-        scrollable: 'vertical',        
-        items:[
+        scrollable: 'vertical'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
-                title: 'Fecha',
-                itemId:'fecha',                                
+                title: APP.core.config.Locale.config.lan.InformesForm.fecha,
+                itemId:'fecha',
                 defaults:{
                     //required:true,
                     //disabled: true,
@@ -91649,20 +91765,20 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                     {
                         xtype:'datepickerfield',
                         name:'fechaDesde',
-                        label: 'Desde',
+                        label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'fechaDesde',
                         value: new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
                     },{
                         xtype:'datepickerfield',
                         name:'fechaHasta',
-                        label:'Hasta',
+                        label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'fechaHasta',
                         value: new Date(Ext.Date.format(new Date(), "d-m-Y"))
                     }
                 ]
             },{            
                 xtype:'fieldset',
-                title: 'Código',
+                title: APP.core.config.Locale.config.lan.InformesForm.codigo,
                 itemId:'codigo',                                
                 defaults:{
                     //required:true,
@@ -91677,12 +91793,12 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                     {
                         xtype:'textfield',
                         name:'codigoDesde',
-                        label: 'Desde',
+                        label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'codigoDesde',
                     },{
                         xtype:'textfield',
                         name:'codigoHasta',
-                        label:'Hasta',
+                        label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'codigoHasta',                        
                     }]
             },{
@@ -91692,13 +91808,15 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                 items: [
                     {
                         xtype: 'button',
-                        itemId: 'crearInforme',                        
+                        itemId: 'crearInforme',
                         ui: 'action',
-                        text: 'Crear Informe'
+                        text: APP.core.config.Locale.config.lan.InformesForm.crearInforme
                     }
                 ]
             }
-        ]
+        ]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -92509,8 +92627,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'RFC',
                         label:'RFC',
-                        tabIndex: 4,
-                        required:false,
+                        tabIndex: 4,                        
                         itemId: 'rfc'
                     }
                 ]
