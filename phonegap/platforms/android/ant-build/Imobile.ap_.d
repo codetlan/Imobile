@@ -49,11 +49,14 @@
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/img/logo.png \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/js/index.js \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera \
+/Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.device \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera/www \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/Camera.js \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/CameraConstants.js \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/CameraPopoverHandle.js \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/CameraPopoverOptions.js \
+/Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.device/www \
+/Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/res/icon \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/res/screen \
 /Users/Waldix/Documents/Imobile/phonegap/platforms/android/assets/www/res/icon/android \

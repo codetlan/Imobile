@@ -58,13 +58,15 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                                 value: 'M'
                             }],
                         tabIndex: 3,
-                        autoSelect: false
+                        autoSelect: false,
+                        itemId: 'tipoPersona'
                     },{
                         xtype:'textfield',
                         name:'RFC',
                         label:'RFC',
                         tabIndex: 4,
-                        required:false
+                        required:false,
+                        itemId: 'rfc'
                     }
                 ]
                 },{
@@ -118,10 +120,16 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                             tabIndex: 11,
                             label:'C.P.' 
                         },{
+                            xtype:'selectfield',
+                            name:'Pais',
+                            tabIndex: 12,
+                            label:'País',
+                            itemId: 'pais'
+                        },{
                             xtype:'selectfield',                            
                             name:'Estado',
                             label:'Estado',
-                            tabIndex: 12,
+                            tabIndex: 13,
                             itemId: 'estado'
                         }
                     ]
@@ -463,7 +471,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype: 'button',
                         itemId: 'agregarProspecto', 
                         ui: 'action',
-                        text: 'Agregar prospecto'
+                        text: 'Enviar prospecto'
                     }
                 ]
             }

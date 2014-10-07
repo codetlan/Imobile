@@ -13,5 +13,6 @@ Ext.define('APP.view.phone.informes.AnalisisVentasList', {
             {title: 'Clientes', action: 'analisisClientes'},
             {title: 'Artículos', action: 'analisisArticulos'}
         ],
+        modulo: 'informes'
     }
 });

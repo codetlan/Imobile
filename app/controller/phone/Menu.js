@@ -16,7 +16,7 @@ Ext.define('APP.controller.phone.Menu', {
             },
 
             'menunav menulist': {
-                itemtap: 'onMenuTap'
+                itemsingletap: 'onMenuTap'
             }
 
         }
@@ -80,7 +80,16 @@ Ext.define('APP.controller.phone.Menu', {
                     xtype: 'prospectoslist',
                     title: APP.core.config.Locale.config.lan.menu.Prospectos
                 });
-                this.agregaOpciones();
+                
+                var store = Ext.getStore('Prospectos');
+                
+                store.resetCurrentPage();
+                store.setParams({
+                    Criterio: ''
+                });
+
+                store.load();
+                //this.agregaOpciones();
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -146,7 +155,7 @@ Ext.define('APP.controller.phone.Menu', {
                     CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                     CodigoSociedad: localStorage.getItem("CodigoSociedad"),
                     CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                    Token: localStorage.getItem("Token")                
+                    Token: localStorage.getItem("Token")
                 };
 
         Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);

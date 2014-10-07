@@ -1,5 +1,5 @@
-/**
- * Created by th3gr4bb3r on 7/21/14.
+
+/* Created by th3gr4bb3r on 7/21/14.
  */
 Ext.define('APP.controller.phone.Prospectos', {
     extend: 'Ext.app.Controller',
@@ -33,6 +33,10 @@ Ext.define('APP.controller.phone.Prospectos', {
             'prospectosform #estado':{
                 focus:'estableceOpciones'
             },
+            'prospectosform #pais':{
+                focus: 'muestraPaises',
+                change: 'obtenEstados'
+            },
             'prospectoslist':{
                 activate: function(list){
                     list.getStore().resetCurrentPage();
@@ -46,10 +50,10 @@ Ext.define('APP.controller.phone.Prospectos', {
            'prospectoslist #buscarProspectos':{
                 keyup: 'buscaProspecto',
                 clearicontap: 'limpiaBusquedaProspecto'
-           }/*,
-            'prospectosform textfield':{
-                focus: 'muestraTabIndex'
-           }*/
+           },
+            'prospectosform #rfc':{
+                change: 'validaRFC'
+           }
         }
     },
 
@@ -64,8 +68,10 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token"),                
             };
-        Ext.Viewport.getMasked().setMessage('Construyendo folio...');
+        Ext.Viewport.getMasked().setMessage('Cargando...');
         Ext.Viewport.setMasked(true);
+
+        me.getMenuNav().esRecuperado = false;
 
         Ext.data.JsonP.request({
             url: url,
@@ -91,12 +97,6 @@ Ext.define('APP.controller.phone.Prospectos', {
                 }
             }
         });        
-    },
-
-    muestraTabIndex: function (textfield){
-        //var me = this;
-
-        console.log(textfield.getTabIndex());
     },
 
     buscaProspectoBoton: function (btn){
@@ -141,7 +141,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
     toggleFieldSetItems: function (chk, value) {
         var items = chk.up('fieldset').getItems().items,
-            numberfield, fieldToFocus = undefined;
+            textfield, fieldToFocus = undefined;
 
         /*        if (!value) {
          chk.uncheck();
@@ -156,16 +156,16 @@ Ext.define('APP.controller.phone.Prospectos', {
             } else {
                 item.enable();
                 item.show();
-                if (item.isXType('numberfield')) {
-                    //si se trata del primer numberfield dentros del fieldset,se debe de enfocar!!!               
+                if (item.isXType('textfield')) {
+                    //si se trata del primer textfield dentros del fieldset,se debe de enfocar!!!               
                     fieldToFocus = fieldToFocus || index;
                     if (fieldToFocus === index) {
-                        numberfield = item;
+                        textfield = item;
                         setTimeout(function () {
-                            numberfield.focus();
+                            textfield.focus();
                         }, 200);
                     }
-                }
+                }             
             }
         });
     },
@@ -258,7 +258,96 @@ Ext.define('APP.controller.phone.Prospectos', {
             selectfield.setOptions(me.getMenuNav().estados);
             selectfield.showPicker(); 
         }
-    },    
+    },
+
+    muestraPaises: function(selectfield){
+        if(selectfield.getOptions() == null){
+            var me = this,
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaPaises",
+                params = {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token")
+                };
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+        Ext.Viewport.setMasked(true);
+
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+
+                    if (response.Procesada) {
+                        var opciones = new Array(),
+                            datos = response.Data,
+                            i;
+
+                        for (i = 0; i < datos.length; i++){
+                            opciones[i] = {
+                                text: datos[i].CodigoPais,
+                                value: datos[i].CodigoPais
+                            };
+                        }
+
+                        //me.getMenuNav().paises = opciones;
+                        selectfield.setOptions(opciones);
+                        selectfield.showPicker(); 
+                        Ext.Viewport.setMasked(false);
+                    } else {                    
+                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Viewport.setMasked(false);
+                    }
+                }
+            });
+        }
+    },
+
+    obtenEstados: function(selectfield, newValue){
+        var me = this,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                Criterio: newValue
+            };
+
+    Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
+    Ext.Viewport.setMasked(true);
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+            callbackKey: 'callback',
+            success: function (response) {
+
+                if (response.Procesada) {
+                    var opciones = new Array(),
+                        datos = response.Data,
+                        i;
+
+                    for (i = 0; i < datos.length; i++){
+                        opciones[i] = {
+                            text: datos[i].NombreEstado,
+                            value: datos[i].CodigoEstado
+                        };
+                    }
+
+                    //me.getMenuNav().paises = opciones;
+                    selectfield.getParent().down('#estado').setOptions(opciones);
+                    //selectfield.getParent().down('#estado').showPicker(); 
+                    Ext.Viewport.setMasked(false);
+                } else {                    
+                    Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                    Ext.Viewport.setMasked(false);
+                }
+            }
+        });
+    },
 
     agregaProspecto: function (button) {
         var me = this,
@@ -364,7 +453,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             success: function (response) {
                 if (response.Procesada) {                        
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Prospecto agregado", msg );//+ response.CodigoUnicoDocumento + ".");
+                    Ext.Msg.alert("Prospecto agregado", msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
                     view.pop();                    
                 } else {       
                     Ext.Viewport.setMasked(false);             
@@ -390,23 +479,39 @@ Ext.define('APP.controller.phone.Prospectos', {
         Ext.Viewport.getMasked().setMessage('Obteniendo prospecto...');
         Ext.Viewport.setMasked(true);
 
+        me.getMenuNav().esRecuperado = true;
+
         Ext.data.JsonP.request({
             url: url,
             params: params,
             callbackKey: 'callback',
             success: function (response) {
                 if (response.Procesada) {
-                    var valores = response.Data[0];
+                    var valores = response.Data[0],
+                        estado, pais;
 
                     view.push({
                         xtype: 'prospectosform'
                     }); 
-
-                    //me.estableceOpciones(me.getProspectosForm().down('#estado'));
-                    me.getProspectosForm().down('#estado').setOptions(me.getMenuNav().estados);
-
+                    
                     // Extraemos la dirección
                     valores = valores.Direcciones[0];
+
+                    // Seteamos el país y el estado
+                    estado = {
+                        text: valores.Estado,
+                        value: valores.Estado
+                    };
+
+                    pais = {
+                        text: valores.Pais,
+                        value: valores.Pais
+                    };
+
+                    me.getProspectosForm().down('#estado').setOptions(estado);
+                    me.getProspectosForm().down('#pais').setOptions(pais);
+
+
                     me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
                     me.getProspectosForm().setValues(valores);
 
@@ -492,5 +597,28 @@ Ext.define('APP.controller.phone.Prospectos', {
         dia = fecha.substring(8,10);
         
         return dia + '-' + mes + '-' + anio;
+    },
+
+    validaRFC: function(textfield, newValue){
+console.log(!this.getMenuNav().esRecuperado);
+        if(!this.getMenuNav().esRecuperado){
+            var me = this,
+                tipoPersona = textfield.getParent().down('#tipoPersona').getValue();
+
+            if(Ext.isEmpty(tipoPersona)){
+                Ext.Msg.alert('¿Tipo de persona?', 'Seleccione primero el tipo de persona');
+                textfield.reset();            
+            } else {
+                if(tipoPersona == 'F'){
+                    if(tipoPersona.length != 13){                    
+                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona física debe tener una longitud de 13 caracteres.');                    
+                    }
+                } else {
+                    if(tipoPersona.length != 12){
+                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona moral debe tener una longitud de 12 caracteres.');    
+                    }
+                }
+            }
+        }
     }
 }); 
