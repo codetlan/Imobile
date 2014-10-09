@@ -145,10 +145,10 @@ Ext.define('APP.controller.phone.Cobranza', {
 
                 anticiposlist = view.getActiveItem().down('facturaslist');
 
-                anticiposlist.setStore(store);
-                anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">No hay anticipos pendientes</div>');
-                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>Número: <b>{NumeroDocumento}</b> Saldo: <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
-                  '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
+                anticiposlist.setStore(store); 
+                anticiposlist.setEmptyText('<div style="margin-top: 20px; text-align: center">' + APP.core.config.Locale.config.lan.Cobranza.sinAnticiposPendientes + '</div>');
+                anticiposlist.setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.Cobranza.anticiposNumero +': <b>{NumeroDocumento}</b>' +  APP.core.config.Locale.config.lan.Cobranza.saldo + ': <b>{saldoAMostrar}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
+                  '<div style="font-size: 90%"> <div><p>' + APP.core.config.Locale.config.lan.Cobranza.fecha + ': <b>{FechaCreacion}</b>' + APP.core.config.Locale.config.lan.Cobranza.vencimiento + ': <b>{FechaFin}</b> </div>',
             '</div>']);
                 anticiposlist.setMode('SINGLE');
 
@@ -179,7 +179,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                     title: idCliente
                 });
 
-            view.getActiveItem().setEmptyText('No existen cobros para este cliente');
+            view.getActiveItem().setEmptyText(APP.core.config.Locale.config.lan.Cobranza.sinCobrosPendientes);
 
             store.load({                
                 callback: function(){
@@ -207,6 +207,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             facturas = facturaslist.getStore(),//Ext.getStore('Facturas'),
             aPagar,
             pagado = 0,
+            boton = me.getNavigationCobranza().getNavigationBar().down('#agregarPago'),
             barraTitulo = ({
                 xtype: 'toolbar',                
                 docked: 'top',
@@ -226,7 +227,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                 //total += seleccion[i].data.Saldo;
 
                 if(moneda != seleccion[i].data.CodigoMoneda + ' '){
-                    Ext.Msg.alert("Monedas diferentes", 'Todas las facturas elegidas deben tener la misma moneda. \nElija facturas con la misma moneda.');
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesTitulo, APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesMensaje);
                     return;
                 }
                 
@@ -240,7 +241,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             aPagar = total;
 
             view.getAt(2).setMasked(false); // Desactivamos la máscara.
-            view.setActiveItem(2);            
+            boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
+            view.setActiveItem(2);
             //navigationCobranza = view.getActiveItem();
 
             navigationCobranza.getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
@@ -251,7 +253,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             me.getTotales().down('#pendiente').setItems({xtype: 'container', html: APP.core.FormatCurrency.currency(aPagar - pagado, moneda)});
 
         } else {
-            Ext.Msg.alert("Sin selección", "Seleccione al menos una factura para continuar.");
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinSeleccionTitulo,
+                 APP.core.config.Locale.config.lan.Cobranza.sinSeleccionMensaje);
         }
     },
 
@@ -263,7 +266,7 @@ Ext.define('APP.controller.phone.Cobranza', {
     onAgregarPago: function (btn) {
         var me = this,
             view = me.getMainCard().getActiveItem(),
-            idCliente = view.getNavigationBar().getTitle();
+            idCliente = view.getNavigationBar().getTitle();            
     
         view.push({
             xtype: 'formasdepagolist',
@@ -271,7 +274,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             //idCliente: idCliente
             //opcion: me.getMenu().getActiveItem().opcion
         });
-
+        
         view.getActiveItem().getStore().load();
         view.getNavigationBar().down('#agregarPago').hide();
     },
@@ -315,12 +318,12 @@ Ext.define('APP.controller.phone.Cobranza', {
                     {
                         xtype: 'numberfield',
                         name: 'NumeroCheque',
-                        placeHolder: 'Ingrese el número de cheque',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.numeroCheque,
                         label: 'No. Cheque'
                     },{
                         xtype: 'textfield',
                         name: 'Banco',
-                        placeHolder: 'Ingrese el nombre del banco',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.cheque,
                         label: 'Banco'
                     }
                 ]);
@@ -330,13 +333,13 @@ Ext.define('APP.controller.phone.Cobranza', {
                     {
                         xtype: 'numberfield',
                         name: 'NumeroAutorizacion',
-                        placeHolder: 'Ingrese el número de autorización',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.noAutorizacion,
                         label: 'No. Autorización'
                     },
                     {
                         xtype: 'numberfield',
                         name: 'NumeroTarjeta',
-                        placeHolder: 'Ingrese el número de tarjeta',
+                        placeHolder: APP.core.config.Locale.config.lan.Cobranza.tarjeta,
                         label: 'No. Tarjeta'
                     }
                 ]);
@@ -382,7 +385,7 @@ Ext.define('APP.controller.phone.Cobranza', {
          if(opcion == 'cobranzaFacturas'){
             moneda = Ext.getStore('Facturas').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
          } else {
-            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
+            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipoas, por eso se elige la primera.
          }
 
 /*        console.log(moneda);
@@ -393,7 +396,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
             if (value === null) { 
                 esVacio = true;
-                Ext.Msg.alert('Datos erróneos', 'Ingrese datos numéricos.');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.errorNoNumericoTitulo, APP.core.config.Locale.config.lan.Cobranza.errorNoNumericoMensaje);
                 return false; // stop the iteration
             }
         });
@@ -403,7 +406,7 @@ Ext.define('APP.controller.phone.Cobranza', {
         } else {
             if (permiteCambio === 'false') {
                 if (entrada > pendiente) {
-                    Ext.Msg.alert('Sin cambio', 'Esta forma de pago no permite dar cambio, disminuya la cantidad.');
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinCambioTitulo, APP.core.config.Locale.config.lan.Cobranza.sinCambioMensaje);
                 } else {
                     //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
                     me.sumaCobros(form, datos, moneda);
@@ -522,14 +525,13 @@ Ext.define('APP.controller.phone.Cobranza', {
             hora = me.daFormatoAHora(fecha.getHours(), fecha.getMinutes(), fecha.getSeconds()),
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
-            msg = 'Se realizó el cobro exitosamente con folio ';
+            msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
 
-        me.getMainCard().getActiveItem().getMasked().setMessage('Enviando Cobro...');
+        me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
         me.getMainCard().getActiveItem().setMasked(true);
         
         if (totales.getCount() > 0) {
             //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
-
 
             var params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -541,7 +543,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                 "Cobranza.CodigoVendedor": localStorage.getItem("CodigoUsuario"),
                 "Cobranza.Tipo": 'C',
                 "Cobranza.CodigoCliente": idCliente
-            };            
+            };
 
             if(me.getNavigationCobranza().opcion == 'anticipo'){
                 params["Cobranza.Tipo"] = 'A';
@@ -611,14 +613,16 @@ Ext.define('APP.controller.phone.Cobranza', {
                         me.getMainCard().getActiveItem().pop();
                     } else {
                         me.getMainCard().getActiveItem().setMasked(false);
-                        Ext.Msg.alert("Cobro no procesado", "No se proceso el cobro correctamente: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoTitulo,
+                        APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoMensaje + response.Descripcion);
                     }
                 }
             });
 
         } else {
             me.getMainCard().getActiveItem().setMasked(false);
-            Ext.Msg.alert("Sin pago", "Agrega por lo menos un pago.");
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
+            APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
         }
         //me.getMainCard().getActiveItem().setMasked(false);
     },
@@ -678,7 +682,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             tipo = button.up('toolbar').down('#buscarTipo').getValue(),
             list = button.up('visualizacioncobranzalist');
 
-            list.setEmptyText('No existen cobros para este cliente');
+            list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();
         store.setParams({
@@ -754,7 +758,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             list = t.up('visualizacioncobranzalist');
         console.log(list);
         console.log(value);
-        list.setEmptyText('No existen cobros para este cliente');
+        list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();
         store.setParams({

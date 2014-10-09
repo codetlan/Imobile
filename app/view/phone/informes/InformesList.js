@@ -8,11 +8,18 @@ Ext.define('APP.view.phone.informes.InformesList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);            
         },
-        itemTpl: '{title}',
-        data:[
-            {title: 'Bitácora de vendedores', action: 'bitacoraVendedores'},
-            {title: 'Análisis de Ventas', action: 'analisisVentas'}            
-        ],
+        itemTpl: '{title}',        
         modulo: 'informes'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
+            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}            
+        ]);
+
+        me.callParent(arguments);
     }
 });

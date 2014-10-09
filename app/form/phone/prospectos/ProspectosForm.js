@@ -64,8 +64,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'RFC',
                         label:'RFC',
-                        tabIndex: 4,
-                        required:false,
+                        tabIndex: 4,                        
                         itemId: 'rfc'
                     }
                 ]

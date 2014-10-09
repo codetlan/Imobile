@@ -10,12 +10,17 @@ Ext.define('APP.form.phone.informes.InformesForm', {
     ],
     config:{        
         padding:'0 15 15 15',
-        scrollable: 'vertical',        
-        items:[
+        scrollable: 'vertical'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
-                title: 'Fecha',
-                itemId:'fecha',                                
+                title: APP.core.config.Locale.config.lan.InformesForm.fecha,
+                itemId:'fecha',
                 defaults:{
                     //required:true,
                     //disabled: true,
@@ -29,20 +34,20 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                     {
                         xtype:'datepickerfield',
                         name:'fechaDesde',
-                        label: 'Desde',
+                        label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'fechaDesde',
                         value: new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
                     },{
                         xtype:'datepickerfield',
                         name:'fechaHasta',
-                        label:'Hasta',
+                        label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'fechaHasta',
                         value: new Date(Ext.Date.format(new Date(), "d-m-Y"))
                     }
                 ]
             },{            
                 xtype:'fieldset',
-                title: 'Código',
+                title: APP.core.config.Locale.config.lan.InformesForm.codigo,
                 itemId:'codigo',                                
                 defaults:{
                     //required:true,
@@ -57,12 +62,12 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                     {
                         xtype:'textfield',
                         name:'codigoDesde',
-                        label: 'Desde',
+                        label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'codigoDesde',
                     },{
                         xtype:'textfield',
                         name:'codigoHasta',
-                        label:'Hasta',
+                        label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'codigoHasta',                        
                     }]
             },{
@@ -72,12 +77,14 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                 items: [
                     {
                         xtype: 'button',
-                        itemId: 'crearInforme',                        
+                        itemId: 'crearInforme',
                         ui: 'action',
-                        text: 'Crear Informe'
+                        text: APP.core.config.Locale.config.lan.InformesForm.crearInforme
                     }
                 ]
             }
-        ]
+        ]);
+
+        me.callParent(arguments);
     }
 });
