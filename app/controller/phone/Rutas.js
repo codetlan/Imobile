@@ -122,9 +122,6 @@ Ext.define('APP.controller.phone.Rutas', {
             'rutasform button[action=guardar]':{
                 tap:'onRutasAdd'
             },
-            'rutascalendariodia':{
-                itemtap:'onRutasEdit'
-            },
               'container[xtype=rutascalendariocont] button': {
                 tap:'cambiaStatusRuta'
             }/*,
@@ -534,7 +531,15 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
-    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin){
+    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin, esActualizacion){
+        
+        if(!esActualizacion){
+            var hoy = new Date();
+
+            if(hoy.getTime() > horaInicio.getTime()){            
+                return false;
+            }
+        }
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
             return false;
@@ -544,6 +549,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 return false;
             }
         }
+
         return true;
     },
 
@@ -848,8 +854,6 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                 ruta = item.getData();  //rutas.getAt(0).getData();                
                 console.log(ruta);
 
-
-
                 var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').nd,
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
@@ -862,7 +866,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                     }                    
                 }
 
-                me.recuperaMarcador(extMapa, ruta);
+                me.recuperaMarcador(extMapa, ruta, false);
 
                 marcadoresArray.push(extMapa.marker);
 
@@ -932,9 +936,10 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
             nd = button.getParent().down('rutascalendariomapa').nd,
             today = new Date();
 
-        nd = Ext.Date.add(nd, Ext.Date.DAY, 1);
+        today.setHours(0,0,0,0);
 
-console.log(nd, today);
+//console.log(nd, today);
+
         if(today <= nd){
             me.getMenuNav().push({
                 xtype:'rutascalendariocont',
@@ -950,12 +955,13 @@ console.log(nd, today);
 
     onRutasAdd:function(btn){
 
-        var form = this.getRutasForm(),            
+        var form = this.getRutasForm(),
             values = form.getValues(),
             view = this.getMenuNav(),
+            esActualizacion = values.CodigoRuta > 0,
             nd = this.getRutasCalendarioMapa().config.nd;
 console.log(nd);
-        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
 
             if(values.Descripcion == ""){
                 Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
@@ -965,7 +971,7 @@ console.log(nd);
                 if(values.LatitudOrigen > 0){
                     Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
-                    if(values.CodigoRuta > 0){
+                    if(esActualizacion){
                         var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta";
                     }
                     else{
@@ -1019,7 +1025,7 @@ console.log(nd);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2, values.CodigoRuta > 0);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, esActualizacion);
                                     },
                                     scope:this
                                 });
@@ -1049,17 +1055,17 @@ console.log(nd);
             }
         }
         else{
-            Ext.Viewport.setMasked(false);
-            view.pop();
+            Ext.Viewport.setMasked(false);            
             Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop, esActualizacion){
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);        
 
         var nd = new Date(nd),
-            titulo = this.getMenuNav().down('toolbar')
+            titulo = this.getMenuNav().down('toolbar'),
+            pop = 1;
 
         calendar.eventStore.clearFilter();        
 
@@ -1072,6 +1078,7 @@ console.log(nd);
 
         if(!esActualizacion){
             calendar.eventStore.filter('CodigoCliente', codigoCliente);
+            pop = 2;
         }
 
         this.getMenuNav().pop(pop);
@@ -1185,57 +1192,59 @@ console.log(nd);
     },
 
     onRutasEdit:function(ruta, direcciones, accion){
-        var form = this.getRutasForm();
+        var me = this, form,
+            view = me.getMenuNav();
+            
         //var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
-        var items=[{
-            xtype:'rutasform',
-            flex:1//,
-            //nd:this.getActividadesCalendarioCont().nd
-        }];
+        view.push({
+            xtype: 'rutasform'
+        });
+
+        // var items=[{
+        //     xtype:'rutasform',
+        //     flex:1//,
+        //     //nd:this.getActividadesCalendarioCont().nd
+        // }];
+
+        form = me.getRutasForm();
+
+        form.down("button[action=guardar]").setText('Actualizar');
+        form.down("button[action=guardar]").setMargin(10);
 
         console.log(ruta);
 
-        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
+        // items.push({
+        //     xtype:'container',
+        //     padding:'0 10px 10px 10px',
+        //     layout:{
+        //         type:'hbox',
+        //         align: 'stretch'
+        //     },
+        //     items:[{
+        //         xtype:'button',
+        //         text:'Actualizar',
+        //         action:'actualizaRuta',
+        //         flex:1
+        //     }]/*,{
+        //         xtype:'button',
+        //         text:'Cancelar',
+        //         action:'cancelarruta',
+        //         flex:1
+        //     }]*/
+        // });
 
-            items.push({
-                xtype:'container',
-                padding:'0 10px 10px 10px',
-                layout:{
-                    type:'hbox',
-                    align: 'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    text:'Actualizar',
-                    action:'actualizaRuta',
-                    flex:1
-                }]/*,{
-                    xtype:'button',
-                    text:'Cancelar',
-                    action:'cancelarruta',
-                    flex:1
-                }]*/
-            });
-        }
-        else{
-            if(ruta.Estatus == 2){
-
-            }
-        }
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            layout:{
-                type:'vbox'
-            },
-            items:items
-        })
+        // this.getMenuNav().push({
+        //     xtype:'container',
+        //     layout:{
+        //         type:'vbox'
+        //     },
+        //     items:items
+        // })
 
         //this.getMenuNav().getActiveItem().down('#btnGuardar').hide();
 
-        var form = this.getRutasForm();
+       // var form = this.getRutasForm();
 
         var horaInicio = new Date();
         horaInicio.setHours(ruta.HoraInicio.substr(0,2));
@@ -1275,24 +1284,23 @@ console.log(nd);
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             mapa = extMapa.getMap();
 
-        this.recuperaMarcador(extMapa, ruta);
+        this.recuperaMarcador(extMapa, ruta, true);
 
         if(ruta.Estatus != 2){
-            var btnGuardar = form.down("button[action=guardar]").destroy();
-            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            //var btnGuardar = form.down("button[action=guardar]").destroy();
+            //form.down("textfield[name=Descripcion]").setReadOnly(true);
             form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
             form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
             form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
             form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-            form.down("checkboxfield[name=Repetir]").disable();
+/*            form.down("checkboxfield[name=Repetir]").disable();
             form.down("checkboxfield[name=Lunes]").disable();
             form.down("checkboxfield[name=Martes]").disable();
             form.down("checkboxfield[name=Miercoles]").disable();
             form.down("checkboxfield[name=Jueves]").disable();
             form.down("checkboxfield[name=Viernes]").disable();
             form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();
-
+            form.down("checkboxfield[name=Domingo]").disable();*/
         }        
 
         if(accion != undefined){
@@ -1484,7 +1492,7 @@ console.log(direcciones);
         geo.updateLocation();
     },
 
-    recuperaMarcador: function(extMapa, ruta){
+    recuperaMarcador: function(extMapa, ruta, draggable){
         var me = this,
             map = extMapa.getMap(),
             icono = me.defineColorDeMarcador(ruta);
@@ -1493,13 +1501,20 @@ console.log(direcciones);
             map: map,
             position: new google.maps.LatLng(ruta.lat, ruta.lon),
             icon: icono,
-            draggable:true
-        });           
-
-        google.maps.event.addListener(extMapa.marker,"dragend",function(){
-            var point = extMapa.marker.getPosition();
-            map.panTo(point);
+            draggable: draggable
         });
+
+        if(draggable){
+            google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                var point = extMapa.marker.getPosition();
+                map.panTo(point);
+
+                me.getMenuNav().getActiveItem().setValues({
+                    LatitudOrigen: extMapa.marker.getPosition().k,
+                    LongitudOrigen: extMapa.marker.getPosition().B
+                })
+            });
+        }
     },
 
     defineColorDeMarcador: function(ruta){
