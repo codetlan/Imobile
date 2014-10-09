@@ -91,7 +91,7 @@ Ext.define('APP.controller.phone.Informes', {
         if((criterio === 'clientes' && this.getMenuNav().clientes == undefined) || 
             (criterio === 'articulos' && this.getMenuNav().articulos == undefined)){
             var me = this,
-                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenCodigos",
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerCodigos",
                 params = {  
                     CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                     CodigoSociedad: localStorage.getItem("CodigoSociedad"),
@@ -183,7 +183,7 @@ Ext.define('APP.controller.phone.Informes', {
         console.log(view.titulo == 'Articulos');
 
         if(view.titulo == 'Articulos'){
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeArticulos";
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeArticulos";
             
             informes.getProxy().setUrl(url);
             view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
@@ -194,7 +194,7 @@ Ext.define('APP.controller.phone.Informes', {
                       '<div style="font-size: 90%"> <div><p> </div>',
                 '</div>'].join(''));
         } else{
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeClientes";
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeClientes";
             informes.getProxy().setUrl(url);
         }
 
