@@ -142,9 +142,11 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype:'container',
                 itemId: 'btnGuardar',
+                docked: 'bottom',
+
                 items:[{
                     xtype:'button',
-                    margin:'10',
+                    margin: 10,
                     text:'Guardar',
                     action:'guardar'
                 }]

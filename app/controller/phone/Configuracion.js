@@ -114,7 +114,7 @@ Ext.define('APP.controller.phone.Configuracion', {
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
-                    }*/         
+                    }*/
 
                     var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
                         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
