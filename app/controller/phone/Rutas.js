@@ -1304,20 +1304,80 @@ console.log(nd);
         }        
 
         if(accion != undefined){
+            console.log(accion);
             switch(accion){
-                case 'realizarRuta':                    
-                    this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1
+                 case 'realizarRuta':
+                 //console.log(!me.esVisitaValida(ruta.lat, ruta.lon), 'resultado')
+//                    if(!me.esVisitaValida(ruta.lat, ruta.lon)){
+                        //this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
+                        //this.onRutasAdd();                                                
+                        me.validaVisita(ruta.lat, ruta.lon, ruta);
+
+                        //console.log('Hola')
+  //                  } else {
+                        //Ext.Msg.alert('Visita no válida', 'Debe estar más cerca del destino para validar su visita');
+    //                }
                     break;
 
                 case 'cancelarRuta':
                     this.getRutasForm().accion = 4
+                    this.onRutasAdd();
                     break;
             }
-
-            this.onRutasAdd()
         }
 
         Ext.Viewport.setMasked(false);
+    },
+
+    validaVisita: function(lat, lon, ruta){        
+        var me = this,
+            geo = Ext.create('Ext.util.Geolocation',{
+                autoUpdate: false,
+                listeners: {
+                    locationupdate: function (geo) {
+                        var latitude = geo.getLatitude(),
+                            longitude = geo.getLongitude(),
+                            origen = new google.maps.LatLng(latitude, longitude),
+                            destino = new google.maps.LatLng(lat, lon),
+                            service = new google.maps.DistanceMatrixService();
+                        console.log(me, 'primer me');
+                        service.getDistanceMatrix(
+                          {
+                            origins: [origen],
+                            destinations: [destino],
+                            travelMode: google.maps.TravelMode.DRIVING,
+                            avoidHighways: false,
+                            avoidTolls: false
+                          }, me.dameDistancia.bind(me));
+                    },
+
+                    locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                        //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                        console.log('Error de localizacion');                    
+                    }
+                }
+            });
+        geo.updateLocation();
+    },
+
+    dameDistancia: function(response, status){
+        console.log(this);
+        var me = this,
+        ruta = me.getMenuNav().ruta;            
+
+        if (status == google.maps.DistanceMatrixStatus.OK){
+            var distancia = response.rows[0].elements[0].distance.value;            
+            if (distancia <= 5000){                
+                me.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
+                me.onRutasAdd();
+            } else {
+                me.getMenuNav().pop();
+                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');                 
+            }
+
+        } else {
+            Ext.Msg.alert('Error', 'No fue posible calcular la distancia: ' + status);
+        }
     },
 
     eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
@@ -1438,7 +1498,7 @@ console.log(direcciones);
                 }]
             });
 
-            me.getRutasCalendarioCont().ruta = ruta;
+            me.getMenuNav().ruta = ruta;
         }
         else {
 
@@ -1450,12 +1510,12 @@ console.log(direcciones);
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             map = extMapa.getMap();
 
-        //me.recuperaMarcador(extMapa, ruta);
+        me.recuperaMarcador(extMapa, ruta);
 
         Ext.device.Geolocation.getCurrentPosition({
             success: function(position) {
-                var latitude = geo.getLatitude(),
-                    longitude = geo.getLongitude();
+                var latitude = position.coords.latitude,
+                    longitude = position.coords.longitude;
 
                 console.log(latitude, longitude);
 
@@ -1485,44 +1545,44 @@ console.log(direcciones);
             }
         });
 
-        /*var geo = Ext.create('Ext.util.Geolocation',{
-            autoUpdate: false,
-            listeners: {
-                locationupdate: function (geo) {
-                    var latitude = geo.getLatitude(),
-                    longitude = geo.getLongitude();
+        // var geo = Ext.create('Ext.util.Geolocation',{
+        //     autoUpdate: false,
+        //     listeners: {
+        //         locationupdate: function (geo) {
+        //             var latitude = geo.getLatitude(),
+        //             longitude = geo.getLongitude();
 
-                    console.log(latitude, longitude);
+        //             console.log(latitude, longitude);
 
-                    var directionsService = new google.maps.DirectionsService();
-                    var directionsDisplay = new google.maps.DirectionsRenderer();
+        //             var directionsService = new google.maps.DirectionsService();
+        //             var directionsDisplay = new google.maps.DirectionsRenderer();
 
-                    directionsDisplay.setMap(map);
+        //             directionsDisplay.setMap(map);
 
-                    var origin = new google.maps.LatLng(latitude, longitude);
-                    var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
+        //             var origin = new google.maps.LatLng(latitude, longitude);
+        //             var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
 
-                    var request = {
-                        origin: origin,
-                        destination: destination,
-                        travelMode: google.maps.DirectionsTravelMode.DRIVING
-                    };
+        //             var request = {
+        //                 origin: origin,
+        //                 destination: destination,
+        //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
+        //             };
 
-                    directionsService.route(request, function (result, status) {
-                        if (status == google.maps.DirectionsStatus.OK) {
-                            directionsDisplay.setMap(map);
-                            directionsDisplay.setDirections(result);
-                        }
-                    });
-                },
-                locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-                    Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+        //             directionsService.route(request, function (result, status) {
+        //                 if (status == google.maps.DirectionsStatus.OK) {
+        //                     directionsDisplay.setMap(map);
+        //                     directionsDisplay.setDirections(result);
+        //                 }
+        //             });
+        //         },
+        //         locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+        //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
 
-                }
-            }
-        });
+        //         }
+        //     }
+        // });
 
-        geo.updateLocation();*/
+        //geo.updateLocation();
     },
 
     recuperaMarcador: function(extMapa, ruta, draggable){
@@ -1624,7 +1684,7 @@ console.log(direcciones);
     cambiaStatusRuta: function(button){
         var me = this,
             view = me.getMenuNav().getActiveItem(),
-            ruta = me.getRutasCalendarioCont().ruta;
+            ruta = me.getMenuNav().ruta;
         
         me.dameDirecciones(ruta, button.action);        
     },
