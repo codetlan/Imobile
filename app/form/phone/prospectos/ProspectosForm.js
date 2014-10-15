@@ -209,18 +209,21 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name:'campoAbierto',
                         label:'Campo Abierto',
                         tabIndex: 16,
+                        minValue: 0,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
                         label:'Invernadero',
                         tabIndex: 17,
+                        minValue: 0,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
                         label:'Macro Túnel',
                         tabIndex: 18,
+                        minValue: 0,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
