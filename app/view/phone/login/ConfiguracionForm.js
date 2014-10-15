@@ -2,7 +2,7 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
     extend: 'Ext.form.Panel',
     xtype: 'configuracionform',
     config: {
-        padding: 15,
+        padding: 15
     },
 
     initialize: function (){

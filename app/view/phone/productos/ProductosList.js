@@ -13,7 +13,7 @@ Ext.define('APP.view.phone.productos.ProductosList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
+        }
 
 /*        masked: {
             xtype: 'loadmask',

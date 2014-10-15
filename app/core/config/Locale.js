@@ -281,7 +281,7 @@ Ext.define('APP.core.config.Locale', {
 
       InformesList: {
         bitacoraVendedores: "Bitácora de Vendedores",
-        analisisVentas: "Análisis de Ventas",      
+        analisisVentas: "Análisis de Ventas"
     },
 
     InformesForm: {
@@ -315,6 +315,6 @@ Ext.define('APP.core.config.Locale', {
     for (var view in translations) {
       console.log(view);
     }
-  },
+  }
 
 });

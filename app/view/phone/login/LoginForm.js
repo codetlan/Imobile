@@ -10,7 +10,7 @@ Ext.define('APP.view.phone.login.LoginForm', {
         defaults: {
             required: true,
             clearIcon: true
-        },
+        }
     },
 
     initialize: function(){

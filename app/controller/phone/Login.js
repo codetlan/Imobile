@@ -160,7 +160,7 @@ Ext.define('APP.controller.phone.Login', {
 
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
-    },
+    }
 
 /*    launch: function(){
         var me = this;        

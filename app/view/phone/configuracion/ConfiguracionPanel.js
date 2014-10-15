@@ -9,7 +9,7 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
             direction: 'vertical',
             directionLock: true
         },
-        padding: 10,
+        padding: 10
     },
 
     initialize: function(){

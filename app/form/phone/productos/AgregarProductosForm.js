@@ -10,7 +10,7 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
 	],
 	config:{        
 		padding:'0 15 15 15',
-        scrollable: 'vertical',
+        scrollable: 'vertical'
 	},
 
     initialize: function(){

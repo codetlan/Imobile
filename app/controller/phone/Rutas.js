@@ -535,17 +535,21 @@ Ext.define('APP.controller.phone.Rutas', {
         
         if(!esActualizacion){
             var hoy = new Date();
+            //alert('no es actualizacion');
 
-            if(hoy.getTime() > horaInicio.getTime()){            
+            if(hoy.getTime() > horaInicio.getTime()){
+                //alert('horario atrazado');
                 return false;
             }
         }
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
+            //alert('Fecha inicio mayor que fecha fin');
             return false;
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
+                //alert('hora inicio mayor que hora fin');
                 return false;
             }
         }
@@ -684,6 +688,8 @@ console.log(direcciones);
     },
 
     onRutasCalendarioTap:function(calendar, nd){
+        var me = this;
+
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
@@ -707,8 +713,8 @@ console.log(direcciones);
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
                 xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
-                flex:1,
-                nd:nd
+                flex:1
+                //nd:nd
                 // idCliente: rc.idCliente,
                 // direcciones:rc.direcciones
             },{
@@ -718,6 +724,8 @@ console.log(direcciones);
                 margin:10
             }]
         });
+
+        me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
 
@@ -854,6 +862,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                 ruta = item.getData();  //rutas.getAt(0).getData();                
 
                 var nd = extMapa.config.nd,
+                //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
                 console.log(nd);
@@ -933,12 +942,12 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
 
     muestraClientes: function(button) {
         var me = this,
-            nd = button.getParent().down('rutascalendariomapa').nd,
+            nd = button.getParent().down('rutascalendariomapa').config.nd,
             today = new Date();
 
         today.setHours(0,0,0,0);
 
-//console.log(nd, today);
+console.log(nd, today);
 
         if(today <= nd){
             me.getMenuNav().push({
@@ -959,6 +968,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
             values = form.getValues(),
             view = this.getMenuNav(),
             esActualizacion = values.CodigoRuta > 0,
+            status = form.accion != undefined ? form.accion : 2
             nd = this.getRutasCalendarioMapa().config.nd;
 console.log(nd);
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
@@ -1004,7 +1014,7 @@ console.log(nd);
                 "Ruta.Notas"   : values.Notas,
                 "Ruta.LatitudOrigen": values.LatitudOrigen,
                 "Ruta.LongitudOrigen": values.LongitudOrigen,
-                "Ruta.Estatus" : form.accion != undefined ? form.accion : 2
+                "Ruta.Estatus" : status
             }
 
         Ext.Viewport.setMasked(true);
@@ -1025,7 +1035,7 @@ console.log(nd);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, esActualizacion);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, status, esActualizacion);
                                     },
                                     scope:this
                                 });
@@ -1060,7 +1070,7 @@ console.log(nd);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, status, esActualizacion){
         nd.setHours(0, 0);        
 
         var nd = new Date(nd),
@@ -1072,11 +1082,17 @@ console.log(nd);
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
-        }, this);        
+        }, this);
 
         console.log(codigoCliente, ' El código del cliente');
+        console.log(status, ' Status de ruta');
 
-        if(!esActualizacion){
+        if(esActualizacion){
+            if(status != 2 && status != 0){
+                calendar.eventStore.filter('CodigoCliente', codigoCliente);
+                pop = 2;
+            }
+        } else {
             calendar.eventStore.filter('CodigoCliente', codigoCliente);
             pop = 2;
         }
@@ -1303,8 +1319,9 @@ console.log(nd);
             form.down("checkboxfield[name=Domingo]").disable();*/
         }        
 
-        if(accion != undefined){
-            console.log(accion);
+        console.log(accion);
+
+        if(accion != undefined){            
             switch(accion){
                  case 'realizarRuta':
                  //console.log(!me.esVisitaValida(ruta.lat, ruta.lon), 'resultado')
@@ -1330,34 +1347,56 @@ console.log(nd);
     },
 
     validaVisita: function(lat, lon, ruta){        
-        var me = this,
-            geo = Ext.create('Ext.util.Geolocation',{
-                autoUpdate: false,
-                listeners: {
-                    locationupdate: function (geo) {
-                        var latitude = geo.getLatitude(),
-                            longitude = geo.getLongitude(),
-                            origen = new google.maps.LatLng(latitude, longitude),
-                            destino = new google.maps.LatLng(lat, lon),
-                            service = new google.maps.DistanceMatrixService();
-                        console.log(me, 'primer me');
-                        service.getDistanceMatrix(
-                          {
-                            origins: [origen],
-                            destinations: [destino],
-                            travelMode: google.maps.TravelMode.DRIVING,
-                            avoidHighways: false,
-                            avoidTolls: false
-                          }, me.dameDistancia.bind(me));
-                    },
+        var me = this;
 
-                    locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-                        //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
-                        console.log('Error de localizacion');                    
-                    }
-                }
-            });
-        geo.updateLocation();
+        Ext.device.Geolocation.getCurrentPosition({
+            success: function(position) {
+                var latitude = position.coords.latitude,
+                    longitude = position.coords.longitude,
+                    origen = new google.maps.LatLng(latitude, longitude),
+                    destino = new google.maps.LatLng(lat, lon),
+                    service = new google.maps.DistanceMatrixService();
+                        
+                    service.getDistanceMatrix(
+                      {
+                        origins: [origen],
+                        destinations: [destino],
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        avoidHighways: false,
+                        avoidTolls: false
+                      }, me.dameDistancia.bind(me));
+            },
+            failure: function() {
+                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+            }
+        });
+        //     geo = Ext.create('Ext.util.Geolocation',{
+        //         autoUpdate: false,
+        //         listeners: {
+        //             locationupdate: function (geo) {
+        //                 var latitude = geo.getLatitude(),
+        //                     longitude = geo.getLongitude(),
+        //                     origen = new google.maps.LatLng(latitude, longitude),
+        //                     destino = new google.maps.LatLng(lat, lon),
+        //                     service = new google.maps.DistanceMatrixService();
+        //                 console.log(me, 'primer me');
+        //                 service.getDistanceMatrix(
+        //                   {
+        //                     origins: [origen],
+        //                     destinations: [destino],
+        //                     travelMode: google.maps.TravelMode.DRIVING,
+        //                     avoidHighways: false,
+        //                     avoidTolls: false
+        //                   }, me.dameDistancia.bind(me));
+        //             },
+
+        //             locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+        //                 //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+        //                 console.log('Error de localizacion');                    
+        //             }
+        //         }
+        //     });
+        // geo.updateLocation();
     },
 
     dameDistancia: function(response, status){
@@ -1370,13 +1409,14 @@ console.log(nd);
             if (distancia <= 5000){                
                 me.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
                 me.onRutasAdd();
-            } else {
+            } else {                
+                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');
                 me.getMenuNav().pop();
-                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');                 
             }
 
         } else {
             Ext.Msg.alert('Error', 'No fue posible calcular la distancia: ' + status);
+            me.getMenuNav().pop();
         }
     },
 
@@ -1461,7 +1501,9 @@ console.log(direcciones);
     trazaRuta: function(ruta){
         var me = this,
             view = me.getMenuNav(),
-            nd = view.getActiveItem().down('rutascalendariomapa').nd;
+            nd = view.getActiveItem().down('rutascalendariomapa').config.nd;
+
+            me.getMenu
 
         if(ruta.Estatus != 1 && ruta.Estatus != 3 && ruta.Estatus != 4){ // Si la ruta no ha sido visitada ni visitada tardíamente, ni cancelada            
 
@@ -1487,12 +1529,12 @@ console.log(direcciones);
                     items:[{
                         xtype:'button',
                         text:'Realizada',
-                        action:'realizarRuta',
+                        itemId:'realizarRuta',
                         flex:1
                     },{
                         xtype:'button',
                         text:'Cancelar Ruta',
-                        action:'cancelarRuta',
+                        itemId:'cancelarRuta',
                         flex:1
                     }]
                 }]
@@ -1685,13 +1727,13 @@ console.log(direcciones);
         var me = this,
             view = me.getMenuNav().getActiveItem(),
             ruta = me.getMenuNav().ruta;
-        
-        me.dameDirecciones(ruta, button.action);        
+        console.log(button.getItemId())
+        me.dameDirecciones(ruta, button.getItemId());
     },
 
     quitaMarcadores: function () {
         var me = this,
-            marcadores = me.getRutasCalendario().marcadores
+            marcadores = me.getRutasCalendario().marcadores;
 
         if (marcadores != undefined){
             for (i = 0; i < marcadores.length; i++) {

@@ -22,8 +22,7 @@ Ext.define('APP.view.phone.cobranza.TotalAPagarContainer', {
                 background: 'gray'
             },
             xtype: 'totalapagarlist',
-            flex: 5,
-
+            flex: 5
             },{
                 xtype: 'totalescontainer',
                 flex: 1

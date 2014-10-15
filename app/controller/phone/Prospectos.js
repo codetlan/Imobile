@@ -66,7 +66,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                 CodigoSociedad: localStorage.getItem("CodigoSociedad"),
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token"),                
+                Token: localStorage.getItem("Token")
             };
         Ext.Viewport.getMasked().setMessage('Cargando...');
         Ext.Viewport.setMasked(true);
@@ -422,7 +422,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             params["oProspecto.campoAbierto"] = valores.campoAbierto == null ? 0 : valores.campoAbierto;
             params["oProspecto.invernadero"] = valores.invernadero == null ? 0 : valores.invernadero;
             params["oProspecto.macroTunel"] = valores.macroTunel == null ? 0 : valores.macroTunel
-            params["oProspecto.total"] = valores.total;
+            params["oProspecto.total"] = valores.total == null ? 0 : valores.total;
         } else {
             params["oProspecto.campoAbierto"] = 0;
             params["oProspecto.invernadero"] = 0;

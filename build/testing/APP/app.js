@@ -83394,7 +83394,7 @@ Ext.define('APP.core.config.Locale', {
 
       InformesList: {
         bitacoraVendedores: "Bitácora de Vendedores",
-        analisisVentas: "Análisis de Ventas",      
+        analisisVentas: "Análisis de Ventas"
     },
 
     InformesForm: {
@@ -83428,7 +83428,7 @@ Ext.define('APP.core.config.Locale', {
     for (var view in translations) {
       console.log(view);
     }
-  },
+  }
 
 });
 
@@ -84071,7 +84071,7 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
     extend: 'Ext.form.Panel',
     xtype: 'configuracionform',
     config: {
-        padding: 15,
+        padding: 15
     },
 
     initialize: function (){
@@ -84154,7 +84154,7 @@ Ext.define('APP.view.phone.login.LoginForm', {
         defaults: {
             required: true,
             clearIcon: true
-        },
+        }
     },
 
     initialize: function(){
@@ -84437,7 +84437,7 @@ Ext.define('APP.controller.phone.Login', {
 
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
-    },
+    }
 
 /*    launch: function(){
         var me = this;        
@@ -86743,9 +86743,6 @@ Ext.define('APP.controller.phone.Rutas', {
             'rutasform button[action=guardar]':{
                 tap:'onRutasAdd'
             },
-            'rutascalendariodia':{
-                itemtap:'onRutasEdit'
-            },
               'container[xtype=rutascalendariocont] button': {
                 tap:'cambiaStatusRuta'
             }/*,
@@ -87155,16 +87152,29 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
-    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin){
+    validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin, esActualizacion){
+        
+        if(!esActualizacion){
+            var hoy = new Date();
+            //alert('no es actualizacion');
+
+            if(hoy.getTime() > horaInicio.getTime()){
+                //alert('horario atrazado');
+                return false;
+            }
+        }
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
+            //alert('Fecha inicio mayor que fecha fin');
             return false;
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
+                //alert('hora inicio mayor que hora fin');
                 return false;
             }
         }
+
         return true;
     },
 
@@ -87299,6 +87309,8 @@ console.log(direcciones);
     },
 
     onRutasCalendarioTap:function(calendar, nd){
+        var me = this;
+
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
@@ -87322,8 +87334,8 @@ console.log(direcciones);
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
                 xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
-                flex:1,
-                nd:nd
+                flex:1
+                //nd:nd
                 // idCliente: rc.idCliente,
                 // direcciones:rc.direcciones
             },{
@@ -87333,6 +87345,8 @@ console.log(direcciones);
                 margin:10
             }]
         });
+
+        me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
 
@@ -87469,6 +87483,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                 ruta = item.getData();  //rutas.getAt(0).getData();                
 
                 var nd = extMapa.config.nd,
+                //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
                 console.log(nd);
@@ -87480,7 +87495,7 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                     }                    
                 }
 
-                me.recuperaMarcador(extMapa, ruta);
+                me.recuperaMarcador(extMapa, ruta, false);
 
                 marcadoresArray.push(extMapa.marker);
 
@@ -87548,12 +87563,13 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
 
     muestraClientes: function(button) {
         var me = this,
-            nd = button.getParent().down('rutascalendariomapa').nd,
+            nd = button.getParent().down('rutascalendariomapa').config.nd,
             today = new Date();
 
-        nd = Ext.Date.add(nd, Ext.Date.DAY, 1);
+        today.setHours(0,0,0,0);
 
 console.log(nd, today);
+
         if(today <= nd){
             me.getMenuNav().push({
                 xtype:'rutascalendariocont',
@@ -87569,12 +87585,14 @@ console.log(nd, today);
 
     onRutasAdd:function(btn){
 
-        var form = this.getRutasForm(),            
+        var form = this.getRutasForm(),
             values = form.getValues(),
             view = this.getMenuNav(),
+            esActualizacion = values.CodigoRuta > 0,
+            status = form.accion != undefined ? form.accion : 2
             nd = this.getRutasCalendarioMapa().config.nd;
 console.log(nd);
-        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
 
             if(values.Descripcion == ""){
                 Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
@@ -87584,7 +87602,7 @@ console.log(nd);
                 if(values.LatitudOrigen > 0){
                     Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
-                    if(values.CodigoRuta > 0){
+                    if(esActualizacion){
                         var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta";
                     }
                     else{
@@ -87617,7 +87635,7 @@ console.log(nd);
                 "Ruta.Notas"   : values.Notas,
                 "Ruta.LatitudOrigen": values.LatitudOrigen,
                 "Ruta.LongitudOrigen": values.LongitudOrigen,
-                "Ruta.Estatus" : form.accion != undefined ? form.accion : 2
+                "Ruta.Estatus" : status
             }
 
         Ext.Viewport.setMasked(true);
@@ -87638,7 +87656,7 @@ console.log(nd);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, 2, values.CodigoRuta > 0);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, status, esActualizacion);
                                     },
                                     scope:this
                                 });
@@ -87668,29 +87686,36 @@ console.log(nd);
             }
         }
         else{
-            Ext.Viewport.setMasked(false);
-            view.pop();
+            Ext.Viewport.setMasked(false);            
             Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, pop, esActualizacion){
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, status, esActualizacion){
         nd.setHours(0, 0);        
 
         var nd = new Date(nd),
-            titulo = this.getMenuNav().down('toolbar')
+            titulo = this.getMenuNav().down('toolbar'),
+            pop = 1;
 
         calendar.eventStore.clearFilter();        
 
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
-        }, this);        
+        }, this);
 
         console.log(codigoCliente, ' El código del cliente');
+        console.log(status, ' Status de ruta');
 
-        if(!esActualizacion){
+        if(esActualizacion){
+            if(status != 2 && status != 0){
+                calendar.eventStore.filter('CodigoCliente', codigoCliente);
+                pop = 2;
+            }
+        } else {
             calendar.eventStore.filter('CodigoCliente', codigoCliente);
+            pop = 2;
         }
 
         this.getMenuNav().pop(pop);
@@ -87804,57 +87829,59 @@ console.log(nd);
     },
 
     onRutasEdit:function(ruta, direcciones, accion){
-        var form = this.getRutasForm();
+        var me = this, form,
+            view = me.getMenuNav();
+            
         //var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
-        var items=[{
-            xtype:'rutasform',
-            flex:1//,
-            //nd:this.getActividadesCalendarioCont().nd
-        }];
+        view.push({
+            xtype: 'rutasform'
+        });
+
+        // var items=[{
+        //     xtype:'rutasform',
+        //     flex:1//,
+        //     //nd:this.getActividadesCalendarioCont().nd
+        // }];
+
+        form = me.getRutasForm();
+
+        form.down("button[action=guardar]").setText('Actualizar');
+        form.down("button[action=guardar]").setMargin(10);
 
         console.log(ruta);
 
-        if(ruta.Estatus != 1 && ruta.Estatus != 3){            
+        // items.push({
+        //     xtype:'container',
+        //     padding:'0 10px 10px 10px',
+        //     layout:{
+        //         type:'hbox',
+        //         align: 'stretch'
+        //     },
+        //     items:[{
+        //         xtype:'button',
+        //         text:'Actualizar',
+        //         action:'actualizaRuta',
+        //         flex:1
+        //     }]/*,{
+        //         xtype:'button',
+        //         text:'Cancelar',
+        //         action:'cancelarruta',
+        //         flex:1
+        //     }]*/
+        // });
 
-            items.push({
-                xtype:'container',
-                padding:'0 10px 10px 10px',
-                layout:{
-                    type:'hbox',
-                    align: 'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    text:'Actualizar',
-                    action:'actualizaRuta',
-                    flex:1
-                }]/*,{
-                    xtype:'button',
-                    text:'Cancelar',
-                    action:'cancelarruta',
-                    flex:1
-                }]*/
-            });
-        }
-        else{
-            if(ruta.Estatus == 2){
-
-            }
-        }
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            layout:{
-                type:'vbox'
-            },
-            items:items
-        })
+        // this.getMenuNav().push({
+        //     xtype:'container',
+        //     layout:{
+        //         type:'vbox'
+        //     },
+        //     items:items
+        // })
 
         //this.getMenuNav().getActiveItem().down('#btnGuardar').hide();
 
-        var form = this.getRutasForm();
+       // var form = this.getRutasForm();
 
         var horaInicio = new Date();
         horaInicio.setHours(ruta.HoraInicio.substr(0,2));
@@ -87894,41 +87921,124 @@ console.log(nd);
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             mapa = extMapa.getMap();
 
-        this.recuperaMarcador(extMapa, ruta);
+        this.recuperaMarcador(extMapa, ruta, true);
 
         if(ruta.Estatus != 2){
-            var btnGuardar = form.down("button[action=guardar]").destroy();
-            form.down("textfield[name=Descripcion]").setReadOnly(true);
+            //var btnGuardar = form.down("button[action=guardar]").destroy();
+            //form.down("textfield[name=Descripcion]").setReadOnly(true);
             form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
             form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
             form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
             form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-            form.down("checkboxfield[name=Repetir]").disable();
+/*            form.down("checkboxfield[name=Repetir]").disable();
             form.down("checkboxfield[name=Lunes]").disable();
             form.down("checkboxfield[name=Martes]").disable();
             form.down("checkboxfield[name=Miercoles]").disable();
             form.down("checkboxfield[name=Jueves]").disable();
             form.down("checkboxfield[name=Viernes]").disable();
             form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();
-
+            form.down("checkboxfield[name=Domingo]").disable();*/
         }        
 
-        if(accion != undefined){
+        console.log(accion);
+
+        if(accion != undefined){            
             switch(accion){
-                case 'realizarRuta':                    
-                    this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1
+                 case 'realizarRuta':
+                 //console.log(!me.esVisitaValida(ruta.lat, ruta.lon), 'resultado')
+//                    if(!me.esVisitaValida(ruta.lat, ruta.lon)){
+                        //this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
+                        //this.onRutasAdd();                                                
+                        me.validaVisita(ruta.lat, ruta.lon, ruta);
+
+                        //console.log('Hola')
+  //                  } else {
+                        //Ext.Msg.alert('Visita no válida', 'Debe estar más cerca del destino para validar su visita');
+    //                }
                     break;
 
                 case 'cancelarRuta':
                     this.getRutasForm().accion = 4
+                    this.onRutasAdd();
                     break;
             }
-
-            this.onRutasAdd()
         }
 
         Ext.Viewport.setMasked(false);
+    },
+
+    validaVisita: function(lat, lon, ruta){        
+        var me = this;
+
+        Ext.device.Geolocation.getCurrentPosition({
+            success: function(position) {
+                var latitude = position.coords.latitude,
+                    longitude = position.coords.longitude,
+                    origen = new google.maps.LatLng(latitude, longitude),
+                    destino = new google.maps.LatLng(lat, lon),
+                    service = new google.maps.DistanceMatrixService();
+                        
+                    service.getDistanceMatrix(
+                      {
+                        origins: [origen],
+                        destinations: [destino],
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        avoidHighways: false,
+                        avoidTolls: false
+                      }, me.dameDistancia.bind(me));
+            },
+            failure: function() {
+                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+            }
+        });
+        //     geo = Ext.create('Ext.util.Geolocation',{
+        //         autoUpdate: false,
+        //         listeners: {
+        //             locationupdate: function (geo) {
+        //                 var latitude = geo.getLatitude(),
+        //                     longitude = geo.getLongitude(),
+        //                     origen = new google.maps.LatLng(latitude, longitude),
+        //                     destino = new google.maps.LatLng(lat, lon),
+        //                     service = new google.maps.DistanceMatrixService();
+        //                 console.log(me, 'primer me');
+        //                 service.getDistanceMatrix(
+        //                   {
+        //                     origins: [origen],
+        //                     destinations: [destino],
+        //                     travelMode: google.maps.TravelMode.DRIVING,
+        //                     avoidHighways: false,
+        //                     avoidTolls: false
+        //                   }, me.dameDistancia.bind(me));
+        //             },
+
+        //             locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+        //                 //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+        //                 console.log('Error de localizacion');                    
+        //             }
+        //         }
+        //     });
+        // geo.updateLocation();
+    },
+
+    dameDistancia: function(response, status){
+        console.log(this);
+        var me = this,
+        ruta = me.getMenuNav().ruta;            
+
+        if (status == google.maps.DistanceMatrixStatus.OK){
+            var distancia = response.rows[0].elements[0].distance.value;            
+            if (distancia <= 5000){                
+                me.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
+                me.onRutasAdd();
+            } else {                
+                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');
+                me.getMenuNav().pop();
+            }
+
+        } else {
+            Ext.Msg.alert('Error', 'No fue posible calcular la distancia: ' + status);
+            me.getMenuNav().pop();
+        }
     },
 
     eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
@@ -88012,7 +88122,9 @@ console.log(direcciones);
     trazaRuta: function(ruta){
         var me = this,
             view = me.getMenuNav(),
-            nd = view.getActiveItem().down('rutascalendariomapa').nd;
+            nd = view.getActiveItem().down('rutascalendariomapa').config.nd;
+
+            me.getMenu
 
         if(ruta.Estatus != 1 && ruta.Estatus != 3 && ruta.Estatus != 4){ // Si la ruta no ha sido visitada ni visitada tardíamente, ni cancelada            
 
@@ -88038,18 +88150,18 @@ console.log(direcciones);
                     items:[{
                         xtype:'button',
                         text:'Realizada',
-                        action:'realizarRuta',
+                        itemId:'realizarRuta',
                         flex:1
                     },{
                         xtype:'button',
                         text:'Cancelar Ruta',
-                        action:'cancelarRuta',
+                        itemId:'cancelarRuta',
                         flex:1
                     }]
                 }]
             });
 
-            me.getRutasCalendarioCont().ruta = ruta;
+            me.getMenuNav().ruta = ruta;
         }
         else {
 
@@ -88061,12 +88173,12 @@ console.log(direcciones);
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             map = extMapa.getMap();
 
-        //me.recuperaMarcador(extMapa, ruta);
+        me.recuperaMarcador(extMapa, ruta);
 
         Ext.device.Geolocation.getCurrentPosition({
             success: function(position) {
-                var latitude = geo.getLatitude(),
-                    longitude = geo.getLongitude();
+                var latitude = position.coords.latitude,
+                    longitude = position.coords.longitude;
 
                 console.log(latitude, longitude);
 
@@ -88096,47 +88208,47 @@ console.log(direcciones);
             }
         });
 
-        /*var geo = Ext.create('Ext.util.Geolocation',{
-            autoUpdate: false,
-            listeners: {
-                locationupdate: function (geo) {
-                    var latitude = geo.getLatitude(),
-                    longitude = geo.getLongitude();
+        // var geo = Ext.create('Ext.util.Geolocation',{
+        //     autoUpdate: false,
+        //     listeners: {
+        //         locationupdate: function (geo) {
+        //             var latitude = geo.getLatitude(),
+        //             longitude = geo.getLongitude();
 
-                    console.log(latitude, longitude);
+        //             console.log(latitude, longitude);
 
-                    var directionsService = new google.maps.DirectionsService();
-                    var directionsDisplay = new google.maps.DirectionsRenderer();
+        //             var directionsService = new google.maps.DirectionsService();
+        //             var directionsDisplay = new google.maps.DirectionsRenderer();
 
-                    directionsDisplay.setMap(map);
+        //             directionsDisplay.setMap(map);
 
-                    var origin = new google.maps.LatLng(latitude, longitude);
-                    var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
+        //             var origin = new google.maps.LatLng(latitude, longitude);
+        //             var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
 
-                    var request = {
-                        origin: origin,
-                        destination: destination,
-                        travelMode: google.maps.DirectionsTravelMode.DRIVING
-                    };
+        //             var request = {
+        //                 origin: origin,
+        //                 destination: destination,
+        //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
+        //             };
 
-                    directionsService.route(request, function (result, status) {
-                        if (status == google.maps.DirectionsStatus.OK) {
-                            directionsDisplay.setMap(map);
-                            directionsDisplay.setDirections(result);
-                        }
-                    });
-                },
-                locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-                    Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+        //             directionsService.route(request, function (result, status) {
+        //                 if (status == google.maps.DirectionsStatus.OK) {
+        //                     directionsDisplay.setMap(map);
+        //                     directionsDisplay.setDirections(result);
+        //                 }
+        //             });
+        //         },
+        //         locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+        //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
 
-                }
-            }
-        });
+        //         }
+        //     }
+        // });
 
-        geo.updateLocation();*/
+        //geo.updateLocation();
     },
 
-    recuperaMarcador: function(extMapa, ruta){
+    recuperaMarcador: function(extMapa, ruta, draggable){
         var me = this,
             map = extMapa.getMap(),
             icono = me.defineColorDeMarcador(ruta);
@@ -88145,13 +88257,20 @@ console.log(direcciones);
             map: map,
             position: new google.maps.LatLng(ruta.lat, ruta.lon),
             icon: icono,
-            draggable:true
-        });           
-
-        google.maps.event.addListener(extMapa.marker,"dragend",function(){
-            var point = extMapa.marker.getPosition();
-            map.panTo(point);
+            draggable: draggable
         });
+
+        if(draggable){
+            google.maps.event.addListener(extMapa.marker,"dragend",function(){
+                var point = extMapa.marker.getPosition();
+                map.panTo(point);
+
+                me.getMenuNav().getActiveItem().setValues({
+                    LatitudOrigen: extMapa.marker.getPosition().k,
+                    LongitudOrigen: extMapa.marker.getPosition().B
+                })
+            });
+        }
     },
 
     defineColorDeMarcador: function(ruta){
@@ -88228,14 +88347,14 @@ console.log(direcciones);
     cambiaStatusRuta: function(button){
         var me = this,
             view = me.getMenuNav().getActiveItem(),
-            ruta = me.getRutasCalendarioCont().ruta;
-        
-        me.dameDirecciones(ruta, button.action);        
+            ruta = me.getMenuNav().ruta;
+        console.log(button.getItemId())
+        me.dameDirecciones(ruta, button.getItemId());
     },
 
     quitaMarcadores: function () {
         var me = this,
-            marcadores = me.getRutasCalendario().marcadores
+            marcadores = me.getRutasCalendario().marcadores;
 
         if (marcadores != undefined){
             for (i = 0; i < marcadores.length; i++) {
@@ -89115,7 +89234,7 @@ Ext.define('APP.controller.phone.Informes', {
         if((criterio === 'clientes' && this.getMenuNav().clientes == undefined) || 
             (criterio === 'articulos' && this.getMenuNav().articulos == undefined)){
             var me = this,
-                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenCodigos",
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerCodigos",
                 params = {  
                     CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                     CodigoSociedad: localStorage.getItem("CodigoSociedad"),
@@ -89207,7 +89326,7 @@ Ext.define('APP.controller.phone.Informes', {
         console.log(view.titulo == 'Articulos');
 
         if(view.titulo == 'Articulos'){
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeArticulos";
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeArticulos";
             
             informes.getProxy().setUrl(url);
             view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
@@ -89218,7 +89337,7 @@ Ext.define('APP.controller.phone.Informes', {
                       '<div style="font-size: 90%"> <div><p> </div>',
                 '</div>'].join(''));
         } else{
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenInformeClientes";
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeClientes";
             informes.getProxy().setUrl(url);
         }
 
@@ -89367,8 +89486,8 @@ Ext.define('APP.controller.phone.Configuracion', {
 
     onSaveConfig: function (button) {
         var me = this,
-            imagecmp = me.getImagenCmp(),
-            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+            imagecmp = me.getImagenCmp();
+            //list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
 
         Ext.Msg.show({
             title: APP.core.config.Locale.config.lan.Configuracion.titulo,
@@ -89387,14 +89506,14 @@ Ext.define('APP.controller.phone.Configuracion', {
             ],
             fn: function (buttonId) {
                 if (buttonId == 'yes') {
-                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
+                    /*if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
 
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
-                    }
+                    }*/
 
                     var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
                         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
@@ -89554,7 +89673,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
                 CodigoSociedad: localStorage.getItem("CodigoSociedad"),
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                Token: localStorage.getItem("Token"),                
+                Token: localStorage.getItem("Token")
             };
         Ext.Viewport.getMasked().setMessage('Cargando...');
         Ext.Viewport.setMasked(true);
@@ -89907,10 +90026,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         campo = button.up('prospectosform').down('#superficieCheck'); // Esto es un Checkboxfield
 
         if(campo.getChecked()){
-            params["oProspecto.campoAbierto"] = valores.campoAbierto;
-            params["oProspecto.invernadero"] = valores.invernadero;
-            params["oProspecto.macroTunel"] = valores.macroTunel;
-            params["oProspecto.total"] = valores.total;
+            params["oProspecto.campoAbierto"] = valores.campoAbierto == null ? 0 : valores.campoAbierto;
+            params["oProspecto.invernadero"] = valores.invernadero == null ? 0 : valores.invernadero;
+            params["oProspecto.macroTunel"] = valores.macroTunel == null ? 0 : valores.macroTunel
+            params["oProspecto.total"] = valores.total == null ? 0 : valores.total;
         } else {
             params["oProspecto.campoAbierto"] = 0;
             params["oProspecto.invernadero"] = 0;
@@ -90333,8 +90452,7 @@ Ext.define('APP.view.phone.cobranza.TotalAPagarContainer', {
                 background: 'gray'
             },
             xtype: 'totalapagarlist',
-            flex: 5,
-
+            flex: 5
             },{
                 xtype: 'totalescontainer',
                 flex: 1
@@ -90444,7 +90562,7 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
             direction: 'vertical',
             directionLock: true
         },
-        padding: 10,
+        padding: 10
     },
 
     initialize: function(){
@@ -90620,7 +90738,7 @@ Ext.define('APP.view.phone.ordenes.OrdenList', {
         pressedCls:'testPress',
         itemCls: 'partida',
         height:"100%",
-        store: 'Ordenes',
+        store: 'Ordenes'
     },
 
     initialize: function(){
@@ -91209,7 +91327,7 @@ Ext.define('APP.view.phone.productos.ProductosList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
+        }
 
 /*        masked: {
             xtype: 'loadmask',
@@ -91767,13 +91885,13 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                         name:'fechaDesde',
                         label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'fechaDesde',
-                        value: new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
+                        value: new Date()//new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
                     },{
                         xtype:'datepickerfield',
                         name:'fechaHasta',
                         label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'fechaHasta',
-                        value: new Date(Ext.Date.format(new Date(), "d-m-Y"))
+                        value: new Date()//new Date(Ext.Date.format(new Date(), "d-m-Y"))
                     }
                 ]
             },{            
@@ -91794,12 +91912,12 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                         xtype:'textfield',
                         name:'codigoDesde',
                         label: APP.core.config.Locale.config.lan.InformesForm.desde,
-                        itemId: 'codigoDesde',
+                        itemId: 'codigoDesde'
                     },{
                         xtype:'textfield',
                         name:'codigoHasta',
                         label: APP.core.config.Locale.config.lan.InformesForm.hasta,
-                        itemId: 'codigoHasta',                        
+                        itemId: 'codigoHasta'
                     }]
             },{
                 xtype: 'fieldset',
@@ -92208,10 +92326,10 @@ Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioDirecciones', {
 
 Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioMapa', {
     extend: 'Ext.Map',
-    xtype: 'rutascalendariomapa',
-   	nd: undefined,
+    xtype: 'rutascalendariomapa',   	
     config:{
         height:350,
+        nd: undefined,
         mapOptions:{
             //center:{lat: 19.43261, lng: -99.13321},
         },
@@ -92363,9 +92481,11 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype:'container',
                 itemId: 'btnGuardar',
+                docked: 'bottom',
+
                 items:[{
                     xtype:'button',
-                    margin:'10',
+                    margin: 10,
                     text:'Guardar',
                     action:'guardar'
                 }]
@@ -92468,7 +92588,7 @@ Ext.define('APP.form.phone.productos.AgregarProductosForm', {
 	  
 	config:{        
 		padding:'0 15 15 15',
-        scrollable: 'vertical',
+        scrollable: 'vertical'
 	},
 
     initialize: function(){
@@ -92772,18 +92892,21 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name:'campoAbierto',
                         label:'Campo Abierto',
                         tabIndex: 16,
+                        minValue: 0,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
                         label:'Invernadero',
                         tabIndex: 17,
+                        minValue: 0,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
                         label:'Macro Túnel',
                         tabIndex: 18,
+                        minValue: 0,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
@@ -92879,7 +93002,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Encargado de pagos',
                         hidden: false,
-                        itemId: 'contactos3',
+                        itemId: 'contactos3'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
@@ -92911,7 +93034,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Responsable técnico',
                         hidden: false,
-                        itemId: 'contactos4',
+                        itemId: 'contactos4'
                     },{
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
@@ -92929,7 +93052,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
-                title:'Productos utilizados',
+                title:'Productos utilizados'
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos3',
@@ -93580,5 +93703,5 @@ Ext.application({
 });
 
 // @tag full-page
-// @require /Users/Waldix/Documents/Imobile/app.js
+// @require C:\GitHub\Imobile\app.js
 

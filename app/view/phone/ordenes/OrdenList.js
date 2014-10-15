@@ -10,7 +10,7 @@ Ext.define('APP.view.phone.ordenes.OrdenList', {
         pressedCls:'testPress',
         itemCls: 'partida',
         height:"100%",
-        store: 'Ordenes',
+        store: 'Ordenes'
     },
 
     initialize: function(){

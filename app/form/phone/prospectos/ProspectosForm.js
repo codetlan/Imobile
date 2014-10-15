@@ -319,7 +319,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Encargado de pagos',
                         hidden: false,
-                        itemId: 'contactos3',
+                        itemId: 'contactos3'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
@@ -351,7 +351,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name: 'este',
                         label: 'Responsable técnico',
                         hidden: false,
-                        itemId: 'contactos4',
+                        itemId: 'contactos4'
                     },{
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
@@ -369,7 +369,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
-                title:'Productos utilizados',
+                title:'Productos utilizados'
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos3',

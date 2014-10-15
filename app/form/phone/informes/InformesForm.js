@@ -36,13 +36,13 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                         name:'fechaDesde',
                         label: APP.core.config.Locale.config.lan.InformesForm.desde,
                         itemId: 'fechaDesde',
-                        value: new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
+                        value: new Date()//new Date(Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.MONTH, -1), "d-m-Y")) 
                     },{
                         xtype:'datepickerfield',
                         name:'fechaHasta',
                         label: APP.core.config.Locale.config.lan.InformesForm.hasta,
                         itemId: 'fechaHasta',
-                        value: new Date(Ext.Date.format(new Date(), "d-m-Y"))
+                        value: new Date()//new Date(Ext.Date.format(new Date(), "d-m-Y"))
                     }
                 ]
             },{            
@@ -63,12 +63,12 @@ Ext.define('APP.form.phone.informes.InformesForm', {
                         xtype:'textfield',
                         name:'codigoDesde',
                         label: APP.core.config.Locale.config.lan.InformesForm.desde,
-                        itemId: 'codigoDesde',
+                        itemId: 'codigoDesde'
                     },{
                         xtype:'textfield',
                         name:'codigoHasta',
                         label: APP.core.config.Locale.config.lan.InformesForm.hasta,
-                        itemId: 'codigoHasta',                        
+                        itemId: 'codigoHasta'
                     }]
             },{
                 xtype: 'fieldset',

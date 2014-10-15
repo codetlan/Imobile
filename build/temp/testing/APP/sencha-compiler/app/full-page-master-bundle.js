@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /Users/Waldix/Documents/Imobile/app.js
+// @require C:\GitHub\Imobile\app.js
