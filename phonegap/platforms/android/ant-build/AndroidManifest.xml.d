@@ -1,2 +1,2 @@
-/Users/Waldix/Documents/Imobile/phonegap/platforms/android/ant-build/AndroidManifest.xml : \
-/Users/Waldix/Documents/Imobile/phonegap/platforms/android/AndroidManifest.xml \
+C:\GitHub\Imobile\phonegap\platforms\android\ant-build\AndroidManifest.xml : \
+C:\GitHub\Imobile\phonegap\platforms\android\AndroidManifest.xml \
