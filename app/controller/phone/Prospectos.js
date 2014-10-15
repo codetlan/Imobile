@@ -419,9 +419,9 @@ Ext.define('APP.controller.phone.Prospectos', {
         campo = button.up('prospectosform').down('#superficieCheck'); // Esto es un Checkboxfield
 
         if(campo.getChecked()){
-            params["oProspecto.campoAbierto"] = valores.campoAbierto;
-            params["oProspecto.invernadero"] = valores.invernadero;
-            params["oProspecto.macroTunel"] = valores.macroTunel;
+            params["oProspecto.campoAbierto"] = valores.campoAbierto == null ? 0 : valores.campoAbierto;
+            params["oProspecto.invernadero"] = valores.invernadero == null ? 0 : valores.invernadero;
+            params["oProspecto.macroTunel"] = valores.macroTunel == null ? 0 : valores.macroTunel
             params["oProspecto.total"] = valores.total;
         } else {
             params["oProspecto.campoAbierto"] = 0;
