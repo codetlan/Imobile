@@ -122,7 +122,7 @@ Ext.define('APP.controller.phone.Rutas', {
             'rutasform button[action=guardar]':{
                 tap:'onRutasAdd'
             },
-              'container[xtype=rutascalendariocont] button': {
+              'container[id=accionesParaRutas] button': {
                 tap:'cambiaStatusRuta'
             }/*,
               'container[xtype=rutascalendariocont] button[action = cancelarRuta]': {
@@ -538,7 +538,7 @@ Ext.define('APP.controller.phone.Rutas', {
             //alert('no es actualizacion');
 
             if(hoy.getTime() > horaInicio.getTime()){
-                //alert('horario atrazado');
+              //  alert('horario atrazado');
                 return false;
             }
         }
@@ -549,7 +549,7 @@ Ext.define('APP.controller.phone.Rutas', {
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
-                //alert('hora inicio mayor que hora fin');
+              //  alert('hora inicio mayor que hora fin');
                 return false;
             }
         }
@@ -720,8 +720,31 @@ console.log(direcciones);
             },{
                 xtype:'button',
                 action:'agregar',
+                id: 'botonAgregar',
                 text: 'Agregar',
                 margin:10
+            },{
+                xtype:'container',
+                id: 'accionesParaRutas',
+                padding:'0 10px 10px 10px',
+                hidden: true,
+                layout:{
+                    type:'hbox',
+                    align: 'stretch'
+                },
+                items:[{
+                    xtype:'button',
+                    text:'Visitar',
+                    itemId:'realizarRuta',
+                    margin: '0 5 0 0',
+                    flex:1
+                },{
+                    xtype:'button',
+                    text:'Cancelar Ruta',
+                    itemId:'cancelarRuta',
+                    margin: '0 0 0 5',
+                    flex:1
+                }]
             }]
         });
 
@@ -901,6 +924,8 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                             if (buttonId == 'editar') {                                
                                 me.dameDirecciones(item.data);
                             } else {
+                                me.quitaMarcadores();
+                                me.ponOpcionesDeRuta(false, true);
                                 me.trazaRuta(item.data);
                             }
                         });
@@ -940,6 +965,14 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
         Ext.Viewport.setMasked(false);
     },
 
+    ponOpcionesDeRuta: function(acciones, boton){
+        var me = this,
+            view = me.getMenuNav();
+
+        view.getActiveItem().down('container[id=accionesParaRutas]').setHidden(acciones);
+        view.getActiveItem().down('button[id=botonAgregar]').setHidden(boton);
+    },
+
     muestraClientes: function(button) {
         var me = this,
             nd = button.getParent().down('rutascalendariomapa').config.nd,
@@ -968,7 +1001,7 @@ console.log(nd, today);
             values = form.getValues(),
             view = this.getMenuNav(),
             esActualizacion = values.CodigoRuta > 0,
-            status = form.accion != undefined ? form.accion : 2
+            status = form.accion != undefined ? form.accion : 2,
             nd = this.getRutasCalendarioMapa().config.nd;
 console.log(nd);
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
@@ -1017,7 +1050,7 @@ console.log(nd);
                 "Ruta.Estatus" : status
             }
 
-        Ext.Viewport.setMasked(true);
+        //Ext.Viewport.setMasked(true);
         console.log(params);
 
                     Ext.data.JsonP.request({
@@ -1035,7 +1068,7 @@ console.log(nd);
                                 store.load({
                                     callback:function(){
                                         rc.element.redraw();
-                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, status, esActualizacion);
+                                        this.onRutasCalendarioFormPop(rc.view, nd, values.CodigoCliente, esActualizacion);
                                     },
                                     scope:this
                                 });
@@ -1070,7 +1103,7 @@ console.log(nd);
         }
     },
 
-    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, status, esActualizacion){
+    onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);        
 
         var nd = new Date(nd),
@@ -1085,20 +1118,16 @@ console.log(nd);
         }, this);
 
         console.log(codigoCliente, ' El código del cliente');
-        console.log(status, ' Status de ruta');
+        console.log(esActualizacion, ' Actualización');
 
-        if(esActualizacion){
-            if(status != 2 && status != 0){
-                calendar.eventStore.filter('CodigoCliente', codigoCliente);
-                pop = 2;
-            }
-        } else {
+        if(!esActualizacion){           
             calendar.eventStore.filter('CodigoCliente', codigoCliente);
             pop = 2;
         }
 
         this.getMenuNav().pop(pop);
         this.getMenuNav().remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
+        this.ponOpcionesDeRuta(true, false);
         this.quitaMarcadores();
         this.colocaMarcadores();
         Ext.Viewport.setMasked(false);
@@ -1208,7 +1237,7 @@ console.log(nd);
     },
 
     onRutasEdit:function(ruta, direcciones, accion){
-        var me = this, form,
+        var me = this, form,        
             view = me.getMenuNav();
             
         //var direcciones = this.getRutasCalendarioDia().config.direcciones;
@@ -1229,38 +1258,6 @@ console.log(nd);
         form.down("button[action=guardar]").setMargin(10);
 
         console.log(ruta);
-
-        // items.push({
-        //     xtype:'container',
-        //     padding:'0 10px 10px 10px',
-        //     layout:{
-        //         type:'hbox',
-        //         align: 'stretch'
-        //     },
-        //     items:[{
-        //         xtype:'button',
-        //         text:'Actualizar',
-        //         action:'actualizaRuta',
-        //         flex:1
-        //     }]/*,{
-        //         xtype:'button',
-        //         text:'Cancelar',
-        //         action:'cancelarruta',
-        //         flex:1
-        //     }]*/
-        // });
-
-        // this.getMenuNav().push({
-        //     xtype:'container',
-        //     layout:{
-        //         type:'vbox'
-        //     },
-        //     items:items
-        // })
-
-        //this.getMenuNav().getActiveItem().down('#btnGuardar').hide();
-
-       // var form = this.getRutasForm();
 
         var horaInicio = new Date();
         horaInicio.setHours(ruta.HoraInicio.substr(0,2));
@@ -1302,6 +1299,8 @@ console.log(nd);
 
         this.recuperaMarcador(extMapa, ruta, true);
 
+        console.log(extMapa.getMap().data)
+
         if(ruta.Estatus != 2){
             //var btnGuardar = form.down("button[action=guardar]").destroy();
             //form.down("textfield[name=Descripcion]").setReadOnly(true);
@@ -1321,24 +1320,25 @@ console.log(nd);
 
         console.log(accion);
 
-        if(accion != undefined){            
+        if(accion != undefined){
+            var hoy = new Date();
+            
+            if(ruta.start.getTime() < hoy.getTime()){
+                form.setValues({
+                    FechaFin: hoy,
+                    HoraFin: hoy
+                });
+            }
+
             switch(accion){
                  case 'realizarRuta':
-                 //console.log(!me.esVisitaValida(ruta.lat, ruta.lon), 'resultado')
-//                    if(!me.esVisitaValida(ruta.lat, ruta.lon)){
-                        //this.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
-                        //this.onRutasAdd();                                                
-                        me.validaVisita(ruta.lat, ruta.lon, ruta);
+                    me.validaVisita(ruta.lat, ruta.lon, ruta);                    
 
-                        //console.log('Hola')
-  //                  } else {
-                        //Ext.Msg.alert('Visita no válida', 'Debe estar más cerca del destino para validar su visita');
-    //                }
                     break;
 
                 case 'cancelarRuta':
-                    this.getRutasForm().accion = 4
-                    this.onRutasAdd();
+                    me.getRutasForm().accion = 4
+                    me.onRutasAdd();
                     break;
             }
         }
@@ -1370,33 +1370,33 @@ console.log(nd);
                 Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
             }
         });
-        //     geo = Ext.create('Ext.util.Geolocation',{
-        //         autoUpdate: false,
-        //         listeners: {
-        //             locationupdate: function (geo) {
-        //                 var latitude = geo.getLatitude(),
-        //                     longitude = geo.getLongitude(),
-        //                     origen = new google.maps.LatLng(latitude, longitude),
-        //                     destino = new google.maps.LatLng(lat, lon),
-        //                     service = new google.maps.DistanceMatrixService();
-        //                 console.log(me, 'primer me');
-        //                 service.getDistanceMatrix(
-        //                   {
-        //                     origins: [origen],
-        //                     destinations: [destino],
-        //                     travelMode: google.maps.TravelMode.DRIVING,
-        //                     avoidHighways: false,
-        //                     avoidTolls: false
-        //                   }, me.dameDistancia.bind(me));
-        //             },
+/*            geo = Ext.create('Ext.util.Geolocation',{
+                autoUpdate: false,
+                listeners: {
+                    locationupdate: function (geo) {
+                        var latitude = geo.getLatitude(),
+                            longitude = geo.getLongitude(),
+                            origen = new google.maps.LatLng(latitude, longitude),
+                            destino = new google.maps.LatLng(lat, lon),
+                            service = new google.maps.DistanceMatrixService();
+                        
+                        service.getDistanceMatrix(
+                          {
+                            origins: [origen],
+                            destinations: [destino],
+                            travelMode: google.maps.TravelMode.DRIVING,
+                            avoidHighways: false,
+                            avoidTolls: false
+                          }, me.dameDistancia.bind(me));
+                    },
 
-        //             locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-        //                 //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
-        //                 console.log('Error de localizacion');                    
-        //             }
-        //         }
-        //     });
-        // geo.updateLocation();
+                    locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                        //Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                        console.log('Error de localizacion');                    
+                    }
+                }
+            });
+        geo.updateLocation();*/
     },
 
     dameDistancia: function(response, status){
@@ -1406,7 +1406,8 @@ console.log(nd);
 
         if (status == google.maps.DistanceMatrixStatus.OK){
             var distancia = response.rows[0].elements[0].distance.value;            
-            if (distancia <= 5000){                
+            if (distancia <= 5000){
+                me.getRutasCalendario().trayecto.setMap(null); // Borramos la trayectoria del mapa
                 me.getRutasForm().accion = ruta.Estatus == 0 ? 3 : 1;
                 me.onRutasAdd();
             } else {                
@@ -1465,25 +1466,10 @@ console.log(nd);
                             docked: 'top',
                             title: titulo
                         });
-console.log(direcciones);
-                        // this.getMenuNav().push({
-                        //     xtype: 'rutascalendario',
-                        //     title: idCliente,
-                        //     idCliente: idCliente,
-                        //     direcciones: direcciones
-                        // });
 
-                        //this.showFormRutas(idCliente, direcciones);
-                        this.onRutasEdit(ruta, direcciones, accion);                        
+                        //console.log(direcciones);
+                        this.onRutasEdit(ruta, direcciones, accion); 
 
-                        //this.getMenuNav().add(barraTitulo);
-
-                        // var date = new Date();
-
-                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
-                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
-
-                        // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{                    
                         Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
@@ -1501,58 +1487,13 @@ console.log(direcciones);
     trazaRuta: function(ruta){
         var me = this,
             view = me.getMenuNav(),
-            nd = view.getActiveItem().down('rutascalendariomapa').config.nd;
-
-            me.getMenu
-
-        if(ruta.Estatus != 1 && ruta.Estatus != 3 && ruta.Estatus != 4){ // Si la ruta no ha sido visitada ni visitada tardíamente, ni cancelada            
-
-            this.getMenuNav().push({
-                xtype:'rutascalendariocont',
-                items:[{
-                    xtype:'container',
-                    html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
-                },{
-                    xtype:'hiddenfield',
-                    name:'ndhf',
-                    value:nd
-                },{
-                    xtype:'rutascalendariomapa',
-                    flex:1
-                },{
-                    xtype:'container',
-                    padding:'0 10px 10px 10px',
-                    layout:{
-                        type:'hbox',
-                        align: 'stretch'
-                    },
-                    items:[{
-                        xtype:'button',
-                        text:'Realizada',
-                        itemId:'realizarRuta',
-                        flex:1
-                    },{
-                        xtype:'button',
-                        text:'Cancelar Ruta',
-                        itemId:'cancelarRuta',
-                        flex:1
-                    }]
-                }]
-            });
-
-            me.getMenuNav().ruta = ruta;
-        }
-        else {
-
-            if(ruta.Estatus == 2){
-
-            }
-        }
-
-        var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
+            nd = view.getActiveItem().down('rutascalendariomapa').config.nd,
+            extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             map = extMapa.getMap();
 
-        me.recuperaMarcador(extMapa, ruta);
+            Ext.Viewport.setMasked(true);
+
+            me.getMenuNav().ruta = ruta;
 
         Ext.device.Geolocation.getCurrentPosition({
             success: function(position) {
@@ -1581,50 +1522,58 @@ console.log(direcciones);
                         directionsDisplay.setDirections(result);
                     }
                 });
+
+                Ext.Viewport.setMasked(false);
             },
             failure: function() {
                 Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                Ext.Viewport.setMasked(true);
             }
         });
 
-        // var geo = Ext.create('Ext.util.Geolocation',{
-        //     autoUpdate: false,
-        //     listeners: {
-        //         locationupdate: function (geo) {
-        //             var latitude = geo.getLatitude(),
-        //             longitude = geo.getLongitude();
+/*        var geo = Ext.create('Ext.util.Geolocation',{
+            autoUpdate: false,
+            listeners: {
+                locationupdate: function (geo) {
+                    var latitude = geo.getLatitude(),
+                    longitude = geo.getLongitude();
 
-        //             console.log(latitude, longitude);
+                    console.log(latitude, longitude);
 
-        //             var directionsService = new google.maps.DirectionsService();
-        //             var directionsDisplay = new google.maps.DirectionsRenderer();
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
 
-        //             directionsDisplay.setMap(map);
+                    directionsDisplay.setMap(map);
 
-        //             var origin = new google.maps.LatLng(latitude, longitude);
-        //             var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
+                    var origin = new google.maps.LatLng(latitude, longitude);
+                    var destination = new google.maps.LatLng(ruta.lat, ruta.lon);
 
-        //             var request = {
-        //                 origin: origin,
-        //                 destination: destination,
-        //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
-        //             };
+                    var request = {
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    };
 
-        //             directionsService.route(request, function (result, status) {
-        //                 if (status == google.maps.DirectionsStatus.OK) {
-        //                     directionsDisplay.setMap(map);
-        //                     directionsDisplay.setDirections(result);
-        //                 }
-        //             });
-        //         },
-        //         locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-        //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                    directionsService.route(request, function (result, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setMap(map);
+                            directionsDisplay.setDirections(result);
+                        }
+                    });
 
-        //         }
-        //     }
-        // });
+                    me.getRutasCalendario().trayecto = directionsDisplay;
 
-        //geo.updateLocation();
+                    Ext.Viewport.setMasked(false);
+                },
+                locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                    Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                    Ext.Viewport.setMasked(false);
+                }
+            }
+        });
+
+        geo.updateLocation();*/
+
     },
 
     recuperaMarcador: function(extMapa, ruta, draggable){
@@ -1660,8 +1609,8 @@ console.log(direcciones);
 
             case 1:
                 icono = "http://www.googlemapsmarkers.com/v1/1D7A28/"
-                break;
-
+                break
+;
             case 2:
                 icono = "http://www.googlemapsmarkers.com/v1/FFFF00/"
                 break;
@@ -1727,7 +1676,7 @@ console.log(direcciones);
         var me = this,
             view = me.getMenuNav().getActiveItem(),
             ruta = me.getMenuNav().ruta;
-        console.log(button.getItemId())
+        
         me.dameDirecciones(ruta, button.getItemId());
     },
 

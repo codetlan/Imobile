@@ -354,7 +354,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
     agregaProspecto: function (button) {
         var me = this,
-            i, j, k, l = 1,
+            i, j, k, l = 1, m,
             view = me.getMenuNav(),
             form = me.getProspectosForm(),
             valores = form.getValues(),
@@ -401,15 +401,30 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
 
         if (valores.servicio != null){ // Validamos si se seleccionó algún servicio
+            var longitud = valores.servicio.length;
+            if(longitud == undefined){
+                var array = new Array();
+                array.push(valores.servicio);
+                valores.servicio = array;
+                m = 5;
+
+            } else {
+                m = longitud + (6 - 2 * longitud);
+                console.log(m);
+            }
+            console.log('Se seleccionó el servicio ', valores.servicio);
             for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
+                console.log('El servicio es ', valores.servicio[i]);
                 if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
-                    campo = button.up('prospectosform').down('#conceptos' + (i+1)); // Esto es un Fieldset
+                    campo = button.up('prospectosform').down('#conceptos' + (m+i+1)); // Esto es un Fieldset
                     elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
+                    console.log(campo, elementos);
                     k = 0;
 
                     for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
                         if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
-                            params["oProspecto.Conceptos" + (i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
+                            console.log('Mandando el código');
+                            params["oProspecto.Conceptos" + (m+i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
                         }
                     }
                 }
@@ -454,12 +469,12 @@ Ext.define('APP.controller.phone.Prospectos', {
             params: params,
             callbackKey: 'callback',
             success: function (response) {
-                if (response.Procesada) {                        
+                if (response.Procesada) {
                     Ext.Viewport.setMasked(false);
                     Ext.Msg.alert("Prospecto agregado", msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
                     view.pop();                    
                 } else {       
-                    Ext.Viewport.setMasked(false);             
+                    Ext.Viewport.setMasked(false);
                     Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);                    
                 }
             }

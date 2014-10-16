@@ -55,11 +55,12 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                     xtype:'datepickerfield',
                     border:0,
                     name:'FechaInicio',
+                    dateFormat: "d/m/Y",
                     readOnly:true
                 },{
                     xtype: 'timepickerfield',
                     name: 'HoraInicio',
-                    value: new Date()
+                    value: Ext.Date.add(new Date(), Ext.Date.MINUTE, 5)
                 }]
             },{
                 xtype:'fieldset',
@@ -71,11 +72,12 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 items:[{
                     xtype:'datepickerfield',
                     name:'FechaFin',
-                    value:new Date()
+                    value: new Date(),
+                    dateFormat: "d/m/Y"
                 },{
                     xtype: 'timepickerfield',
                     name: 'HoraFin',
-                    value: new Date()
+                    value: Ext.Date.add(Ext.Date.add(new Date(), Ext.Date.MINUTE, 5), Ext.Date.HOUR, 1)
                 }]
 
             },{
