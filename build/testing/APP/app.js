@@ -87741,10 +87741,10 @@ console.log(nd);
         console.log(esActualizacion, ' Actualización');
 
         if(!esActualizacion){           
-            calendar.eventStore.filter('CodigoCliente', codigoCliente);            
+            calendar.eventStore.filter('CodigoCliente', codigoCliente);
             me.getMenuNav().pop(2);
         } else {
-            if(me.getMenuNav().getActiveItem().isXType('rutasform')){
+            if(me.getMenuNav().getActiveItem().isXType('rutasform')){                
                 me.getMenuNav().pop(1);
             }
         }
@@ -88334,7 +88334,7 @@ console.log(nd);
             "Ruta.CodigoCliente" : ruta.CodigoCliente,
             "Ruta.CodigoDireccion" : ruta.CodigoDireccion,
             "Ruta.TipoDireccion" : ruta.TipoDireccion,
-            "Ruta.FechaInicio" : Ext.util.Format.date(ruta.FechaInicio,"Y-m-d"),
+            "Ruta.FechaInicio" : Ext.util.Format.date(ruta.start,"Y-m-d"),
             "Ruta.HoraInicio" : Ext.util.Format.date(horaInicio,"H:i:s"),
             "Ruta.FechaFin" : Ext.util.Format.date(fechaFin,"Y-m-d"),
             "Ruta.HoraFin" : Ext.util.Format.date(horaFin,"H:i:s"),
