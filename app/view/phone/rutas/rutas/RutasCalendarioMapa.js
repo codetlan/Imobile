@@ -11,7 +11,7 @@ Ext.define('APP.view.phone.rutas.rutas.RutasCalendarioMapa', {
         height:350,
         nd: undefined,
         mapOptions:{
-            //center:{lat: 19.43261, lng: -99.13321},
+            center:{lat: 19.43261, lng: -99.13321}
         },
         margin:'10px 0'
     }
