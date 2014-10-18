@@ -1090,8 +1090,7 @@ console.log(nd);
                     });
                 }
                 else{
-                    Ext.Viewport.setMasked(false);
-                    view.pop();
+                    Ext.Viewport.setMasked(false);                    
                     Ext.Msg.alert('Datos Incorrectos', "Debe seleccionar una dirección válida", Ext.emptyFn);
                 }
             }
@@ -1104,13 +1103,13 @@ console.log(nd);
 
     onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);        
-
+console.log(nd);
         var me = this,
             nd = new Date(nd),
             titulo = this.getMenuNav().down('toolbar');            
 
-        calendar.eventStore.clearFilter();        
-
+        calendar.eventStore.clearFilter();
+console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         calendar.eventStore.filterBy(function(record){
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
@@ -1118,6 +1117,8 @@ console.log(nd);
 
         console.log(codigoCliente, ' El código del cliente');
         console.log(esActualizacion, ' Actualización');
+        console.log(calendar.eventStore.getCount(), ' Marcadores');
+
 
         if(!esActualizacion){           
             calendar.eventStore.filter('CodigoCliente', codigoCliente);
