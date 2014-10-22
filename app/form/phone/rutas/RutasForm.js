@@ -9,8 +9,13 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
     extend: 'Ext.form.Panel',
     xtype: 'rutasform',
     config: {
-        layout:'fit',
-        items:[{
+        layout:'fit'
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems ([{
             xtype:'fieldset',
             scrollable: {
                 direction: 'vertical',
@@ -153,6 +158,8 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                     action:'guardar'
                 }]
             }]
-        }]
+        }]);
+
+        me.callParent(arguments);
     }
 });

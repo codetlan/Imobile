@@ -258,21 +258,32 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     showFormActividades:function(b){
-        var nd = this.getActividadesCalendarioContNd().getValue();
+        var me = this,
+            nd = me.getActividadesCalendarioContNd().getValue(),
+            nd2 = new Date(nd);
+            today = new Date();
 
-        this.getMenuNav().push({
-            xtype:'actividadesform',
-            flex:1,
-            listeners:{
-                scope:this,
-                activate:function(form){
-                    form.setValues({
-                        FechaInicio:new Date(nd),
-                        FechaFin:new Date(nd)
-                    });
+            today.setHours(0,0,0,0);
+
+        console.log(nd2, today);
+        console.log(today <= nd2)
+
+        if(today <= nd2){
+            me.getMenuNav().push({
+                xtype:'actividadesform',
+                flex:1,
+                listeners:{
+                    activate:function(form){
+                        form.setValues({
+                            FechaInicio:new Date(nd),
+                            FechaFin:new Date(nd)
+                        });
+                    }
                 }
-            }
-        })
+            });
+        } else {
+            Ext.Msg.alert('Datos Incorrectos', "Imposible agendar actividad de días anteriores", Ext.emptyFn);
+        }
     },
 
     onActividadesAdd:function(btn){
@@ -280,13 +291,9 @@ Ext.define('APP.controller.phone.Rutas', {
         var form = this.getActividadesForm(),
             values = form.getValues();
 
-        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+        if(values.Descripcion != ""){
 
-            if(values.Descripcion == ""){
-                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
-            }
-            else{
-
+            if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, false)){
                 Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
                 if(values.CodigoActividad > 0){
@@ -353,9 +360,12 @@ Ext.define('APP.controller.phone.Rutas', {
                     scope: this
                 });
             }
+            else{
+                //Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);            
         }
     },
 
@@ -459,13 +469,9 @@ Ext.define('APP.controller.phone.Rutas', {
         var form = this.getActividadesForm(),
             values = form.getValues();
 
-        if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin)){
+        if(values.Descripcion != ""){
 
-            if(values.Descripcion == ""){
-                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
-            }
-            else{
-
+            if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, true)){
                 Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
 
                 Ext.data.JsonP.request({
@@ -525,9 +531,13 @@ Ext.define('APP.controller.phone.Rutas', {
                     scope: this
                 });
             }
+            else{                
+                //Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            
         }
     },
 
@@ -536,20 +546,22 @@ Ext.define('APP.controller.phone.Rutas', {
         if(!esActualizacion){
             var hoy = new Date();
             //alert('no es actualizacion');
-
             if(hoy.getTime() > horaInicio.getTime()){
               //  alert('horario atrazado');
+                Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio debe ser después de la hora actual y antes de la hora de término", Ext.emptyFn);
                 return false;
             }
         }
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
             //alert('Fecha inicio mayor que fecha fin');
+            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
             return false;
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
               //  alert('hora inicio mayor que hora fin');
+              Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio es después de la hora de término", Ext.emptyFn);
                 return false;
             }
         }
@@ -929,6 +941,8 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                             }
                         });
                     });                
+                } else {
+                    console.log(ruta.end, ruta.HoraFin)
                 }
 
                 bounds.extend(extMapa.marker.position);            
@@ -994,8 +1008,7 @@ console.log(nd, today);
         }
     },
 
-    onRutasAdd:function(btn){
-
+    onRutasAdd: function(btn) {
         var form = this.getRutasForm(),
             values = form.getValues(),
             view = this.getMenuNav(),
@@ -1075,7 +1088,7 @@ console.log(nd);
                             else {
                                 Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
                                 Ext.Viewport.setMasked(false);
-                                view.pop();
+                                //view.pop();
                             }
 
                         },
@@ -1084,7 +1097,7 @@ console.log(nd);
                                 Ext.Viewport.setMasked(false);
                             });
                             Ext.Viewport.setMasked(false);
-                            view.pop();
+                            //view.pop();
                         },
                         scope: this                        
                     });
@@ -1664,7 +1677,6 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         switch(button.getItemId()){
              case 'realizarRuta':
                 me.validaVisita(ruta.lat, ruta.lon, ruta);                    
-
                 break;
 
             case 'cancelarRuta':
@@ -1682,7 +1694,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             nd = this.getRutasCalendarioMapa().config.nd,            
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",
             hoy = new Date(),
-            fechaFin = ruta.end,
+            fechaFin = hoy,
             horaInicio = new Date(),
             horaFin = new Date();
         
@@ -1694,12 +1706,12 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         horaFin.setMinutes(ruta.HoraFin.substr(3,2));
         horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));
 
-        if(ruta.start.getTime() < hoy.getTime()){
-            fechaFin = hoy,            
-            horaFin.setHours(hoy.getHours());
-            horaFin.setMinutes(hoy.getMinutes());
-            horaFin.setMilliseconds(hoy.getMilliseconds());
-        }
+       if(ruta.start.getTime() < hoy.getTime()){
+       fechaFin = hoy,            
+        horaFin.setHours(hoy.getHours());
+        horaFin.setMinutes(hoy.getMinutes());
+        horaFin.setMilliseconds(hoy.getMilliseconds());
+       }
 
         console.log(fechaFin, horaFin);
 

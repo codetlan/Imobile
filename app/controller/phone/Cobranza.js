@@ -527,7 +527,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             url,
             msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
 
-        me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
+       // me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
         me.getMainCard().getActiveItem().setMasked(true);
         
         if (totales.getCount() > 0) {
