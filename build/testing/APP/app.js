@@ -87279,7 +87279,6 @@ console.log(direcciones);
                 if(ac.element){
                     ac.element.redraw();
                 }
-
             },
             scope:this
         });
@@ -87325,8 +87324,27 @@ console.log(direcciones);
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
-            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (startDate <= nd) && (endDate >= nd);
+            var dia = record.get('start').getDay(),
+                mes = record.get('start').getMonth(),
+                anio = record.get('start').getFullYear(),
+
+                seleccionDia = nd.getDay(),
+                seleccionMes = nd.getMonth(),
+                seleccionAnio = nd.getFullYear(),
+
+                fecha1 = dia + " " + mes + " " + anio,
+                fecha2 = seleccionDia + " " + seleccionMes + " " + seleccionAnio;
+
+                console.log(fecha1, fecha2);
+                //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
+                //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
+                //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (fecha1 == fecha2);// && (endDate >= nd);
+
+
+
+            //var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            //return (startDate <= nd) && (endDate >= nd);
         }, this);
 
         // var rc = this.getRutasCalendario(),
@@ -87563,7 +87581,23 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                         });
                     });                
                 } else {
-                    console.log(ruta.end, ruta.HoraFin)
+                    console.log(item.data.end, item.data.HoraFin);
+                    infowindow = new google.maps.InfoWindow({
+                        content:"<b>Fecha: </b>" + Ext.Date.format(item.data.end, "d/m/Y") +
+                                 "<p><b>Hora: </b>" + item.data.HoraFin.substr(0, 5) + "</p>",
+                        maxWidth: 200
+                    });
+
+                    (function(marcador){
+                        google.maps.event.addListener(marcador, 'click', function(){
+                            infowindow.open(mapa, marcador);
+                            //infowindow.open(mapa, marcadoresArray[index]);
+                        });
+                    }) (extMapa.marker);
+
+                    google.maps.event.addListener(marcadoresArray[index], 'closeclick', function(){
+                        infowindow.close();
+                    })
                 }
 
                 bounds.extend(extMapa.marker.position);            
@@ -87736,7 +87770,7 @@ console.log(nd);
     },
 
     onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
-        nd.setHours(0, 0);        
+        nd.setHours(0, 0);
 console.log(nd);
         var me = this,
             nd = new Date(nd),
@@ -87745,8 +87779,27 @@ console.log(nd);
         calendar.eventStore.clearFilter();
 console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         calendar.eventStore.filterBy(function(record){
-            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (startDate <= nd) && (endDate >= nd);
+            var dia = record.get('start').getDay(),
+                mes = record.get('start').getMonth(),
+                anio = record.get('start').getFullYear(),
+
+                seleccionDia = nd.getDay(),
+                seleccionMes = nd.getMonth(),
+                seleccionAnio = nd.getFullYear(),
+
+                fecha1 = dia + " " + mes + " " + anio,
+                fecha2 = seleccionDia + " " + seleccionMes + " " + seleccionAnio;
+
+                console.log(fecha1, fecha2);
+                //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
+                //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
+                //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (fecha1 == fecha2);// && (endDate >= nd);
+
+
+/*            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            console.log(startDate, endDate, nd);
+            return (startDate <= nd) && (endDate >= nd);*/
         }, this);
 
         console.log(codigoCliente, ' El código del cliente');
@@ -88323,16 +88376,16 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         horaInicio.setMinutes(ruta.HoraInicio.substr(3,2));
         horaInicio.setMilliseconds(ruta.HoraInicio.substr(6,2));
 
-        horaFin.setHours(ruta.HoraFin.substr(0,2));
+/*        horaFin.setHours(ruta.HoraFin.substr(0,2));
         horaFin.setMinutes(ruta.HoraFin.substr(3,2));
         horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));
 
        if(ruta.start.getTime() < hoy.getTime()){
-       fechaFin = hoy,            
+       fechaFin = hoy,            */
         horaFin.setHours(hoy.getHours());
         horaFin.setMinutes(hoy.getMinutes());
         horaFin.setMilliseconds(hoy.getMilliseconds());
-       }
+//       }
 
         console.log(fechaFin, horaFin);
 
@@ -88378,15 +88431,14 @@ console.log(params);
                 var procesada = response.Procesada
 
                 if (procesada) {
-                    var rc = this.getRutasCalendario(),
+                    var rc = me.getRutasCalendario(),
                         store = rc.view.eventStore;
 
                     store.load({
                         callback:function(){
                             rc.element.redraw();
-                            this.onRutasCalendarioFormPop(rc.view, nd, ruta.CodigoCliente, true);
-                        },
-                        scope:this
+                            me.onRutasCalendarioFormPop(rc.view, nd, ruta.CodigoCliente, true);
+                        }
                     });
                 }
                 else {
@@ -88402,8 +88454,7 @@ console.log(params);
                 });
                 Ext.Viewport.setMasked(false);
                 //view.pop();
-            },
-            scope: this                        
+            }
         });
     },
 
