@@ -80585,9 +80585,15 @@ Ext.define('APP.model.phone.RutaCalendario', {
             dateFormat: 'c',
             mapping:'FechaFin'
         },{
+            name: 'FechaVisita',
+            type: 'date',
+            dateFormat: 'c'            
+        },{
             name: 'HoraInicio'
         },{
             name: 'HoraFin'
+        },{
+            name: 'HoraVisita'
         },{
             name:'Repetir'
         },{
@@ -87324,7 +87330,7 @@ console.log(direcciones);
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
-            var dia = record.get('start').getDay(),
+/*            var dia = record.get('start').getDay(),
                 mes = record.get('start').getMonth(),
                 anio = record.get('start').getFullYear(),
 
@@ -87339,12 +87345,12 @@ console.log(direcciones);
                 //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
                 //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
                 //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (fecha1 == fecha2);// && (endDate >= nd);
+            return (fecha1 == fecha2);// && (endDate >= nd);*/
 
 
 
-            //var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            //return (startDate <= nd) && (endDate >= nd);
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            return (startDate <= nd) && (endDate >= nd);
         }, this);
 
         // var rc = this.getRutasCalendario(),
@@ -87533,8 +87539,8 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
         
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
-                ruta = item.getData();  //rutas.getAt(0).getData();                
-
+                ruta = item.getData();  //rutas.getAt(0).getData();
+console.log(ruta);
                 var nd = extMapa.config.nd,
                 //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
                     today = new Date(),
@@ -87581,19 +87587,22 @@ console.log(rutas.getCount(), ' en colocaMarcadores')
                         });
                     });                
                 } else {
-                    console.log(item.data.end, item.data.HoraFin);
+                    console.log(item.data.FechaVisita, item.data.HoraVisita);
                     infowindow = new google.maps.InfoWindow({
-                        content:"<b>Fecha: </b>" + Ext.Date.format(item.data.end, "d/m/Y") +
-                                 "<p><b>Hora: </b>" + item.data.HoraFin.substr(0, 5) + "</p>",
+                        content: "",
                         maxWidth: 200
                     });
 
                     (function(marcador){
+                        var contenido = "<b>Fecha: </b>" + Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
+                                 "<p><b>Hora: </b>" + item.data.HoraVisita.substr(0, 5) + "</p>";
+
                         google.maps.event.addListener(marcador, 'click', function(){
+                            infowindow.setContent(contenido);
                             infowindow.open(mapa, marcador);
                             //infowindow.open(mapa, marcadoresArray[index]);
                         });
-                    }) (extMapa.marker);
+                    }) (marcadoresArray[index]);
 
                     google.maps.event.addListener(marcadoresArray[index], 'closeclick', function(){
                         infowindow.close();
@@ -87714,7 +87723,9 @@ console.log(nd);
                 "Ruta.Notas"   : values.Notas,
                 "Ruta.LatitudOrigen": values.LatitudOrigen,
                 "Ruta.LongitudOrigen": values.LongitudOrigen,
-                "Ruta.Estatus" : status
+                "Ruta.Estatus" : status,
+                "Ruta.HoraVisita": "00:00:00",
+                "Ruta.FechaVisita": Ext.util.Format.date(values.FechaFin,"Y-m-d")
             }
 
         //Ext.Viewport.setMasked(true);
@@ -87779,7 +87790,7 @@ console.log(nd);
         calendar.eventStore.clearFilter();
 console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         calendar.eventStore.filterBy(function(record){
-            var dia = record.get('start').getDay(),
+/*            var dia = record.get('start').getDay(),
                 mes = record.get('start').getMonth(),
                 anio = record.get('start').getFullYear(),
 
@@ -87794,12 +87805,12 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
                 //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
                 //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
                 //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (fecha1 == fecha2);// && (endDate >= nd);
+            return (fecha1 == fecha2);// && (endDate >= nd);*/
 
 
-/*            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
+            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             console.log(startDate, endDate, nd);
-            return (startDate <= nd) && (endDate >= nd);*/
+            return (startDate <= nd) && (endDate >= nd);
         }, this);
 
         console.log(codigoCliente, ' El código del cliente');
@@ -88366,9 +88377,8 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             ruta = me.getMenuNav().ruta,
             view = me.getMenuNav(),
             nd = this.getRutasCalendarioMapa().config.nd,            
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",
-            hoy = new Date(),
-            fechaFin = hoy,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",            
+            fechaVisita = new Date(),
             horaInicio = new Date(),
             horaFin = new Date();
         
@@ -88376,18 +88386,16 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         horaInicio.setMinutes(ruta.HoraInicio.substr(3,2));
         horaInicio.setMilliseconds(ruta.HoraInicio.substr(6,2));
 
-/*        horaFin.setHours(ruta.HoraFin.substr(0,2));
+        horaFin.setHours(ruta.HoraFin.substr(0,2));
         horaFin.setMinutes(ruta.HoraFin.substr(3,2));
-        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));
+        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));        
 
-       if(ruta.start.getTime() < hoy.getTime()){
-       fechaFin = hoy,            */
-        horaFin.setHours(hoy.getHours());
-        horaFin.setMinutes(hoy.getMinutes());
-        horaFin.setMilliseconds(hoy.getMilliseconds());
-//       }
-
-        console.log(fechaFin, horaFin);
+       // if(ruta.start.getTime() < hoy.getTime()){
+       // fechaFin = hoy,            
+       //  horaFin.setHours(hoy.getHours());
+       //  horaFin.setMinutes(hoy.getMinutes());
+       //  horaFin.setMilliseconds(hoy.getMilliseconds());
+//       }        
 
         Ext.Viewport.setMasked(true);
 
@@ -88402,7 +88410,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             "Ruta.TipoDireccion" : ruta.TipoDireccion,
             "Ruta.FechaInicio" : Ext.util.Format.date(ruta.start,"Y-m-d"),
             "Ruta.HoraInicio" : Ext.util.Format.date(horaInicio,"H:i:s"),
-            "Ruta.FechaFin" : Ext.util.Format.date(fechaFin,"Y-m-d"),
+            "Ruta.FechaFin" : Ext.util.Format.date(ruta.end,"Y-m-d"),
             "Ruta.HoraFin" : Ext.util.Format.date(horaFin,"H:i:s"),
             "Ruta.Descripcion" : ruta.title,
             "Ruta.Notas" : ruta.Notas,
@@ -88417,7 +88425,9 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             "Ruta.Notas"   : ruta.Notas,
             "Ruta.LatitudOrigen": ruta.lat,
             "Ruta.LongitudOrigen": ruta.lon,
-            "Ruta.Estatus" : me.getRutasCalendario().accion// != undefined ? me.getRutasCalendario().accion : 2
+            "Ruta.Estatus" : me.getRutasCalendario().accion,// != undefined ? me.getRutasCalendario().accion : 2
+            "Ruta.HoraVisita": Ext.util.Format.date(fechaVisita,"H:i:s"),
+            "Ruta.FechaVisita": Ext.util.Format.date(fechaVisita,"Y-m-d")
         }
 
 console.log(params);

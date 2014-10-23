@@ -39,9 +39,15 @@ Ext.define('APP.model.phone.RutaCalendario', {
             dateFormat: 'c',
             mapping:'FechaFin'
         },{
+            name: 'FechaVisita',
+            type: 'date',
+            dateFormat: 'c'            
+        },{
             name: 'HoraInicio'
         },{
             name: 'HoraFin'
+        },{
+            name: 'HoraVisita'
         },{
             name:'Repetir'
         },{
