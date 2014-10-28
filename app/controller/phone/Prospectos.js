@@ -68,7 +68,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token")
             };
-        Ext.Viewport.getMasked().setMessage('Cargando...');
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.cargando);
         Ext.Viewport.setMasked(true);
 
         me.getMenuNav().esRecuperado = false;
@@ -93,7 +94,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                     Ext.Viewport.setMasked(false);
 
                 } else {                        
-                    Ext.Msg.alert("Error", "No se pudo obtener el código del cliente: " + response.Descripcion);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noCodigoClienteTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.noCodigoClienteMensaje + response.Descripcion);
                 }
             }
         });        
@@ -205,7 +207,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                         Concepto: concepto
                     };
 
-                Ext.Viewport.getMasked().setMessage('Obteniendo ' + checkboxfield.getLabel());
+                Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.obteniendo + checkboxfield.getLabel());
                 Ext.Viewport.setMasked(true);
 
                     Ext.data.JsonP.request({
@@ -225,7 +227,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                                 Ext.Viewport.setMasked(false);
                             } else {
                                 Ext.Viewport.setMasked(true);
-                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);                                
+                                Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noListaTitulo,
+                                APP.core.config.Locale.config.lan.Prospectos.noListaMensaje + response.Descripcion);
                             }
                         }
                     });
@@ -257,7 +260,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
         if(selectfield.getOptions() == null){ // Checamos si tiene opciones   
             selectfield.setOptions(me.getMenuNav().estados);
-            selectfield.showPicker(); 
+            selectfield.showPicker();
         }
     },
 
@@ -298,7 +301,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                         selectfield.showPicker(); 
                         Ext.Viewport.setMasked(false);
                     } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noPaisesTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.noPaisesMensaje + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
@@ -344,7 +348,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                         //selectfield.getParent().down('#estado').showPicker(); 
                         Ext.Viewport.setMasked(false);
                     } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noEstadosTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.noEstadosMensaje + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
@@ -358,7 +363,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             view = me.getMenuNav(),
             form = me.getProspectosForm(),
             valores = form.getValues(),
-            msg = 'Se agregó el prospecto exitosamente con folio ',
+            msg = APP.core.config.Locale.config.lan.Prospectos.seAgregoProspecto,
             campo, elementos,
             params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -410,20 +415,20 @@ Ext.define('APP.controller.phone.Prospectos', {
 
             } else {
                 m = longitud + (6 - 2 * longitud);
-                console.log(m);
+                //console.log(m);
             }
-            console.log('Se seleccionó el servicio ', valores.servicio);
+            //console.log('Se seleccionó el servicio ', valores.servicio);
             for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
-                console.log('El servicio es ', valores.servicio[i]);
+                //console.log('El servicio es ', valores.servicio[i]);
                 if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
                     campo = button.up('prospectosform').down('#conceptos' + (m+i+1)); // Esto es un Fieldset
                     elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
-                    console.log(campo, elementos);
+                    //console.log(campo, elementos);
                     k = 0;
 
                     for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
                         if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
-                            console.log('Mandando el código');
+                            //console.log('Mandando el código');
                             params["oProspecto.Conceptos" + (m+i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
                         }
                     }
@@ -451,7 +456,10 @@ Ext.define('APP.controller.phone.Prospectos', {
             for(j = 0; j < elementos[i].getInnerItems().length; j++){
                 if(elementos[i].getInnerItems()[j].getRequired()){                    
                     if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){                        
-                        Ext.Msg.alert("Campo obligatorio", "El campo " + elementos[i].getAt(j).getLabel() + " es obligatorio.");
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.campoObligatorioTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.campoObligatorioMensaje1 + 
+                        elementos[i].getAt(j).getLabel() + 
+                        APP.core.config.Locale.config.lan.Prospectos.campoObligatorioMensaje2);
                         return;
                     }
                 }                
@@ -460,7 +468,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
         
-        Ext.Viewport.getMasked().setMessage('Enviando prospecto...');
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.enviandoProspecto);
         Ext.Viewport.setMasked(true);
         console.log(params);
 
@@ -471,11 +479,12 @@ Ext.define('APP.controller.phone.Prospectos', {
             success: function (response) {
                 if (response.Procesada) {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Prospecto agregado", msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
                     view.pop();                    
                 } else {       
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);                    
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoNoAgregadoTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.prospectoNoAgregadoMensaje + response.Descripcion);
                 }
             }
         });
@@ -494,7 +503,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CardCode: record.data.CodigoSocio
             };
 
-        Ext.Viewport.getMasked().setMessage('Obteniendo prospecto...');
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.obteniendoProspecto);
         Ext.Viewport.setMasked(true);
 
         me.getMenuNav().esRecuperado = true;
@@ -530,7 +539,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                     me.getProspectosForm().down('#pais').setOptions(pais);
 
 
-                    me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
+                    me.getProspectosForm().down('fieldset').setTitle(APP.core.config.Locale.config.lan.Prospectos.datosProspecto);
                     me.getProspectosForm().setValues(valores);
 
                     // Vamos por los contactos, primero el obligatorio
@@ -570,7 +579,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                             me.agregaCampos(valores, checkboxfields);
                             concepto.add(checkboxfields);
                         
-                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
+                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);
                             elementos = concepto.getItems().items;
 
                             for (j = 0; j < elementos.length; j++){
@@ -610,7 +619,8 @@ Ext.define('APP.controller.phone.Prospectos', {
 
                 } else {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Imposible cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noRecuperaProspectoTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.noRecuperaProspectoMensaje + response.Descripcion);
                 }
             }
         }); 
@@ -630,16 +640,19 @@ Ext.define('APP.controller.phone.Prospectos', {
                 tipoPersona = textfield.getParent().down('#tipoPersona').getValue();
 
             if(Ext.isEmpty(tipoPersona)){
-                Ext.Msg.alert('¿Tipo de persona?', 'Seleccione primero el tipo de persona');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.tipoPersonaTitulo,
+                APP.core.config.Locale.config.lan.Prospectos.tipoPersonaMensaje);
                 textfield.reset();            
             } else {
                 if(tipoPersona == 'F'){
                     if(newValue.length != 13){                    
-                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona física debe tener una longitud de 13 caracteres.');                    
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.longitudErroneaTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.rfcFisica);
                     }
                 } else {
                     if(newValue.length != 12){
-                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona moral debe tener una longitud de 12 caracteres.');    
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.longitudErroneaTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.rfcMoral);
                     }
                 }
             }

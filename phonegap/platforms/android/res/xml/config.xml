@@ -15,10 +15,7 @@
     <feature name="Capture">
         <param name="android-package" value="org.apache.cordova.mediacapture.Capture" />
     </feature>
-    <feature name="Media">
-        <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
-    </feature>
-    <name>APP</name>
+    <name>iMobile</name>
     <description>
         Hello World sample application that responds to the deviceready event.
     </description>
@@ -84,8 +81,5 @@
     <gap:splash gap:platform="ios" height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" width="768" />
     <gap:splash gap:platform="ios" height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="www/res/screen/windows-phone/screen-portrait.jpg" />
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.GeoBroker" />
-    </feature>
     <access origin="*" />
 </widget>

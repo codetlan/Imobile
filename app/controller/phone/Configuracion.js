@@ -88,7 +88,10 @@ Ext.define('APP.controller.phone.Configuracion', {
     onSaveConfig: function (button) {
         var me = this,
             imagecmp = me.getImagenCmp();
-            //list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Configuracion.mascara);
+        Ext.Viewport.setMasked(true);
 
         Ext.Msg.show({
             title: APP.core.config.Locale.config.lan.Configuracion.titulo,
@@ -106,15 +109,17 @@ Ext.define('APP.controller.phone.Configuracion', {
                 }
             ],
             fn: function (buttonId) {
+                //alert(buttonId);
                 if (buttonId == 'yes') {
-                    /*if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
+                    //alert('Entré a yes');
+                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
 
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
-                    }*/
+                    }
 
                     var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
                         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
@@ -125,23 +130,23 @@ Ext.define('APP.controller.phone.Configuracion', {
                             Token: localStorage.getItem("Token")
                         };                    
 
-console.log(idioma);
+                    //alert(idioma);
                     switch (idioma){
                         case 'en':                            
-                            params["Criterio"] =  'en_US';
+                            params["Criterio"] =  'COK_JO_en_US';                            
                             break;
 
                         case 'es':
-                            params["Criterio"] = 'es_MX';
+                            params["Criterio"] = 'COK_JO_es_MX';
                             break;
                     }
 console.log(params);
-
+//alert(params);
                     Ext.data.JsonP.request({
                     //Ext.Ajax.request({
                         url: url, // Leemos del json
                         //url: 'app/core/data/en_US.json',
-                        params: params,
+                        params: params,                        
                         
                         success: function(response){
                             if (response.Procesada) {
@@ -156,8 +161,8 @@ console.log(params);
 
                                 //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
                                 var trans; // Las traducciones para el menú
-                                console.log(text);
-                                console.log(pinta);
+                                //alert(text);
+                                //alert(pinta);
                                 var idiomas = Ext.decode(text);  // Convertimos text en objeto
                                 
                                 APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
@@ -166,7 +171,7 @@ console.log(params);
                                 APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
                                 Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                                APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                                //APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
                                 
                                 //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
                                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
@@ -182,12 +187,16 @@ console.log(params);
                                         }
                                     });
                                 });
+
+                                Ext.Viewport.setMasked(false);
                             }
                         },
 
                         failure: function(response, opts) {
                             Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, 
                                 APP.core.config.Locale.config.lan.Configuracion.sinIdioma);
+
+                            Ext.Viewport.setMasked(true);
                         }
                     });
                 }

@@ -16,14 +16,25 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
         },
-        items: [{
+
+
+        // masked: {
+        //     xtype: 'loadmask',
+        //     message: 'Cargando...'
+        // },
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
             layout:'hbox',
             items: [{
                 xtype: 'searchfield',
                 itemId: 'buscarProspectos',
-                placeHolder: ' Buscar prospecto...',                
+                placeHolder: APP.core.config.Locale.config.lan.ProspectosList.buscarProspecto,
                 flex: 12                
             },/*{
                 xtype: 'button',
@@ -43,21 +54,21 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 items: [
                     {
                         xtype: 'button',
-                        itemId: 'agregar',                        
+                        itemId: 'agregar',
                         ui: 'action',
-                        text: 'Agregar prospecto'
+                        text: APP.core.config.Locale.config.lan.ProspectosList.agregarProspecto
                     }
                 ]
-            }],
-        plugins: [{
+            }]);
+
+        me.setPlugins([{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }],
-        masked: {
-            xtype: 'loadmask',
-            message: 'Cargando...'
-        },
-        loadingText: 'Obteniendo prospectos...'    
+            loadMoreText: APP.core.config.Locale.config.lan.ProspectosList.verMas
+        }]);
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ProspectosList.obteniendoProspectos);
+
+        me.callParent(arguments);
     }
 });

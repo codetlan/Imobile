@@ -28,11 +28,11 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
         me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
-            layout:'hbox',        
+            layout:'hbox',
 
             items: [{
                 xtype: 'searchfield',
-                itemId: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.buscarCobranza,
+                itemId: 'buscarCobranzas',
                 placeHolder: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.criterio,
                 flex: 8
             },{

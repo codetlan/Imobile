@@ -74,7 +74,9 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                         text: 'English',
                         value: 'en'
                     }
-                ]
+                ],
+
+                value: APP.core.config.Locale.config.lan.Lenguaje.idioma
             },
             {
                 xtype: 'fieldset',

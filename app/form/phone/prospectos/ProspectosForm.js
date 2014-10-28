@@ -11,11 +11,16 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
 		padding:'0 15 15 15',
         scrollable: 'vertical',
         modal: true,
-		items:[
+	},
+
+    initialize: function (){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
                 itemId:'datos',
-                title:'Agregar prospecto',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.titulo,
                 //instructions: '* Datos obligatorios',
                 defaults:{
                     required:true,
@@ -30,7 +35,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     {
                         xtype:'textfield',
                         name:'fecha',
-                        label: 'Fecha',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.fecha,
                         required:false,
                         disabled: true,
                         value: Ext.Date.format(new Date(), "d-m-Y"),
@@ -40,21 +45,21 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name:'CodigoSocio',
                         itemId: 'codigoSocio',
                         tabIndex: 1,
-                        label:'Código'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.codigo
                     },{
                         xtype:'textfield',
                         name:'NombreSocio',
                         tabIndex: 2,
-                        label:'Razón Social'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.razon
                     },{
                         xtype:'selectfield',
                         name:'TipoPersona',
-                        label:'Tipo de persona',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.tipoPersona,
                         options:[{
-                                text: 'Física',
+                                text: APP.core.config.Locale.config.lan.ProspectosForm.fisica,
                                 value: 'F'
                             },{
-                                text: 'Moral',
+                                text: APP.core.config.Locale.config.lan.ProspectosForm.moral,
                                 value: 'M'
                             }],
                         tabIndex: 3,
@@ -63,7 +68,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     },{
                         xtype:'textfield',
                         name:'RFC',
-                        label:'RFC',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.rfc,
                         tabIndex: 4,                        
                         itemId: 'rfc'
                     }
@@ -71,7 +76,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 },{
                     xtype:'fieldset',
                     itemId:'direccion',
-                    title:'Dirección',                    
+                    title: APP.core.config.Locale.config.lan.ProspectosForm.direccion,
                     defaults:{
                         required:true,
                         cls: 'factura',
@@ -85,49 +90,49 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                             xtype:'textfield',
                             name:'Calle',
                             tabIndex: 5,
-                            label:'Calle'
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.calle
                         },{
                             xtype:'textfield',
                             name:'NoExterior',
-                            label:'No. Ext',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.noExt,
                             tabIndex: 6,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'NoInterior',
-                            label:'No.Int',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.noInt,
                             tabIndex: 7,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'Colonia',
                             tabIndex: 8,
-                            label:'Colonia'
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.colonia
                         },{
                             xtype:'textfield',
                             name:'Ciudad',
                             tabIndex: 9,
-                            label:'Ciudad'  
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.ciudad
                         },{
                             xtype:'textfield',
                             name:'Municipio',
                             tabIndex: 10,
-                            label:'Municipio' 
+                            label:APP.core.config.Locale.config.lan.ProspectosForm.municipio
                         },{
                             xtype:'textfield',
                             name:'CodigoPostal',
                             tabIndex: 11,
-                            label:'C.P.' 
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.cp
                         },{
                             xtype:'selectfield',
                             name:'Pais',
                             tabIndex: 12,
-                            label:'País',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.pais,
                             itemId: 'pais'
                         },{
                             xtype:'selectfield',                            
                             name:'Estado',
-                            label:'Estado',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.estado,
                             tabIndex: 13,
                             itemId: 'estado'
                         }
@@ -135,7 +140,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 itemId:'contactos1',
-                title:'Encargado',                                 
+                title: APP.core.config.Locale.config.lan.ProspectosForm.encargado,
                 defaults:{
                     required:true,
                     cls: 'factura',
@@ -149,23 +154,23 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'nombreEncargado',
                         tabIndex: 13,
-                        label:'Nombre'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoNombre
                     },{
                         xtype:'numberfield',
                         name:'telOficinaEncargado',
                         tabIndex: 14,
-                        label:'Tel. Oficina'                    
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoTelOfi
                     },{
                         xtype:'numberfield',
                         name:'telMovilEncargado',
                         tabIndex: 15,
-                        label:'Tel. Móvil',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoTelMov,
                         required:false
                     }
                 ]
             },{
                 xtype:'fieldset',
-                title:'Productor'
+                title: APP.core.config.Locale.config.lan.ProspectosForm.productor
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos1',
@@ -181,7 +186,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     {
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Cultivos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.cultivos,
                         itemId: 'cultivos1',
                         hidden: false
                     }
@@ -202,40 +207,40 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype: 'checkboxfield',
                         name: 'este',
                         itemId: 'superficieCheck',
-                        label: 'Superficie',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.superficie,
                         hidden: false
                     },{
                         xtype:'numberfield',
                         name:'campoAbierto',
-                        label:'Campo Abierto',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.campoAbierto,
                         tabIndex: 16,
                         minValue: 0,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
-                        label:'Invernadero',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.invernadero,
                         tabIndex: 17,
                         minValue: 0,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
-                        label:'Macro Túnel',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.macroTunel,
                         tabIndex: 18,
                         minValue: 0,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
                         name:'total',
-                        label:'Total',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.total,
                         itemId: 'total'
                     }
                 ]
             },{
                 xtype:'fieldset',
                 itemId:'distribuidor',
-                title:'Distribuidor',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.distribuidor,
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -248,7 +253,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'zonaDeInfluencia',
                         tabIndex: 19,
-                        label:'Zona de influencia'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.zonaDeInfluencia
                     }
                 ]
             },{
@@ -265,7 +270,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Comercializa',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.comercializa,
                         itemId: 'comercializa2',
                         hidden: false
                     }
@@ -285,19 +290,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Encargado de compras',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoCompras,
                         hidden: false,
                         itemId: 'contactos2'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoCompras',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoComprasNombre,
                         tabIndex: 20,
                         itemId: 'nombreEncargadoCompras'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoCompras',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoComprasTel,
                         tabIndex: 21,
                         itemId: 'telEncargadoCompras'
                     }
@@ -317,19 +322,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Encargado de pagos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagos,
                         hidden: false,
                         itemId: 'contactos3'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagosNombre,
                         tabIndex: 22,
                         itemId: 'nombreEncargadoPagos'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoPagos',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagosTel,
                         tabIndex: 23,
                         itemId: 'telEncargadoPagos'
                     }
@@ -349,19 +354,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Responsable técnico',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableTecnico,
                         hidden: false,
                         itemId: 'contactos4'
                     },{
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableNombre,
                         tabIndex: 24,
                         itemId: 'nombreResponsableTecnico'
                     },{
                         xtype:'numberfield',
                         name:'telResponsableTecnico',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableTel,
                         tabIndex: 25,
                         itemId: 'telResponsableTecnico'
                     }
@@ -369,7 +374,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
-                title:'Productos utilizados'
+                title: APP.core.config.Locale.config.lan.ProspectosForm.productosUtilizados
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos3',
@@ -383,7 +388,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Solubles',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.solubles,
                         itemId: 'solubles3',
                         hidden: false
                     }
@@ -402,7 +407,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Granulares',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.granulares,
                         itemId: 'granulares4',
                         hidden: false
                     }
@@ -421,7 +426,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Ácidos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.acidos,
                         itemId: 'acidos5',
                         hidden: false                        
                     }
@@ -440,15 +445,15 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Otros',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.otros,
                         itemId: 'otros6',
-                        hidden: false                        
+                        hidden: false
                     }
                 ]
             },{
                 xtype:'fieldset',                
                 itemId:'comentarios',
-                title:'Comentarios',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.comentarios,
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -473,10 +478,12 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype: 'button',
                         itemId: 'agregarProspecto', 
                         ui: 'action',
-                        text: 'Enviar prospecto'
+                        text: APP.core.config.Locale.config.lan.ProspectosForm.enviarProspecto
                     }
                 ]
             }
-        ]
-	}
+        ]);
+    
+        me.callParent(arguments);
+    }
 });

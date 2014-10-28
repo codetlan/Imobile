@@ -7,7 +7,6 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
     extend: 'Ext.dataview.List',
     xtype: 'actividadescalendariodia',
     config: {
-        emptyText:'No tiene actividades este día',
         itemTpl:new Ext.XTemplate(
             '<tpl>',
 
@@ -45,5 +44,13 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
             model: 'APP.model.phone.ActividadCalendario',
             data: []
         })
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setEmptyText(APP.core.config.Locale.config.lan.Actividades.sinActividades);
+
+        me.callParent(arguments);
     }
 });

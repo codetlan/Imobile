@@ -526,9 +526,9 @@ Ext.define('APP.controller.phone.Cobranza', {
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
             msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
-
-       // me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
-        me.getMainCard().getActiveItem().setMasked(true);
+                                                                                                             //enviandoCobro        
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
+        Ext.Viewport.setMasked(true);
         
         if (totales.getCount() > 0) {
             //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
@@ -605,14 +605,15 @@ Ext.define('APP.controller.phone.Cobranza', {
                 callbackKey: 'callback',
                 success: function (response) {
                     if (response.Procesada) {
+                        Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
                         Ext.Msg.alert("Cobro procesado", msg + response.CodigoUnicoDocumento + ".");
                         store.removeAll();
                         totales.removeAll();                        
-                        view.remove(view.down('toolbar'), true);                        
+                        view.remove(view.down('toolbar'), true);
                         me.getMainCard().getActiveItem().pop();
                     } else {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoTitulo,
                         APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoMensaje + response.Descripcion);
                     }
@@ -620,7 +621,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             });
 
         } else {
-            me.getMainCard().getActiveItem().setMasked(false);
+            Ext.Viewport.setMasked(false);
             Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
             APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
         }

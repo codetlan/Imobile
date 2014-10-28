@@ -71,7 +71,8 @@ Ext.define('APP.controller.phone.Login', {
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
 
                 } else {
-                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
+                                response.Descripcion, Ext.emptyFn);
                 }
                 Ext.Viewport.setMasked(false);
             },

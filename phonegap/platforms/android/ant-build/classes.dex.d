@@ -50,12 +50,6 @@ C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordov
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\file\LocalFilesystemURL.class \
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\file\NoModificationAllowedException.class \
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\file\TypeMismatchException.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\AudioHandler.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\AudioPlayer$1.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\AudioPlayer$MODE.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\AudioPlayer$STATE.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\AudioPlayer.class \
-C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\media\FileHelper.class \
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\mediacapture\Capture$1.class \
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\mediacapture\Capture$2.class \
 C:\GitHub\Imobile\phonegap\platforms\android\ant-build\classes\org\apache\cordova\mediacapture\Capture$3.class \

@@ -7,10 +7,17 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
     extend: 'Ext.dataview.List',
     xtype: 'opcionrutasactividades',
     config: {
-        itemTpl: '{title}',
-        data:[
-            {title: 'Rutas', action: 'rutas'},
-            {title: 'Actividades', action: 'actividades'}
-        ]
+        itemTpl: '{title}'
+    },
+
+    initialize: function (){
+    	var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
+            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
+        ]);
+
+        me.callParent(arguments);
     }
 });

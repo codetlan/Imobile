@@ -48,10 +48,10 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype: 'textfield',
                 name: 'Descripcion',
-                label:'Título'
+                label: APP.core.config.Locale.config.lan.Actividades.titulo
             },{
                 xtype:'fieldset',
-                title:'Empieza',
+                title: APP.core.config.Locale.config.lan.Actividades.empieza,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -69,7 +69,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 }]
             },{
                 xtype:'fieldset',
-                title:'Termina',
+                title: APP.core.config.Locale.config.lan.Actividades.termina,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -88,7 +88,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype: 'checkboxfield',
                 name: 'Repetir',
-                label: 'Repetir',
+                label: APP.core.config.Locale.config.lan.Actividades.repetir,
                 required:false
             },{
                 xtype:'fieldset',
@@ -102,41 +102,41 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 items:[{
                     xtype: 'checkboxfield',
                     name: 'Lunes',
-                    label: 'Lunes'
+                    label: APP.core.config.Locale.config.lan.Actividades.lunes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Martes',
-                    label: 'Martes'
+                    label: APP.core.config.Locale.config.lan.Actividades.martes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Miercoles',
-                    label: 'Miercoles'
+                    label: APP.core.config.Locale.config.lan.Actividades.miercoles
                 },{
                     xtype: 'checkboxfield',
                     name: 'Jueves',
-                    label: 'Jueves'
+                    label: APP.core.config.Locale.config.lan.Actividades.jueves
                 },{
                     xtype: 'checkboxfield',
                     name: 'Viernes',
-                    label: 'Viernes'
+                    label: APP.core.config.Locale.config.lan.Actividades.viernes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Sabado',
-                    label: 'Sabado'
+                    label: APP.core.config.Locale.config.lan.Actividades.sabado
                 },{
                     xtype: 'checkboxfield',
                     name: 'Domingo',
-                    label: 'Domingo'
+                    label: APP.core.config.Locale.config.lan.Actividades.domingo
                 }]
             },{
                 xtype: 'textareafield',
                 name: 'Notas',
-                label: 'Notas',
+                label: APP.core.config.Locale.config.lan.Actividades.notas,
                 labelAlign:'top',
                 required:false
             },{
                 xtype:'fieldset',
-                title:'Seleccione una dirección',
+                title: APP.core.config.Locale.config.lan.Actividades.direccion,
                 layout:{
                     type:'vbox',
                     align:'stretch'
@@ -154,7 +154,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 items:[{
                     xtype:'button',
                     margin: 10,
-                    text:'Guardar',
+                    text: APP.core.config.Locale.config.lan.Actividades.guardar,
                     action:'guardar'
                 }]
             }]

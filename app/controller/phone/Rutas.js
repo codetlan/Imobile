@@ -89,7 +89,7 @@ Ext.define('APP.controller.phone.Rutas', {
             //######################################################################
 
             'container[xtype=rutascalendariocont] clienteslist': {
-                itemtap:'onSeleccionarCliente'
+                itemsingletap:'onSeleccionarCliente'
             },
             'rutascalendario':{
                 periodchange:function(calendar,mindate,maxdate,direction){
@@ -142,7 +142,8 @@ Ext.define('APP.controller.phone.Rutas', {
         switch(opcion){
             case 'actividades':
                 this.getMenuNav().push({
-                    xtype:'actividadescalendario'
+                    xtype:'actividadescalendario',
+                    title: APP.core.config.Locale.config.lan.Actividades.actividades
                 });
 
                 var date = new Date();
@@ -161,7 +162,7 @@ Ext.define('APP.controller.phone.Rutas', {
                     //     xtype:'clienteslist'
                     // }]
                     xtype: 'rutascalendario',
-                    title: 'Rutas'
+                    title: APP.core.config.Locale.config.lan.Actividades.rutas
                 });
 
                 var date = new Date();
@@ -194,7 +195,7 @@ Ext.define('APP.controller.phone.Rutas', {
             FechaFin: fechaFin
         };
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         store.clearFilter();
         store.setParams(params);
@@ -233,7 +234,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },{
                 xtype:'button',
                 action:'agregar',
-                text: 'Agregar',
+                text: APP.core.config.Locale.config.lan.Rutas.agregar,
                 margin:10
             }]
         });
@@ -265,9 +266,6 @@ Ext.define('APP.controller.phone.Rutas', {
 
             today.setHours(0,0,0,0);
 
-        console.log(nd2, today);
-        console.log(today <= nd2)
-
         if(today <= nd2){
             me.getMenuNav().push({
                 xtype:'actividadesform',
@@ -282,7 +280,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
             });
         } else {
-            Ext.Msg.alert('Datos Incorrectos', "Imposible agendar actividad de días anteriores", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.diasAnterioresActividadTitulo,
+             APP.core.config.Locale.config.lan.Rutas.diasAnterioresActividadMensaje, Ext.emptyFn);
         }
     },
 
@@ -294,7 +293,7 @@ Ext.define('APP.controller.phone.Rutas', {
         if(values.Descripcion != ""){
 
             if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, false)){
-                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                 if(values.CodigoActividad > 0){
                     var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad";
@@ -346,13 +345,15 @@ Ext.define('APP.controller.phone.Rutas', {
                             });
                         }
                         else {
-                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                            response.Descripcion, Ext.emptyFn);
                             Ext.Viewport.setMasked(false);
                         }
 
                     },
                     failure: function () {
-                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                         APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                             Ext.Viewport.setMasked(false);
                         });
                         Ext.Viewport.setMasked(false);
@@ -365,7 +366,8 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);            
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+            APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);            
         }
     },
 
@@ -387,12 +389,12 @@ Ext.define('APP.controller.phone.Rutas', {
                 },
                 items:[{
                     xtype:'button',
-                    text:'Realizada',
+                    text: APP.core.config.Locale.config.lan.Rutas.realizada,
                     action:'realizaractividad',
                     flex:1
                 },{
                     xtype:'button',
-                    text:'Cancelar',
+                    text: APP.core.config.Locale.config.lan.Rutas.cancelar,
                     action:'cancelaractividad',
                     flex:1
                 }]
@@ -472,7 +474,7 @@ Ext.define('APP.controller.phone.Rutas', {
         if(values.Descripcion != ""){
 
             if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, true)){
-                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                 Ext.data.JsonP.request({
                     url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
@@ -517,13 +519,15 @@ Ext.define('APP.controller.phone.Rutas', {
                             });
                         }
                         else {
-                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                            response.Descripcion, Ext.emptyFn);
                             Ext.Viewport.setMasked(false);
                         }
 
                     },
                     failure: function () {
-                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                        APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                             Ext.Viewport.setMasked(false);
                         });
                         Ext.Viewport.setMasked(false);
@@ -536,32 +540,43 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, 
+                APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);
             
         }
     },
 
     validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin, esActualizacion){
-        
+        var me = this;
+
         if(!esActualizacion){
             var hoy = new Date();
-            //alert('no es actualizacion');
-            if(hoy.getTime() > horaInicio.getTime()){
-              //  alert('horario atrazado');
-                Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio debe ser después de la hora actual y antes de la hora de término", Ext.emptyFn);
-                return false;
+
+            console.log(me.dameFecha(hoy));
+            console.log(me.dameFecha(fechaInicio));
+
+            if(me.dameFecha(hoy) == me.dameFecha(fechaInicio)){
+                //alert('no es actualizacion');
+                if(hoy.getTime() > horaInicio.getTime()){
+                  //  alert('horario atrazado');
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                    APP.core.config.Locale.config.lan.Rutas.horaInicioMenor, Ext.emptyFn);
+                    return false;
+                }   
             }
         }
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
             //alert('Fecha inicio mayor que fecha fin');
-            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+            APP.core.config.Locale.config.lan.Rutas.fechasInvalidas, Ext.emptyFn);
             return false;
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
               //  alert('hora inicio mayor que hora fin');
-              Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio es después de la hora de término", Ext.emptyFn);
+              Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+              "Las hora de inicio es después de la hora de término", Ext.emptyFn);
                 return false;
             }
         }
@@ -573,11 +588,18 @@ Ext.define('APP.controller.phone.Rutas', {
     // Rutas
     //#######################################################################
 
-    onSeleccionarCliente:function(list, index, target, record){
+    onSeleccionarCliente:function(list, index, target, record){        
         var me = this,
             name = record.get('NombreSocio'),
             idCliente = record.get('CodigoSocio'),
             titulo = name;
+
+        if(me.getMenuNav().getActiveItem().isXType('rutasform')){
+            return;
+        }
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarClienteCargar);
+        Ext.Viewport.setMasked(true);
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
@@ -593,26 +615,19 @@ Ext.define('APP.controller.phone.Rutas', {
                 if (response.Procesada) {
                     var direcciones = response.Data[0].Direcciones;
                     if (direcciones.length > 0){
-                        // var name = record.get('NombreSocio'),
-                        //     idCliente = record.get('CodigoSocio'),
-                        //     titulo = name,
 
                         barraTitulo = ({
                             xtype: 'toolbar',
                             docked: 'top',
                             title: titulo
                         });
-console.log(direcciones);
-                        // this.getMenuNav().push({
-                        //     xtype: 'rutascalendario',
-                        //     title: idCliente,
-                        //     idCliente: idCliente,
-                        //     direcciones: direcciones
-                        // });
+                        //console.log(direcciones);
+
 
                         this.showFormRutas(idCliente, direcciones);
 
                         this.getMenuNav().add(barraTitulo);
+                        Ext.Viewport.setMasked(false);
 
                         // var date = new Date();
 
@@ -622,10 +637,13 @@ console.log(direcciones);
                         // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{
-                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
+                        APP.core.config.Locale.config.lan.Rutas.sinDireccionMensaje, Ext.emptyFn);
+                        Ext.Viewport.setMasked(false);
                     }
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn);
                 }
             },
             scope: this
@@ -648,7 +666,7 @@ console.log(direcciones);
             CodigoCliente: codigoCliente//ac.idCliente
         };
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         store.clearFilter();
         store.setParams(params);
@@ -698,8 +716,13 @@ console.log(direcciones);
         this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
-    onRutasCalendarioTap:function(calendar, nd){
+    onRutasCalendarioTap:function(calendar, nd){        
         var me = this;
+
+        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){
+            //alert("error garrafal, se va a acabar el mundo");
+            return;
+        }
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
@@ -751,7 +774,7 @@ console.log(direcciones);
                 xtype:'button',
                 action:'agregar',
                 id: 'botonAgregar',
-                text: 'Agregar',
+                text: APP.core.config.Locale.config.lan.Rutas.agregar,
                 margin:10
             },{
                 xtype:'container',
@@ -764,13 +787,13 @@ console.log(direcciones);
                 },
                 items:[{
                     xtype:'button',
-                    text:'Visitar',
+                    text: APP.core.config.Locale.config.lan.Rutas.visitar,
                     itemId:'realizarRuta',
                     margin: '0 5 0 0',
                     flex:1
                 },{
                     xtype:'button',
-                    text:'Cancelar Ruta',
+                    text: APP.core.config.Locale.config.lan.Rutas.cancelarRuta,
                     itemId:'cancelarRuta',
                     margin: '0 0 0 5',
                     flex:1
@@ -781,7 +804,6 @@ console.log(direcciones);
         me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
-
         //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
@@ -789,10 +811,8 @@ console.log(direcciones);
         var rc = this.getRutasCalendario(),
             rutas = rc.view.eventStore,
             nd = this.getRutasCalendarioMapa().config.nd;
-        // var idCliente = this.getRutasCalendarioDia().config.idCliente;
-        // var direcciones = this.getRutasCalendarioDia().config.direcciones;
 
-console.log(nd);
+        //console.log(nd);
 
         this.getMenuNav().push({
             xtype:'rutasform',
@@ -827,7 +847,7 @@ console.log(nd);
 
         var direccion = data.Estado + " " + data.Municipio + " " + data.Ciudad + " " + data.Colonia + " " + data.Calle + " " + data.NoExterior;
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         var geocoder = new google.maps.Geocoder();
 
@@ -847,13 +867,13 @@ console.log(nd);
 
         if(extMapa.marker){
             extMapa.marker.setMap(null);
-            console.log('Se elimina marcador');
+            //console.log('Se elimina marcador');
         }
 
         geocoder.geocode( { 'address': direccion}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
 
-                console.log(results[0].geometry.location);
+                //console.log(results[0].geometry.location);
 
                 form.setValues({
                     LatitudOrigen:results[0].geometry.location.k,
@@ -885,7 +905,8 @@ console.log(nd);
                 });
 
             } else {
-                Ext.Msg.alert("Lo sentimos","La ubicación no ha podido ser encontrada");
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinUbicacionTitulo,
+                    APP.core.config.Locale.config.lan.Rutas.sinUbicacionMensaje);
             }
             Ext.Viewport.setMasked(false);
         });
@@ -896,29 +917,28 @@ console.log(nd);
             ac = me.getRutasCalendario(),            
             rutas = ac.view.eventStore;
             marcadoresArray = new Array();
-console.log(rutas.getCount(), ' en colocaMarcadores')
+            //console.log(rutas.getCount(), ' en colocaMarcadores')
         if(rutas.getCount() > 0){
             var extMapa = this.getRutasCalendarioMapa(),
                 mapa = extMapa.getMap(),
                 ruta, icono,
                 bounds = new google.maps.LatLngBounds();
 
-            Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+            Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
             if(extMapa.marker){
-                extMapa.marker.setMap(null);
-                console.log('Quitamos marcador');
+                extMapa.marker.setMap(null);                
             }
         
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
                 ruta = item.getData();  //rutas.getAt(0).getData();
-console.log(ruta);
+                //console.log(ruta);
                 var nd = extMapa.config.nd,
                 //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
-                console.log(nd);
+                //console.log(nd);
                     nd.setHours(parseInt(horaInicio[0]), parseInt(horaInicio[1]));
 
                 if(nd < today){
@@ -949,7 +969,8 @@ console.log(ruta);
                     google.maps.event.addListener(extMapa.marker, 'click', function(){
                         //infowindow.open(mapa, extMapa.marker);
                         //popup.showBy(extMapa.marker);
-                        me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
+                        me.eligeEditarTrazar(APP.core.config.Locale.config.lan.Rutas.editarTrazarTitulo,
+                         APP.core.config.Locale.config.lan.Rutas.editarTrazarMensaje, 300, 
                         function (buttonId) {
                             if (buttonId == 'editar') {                                
                                 me.dameDirecciones(item.data);
@@ -960,15 +981,17 @@ console.log(ruta);
                         });
                     });                
                 } else {
-                    console.log(item.data.FechaVisita, item.data.HoraVisita);
+                    //console.log(item.data.FechaVisita, item.data.HoraVisita);
                     infowindow = new google.maps.InfoWindow({
                         content: "",
                         maxWidth: 200
                     });
 
                     (function(marcador){
-                        var contenido = "<b>Fecha: </b>" + Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
-                                 "<p><b>Hora: </b>" + item.data.HoraVisita.substr(0, 5) + "</p>";
+                        var contenido = "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + " </b>" +
+                                        Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
+                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " hrs.</b>" + 
+                                        item.data.HoraVisita.substr(0, 5) + "</p>";
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);
@@ -1024,13 +1047,14 @@ console.log(ruta);
     },
 
     muestraClientes: function(button) {
+        Ext.Viewport.setMasked(true);
         var me = this,
             nd = button.getParent().down('rutascalendariomapa').config.nd,
             today = new Date();
 
         today.setHours(0,0,0,0);
 
-console.log(nd, today);
+//console.log(nd, today);
 
         if(today <= nd){
             me.getMenuNav().push({
@@ -1040,8 +1064,11 @@ console.log(nd, today);
                     xtype:'clienteslist'
                 }]
             });
+            Ext.Viewport.setMasked(false);
         } else {
-            Ext.Msg.alert('Error', 'Imposible agregar rutas en días anteriores');
+            Ext.Viewport.setMasked(false);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.diasAnterioresRutaTitulo,
+            APP.core.config.Locale.config.lan.Rutas.diasAnterioresRutaMensaje);
         }
     },
 
@@ -1052,16 +1079,17 @@ console.log(nd, today);
             esActualizacion = values.CodigoRuta > 0,
             status = this.getRutasCalendario().accion == 0 ? this.getRutasCalendario().accion : 2,
             nd = this.getRutasCalendarioMapa().config.nd;
-console.log(nd);
+//console.log(nd);
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
 
             if(values.Descripcion == ""){
-                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);
             }
             else{
 
                 if(values.LatitudOrigen > 0){
-                    Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                    Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                     if(esActualizacion){
                         var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta";
@@ -1102,7 +1130,7 @@ console.log(nd);
             }
 
         //Ext.Viewport.setMasked(true);
-        console.log(params);
+        //console.log(params);
 
                     Ext.data.JsonP.request({
                         url: url,
@@ -1125,14 +1153,16 @@ console.log(nd);
                                 });
                             }
                             else {
-                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
+                                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                                response.Descripcion, Ext.emptyFn); 
                                 Ext.Viewport.setMasked(false);
                                 //view.pop();
                             }
 
                         },
                         failure: function () {
-                            Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                            APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                                 Ext.Viewport.setMasked(false);
                             });
                             Ext.Viewport.setMasked(false);
@@ -1143,56 +1173,40 @@ console.log(nd);
                 }
                 else{
                     Ext.Viewport.setMasked(false);                    
-                    Ext.Msg.alert('Datos Incorrectos', "Debe seleccionar una dirección válida", Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.direccionInvalidaTitulo,
+                    APP.core.config.Locale.config.lan.Rutas.direccionInvalidaMensaje, Ext.emptyFn);
                 }
             }
         }
         else{
-            Ext.Viewport.setMasked(false);            
-            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Viewport.setMasked(false);
+            //Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
         }
     },
 
     onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);
-console.log(nd);
+        //console.log(nd);
         var me = this,
             nd = new Date(nd),
             titulo = this.getMenuNav().down('toolbar');            
 
         calendar.eventStore.clearFilter();
-console.log(calendar.eventStore.getCount(), "Antes de filtrar");
+        //console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         calendar.eventStore.filterBy(function(record){
-/*            var dia = record.get('start').getDay(),
-                mes = record.get('start').getMonth(),
-                anio = record.get('start').getFullYear(),
-
-                seleccionDia = nd.getDay(),
-                seleccionMes = nd.getMonth(),
-                seleccionAnio = nd.getFullYear(),
-
-                fecha1 = dia + " " + mes + " " + anio,
-                fecha2 = seleccionDia + " " + seleccionMes + " " + seleccionAnio;
-
-                console.log(fecha1, fecha2);
-                //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
-                //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
-                //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (fecha1 == fecha2);// && (endDate >= nd);*/
-
 
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            console.log(startDate, endDate, nd);
+            //console.log(startDate, endDate, nd);
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
-        console.log(codigoCliente, ' El código del cliente');
+/*        console.log(codigoCliente, ' El código del cliente');
         console.log(esActualizacion, ' Actualización');
-        console.log(calendar.eventStore.getCount(), ' Marcadores');
+        console.log(calendar.eventStore.getCount(), ' Marcadores');*/
 
 
-        if(!esActualizacion){           
-            calendar.eventStore.filter('CodigoCliente', codigoCliente);
+        if(!esActualizacion){          
+             calendar.eventStore.filter('CodigoCliente', codigoCliente);
             me.getMenuNav().pop(2);
         } else {
             if(me.getMenuNav().getActiveItem().isXType('rutasform')){                
@@ -1331,7 +1345,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
         form.down("button[action=guardar]").setText('Actualizar');
         form.down("button[action=guardar]").setMargin(10);
 
-        console.log(ruta);
+        //console.log(ruta);
 
         var horaInicio = new Date();
         horaInicio.setHours(ruta.HoraInicio.substr(0,2));
@@ -1373,7 +1387,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
 
         this.recuperaMarcador(extMapa, ruta, true);
 
-        console.log(extMapa.getMap().data)
+        //console.log(extMapa.getMap().data)
 
         if(ruta.Estatus != 2){
             //var btnGuardar = form.down("button[action=guardar]").destroy();
@@ -1419,7 +1433,8 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             },
             failure: function() {
                 Ext.Viewport.setMasked(false);
-                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorLocalizacionTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorLocalizacionMensaje);
             }
         });
 /*            geo = Ext.create('Ext.util.Geolocation',{
@@ -1452,7 +1467,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
     },
 
     dameDistancia: function(response, status){
-        console.log(this);
+        //console.log(this);
         var me = this,
         ruta = me.getMenuNav().ruta;            
 
@@ -1465,7 +1480,8 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
                 me.cambiaStatusRuta();
             } else {                
                 Ext.Viewport.setMasked(false);
-                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');                
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorDistanciaTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorDistanciaMensaje);
             }
 
         } else {
@@ -1482,11 +1498,11 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             buttons: [
                 {
                     itemId: 'editar',
-                    text: 'Editar ruta'//APP.core.config.Locale.config.lan.Ordenes.confirmaNo
+                    text: APP.core.config.Locale.config.lan.Rutas.editarRuta
                 },
                 {
                     itemId: 'trazar',
-                    text: 'Trazar ruta',//APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
+                    text: APP.core.config.Locale.config.lan.Rutas.trazarRuta,
                     ui: 'action'
                 }
             ],
@@ -1525,11 +1541,13 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
 
                     }
                     else{                    
-                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
+                        APP.core.config.Locale.config.lan.Rutas.sinDireccionMensaje, Ext.emptyFn);
                         Ext.Viewport.setMasked(false);
                     }
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                    response.Descripcion, Ext.emptyFn);
                     Ext.Viewport.setMasked(false);
                 }
             },
@@ -1554,7 +1572,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
                 var latitude = position.coords.latitude,
                     longitude = position.coords.longitude;
 
-                console.log(latitude, longitude);
+                //console.log(latitude, longitude);
 
                 var directionsService = new google.maps.DirectionsService();
                 var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -1582,7 +1600,8 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
                 Ext.Viewport.setMasked(false);
             },
             failure: function() {
-                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorLocalizacionTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorLocalizacionMensaje);
                 Ext.Viewport.setMasked(false);
             }
         });
@@ -1660,23 +1679,22 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
     defineColorDeMarcador: function(ruta){
         switch(ruta.Estatus){
             case 0:
-                icono = "http://www.googlemapsmarkers.com/v1/F90000/"
+                icono = "http://www.googlemapsmarkers.com/v1/F90000/";
                 break;
 
             case 1:
-                icono = "http://www.googlemapsmarkers.com/v1/1D7A28/"
-                break
-;
+                icono = "http://www.googlemapsmarkers.com/v1/1D7A28/";
+                break;
             case 2:
-                icono = "http://www.googlemapsmarkers.com/v1/FFFF00/"
+                icono = "http://www.googlemapsmarkers.com/v1/FFFF00/";
                 break;
 
             case 3:
-                icono = "http://www.googlemapsmarkers.com/v1/FF8000/"
+                icono = "http://www.googlemapsmarkers.com/v1/FF8000/";
                 break;
 
             case 4:
-                icono = "http://www.googlemapsmarkers.com/v1/C0C0C0/"
+                icono = "http://www.googlemapsmarkers.com/v1/C0C0C0/";
                 break;
         }
 
@@ -1728,7 +1746,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
     //     });
     // }
 
-    determinaAccion: function(button){        
+    determinaAccion: function(button){
         var me = this,
             ruta = me.getMenuNav().ruta;
 
@@ -1750,7 +1768,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             ruta = me.getMenuNav().ruta,
             view = me.getMenuNav(),
             nd = this.getRutasCalendarioMapa().config.nd,            
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",            
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",
             fechaVisita = new Date(),
             horaInicio = new Date(),
             horaFin = new Date();
@@ -1803,7 +1821,7 @@ console.log(calendar.eventStore.getCount(), "Antes de filtrar");
             "Ruta.FechaVisita": Ext.util.Format.date(fechaVisita,"Y-m-d")
         }
 
-console.log(params);
+        console.log(params);
 
         Ext.data.JsonP.request({
             url: url,
@@ -1825,14 +1843,15 @@ console.log(params);
                     });
                 }
                 else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn); 
                     Ext.Viewport.setMasked(false);
                     //view.pop();
                 }
 
             },
             failure: function () {
-                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                     Ext.Viewport.setMasked(false);
                 });
                 Ext.Viewport.setMasked(false);
@@ -1848,7 +1867,17 @@ console.log(params);
         if (marcadores != undefined){
             for (i = 0; i < marcadores.length; i++) {
                 marcadores[i].setMap(null);
-            }            
+            }
         }
+    },
+
+    dameFecha: function(date){
+        var me = this,
+            dia = date.getDay(),
+            mes = date.getMonth(),
+            anio = date.getFullYear(),
+            fecha = "" + dia + " "+ mes + " " + anio;
+
+        return fecha;
     }
 });
