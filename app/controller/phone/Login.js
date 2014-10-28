@@ -34,11 +34,12 @@ Ext.define('APP.controller.phone.Login', {
 
     onLoginUser: function (btn) {
         var form = this.getLoginForm(),
-            almacenes,
+            almacenes,            
             values = form.getValues();
 
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
+        localStorage.setItem("idioma", APP.core.config.Locale.config.lan.Lenguaje.idioma);
 
         Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Login.accediendo});
 

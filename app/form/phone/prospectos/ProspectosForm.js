@@ -10,7 +10,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
 	config:{
 		padding:'0 15 15 15',
         scrollable: 'vertical',
-        modal: true,
+        modal: true
 	},
 
     initialize: function (){

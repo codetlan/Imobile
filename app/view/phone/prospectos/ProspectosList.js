@@ -15,7 +15,7 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
+        }
 
 
         // masked: {

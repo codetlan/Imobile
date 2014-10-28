@@ -990,8 +990,8 @@ Ext.define('APP.controller.phone.Rutas', {
                     (function(marcador){
                         var contenido = "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + " </b>" +
                                         Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
-                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " hrs.</b>" + 
-                                        item.data.HoraVisita.substr(0, 5) + "</p>";
+                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " </b>" + 
+                                        item.data.HoraVisita.substr(0, 5) + " hrs.</p>";
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);

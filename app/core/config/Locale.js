@@ -393,7 +393,7 @@ Ext.define('APP.core.config.Locale', {
       tipoPersonaMensaje: "Seleccione primero el tipo de persona",
       longitudErroneaTitulo: "Longitud errónea",
       rfcFisica: "El RFC de una persona física debe tener una longitud de 13 caracteres.",
-      rfcMoral: "EL RFC de una persona moral debe tener una longitud de 12 caracteres",
+      rfcMoral: "EL RFC de una persona moral debe tener una longitud de 12 caracteres"
     }
   },
 
@@ -414,7 +414,7 @@ Ext.define('APP.core.config.Locale', {
       domingo: "Domingo",
       notas: "Notas",
       guardar: "Guardar",
-      direccion: "Selecione una dirección",
+      direccion: "Selecione una dirección"
     },
 
     Rutas: {

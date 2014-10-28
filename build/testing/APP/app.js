@@ -83123,6 +83123,10 @@ Ext.define('APP.core.config.Locale', {
   config: {
 
     lan: {
+      Lenguaje:{
+        idioma: "es"
+      },
+
       LoginForm: {
         usuario: 'Código de usuario',
         contrasenia: 'Contraseña',
@@ -83133,7 +83137,8 @@ Ext.define('APP.core.config.Locale', {
         accediendo: "Accediendo",
         problemasConexionMsg: "No se puede encontrar el servidor",
         confirmaTitle: "Configuración",
-        confirmaMsg: "¿Estás seguro que deseas cambiar la configuración?"
+        confirmaMsg: "¿Estás seguro que deseas cambiar la configuración?",
+        sinUsuario: "No existe el usuario"
       },
 
       ConfiguracionPanel: {
@@ -83144,6 +83149,7 @@ Ext.define('APP.core.config.Locale', {
       },
 
       Configuracion: {
+        mascara: "Cargando configuración",
         tamanioImagen: "La imagen debe ser menor de 4 megas",
         onSaveConfig: "¿Desea guardar los cambios configurados?",
         sinIdioma: "No se encontró el archivo de configuración de idioma",
@@ -83420,8 +83426,154 @@ Ext.define('APP.core.config.Locale', {
       clientes: "Clientes",
       articulos: "Artículos",
       analisisVentas: "Análisis de Ventas"
+    },
+
+    ProspectosForm: {
+      titulo: "Agregar Prospecto",
+      fecha: "Fecha",
+      codigo: "Código",
+      razon: "Razón Social",
+      tipoPersona: "Tipo de persona",
+      fisica: "Física",
+      moral: "Moral",
+      rfc: "RFC",
+      direccion: "Dirección",
+      calle: "Calle",
+      noExt: "No. Ext",
+      noInt: "No. Int",
+      colonia: "Colonia",
+      ciudad: "Ciudad",
+      municipio: "Municipio",
+      cp: "Código Postal",
+      pais: "País",
+      estado: "Estado",
+      encargado: "Encargado",
+      encargadoNombre: "Nombre",
+      encargadoTelOfi: "Tel. Oficina",
+      encargadoTelMov: "Tel. Móvil",
+      productor: "Productor",
+      cultivos: "Cultivos",
+      superficie: "Superficie",
+      campoAbierto: "Campo Abierto",
+      invernadero: "Invernadero",
+      macroTunel: "Macro Túnel",
+      total: "Total",
+      distribuidor: "Distribuidor",
+      zonaDeInfluencia: "Zona de Influencia",
+      comercializa: "Comercializa",
+      encargadoCompras: "Encargado de Compras",
+      encargadoComprasNombre: "Nombre",
+      encargadoComprasTel: "Teléfono",
+      encargadoPagos: "Encargado de pagos",
+      encargadoPagosNombre: "Nombre",
+      encargadoPagosTel: "Teléfono",
+      responsableTecnico: "Responsable Técnico",
+      responsableNombre: "Nombre",
+      responsableTel: "Teléfono",
+      solubles: "Solubles",
+      granulares: "Granulares",
+      acidos: "Ácidos",
+      otros: "Otros",
+      comentarios: "Comentarios",
+      enviarProspecto: "Enviar prospecto"
+    },
+
+    ProspectosList: {
+      buscarProspecto: "Buscar prospecto...",
+      agregarProspecto: "Agregar prospecto",
+      verMas: "Ver Más...",
+      obteniendoProspectos: "Obteniendo prospectos..."
+    },
+
+    Prospectos:{
+      cargando: "Cargando...",
+      noCodigoClienteTitulo: "Error",
+      noCodigoClienteMensaje: "No se pudo obtener el código del cliente ",
+      obteniendo: "Obteniendo ",
+      noListaTitulo: "Error",
+      noListaMensaje: "No se pudo obtener la lista: ",
+      noPaisesTitulo: "No se pudieron obtener los países",
+      noPaisesMensaje: "Se presentó un problema al intentar obtener los países: ",      
+      noEstadosTitulos: "No se pudieron obtener los estados",
+      noEstadosMensaje: "Se presentó un problema al intentar obtener los estados: ",
+      seAgregoProspecto: "Se agregó el prospecto exitosamente con folio ",
+      campoObligatorioTitulo: "Campo obligatorio",
+      campoObligatorioMensaje1: "El campo ",
+      campoObligatorioMensaje2: " es obligatorio.",
+      enviandoProspecto: "Enviando prospecto...",
+      prospectoAgregado: "Prospecto agregado",
+      prospectoNoAgregadoTitulo: "Prospecto no agregado",
+      prospectoNoAgregadoMensaje: "Se presentó un problema al intentar agregar al prospecto: ",
+      obteniendoProspecto: "Obteniendo prospecto",
+      datosProspecto: "Datos de prospecto",
+      noRecuperaProspectoTitulo: "Imposible cargar prospecto",
+      noRecuperaProspectoMensaje: "Se presentó un problema al intentar leer los datos del prospecto: ",
+      tipoPersonaTitulo: "¿Tipo de persona?",
+      tipoPersonaMensaje: "Seleccione primero el tipo de persona",
+      longitudErroneaTitulo: "Longitud errónea",
+      rfcFisica: "El RFC de una persona física debe tener una longitud de 13 caracteres.",
+      rfcMoral: "EL RFC de una persona moral debe tener una longitud de 12 caracteres"
     }
-  }
+  },
+
+    Actividades: {
+      sinActividades: "No tiene actividades este día",
+      rutas: "Rutas",
+      actividades: "Actividades",
+      titulo: "Título",
+      empieza: "Empieza",
+      termina: "Termina",
+      repetir: "Repetir",
+      lunes: "Lunes",
+      martes: "Martes",
+      miercoles: "Miércoles",
+      jueves: "Jueves",
+      viernes: "Viernes",
+      sabado: "Sábado",
+      domingo: "Domingo",
+      notas: "Notas",
+      guardar: "Guardar",
+      direccion: "Selecione una dirección"
+    },
+
+    Rutas: {
+      cargando: "Cargando...",
+      agregar: "Agregar",
+      diasAnterioresActividadTitulo: "Datos Incorrectos",
+      diasAnterioresActividadMensaje: "Imposible agendar actividad de días anteriores",
+      guardando: "Guardando...",
+      datosIncorrectos: "Datos Incorrectos",
+      problemasConexion: "Problemas de conexión",
+      sinServidor: "No se puede encontrar el servidor",
+      tituloObligatorio: "El título es obligatorio",
+      realizada: "Realizada",
+      cancelar: "Cancelar",
+      horaInicioMenor: "La hora de inicio debe ser después de la hora actual y antes de la hora de término",
+      fechasInvalidas: "Las fechas son inválidas",
+      horaInicioMayor: "La hora de inicio es después de la hora de término",
+      sinDireccionTitulo: "Lo sentimos",
+      sinDireccionMensaje: "El cliente no tiene ninguna dirección asignada",
+      visitar: "Visitar",
+      cancelarRuta: "Cancelar Ruta",
+      sinUbicacionTitulo: "Lo sentimos",
+      sinUbicacionMensaje: "La ubicación no ha podido ser encontrada",
+      editarTrazarTitulo: "Elija una opción",
+      editarTrazarMensaje: "¿Qué desea hacer?",
+      fecha: "Fecha: ",
+      hora: "Hora: ",
+      diasAnterioresRutaTitulo: "Error",
+      diasAnterioresRutaMensaje: "Imposible agregar rutas en días anteriores",
+      direccionInvalidaTitulo: "Datos Incorrectos",
+      direccionInvalidaMensaje: "Debe seleccionar una dirección válida",
+      errorLocalizacionTitulo: "Error",
+      errorLocalizacionMensaje: "Error mientras se obtenía la localización",
+      errorDistanciaTitulo: "Error",
+      errorDistanciaMensaje: "El dispositivo se encuentra  muy alejado de la dirección destino",
+      errorCalculoDistanciaTitulo: "Error",
+      errorCalculoDistanciaMensaje: "No fue posible calcular la distancia: ",
+      editarRuta: "Editar ruta",
+      trazarRuta: "Trazar ruta"
+    }
 },
 
   localize: function() {
@@ -84317,11 +84469,12 @@ Ext.define('APP.controller.phone.Login', {
 
     onLoginUser: function (btn) {
         var form = this.getLoginForm(),
-            almacenes,
+            almacenes,            
             values = form.getValues();
 
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
+        localStorage.setItem("idioma", APP.core.config.Locale.config.lan.Lenguaje.idioma);
 
         Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Login.accediendo});
 
@@ -84354,7 +84507,8 @@ Ext.define('APP.controller.phone.Login', {
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
 
                 } else {
-                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
+                                response.Descripcion, Ext.emptyFn);
                 }
                 Ext.Viewport.setMasked(false);
             },
@@ -86769,7 +86923,8 @@ Ext.define('APP.controller.phone.Rutas', {
         switch(opcion){
             case 'actividades':
                 this.getMenuNav().push({
-                    xtype:'actividadescalendario'
+                    xtype:'actividadescalendario',
+                    title: APP.core.config.Locale.config.lan.Actividades.actividades
                 });
 
                 var date = new Date();
@@ -86788,7 +86943,7 @@ Ext.define('APP.controller.phone.Rutas', {
                     //     xtype:'clienteslist'
                     // }]
                     xtype: 'rutascalendario',
-                    title: 'Rutas'
+                    title: APP.core.config.Locale.config.lan.Actividades.rutas
                 });
 
                 var date = new Date();
@@ -86821,7 +86976,7 @@ Ext.define('APP.controller.phone.Rutas', {
             FechaFin: fechaFin
         };
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         store.clearFilter();
         store.setParams(params);
@@ -86860,7 +87015,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },{
                 xtype:'button',
                 action:'agregar',
-                text: 'Agregar',
+                text: APP.core.config.Locale.config.lan.Rutas.agregar,
                 margin:10
             }]
         });
@@ -86906,7 +87061,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
             });
         } else {
-            Ext.Msg.alert('Datos Incorrectos', "Imposible agendar actividad de días anteriores", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.diasAnterioresActividadTitulo,
+             APP.core.config.Locale.config.lan.Rutas.diasAnterioresActividadMensaje, Ext.emptyFn);
         }
     },
 
@@ -86918,7 +87074,7 @@ Ext.define('APP.controller.phone.Rutas', {
         if(values.Descripcion != ""){
 
             if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, false)){
-                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                 if(values.CodigoActividad > 0){
                     var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad";
@@ -86970,13 +87126,15 @@ Ext.define('APP.controller.phone.Rutas', {
                             });
                         }
                         else {
-                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                            response.Descripcion, Ext.emptyFn);
                             Ext.Viewport.setMasked(false);
                         }
 
                     },
                     failure: function () {
-                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                         APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                             Ext.Viewport.setMasked(false);
                         });
                         Ext.Viewport.setMasked(false);
@@ -86989,7 +87147,8 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);            
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+            APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);            
         }
     },
 
@@ -87011,12 +87170,12 @@ Ext.define('APP.controller.phone.Rutas', {
                 },
                 items:[{
                     xtype:'button',
-                    text:'Realizada',
+                    text: APP.core.config.Locale.config.lan.Rutas.realizada,
                     action:'realizaractividad',
                     flex:1
                 },{
                     xtype:'button',
-                    text:'Cancelar',
+                    text: APP.core.config.Locale.config.lan.Rutas.cancelar,
                     action:'cancelaractividad',
                     flex:1
                 }]
@@ -87096,7 +87255,7 @@ Ext.define('APP.controller.phone.Rutas', {
         if(values.Descripcion != ""){
 
             if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, true)){
-                Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                 Ext.data.JsonP.request({
                     url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
@@ -87141,13 +87300,15 @@ Ext.define('APP.controller.phone.Rutas', {
                             });
                         }
                         else {
-                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                            response.Descripcion, Ext.emptyFn);
                             Ext.Viewport.setMasked(false);
                         }
 
                     },
                     failure: function () {
-                        Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                        APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                             Ext.Viewport.setMasked(false);
                         });
                         Ext.Viewport.setMasked(false);
@@ -87160,7 +87321,8 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, 
+                APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);
             
         }
     },
@@ -87178,7 +87340,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 //alert('no es actualizacion');
                 if(hoy.getTime() > horaInicio.getTime()){
                   //  alert('horario atrazado');
-                    Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio debe ser después de la hora actual y antes de la hora de término", Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                    APP.core.config.Locale.config.lan.Rutas.horaInicioMenor, Ext.emptyFn);
                     return false;
                 }   
             }
@@ -87186,13 +87349,15 @@ Ext.define('APP.controller.phone.Rutas', {
 
         if(fechaInicio.getTime() > fechaFin.getTime()){
             //alert('Fecha inicio mayor que fecha fin');
-            Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+            APP.core.config.Locale.config.lan.Rutas.fechasInvalidas, Ext.emptyFn);
             return false;
         }
         if(fechaInicio.getTime() == fechaFin.getTime()){
             if(horaInicio.getTime() >= horaFin.getTime()){
               //  alert('hora inicio mayor que hora fin');
-              Ext.Msg.alert('Datos Incorrectos', "Las hora de inicio es después de la hora de término", Ext.emptyFn);
+              Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+              "Las hora de inicio es después de la hora de término", Ext.emptyFn);
                 return false;
             }
         }
@@ -87253,12 +87418,13 @@ Ext.define('APP.controller.phone.Rutas', {
                         // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{
-                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
+                        APP.core.config.Locale.config.lan.Rutas.sinDireccionMensaje, Ext.emptyFn);
                         Ext.Viewport.setMasked(false);
                     }
                 } else {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn);
                 }
             },
             scope: this
@@ -87281,7 +87447,7 @@ Ext.define('APP.controller.phone.Rutas', {
             CodigoCliente: codigoCliente//ac.idCliente
         };
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         store.clearFilter();
         store.setParams(params);
@@ -87331,8 +87497,13 @@ Ext.define('APP.controller.phone.Rutas', {
         this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
-    onRutasCalendarioTap:function(calendar, nd){
+    onRutasCalendarioTap:function(calendar, nd){        
         var me = this;
+
+        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){
+            //alert("error garrafal, se va a acabar el mundo");
+            return;
+        }
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
@@ -87384,7 +87555,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 xtype:'button',
                 action:'agregar',
                 id: 'botonAgregar',
-                text: 'Agregar',
+                text: APP.core.config.Locale.config.lan.Rutas.agregar,
                 margin:10
             },{
                 xtype:'container',
@@ -87397,13 +87568,13 @@ Ext.define('APP.controller.phone.Rutas', {
                 },
                 items:[{
                     xtype:'button',
-                    text:'Visitar',
+                    text: APP.core.config.Locale.config.lan.Rutas.visitar,
                     itemId:'realizarRuta',
                     margin: '0 5 0 0',
                     flex:1
                 },{
                     xtype:'button',
-                    text:'Cancelar Ruta',
+                    text: APP.core.config.Locale.config.lan.Rutas.cancelarRuta,
                     itemId:'cancelarRuta',
                     margin: '0 0 0 5',
                     flex:1
@@ -87414,7 +87585,6 @@ Ext.define('APP.controller.phone.Rutas', {
         me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
-
         //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
@@ -87458,7 +87628,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
         var direccion = data.Estado + " " + data.Municipio + " " + data.Ciudad + " " + data.Colonia + " " + data.Calle + " " + data.NoExterior;
 
-        Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+        Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
         var geocoder = new google.maps.Geocoder();
 
@@ -87516,7 +87686,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 });
 
             } else {
-                Ext.Msg.alert("Lo sentimos","La ubicación no ha podido ser encontrada");
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinUbicacionTitulo,
+                    APP.core.config.Locale.config.lan.Rutas.sinUbicacionMensaje);
             }
             Ext.Viewport.setMasked(false);
         });
@@ -87534,7 +87705,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 ruta, icono,
                 bounds = new google.maps.LatLngBounds();
 
-            Ext.Viewport.setMasked({xtype:'loadmask',message:'Cargando...'});
+            Ext.Viewport.setMasked({xtype:'loadmask',message: APP.core.config.Locale.config.lan.Rutas.cargando});
 
             if(extMapa.marker){
                 extMapa.marker.setMap(null);                
@@ -87579,7 +87750,8 @@ Ext.define('APP.controller.phone.Rutas', {
                     google.maps.event.addListener(extMapa.marker, 'click', function(){
                         //infowindow.open(mapa, extMapa.marker);
                         //popup.showBy(extMapa.marker);
-                        me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
+                        me.eligeEditarTrazar(APP.core.config.Locale.config.lan.Rutas.editarTrazarTitulo,
+                         APP.core.config.Locale.config.lan.Rutas.editarTrazarMensaje, 300, 
                         function (buttonId) {
                             if (buttonId == 'editar') {                                
                                 me.dameDirecciones(item.data);
@@ -87597,8 +87769,10 @@ Ext.define('APP.controller.phone.Rutas', {
                     });
 
                     (function(marcador){
-                        var contenido = "<b>Fecha: </b>" + Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
-                                 "<p><b>Hora: </b>" + item.data.HoraVisita.substr(0, 5) + "</p>";
+                        var contenido = "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + " </b>" +
+                                        Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
+                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " hrs.</b>" + 
+                                        item.data.HoraVisita.substr(0, 5) + "</p>";
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);
@@ -87654,6 +87828,7 @@ Ext.define('APP.controller.phone.Rutas', {
     },
 
     muestraClientes: function(button) {
+        Ext.Viewport.setMasked(true);
         var me = this,
             nd = button.getParent().down('rutascalendariomapa').config.nd,
             today = new Date();
@@ -87670,8 +87845,11 @@ Ext.define('APP.controller.phone.Rutas', {
                     xtype:'clienteslist'
                 }]
             });
+            Ext.Viewport.setMasked(false);
         } else {
-            Ext.Msg.alert('Error', 'Imposible agregar rutas en días anteriores');
+            Ext.Viewport.setMasked(false);
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.diasAnterioresRutaTitulo,
+            APP.core.config.Locale.config.lan.Rutas.diasAnterioresRutaMensaje);
         }
     },
 
@@ -87686,12 +87864,13 @@ Ext.define('APP.controller.phone.Rutas', {
         if(this.validarFechas(values.FechaInicio,values.HoraInicio,values.FechaFin,values.HoraFin, esActualizacion)){
 
             if(values.Descripcion == ""){
-                Ext.Msg.alert('Datos Incorrectos', "El título es obligatorio", Ext.emptyFn);
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);
             }
             else{
 
                 if(values.LatitudOrigen > 0){
-                    Ext.Viewport.setMasked({xtype: 'loadmask', message: 'Guardando...'});
+                    Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.Rutas.guardando});
 
                     if(esActualizacion){
                         var url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta";
@@ -87755,14 +87934,16 @@ Ext.define('APP.controller.phone.Rutas', {
                                 });
                             }
                             else {
-                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
+                                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                                response.Descripcion, Ext.emptyFn); 
                                 Ext.Viewport.setMasked(false);
                                 //view.pop();
                             }
 
                         },
                         failure: function () {
-                            Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                            APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                                 Ext.Viewport.setMasked(false);
                             });
                             Ext.Viewport.setMasked(false);
@@ -87773,7 +87954,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
                 else{
                     Ext.Viewport.setMasked(false);                    
-                    Ext.Msg.alert('Datos Incorrectos', "Debe seleccionar una dirección válida", Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.direccionInvalidaTitulo,
+                    APP.core.config.Locale.config.lan.Rutas.direccionInvalidaMensaje, Ext.emptyFn);
                 }
             }
         }
@@ -88032,7 +88214,8 @@ Ext.define('APP.controller.phone.Rutas', {
             },
             failure: function() {
                 Ext.Viewport.setMasked(false);
-                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorLocalizacionTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorLocalizacionMensaje);
             }
         });
 /*            geo = Ext.create('Ext.util.Geolocation',{
@@ -88078,7 +88261,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 me.cambiaStatusRuta();
             } else {                
                 Ext.Viewport.setMasked(false);
-                Ext.Msg.alert('Error', 'El dispositivo se encuentra muy alejado de la dirección destino');                
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorDistanciaTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorDistanciaMensaje);
             }
 
         } else {
@@ -88095,11 +88279,11 @@ Ext.define('APP.controller.phone.Rutas', {
             buttons: [
                 {
                     itemId: 'editar',
-                    text: 'Editar ruta'//APP.core.config.Locale.config.lan.Ordenes.confirmaNo
+                    text: APP.core.config.Locale.config.lan.Rutas.editarRuta
                 },
                 {
                     itemId: 'trazar',
-                    text: 'Trazar ruta',//APP.core.config.Locale.config.lan.Ordenes.confirmaSi,
+                    text: APP.core.config.Locale.config.lan.Rutas.trazarRuta,
                     ui: 'action'
                 }
             ],
@@ -88138,11 +88322,13 @@ Ext.define('APP.controller.phone.Rutas', {
 
                     }
                     else{                    
-                        Ext.Msg.alert('Lo sentimos', 'El cliente no tiene ninguna dirección asignada', Ext.emptyFn);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
+                        APP.core.config.Locale.config.lan.Rutas.sinDireccionMensaje, Ext.emptyFn);
                         Ext.Viewport.setMasked(false);
                     }
                 } else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                    response.Descripcion, Ext.emptyFn);
                     Ext.Viewport.setMasked(false);
                 }
             },
@@ -88195,7 +88381,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 Ext.Viewport.setMasked(false);
             },
             failure: function() {
-                Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.errorLocalizacionTitulo,
+                APP.core.config.Locale.config.lan.Rutas.errorLocalizacionMensaje);
                 Ext.Viewport.setMasked(false);
             }
         });
@@ -88273,23 +88460,22 @@ Ext.define('APP.controller.phone.Rutas', {
     defineColorDeMarcador: function(ruta){
         switch(ruta.Estatus){
             case 0:
-                icono = "http://www.googlemapsmarkers.com/v1/F90000/"
+                icono = "http://www.googlemapsmarkers.com/v1/F90000/";
                 break;
 
             case 1:
-                icono = "http://www.googlemapsmarkers.com/v1/1D7A28/"
-                break
-;
+                icono = "http://www.googlemapsmarkers.com/v1/1D7A28/";
+                break;
             case 2:
-                icono = "http://www.googlemapsmarkers.com/v1/FFFF00/"
+                icono = "http://www.googlemapsmarkers.com/v1/FFFF00/";
                 break;
 
             case 3:
-                icono = "http://www.googlemapsmarkers.com/v1/FF8000/"
+                icono = "http://www.googlemapsmarkers.com/v1/FF8000/";
                 break;
 
             case 4:
-                icono = "http://www.googlemapsmarkers.com/v1/C0C0C0/"
+                icono = "http://www.googlemapsmarkers.com/v1/C0C0C0/";
                 break;
         }
 
@@ -88341,7 +88527,7 @@ Ext.define('APP.controller.phone.Rutas', {
     //     });
     // }
 
-    determinaAccion: function(button){        
+    determinaAccion: function(button){
         var me = this,
             ruta = me.getMenuNav().ruta;
 
@@ -88363,7 +88549,7 @@ Ext.define('APP.controller.phone.Rutas', {
             ruta = me.getMenuNav().ruta,
             view = me.getMenuNav(),
             nd = this.getRutasCalendarioMapa().config.nd,            
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",            
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",
             fechaVisita = new Date(),
             horaInicio = new Date(),
             horaFin = new Date();
@@ -88438,14 +88624,15 @@ Ext.define('APP.controller.phone.Rutas', {
                     });
                 }
                 else {
-                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn); 
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn); 
                     Ext.Viewport.setMasked(false);
                     //view.pop();
                 }
 
             },
             failure: function () {
-                Ext.Msg.alert('Problemas de conexión', 'No se puede encontrar el servidor', function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                     Ext.Viewport.setMasked(false);
                 });
                 Ext.Viewport.setMasked(false);
@@ -88461,7 +88648,7 @@ Ext.define('APP.controller.phone.Rutas', {
         if (marcadores != undefined){
             for (i = 0; i < marcadores.length; i++) {
                 marcadores[i].setMap(null);
-            }            
+            }
         }
     },
 
@@ -89004,9 +89191,9 @@ Ext.define('APP.controller.phone.Cobranza', {
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
             msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
-
-       // me.getMainCard().getActiveItem().getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
-        me.getMainCard().getActiveItem().setMasked(true);
+                                                                                                             //enviandoCobro        
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
+        Ext.Viewport.setMasked(true);
         
         if (totales.getCount() > 0) {
             //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
@@ -89083,14 +89270,15 @@ Ext.define('APP.controller.phone.Cobranza', {
                 callbackKey: 'callback',
                 success: function (response) {
                     if (response.Procesada) {
+                        Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
                         Ext.Msg.alert("Cobro procesado", msg + response.CodigoUnicoDocumento + ".");
                         store.removeAll();
                         totales.removeAll();                        
-                        view.remove(view.down('toolbar'), true);                        
+                        view.remove(view.down('toolbar'), true);
                         me.getMainCard().getActiveItem().pop();
                     } else {
-                        me.getMainCard().getActiveItem().setMasked(false);
+                        Ext.Viewport.setMasked(false);
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoTitulo,
                         APP.core.config.Locale.config.lan.Cobranza.cobroNoProcesadoMensaje + response.Descripcion);
                     }
@@ -89098,7 +89286,7 @@ Ext.define('APP.controller.phone.Cobranza', {
             });
 
         } else {
-            me.getMainCard().getActiveItem().setMasked(false);
+            Ext.Viewport.setMasked(false);
             Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
             APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
         }
@@ -89599,7 +89787,10 @@ Ext.define('APP.controller.phone.Configuracion', {
     onSaveConfig: function (button) {
         var me = this,
             imagecmp = me.getImagenCmp();
-            //list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+            list = me.getOpcionesOrden().down('partidacontainer').down('panel').bodyElement;
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Configuracion.mascara);
+        Ext.Viewport.setMasked(true);
 
         Ext.Msg.show({
             title: APP.core.config.Locale.config.lan.Configuracion.titulo,
@@ -89617,17 +89808,17 @@ Ext.define('APP.controller.phone.Configuracion', {
                 }
             ],
             fn: function (buttonId) {
-                alert(buttonId);
+                //alert(buttonId);
                 if (buttonId == 'yes') {
-                    alert('Entré a yes');
-/*                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
+                    //alert('Entré a yes');
+                    if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
 
                     } else {
                         localStorage.setItem('imagenorden','');
                         list.down('#datos_orden img').dom.setAttribute("src", "");
-                    }*/                    
+                    }
 
                     var idioma = button.up('configuracionpanel').down('selectfield').getValue(),
                         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Locale/CambiarIdioma",
@@ -89638,18 +89829,18 @@ Ext.define('APP.controller.phone.Configuracion', {
                             Token: localStorage.getItem("Token")
                         };                    
 
-                    alert(idioma);
+                    //alert(idioma);
                     switch (idioma){
                         case 'en':                            
-                            params["Criterio"] =  'en_US';
+                            params["Criterio"] =  'COK_JO_en_US';                            
                             break;
 
                         case 'es':
-                            params["Criterio"] = 'es_MX';
+                            params["Criterio"] = 'COK_JO_es_MX';
                             break;
                     }
 console.log(params);
-alert(params);
+//alert(params);
                     Ext.data.JsonP.request({
                     //Ext.Ajax.request({
                         url: url, // Leemos del json
@@ -89669,8 +89860,8 @@ alert(params);
 
                                 //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
                                 var trans; // Las traducciones para el menú
-                                alert(text);
-                                alert(pinta);
+                                //alert(text);
+                                //alert(pinta);
                                 var idiomas = Ext.decode(text);  // Convertimos text en objeto
                                 
                                 APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
@@ -89679,7 +89870,7 @@ alert(params);
                                 APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
 
                                 Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                                APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
+                                //APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
                                 
                                 //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
                                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
@@ -89695,12 +89886,16 @@ alert(params);
                                         }
                                     });
                                 });
+
+                                Ext.Viewport.setMasked(false);
                             }
                         },
 
                         failure: function(response, opts) {
                             Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, 
-                                APP.core.config.Locale.config.lan.Configuracion.sinIdioma);                                
+                                APP.core.config.Locale.config.lan.Configuracion.sinIdioma);
+
+                            Ext.Viewport.setMasked(true);
                         }
                     });
                 }
@@ -89789,7 +89984,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token")
             };
-        Ext.Viewport.getMasked().setMessage('Cargando...');
+
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.cargando);
         Ext.Viewport.setMasked(true);
 
         me.getMenuNav().esRecuperado = false;
@@ -89814,7 +90010,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                     Ext.Viewport.setMasked(false);
 
                 } else {                        
-                    Ext.Msg.alert("Error", "No se pudo obtener el código del cliente: " + response.Descripcion);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noCodigoClienteTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.noCodigoClienteMensaje + response.Descripcion);
                 }
             }
         });        
@@ -89926,7 +90123,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                         Concepto: concepto
                     };
 
-                Ext.Viewport.getMasked().setMessage('Obteniendo ' + checkboxfield.getLabel());
+                Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.obteniendo + checkboxfield.getLabel());
                 Ext.Viewport.setMasked(true);
 
                     Ext.data.JsonP.request({
@@ -89946,7 +90143,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                                 Ext.Viewport.setMasked(false);
                             } else {
                                 Ext.Viewport.setMasked(true);
-                                Ext.Msg.alert("Error", "No se pudo obtener la lista: " + response.Descripcion);                                
+                                Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noListaTitulo,
+                                APP.core.config.Locale.config.lan.Prospectos.noListaMensaje + response.Descripcion);
                             }
                         }
                     });
@@ -89978,7 +90176,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
         if(selectfield.getOptions() == null){ // Checamos si tiene opciones   
             selectfield.setOptions(me.getMenuNav().estados);
-            selectfield.showPicker(); 
+            selectfield.showPicker();
         }
     },
 
@@ -90019,7 +90217,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                         selectfield.showPicker(); 
                         Ext.Viewport.setMasked(false);
                     } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noPaisesTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.noPaisesMensaje + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
@@ -90065,7 +90264,8 @@ Ext.define('APP.controller.phone.Prospectos', {
                         //selectfield.getParent().down('#estado').showPicker(); 
                         Ext.Viewport.setMasked(false);
                     } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los países", "Se presentó un problema al intentar obtener los países: " + response.Descripcion);
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noEstadosTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.noEstadosMensaje + response.Descripcion);
                         Ext.Viewport.setMasked(false);
                     }
                 }
@@ -90079,7 +90279,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             view = me.getMenuNav(),
             form = me.getProspectosForm(),
             valores = form.getValues(),
-            msg = 'Se agregó el prospecto exitosamente con folio ',
+            msg = APP.core.config.Locale.config.lan.Prospectos.seAgregoProspecto,
             campo, elementos,
             params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -90172,7 +90372,10 @@ Ext.define('APP.controller.phone.Prospectos', {
             for(j = 0; j < elementos[i].getInnerItems().length; j++){
                 if(elementos[i].getInnerItems()[j].getRequired()){                    
                     if(Ext.isEmpty(elementos[i].getInnerItems()[j].getValue())){                        
-                        Ext.Msg.alert("Campo obligatorio", "El campo " + elementos[i].getAt(j).getLabel() + " es obligatorio.");
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.campoObligatorioTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.campoObligatorioMensaje1 + 
+                        elementos[i].getAt(j).getLabel() + 
+                        APP.core.config.Locale.config.lan.Prospectos.campoObligatorioMensaje2);
                         return;
                     }
                 }                
@@ -90181,7 +90384,7 @@ Ext.define('APP.controller.phone.Prospectos', {
 
         url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/AgregarProspectoiMobile";
         
-        Ext.Viewport.getMasked().setMessage('Enviando prospecto...');
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.enviandoProspecto);
         Ext.Viewport.setMasked(true);
         console.log(params);
 
@@ -90192,11 +90395,12 @@ Ext.define('APP.controller.phone.Prospectos', {
             success: function (response) {
                 if (response.Procesada) {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Prospecto agregado", msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
                     view.pop();                    
                 } else {       
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Prospecto no agregado", "Se presentó un problema al intentar agregar al prospecto: " + response.Descripcion);                    
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoNoAgregadoTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.prospectoNoAgregadoMensaje + response.Descripcion);
                 }
             }
         });
@@ -90215,7 +90419,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                 CardCode: record.data.CodigoSocio
             };
 
-        Ext.Viewport.getMasked().setMessage('Obteniendo prospecto...');
+        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Prospectos.obteniendoProspecto);
         Ext.Viewport.setMasked(true);
 
         me.getMenuNav().esRecuperado = true;
@@ -90251,7 +90455,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                     me.getProspectosForm().down('#pais').setOptions(pais);
 
 
-                    me.getProspectosForm().down('fieldset').setTitle("Datos de prospecto");                    
+                    me.getProspectosForm().down('fieldset').setTitle(APP.core.config.Locale.config.lan.Prospectos.datosProspecto);
                     me.getProspectosForm().setValues(valores);
 
                     // Vamos por los contactos, primero el obligatorio
@@ -90291,7 +90495,7 @@ Ext.define('APP.controller.phone.Prospectos', {
                             me.agregaCampos(valores, checkboxfields);
                             concepto.add(checkboxfields);
                         
-                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);                            
+                            me.toggleFieldSetItems(concepto.down('checkboxfield'), true);
                             elementos = concepto.getItems().items;
 
                             for (j = 0; j < elementos.length; j++){
@@ -90331,7 +90535,8 @@ Ext.define('APP.controller.phone.Prospectos', {
 
                 } else {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert("Imposible cargar prospecto", "Se presentó un problema al intentar leer los datos del prospecto: " + response.Descripcion);
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.noRecuperaProspectoTitulo,
+                    APP.core.config.Locale.config.lan.Prospectos.noRecuperaProspectoMensaje + response.Descripcion);
                 }
             }
         }); 
@@ -90351,16 +90556,19 @@ Ext.define('APP.controller.phone.Prospectos', {
                 tipoPersona = textfield.getParent().down('#tipoPersona').getValue();
 
             if(Ext.isEmpty(tipoPersona)){
-                Ext.Msg.alert('¿Tipo de persona?', 'Seleccione primero el tipo de persona');
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.tipoPersonaTitulo,
+                APP.core.config.Locale.config.lan.Prospectos.tipoPersonaMensaje);
                 textfield.reset();            
             } else {
                 if(tipoPersona == 'F'){
                     if(newValue.length != 13){                    
-                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona física debe tener una longitud de 13 caracteres.');                    
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.longitudErroneaTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.rfcFisica);
                     }
                 } else {
                     if(newValue.length != 12){
-                        Ext.Msg.alert('Longitud errónea', 'El RFC de una persona moral debe tener una longitud de 12 caracteres.');    
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.longitudErroneaTitulo,
+                        APP.core.config.Locale.config.lan.Prospectos.rfcMoral);
                     }
                 }
             }
@@ -90756,7 +90964,9 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                         text: 'English',
                         value: 'en'
                     }
-                ]
+                ],
+
+                value: APP.core.config.Locale.config.lan.Lenguaje.idioma
             },
             {
                 xtype: 'fieldset',
@@ -91804,11 +92014,11 @@ Ext.define('APP.view.phone.cobranza.VisualizacionCobranzaList', {
         me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
-            layout:'hbox',        
+            layout:'hbox',
 
             items: [{
                 xtype: 'searchfield',
-                itemId: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.buscarCobranza,
+                itemId: 'buscarCobranzas',
                 placeHolder: APP.core.config.Locale.config.lan.VisualizacionCobranzaList.criterio,
                 flex: 8
             },{
@@ -91877,15 +92087,26 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
         disableSelection: true,
         onItemDisclosure: function (record, listItem, index, e) {
             this.fireEvent("tap", record, listItem, index, e);
-        },
-        items: [{
+        }
+
+
+        // masked: {
+        //     xtype: 'loadmask',
+        //     message: 'Cargando...'
+        // },
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setItems([{
             xtype: 'toolbar',
             docked: 'top',
             layout:'hbox',
             items: [{
                 xtype: 'searchfield',
                 itemId: 'buscarProspectos',
-                placeHolder: ' Buscar prospecto...',                
+                placeHolder: APP.core.config.Locale.config.lan.ProspectosList.buscarProspecto,
                 flex: 12                
             },/*{
                 xtype: 'button',
@@ -91905,22 +92126,22 @@ Ext.define('APP.view.phone.prospectos.ProspectosList', {
                 items: [
                     {
                         xtype: 'button',
-                        itemId: 'agregar',                        
+                        itemId: 'agregar',
                         ui: 'action',
-                        text: 'Agregar prospecto'
+                        text: APP.core.config.Locale.config.lan.ProspectosList.agregarProspecto
                     }
                 ]
-            }],
-        plugins: [{
+            }]);
+
+        me.setPlugins([{
             xclass: 'Ext.plugin.ListPaging',
             autoPaging: true,
-            loadMoreText: 'Ver Más...'
-        }],
-        masked: {
-            xtype: 'loadmask',
-            message: 'Cargando...'
-        },
-        loadingText: 'Obteniendo prospectos...'    
+            loadMoreText: APP.core.config.Locale.config.lan.ProspectosList.verMas
+        }]);
+
+        me.setLoadingText(APP.core.config.Locale.config.lan.ProspectosList.obteniendoProspectos);
+
+        me.callParent(arguments);
     }
 });
 
@@ -92114,11 +92335,18 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
     extend: 'Ext.dataview.List',
     xtype: 'opcionrutasactividades',
     config: {
-        itemTpl: '{title}',
-        data:[
-            {title: 'Rutas', action: 'rutas'},
-            {title: 'Actividades', action: 'actividades'}
-        ]
+        itemTpl: '{title}'
+    },
+
+    initialize: function (){
+    	var me = this;
+
+        me.setData([
+            {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
+            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
+        ]);
+
+        me.callParent(arguments);
     }
 });
 
@@ -92167,7 +92395,6 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
     extend: 'Ext.dataview.List',
     xtype: 'actividadescalendariodia',
     config: {
-        emptyText:'No tiene actividades este día',
         itemTpl:new Ext.XTemplate(
             '<tpl>',
 
@@ -92205,6 +92432,14 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
             model: 'APP.model.phone.ActividadCalendario',
             data: []
         })
+    },
+
+    initialize: function(){
+        var me = this;
+
+        me.setEmptyText(APP.core.config.Locale.config.lan.Actividades.sinActividades);
+
+        me.callParent(arguments);
     }
 });
 
@@ -92243,10 +92478,10 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
             },{
                 xtype: 'textfield',
                 name: 'Descripcion',
-                label:'Título'
+                label: APP.core.config.Locale.config.lan.Actividades.titulo
             },{
                 xtype:'fieldset',
-                title:'Empieza',
+                title: APP.core.config.Locale.config.lan.Actividades.empieza,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -92264,7 +92499,7 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 }]
             },{
                 xtype:'fieldset',
-                title:'Termina',
+                title: APP.core.config.Locale.config.lan.Actividades.termina,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -92283,7 +92518,7 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
             },{
                 xtype: 'checkboxfield',
                 name: 'Repetir',
-                label: 'Repetir',
+                label: APP.core.config.Locale.config.lan.Actividades.repetir,
                 required:false
             },{
                 xtype:'fieldset',
@@ -92297,36 +92532,36 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 items:[{
                     xtype: 'checkboxfield',
                     name: 'Lunes',
-                    label: 'Lunes'
+                    label: APP.core.config.Locale.config.lan.Actividades.lunes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Martes',
-                    label: 'Martes'
+                    label: APP.core.config.Locale.config.lan.Actividades.martes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Miercoles',
-                    label: 'Miercoles'
+                    label: APP.core.config.Locale.config.lan.Actividades.miercoles
                 },{
                     xtype: 'checkboxfield',
                     name: 'Jueves',
-                    label: 'Jueves'
+                    label: APP.core.config.Locale.config.lan.Actividades.jueves
                 },{
                     xtype: 'checkboxfield',
                     name: 'Viernes',
-                    label: 'Viernes'
+                    label: APP.core.config.Locale.config.lan.Actividades.viernes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Sabado',
-                    label: 'Sabado'
+                    label: APP.core.config.Locale.config.lan.Actividades.sabado
                 },{
                     xtype: 'checkboxfield',
                     name: 'Domingo',
-                    label: 'Domingo'
+                    label: APP.core.config.Locale.config.lan.Actividades.domingo
                 }]
             },{
                 xtype: 'textareafield',
                 name: 'Notas',
-                label: 'Notas',
+                label: APP.core.config.Locale.config.lan.Actividades.notas,
                 labelAlign:'top',
                 required:false
             },{
@@ -92334,7 +92569,7 @@ Ext.define('APP.form.phone.rutas.ActividadesForm', {
                 items:[{
                     xtype:'button',
                     margin:'10',
-                    text:'Guardar',
+                    text: APP.core.config.Locale.config.lan.Actividades.guardar,
                     action:'guardar'
                 }]
             }]
@@ -92528,10 +92763,10 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype: 'textfield',
                 name: 'Descripcion',
-                label:'Título'
+                label: APP.core.config.Locale.config.lan.Actividades.titulo
             },{
                 xtype:'fieldset',
-                title:'Empieza',
+                title: APP.core.config.Locale.config.lan.Actividades.empieza,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -92549,7 +92784,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 }]
             },{
                 xtype:'fieldset',
-                title:'Termina',
+                title: APP.core.config.Locale.config.lan.Actividades.termina,
                 layout:{
                     type:'hbox',
                     align:'stretch'
@@ -92568,7 +92803,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
             },{
                 xtype: 'checkboxfield',
                 name: 'Repetir',
-                label: 'Repetir',
+                label: APP.core.config.Locale.config.lan.Actividades.repetir,
                 required:false
             },{
                 xtype:'fieldset',
@@ -92582,41 +92817,41 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 items:[{
                     xtype: 'checkboxfield',
                     name: 'Lunes',
-                    label: 'Lunes'
+                    label: APP.core.config.Locale.config.lan.Actividades.lunes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Martes',
-                    label: 'Martes'
+                    label: APP.core.config.Locale.config.lan.Actividades.martes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Miercoles',
-                    label: 'Miercoles'
+                    label: APP.core.config.Locale.config.lan.Actividades.miercoles
                 },{
                     xtype: 'checkboxfield',
                     name: 'Jueves',
-                    label: 'Jueves'
+                    label: APP.core.config.Locale.config.lan.Actividades.jueves
                 },{
                     xtype: 'checkboxfield',
                     name: 'Viernes',
-                    label: 'Viernes'
+                    label: APP.core.config.Locale.config.lan.Actividades.viernes
                 },{
                     xtype: 'checkboxfield',
                     name: 'Sabado',
-                    label: 'Sabado'
+                    label: APP.core.config.Locale.config.lan.Actividades.sabado
                 },{
                     xtype: 'checkboxfield',
                     name: 'Domingo',
-                    label: 'Domingo'
+                    label: APP.core.config.Locale.config.lan.Actividades.domingo
                 }]
             },{
                 xtype: 'textareafield',
                 name: 'Notas',
-                label: 'Notas',
+                label: APP.core.config.Locale.config.lan.Actividades.notas,
                 labelAlign:'top',
                 required:false
             },{
                 xtype:'fieldset',
-                title:'Seleccione una dirección',
+                title: APP.core.config.Locale.config.lan.Actividades.direccion,
                 layout:{
                     type:'vbox',
                     align:'stretch'
@@ -92634,7 +92869,7 @@ Ext.define('APP.form.phone.rutas.RutasForm', {
                 items:[{
                     xtype:'button',
                     margin: 10,
-                    text:'Guardar',
+                    text: APP.core.config.Locale.config.lan.Actividades.guardar,
                     action:'guardar'
                 }]
             }]
@@ -92843,12 +93078,17 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
 	config:{
 		padding:'0 15 15 15',
         scrollable: 'vertical',
-        modal: true,
-		items:[
+        modal: true
+	},
+
+    initialize: function (){
+        var me = this;
+
+        me.setItems([
             {
                 xtype:'fieldset',
                 itemId:'datos',
-                title:'Agregar prospecto',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.titulo,
                 //instructions: '* Datos obligatorios',
                 defaults:{
                     required:true,
@@ -92863,7 +93103,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     {
                         xtype:'textfield',
                         name:'fecha',
-                        label: 'Fecha',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.fecha,
                         required:false,
                         disabled: true,
                         value: Ext.Date.format(new Date(), "d-m-Y"),
@@ -92873,21 +93113,21 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         name:'CodigoSocio',
                         itemId: 'codigoSocio',
                         tabIndex: 1,
-                        label:'Código'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.codigo
                     },{
                         xtype:'textfield',
                         name:'NombreSocio',
                         tabIndex: 2,
-                        label:'Razón Social'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.razon
                     },{
                         xtype:'selectfield',
                         name:'TipoPersona',
-                        label:'Tipo de persona',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.tipoPersona,
                         options:[{
-                                text: 'Física',
+                                text: APP.core.config.Locale.config.lan.ProspectosForm.fisica,
                                 value: 'F'
                             },{
-                                text: 'Moral',
+                                text: APP.core.config.Locale.config.lan.ProspectosForm.moral,
                                 value: 'M'
                             }],
                         tabIndex: 3,
@@ -92896,7 +93136,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     },{
                         xtype:'textfield',
                         name:'RFC',
-                        label:'RFC',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.rfc,
                         tabIndex: 4,                        
                         itemId: 'rfc'
                     }
@@ -92904,7 +93144,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 },{
                     xtype:'fieldset',
                     itemId:'direccion',
-                    title:'Dirección',                    
+                    title: APP.core.config.Locale.config.lan.ProspectosForm.direccion,
                     defaults:{
                         required:true,
                         cls: 'factura',
@@ -92918,49 +93158,49 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                             xtype:'textfield',
                             name:'Calle',
                             tabIndex: 5,
-                            label:'Calle'
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.calle
                         },{
                             xtype:'textfield',
                             name:'NoExterior',
-                            label:'No. Ext',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.noExt,
                             tabIndex: 6,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'NoInterior',
-                            label:'No.Int',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.noInt,
                             tabIndex: 7,
                             required:false
                         },{
                             xtype:'textfield',
                             name:'Colonia',
                             tabIndex: 8,
-                            label:'Colonia'
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.colonia
                         },{
                             xtype:'textfield',
                             name:'Ciudad',
                             tabIndex: 9,
-                            label:'Ciudad'  
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.ciudad
                         },{
                             xtype:'textfield',
                             name:'Municipio',
                             tabIndex: 10,
-                            label:'Municipio' 
+                            label:APP.core.config.Locale.config.lan.ProspectosForm.municipio
                         },{
                             xtype:'textfield',
                             name:'CodigoPostal',
                             tabIndex: 11,
-                            label:'C.P.' 
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.cp
                         },{
                             xtype:'selectfield',
                             name:'Pais',
                             tabIndex: 12,
-                            label:'País',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.pais,
                             itemId: 'pais'
                         },{
                             xtype:'selectfield',                            
                             name:'Estado',
-                            label:'Estado',
+                            label: APP.core.config.Locale.config.lan.ProspectosForm.estado,
                             tabIndex: 13,
                             itemId: 'estado'
                         }
@@ -92968,7 +93208,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 itemId:'contactos1',
-                title:'Encargado',                                 
+                title: APP.core.config.Locale.config.lan.ProspectosForm.encargado,
                 defaults:{
                     required:true,
                     cls: 'factura',
@@ -92982,23 +93222,23 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'nombreEncargado',
                         tabIndex: 13,
-                        label:'Nombre'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoNombre
                     },{
                         xtype:'numberfield',
                         name:'telOficinaEncargado',
                         tabIndex: 14,
-                        label:'Tel. Oficina'                    
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoTelOfi
                     },{
                         xtype:'numberfield',
                         name:'telMovilEncargado',
                         tabIndex: 15,
-                        label:'Tel. Móvil',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoTelMov,
                         required:false
                     }
                 ]
             },{
                 xtype:'fieldset',
-                title:'Productor'
+                title: APP.core.config.Locale.config.lan.ProspectosForm.productor
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos1',
@@ -93014,7 +93254,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                     {
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Cultivos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.cultivos,
                         itemId: 'cultivos1',
                         hidden: false
                     }
@@ -93035,40 +93275,40 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype: 'checkboxfield',
                         name: 'este',
                         itemId: 'superficieCheck',
-                        label: 'Superficie',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.superficie,
                         hidden: false
                     },{
                         xtype:'numberfield',
                         name:'campoAbierto',
-                        label:'Campo Abierto',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.campoAbierto,
                         tabIndex: 16,
                         minValue: 0,
                         itemId: 'campoAbierto'
                     },{
                         xtype:'numberfield',
                         name:'invernadero',
-                        label:'Invernadero',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.invernadero,
                         tabIndex: 17,
                         minValue: 0,
                         itemId: 'invernadero'
                     },{
                         xtype:'numberfield',
                         name:'macroTunel',
-                        label:'Macro Túnel',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.macroTunel,
                         tabIndex: 18,
                         minValue: 0,
                         itemId: 'macroTunel'
                     },{
                         xtype:'numberfield',
                         name:'total',
-                        label:'Total',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.total,
                         itemId: 'total'
                     }
                 ]
             },{
                 xtype:'fieldset',
                 itemId:'distribuidor',
-                title:'Distribuidor',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.distribuidor,
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -93081,7 +93321,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype:'textfield',
                         name:'zonaDeInfluencia',
                         tabIndex: 19,
-                        label:'Zona de influencia'
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.zonaDeInfluencia
                     }
                 ]
             },{
@@ -93098,7 +93338,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Comercializa',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.comercializa,
                         itemId: 'comercializa2',
                         hidden: false
                     }
@@ -93118,19 +93358,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Encargado de compras',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoCompras,
                         hidden: false,
                         itemId: 'contactos2'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoCompras',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoComprasNombre,
                         tabIndex: 20,
                         itemId: 'nombreEncargadoCompras'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoCompras',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoComprasTel,
                         tabIndex: 21,
                         itemId: 'telEncargadoCompras'
                     }
@@ -93150,19 +93390,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Encargado de pagos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagos,
                         hidden: false,
                         itemId: 'contactos3'
                     },{
                         xtype:'textfield',
                         name:'nombreEncargadoPagos',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagosNombre,
                         tabIndex: 22,
                         itemId: 'nombreEncargadoPagos'
                     },{
                         xtype:'numberfield',
                         name:'telEncargadoPagos',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.encargadoPagosTel,
                         tabIndex: 23,
                         itemId: 'telEncargadoPagos'
                     }
@@ -93182,19 +93422,19 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'este',
-                        label: 'Responsable técnico',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableTecnico,
                         hidden: false,
                         itemId: 'contactos4'
                     },{
                         xtype:'textfield',
                         name:'nombreResponsableTecnico',
-                        label:'Nombre',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableNombre,
                         tabIndex: 24,
                         itemId: 'nombreResponsableTecnico'
                     },{
                         xtype:'numberfield',
                         name:'telResponsableTecnico',
-                        label:'Teléfono',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.responsableTel,
                         tabIndex: 25,
                         itemId: 'telResponsableTecnico'
                     }
@@ -93202,7 +93442,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
             },{
                 xtype:'fieldset',
                 margin: '3 0 0 0',
-                title:'Productos utilizados'
+                title: APP.core.config.Locale.config.lan.ProspectosForm.productosUtilizados
             },{
                 xtype:'fieldset',
                 itemId: 'conceptos3',
@@ -93216,7 +93456,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Solubles',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.solubles,
                         itemId: 'solubles3',
                         hidden: false
                     }
@@ -93235,7 +93475,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Granulares',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.granulares,
                         itemId: 'granulares4',
                         hidden: false
                     }
@@ -93254,7 +93494,7 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Ácidos',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.acidos,
                         itemId: 'acidos5',
                         hidden: false                        
                     }
@@ -93273,15 +93513,15 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                 items:[{
                         xtype: 'checkboxfield',
                         name: 'servicio',
-                        label: 'Otros',
+                        label: APP.core.config.Locale.config.lan.ProspectosForm.otros,
                         itemId: 'otros6',
-                        hidden: false                        
+                        hidden: false
                     }
                 ]
             },{
                 xtype:'fieldset',                
                 itemId:'comentarios',
-                title:'Comentarios',
+                title: APP.core.config.Locale.config.lan.ProspectosForm.comentarios,
                 defaults:{
                     cls: 'factura',
                     labelWrap: true,
@@ -93306,12 +93546,14 @@ Ext.define('APP.form.phone.prospectos.ProspectosForm', {
                         xtype: 'button',
                         itemId: 'agregarProspecto', 
                         ui: 'action',
-                        text: 'Enviar prospecto'
+                        text: APP.core.config.Locale.config.lan.ProspectosForm.enviarProspecto
                     }
                 ]
             }
-        ]
-	}
+        ]);
+    
+        me.callParent(arguments);
+    }
 });
 
 /**
