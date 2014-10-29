@@ -454,7 +454,7 @@ Ext.define('APP.core.config.Locale', {
       editarRuta: "Editar ruta",
       trazarRuta: "Trazar ruta"
     }
-  },
+  }
 },
 
   localize: function() {

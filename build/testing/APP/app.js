@@ -83513,8 +83513,7 @@ Ext.define('APP.core.config.Locale', {
       longitudErroneaTitulo: "Longitud errónea",
       rfcFisica: "El RFC de una persona física debe tener una longitud de 13 caracteres.",
       rfcMoral: "EL RFC de una persona moral debe tener una longitud de 12 caracteres"
-    }
-  },
+    },  
 
     Actividades: {
       sinActividades: "No tiene actividades este día",
@@ -83574,6 +83573,7 @@ Ext.define('APP.core.config.Locale', {
       editarRuta: "Editar ruta",
       trazarRuta: "Trazar ruta"
     }
+  },
 },
 
   localize: function() {
@@ -87771,8 +87771,8 @@ Ext.define('APP.controller.phone.Rutas', {
                     (function(marcador){
                         var contenido = "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + " </b>" +
                                         Ext.Date.format(item.data.FechaVisita, "d/m/Y") +
-                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " hrs.</b>" + 
-                                        item.data.HoraVisita.substr(0, 5) + "</p>";
+                                        "<p><b>" + APP.core.config.Locale.config.lan.Rutas.hora + " </b>" + 
+                                        item.data.HoraVisita.substr(0, 5) + " hrs.</p>";
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);
@@ -92163,7 +92163,7 @@ Ext.define('APP.view.phone.informes.InformesList', {
         var me = this;
 
         me.setData([
-            {title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
+            //{title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
             {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}            
         ]);
 
@@ -92314,7 +92314,7 @@ Ext.define('APP.view.phone.informes.InformesGeneradosList', {
          ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
          ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
                   '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.articulos + 
-                  ' :<b>{cantidad}</b> </div>',
+                  ': <b>{cantidad}</b> </div>',
             '</div>'].join(''));
 
         me.setEmptyText('<div style="margin-top: 20px; text-align: center">' + 
@@ -92341,7 +92341,7 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
     initialize: function (){
     	var me = this;
 
-        me.setData([
+        me.setData([        			
             {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
             {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
         ]);
