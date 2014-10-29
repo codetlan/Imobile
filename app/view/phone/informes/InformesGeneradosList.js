@@ -21,7 +21,7 @@ Ext.define('APP.view.phone.informes.InformesGeneradosList', {
          ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
          ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
                   '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.articulos + 
-                  ' :<b>{cantidad}</b> </div>',
+                  ': <b>{cantidad}</b> </div>',
             '</div>'].join(''));
 
         me.setEmptyText('<div style="margin-top: 20px; text-align: center">' + 

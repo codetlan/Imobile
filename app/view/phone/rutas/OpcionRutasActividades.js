@@ -13,7 +13,7 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
     initialize: function (){
     	var me = this;
 
-        me.setData([
+        me.setData([        			
             {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
             {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
         ]);

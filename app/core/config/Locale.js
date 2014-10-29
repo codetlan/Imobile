@@ -394,8 +394,7 @@ Ext.define('APP.core.config.Locale', {
       longitudErroneaTitulo: "Longitud errónea",
       rfcFisica: "El RFC de una persona física debe tener una longitud de 13 caracteres.",
       rfcMoral: "EL RFC de una persona moral debe tener una longitud de 12 caracteres"
-    }
-  },
+    },  
 
     Actividades: {
       sinActividades: "No tiene actividades este día",
@@ -455,6 +454,7 @@ Ext.define('APP.core.config.Locale', {
       editarRuta: "Editar ruta",
       trazarRuta: "Trazar ruta"
     }
+  },
 },
 
   localize: function() {
