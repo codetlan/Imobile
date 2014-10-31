@@ -6,7 +6,7 @@ Ext.define('APP.view.phone.menu.MenuList', {
     extend: 'Ext.dataview.DataView',
     xtype:'menulist',
     config: {
-        scrollable: true,
+        scrollable: true,        
         inline: true,
         store: 'Menu',
         itemTpl: [

@@ -34,8 +34,9 @@ Ext.define('APP.controller.phone.Login', {
 
     onLoginUser: function (btn) {
         var form = this.getLoginForm(),
-            almacenes,            
-            values = form.getValues();
+            almacenes,
+            me = this,
+            values = form.getValues();            
 
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
@@ -68,14 +69,33 @@ Ext.define('APP.controller.phone.Login', {
                     Ext.Viewport.removeAll(true);                                        
                     Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));                    
                     Ext.Viewport.getActiveItem().getAt(0).almacenes = almacenes;
+                    Ext.Viewport.getActiveItem().getAt(0).task = Ext.create('Ext.util.DelayedTask', {
+                                                                                fn: function() {
+                                                                                    console.log('Calendariza');
+                                                                                }
+                                                                            });
+                    Ext.Viewport.getActiveItem().getAt(0).overlay = new Ext.Panel({
+                                                                            hidden: true
+                                                                        });
+
+                    var task = Ext.Viewport.getActiveItem().getAt(0).task;                    
 
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
+
+                    task.delay(10000, me.calendariza.bind(me));
 
                 } else {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
                                 response.Descripcion, Ext.emptyFn);
                 }
-                Ext.Viewport.setMasked(false);
+
+                
+                //task.setFn(me.calendariza.bind(me));                
+
+                //task.delay(3000);            
+
+                Ext.Viewport.setMasked(false);                
+
             },
             failure: function () {
                 Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
@@ -162,6 +182,103 @@ Ext.define('APP.controller.phone.Login', {
 
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
+    },
+
+    calendariza: function (){
+        var me = this,
+            hoy = Ext.Date.format(new Date(), "Y-m-d"),
+            margen = 120,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                Usuario: localStorage.getItem("CodigoUsuario"),
+                FechaInicio: "2014-10-01",
+                FechaFin: "2014-10-31",
+                CodigoCliente: ""
+            };
+
+        console.log(hoy);
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ObtenerRutasSinVisitar",
+            params: params,
+
+            callbackKey: 'callback',
+            success: function (response) {
+                var procesada = response.Procesada
+
+                if (procesada) {
+                    resultados = response.Data;
+                    console.log(resultados);
+
+                    var eventos = "",
+                        contadorEventos = 0;
+
+                    for(var i = 0; i < resultados.length; i++) {
+                        eventos +=  "<div><p><b>Evento: </b>" + resultados[i].Descripcion + "<br>" +
+                                    "<b>Fecha: </b>" + resultados[i].FechaInicio + "<br>" +
+                                    "<b>Hora Inicio: </b>" + resultados[i].HoraInicio + "<br>" +
+                                    "<b>Hora Fin: </b>" + resultados[i].HoraFin + "<br>" + "</p>" +
+                                    "</div>";
+
+                        contadorEventos++;
+                    }
+
+                    //console.log(eventos);
+
+                    if(Ext.Viewport.getActiveItem().getAt(0).overlay.getHidden()){
+                        Ext.Viewport.getActiveItem().getAt(0).overlay = Ext.Viewport.add({
+                            xtype: 'panel',
+                            modal: true,
+                            hideOnMaskTap: true,
+                            showAnimation:{
+                                type: 'popIn',
+                                duration: 250,
+                                easing: 'ease-out'
+                            },
+                            hideAnimation: {
+                                type: 'popOut',
+                                duration: 250,
+                                easing: 'ease-out'
+                            },
+                            centered: true,
+                            width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
+                            height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 400,
+                            styleHtmlContent: true,
+                            html: eventos,
+                            items: [
+                            {
+                                docked: 'top',
+                                xtype: 'toolbar',
+                                title: contadorEventos == 1 ? contadorEventos + ' evento pendiente' : contadorEventos + ' eventos pendientes'
+                            }],
+                            scrollable: true
+                        });
+
+                        Ext.Viewport.getActiveItem().getAt(0).overlay.show();
+                    }
+
+                    //Ext.Msg.alert("Eventos pendientes", eventos);
+                } else {
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
+                                response.Descripcion, Ext.emptyFn);
+                }
+            },
+
+            failure: function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {
+                    //Ext.Viewport.setMasked(false);
+                });
+                //Ext.Viewport.setMasked(false);
+            },            
+        });
+
+        //task = Ext.Viewport.getActiveItem().getAt(0).task; 
+        //console.log(new Date());
+        console.log(nada);
     }
 
 /*    launch: function(){

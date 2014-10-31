@@ -3,6 +3,7 @@
  */
 Ext.define('APP.controller.phone.Rutas', {
     extend: 'Ext.app.Controller',
+    requires: ['Ext.util.DelayedTask'],
     config:{
         refs:{
             menuNav:'menunav',
@@ -1879,5 +1880,18 @@ Ext.define('APP.controller.phone.Rutas', {
             fecha = "" + dia + " "+ mes + " " + anio;
 
         return fecha;
-    }
+    },
+
+    calendariza: function(){
+        //create the delayed task instance with our callback
+        var task = Ext.create('Ext.util.DelayedTask', {
+             fn: function() {
+                console.log('callback!');
+             }
+        });
+
+        task.delay(10000); //the callback function will now be called after 1500ms
+
+        //task.cancel(); //the callback function will never be called now, unless we call delay() again
+    },
 });
