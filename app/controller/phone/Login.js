@@ -187,6 +187,7 @@ Ext.define('APP.controller.phone.Login', {
     calendariza: function (){
         var me = this,
             hoy = Ext.Date.format(new Date(), "Y-m-d"),
+            horaHoy = Ext.Date.format(new Date(), "H:i:s"),
             margen = 120,
             params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -194,12 +195,13 @@ Ext.define('APP.controller.phone.Login', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token"),
                 Usuario: localStorage.getItem("CodigoUsuario"),
-                FechaInicio: "2014-10-01",
-                FechaFin: "2014-10-31",
+                FechaInicio: hoy,
+                FechaFin: hoy,
                 CodigoCliente: ""
             };
 
         console.log(hoy);
+        console.log(horaHoy);
 
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ObtenerRutasSinVisitar",
@@ -210,54 +212,82 @@ Ext.define('APP.controller.phone.Login', {
                 var procesada = response.Procesada
 
                 if (procesada) {
-                    resultados = response.Data;
-                    console.log(resultados);
-
                     var eventos = "",
-                        contadorEventos = 0;
+                        horaActual = new Date(),
+                        horaEvento = new Date(),
+                        diferencia,
+                        resultados = response.Data;
+                        
+                    contadorEventos = 0;
+                    horaActual = Ext.Date.parse(horaHoy, "H:i:s");
+                    
+                    console.log(horaActual, horaEvento, horaHoy > resultados[0].HoraInicio.substring(0,5), 
+                        Ext.Date.diff(horaActual, horaEvento, "mi"));
+
+                    for(var i = 0; i < resultados.length; i++) { // Checamos si hay eventos vencidos.
+                        if(resultados[i].Estatus == 0){
+
+                            eventos +=  "<b>Evento Vencido</b><br>" +
+                                        "<div><p><b>Evento: </b>" + resultados[i].Descripcion + "<br>" +
+                                        "<b>Fecha: </b>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                        "<b>Hora Inicio: </b>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                        "<b>Hora Fin: </b>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                        "</div>";
+                        }
+                    }                    
 
                     for(var i = 0; i < resultados.length; i++) {
-                        eventos +=  "<div><p><b>Evento: </b>" + resultados[i].Descripcion + "<br>" +
-                                    "<b>Fecha: </b>" + resultados[i].FechaInicio + "<br>" +
-                                    "<b>Hora Inicio: </b>" + resultados[i].HoraInicio + "<br>" +
-                                    "<b>Hora Fin: </b>" + resultados[i].HoraFin + "<br>" + "</p>" +
-                                    "</div>";
+                        if(horaHoy < resultados[i].HoraInicio){
+                            horaEvento = Ext.Date.parse(resultados[i].HoraInicio, "H:i:s");
+                            diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
 
-                        contadorEventos++;
+                            if(diferencia <= margen){
+                                eventos +=  "<div><p><b>Evento: </b>" + resultados[i].Descripcion + "<br>" +
+                                            "<b>Fecha: </b>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                            "<b>Hora Inicio: </b>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                            "<b>Hora Fin: </b>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                            "</div>";
+
+                                contadorEventos++;
+                            }
+                        }
                     }
 
                     //console.log(eventos);
+                    if(contadorEventos > 0){
+                        if(Ext.Viewport.getActiveItem().getAt(0).overlay.getHidden()){
+                            Ext.Viewport.getActiveItem().getAt(0).overlay = Ext.Viewport.add({
+                                xtype: 'panel',
+                                modal: true,
+                                hideOnMaskTap: true,
+                                showAnimation:{
+                                    type: 'popIn',
+                                    duration: 250,
+                                    easing: 'ease-out'
+                                },
+                                hideAnimation: {
+                                    type: 'popOut',
+                                    duration: 250,
+                                    easing: 'ease-out'
+                                },
+                                centered: true,
+                                width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
+                                height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 400,
+                                styleHtmlContent: true,
+                                html: eventos,
+                                items: [
+                                {
+                                    docked: 'top',
+                                    xtype: 'toolbar',
+                                    title: contadorEventos == 1 ? contadorEventos + ' evento pendiente' : contadorEventos + ' eventos pendientes'
+                                }],
+                                scrollable: true
+                            });
 
-                    if(Ext.Viewport.getActiveItem().getAt(0).overlay.getHidden()){
-                        Ext.Viewport.getActiveItem().getAt(0).overlay = Ext.Viewport.add({
-                            xtype: 'panel',
-                            modal: true,
-                            hideOnMaskTap: true,
-                            showAnimation:{
-                                type: 'popIn',
-                                duration: 250,
-                                easing: 'ease-out'
-                            },
-                            hideAnimation: {
-                                type: 'popOut',
-                                duration: 250,
-                                easing: 'ease-out'
-                            },
-                            centered: true,
-                            width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
-                            height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 400,
-                            styleHtmlContent: true,
-                            html: eventos,
-                            items: [
-                            {
-                                docked: 'top',
-                                xtype: 'toolbar',
-                                title: contadorEventos == 1 ? contadorEventos + ' evento pendiente' : contadorEventos + ' eventos pendientes'
-                            }],
-                            scrollable: true
-                        });
-
-                        Ext.Viewport.getActiveItem().getAt(0).overlay.show();
+                            Ext.Viewport.getActiveItem().getAt(0).overlay.show();
+                        }
+                    } else {
+                        console.log("No hay eventos pendientes");
                     }
 
                     //Ext.Msg.alert("Eventos pendientes", eventos);
@@ -279,6 +309,15 @@ Ext.define('APP.controller.phone.Login', {
         //task = Ext.Viewport.getActiveItem().getAt(0).task; 
         //console.log(new Date());
         console.log(nada);
+    },
+
+    formateaFecha: function (fecha, separador){
+        "2014-10-31"
+        var dia = fecha.substring(8,10),
+            mes = fecha.substring(5,7),
+            anio = fecha.substring(0,4);
+
+        return dia + separador + mes + separador + anio;
     }
 
 /*    launch: function(){
