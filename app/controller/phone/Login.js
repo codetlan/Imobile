@@ -235,7 +235,7 @@ Ext.define('APP.controller.phone.Login', {
                     }                    
 
                     for(var i = 0; i < resultados.length; i++) {
-                        //if(horaHoy < resultados[i].HoraInicio){
+                        if(horaHoy < resultados[i].HoraInicio){
                             horaEvento = Ext.Date.parse(resultados[i].HoraInicio, "H:i:s");
                             diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
 
@@ -248,7 +248,7 @@ Ext.define('APP.controller.phone.Login', {
 
                                 contadorEventos++;
                             }
-                      //  }
+                        }
                     }
 
                 Ext.data.JsonP.request({
@@ -440,7 +440,7 @@ Ext.define('APP.controller.phone.Login', {
 
                                 me.calendariza();                    
                                 //task.delay(10000, me.re.bind(me));
-                                task.delay(10000, me.revisaEventosPendientes.bind(me));
+                                task.delay(900000, me.revisaEventosPendientes.bind(me));
 
                             } else {
                                 Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
