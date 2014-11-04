@@ -8,6 +8,12 @@ Ext.define('APP.model.phone.Informe', {
             name: 'codigo',
             type: 'string'
         },{
+            name: 'nombre',
+            type: 'string'
+        },{
+            name: 'codigoArticulo',
+            type: 'string'
+        },{
             name: 'descripcion',
             type: 'string'
         },{

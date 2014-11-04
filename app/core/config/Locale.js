@@ -282,7 +282,8 @@ Ext.define('APP.core.config.Locale', {
 
       AnalisisVentasList: {
         clientes: "Clientes",
-        articulos: "Artículos"
+        articulos: "Artículos",
+        clientesArticulos: "Clientes y Artículos"
       },
 
       InformesList: {

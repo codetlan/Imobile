@@ -15,9 +15,8 @@ Ext.define('APP.view.phone.informes.InformesList', {
     initialize: function(){
         var me = this;
 
-        me.setData([
-            //{title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
-            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}            
+        me.setData([            
+            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}
         ]);
 
         me.callParent(arguments);

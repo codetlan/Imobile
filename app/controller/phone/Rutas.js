@@ -173,7 +173,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 this.loadRutasCalendario(firstDay,lastDay, "");
 
-                break;
+                break;            
         }
     },
 
@@ -945,6 +945,9 @@ Ext.define('APP.controller.phone.Rutas', {
                 if(nd < today){
                     if(ruta.Estatus == 2){
                         ruta.Estatus = 0;
+                        me.getMenuNav().ruta = ruta;
+                        me.getRutasCalendario().accion = 0;  
+                        me.cambiaStatusRuta();
                     }                    
                 }
 

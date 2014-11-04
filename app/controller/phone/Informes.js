@@ -50,17 +50,6 @@ Ext.define('APP.controller.phone.Informes', {
 
         } else {
             switch (record.data.action){
-                case 'bitacoraVendedores':
-                    if(view.getActiveItem().isXType('container')){
-                        return;
-                    }
-                    
-                    view.push({
-                        html: 'Bitácora de vendedores'
-                    });
-
-                    break;
-
                 case 'analisisVentas':
 
                     if(view.getActiveItem().isXType('analisisventaslist')){
@@ -82,6 +71,10 @@ Ext.define('APP.controller.phone.Informes', {
 
                 case 'analisisArticulos':
                     me.auxiliarPonCodigos('Articulos');
+                    break;
+
+                case 'clientesArticulos':
+                    me.auxiliarPonCodigos('Clientes');
                     break;
             }
         }

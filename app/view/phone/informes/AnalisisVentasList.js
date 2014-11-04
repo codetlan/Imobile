@@ -17,7 +17,8 @@ Ext.define('APP.view.phone.informes.AnalisisVentasList', {
 
         me.setData([
             {title: APP.core.config.Locale.config.lan.AnalisisVentasList.clientes, action: 'analisisClientes'},
-            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.articulos, action: 'analisisArticulos'}
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.articulos, action: 'analisisArticulos'},
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.clientesArticulos, action: 'clientesArticulos'}
         ]);
 
         me.callParent(arguments);

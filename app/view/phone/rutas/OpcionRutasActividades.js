@@ -15,7 +15,7 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
 
         me.setData([        			
             {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
-            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
+            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}            
         ]);
 
         me.callParent(arguments);
