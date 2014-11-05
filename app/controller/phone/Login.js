@@ -204,6 +204,7 @@ Ext.define('APP.controller.phone.Login', {
     calendariza: function (){
         var me = this,
             hoy = Ext.Date.format(new Date(), "Y-m-d"),
+            semanaPasada = Ext.Date.add(new Date(), Ext.Date.DAY, -7);
             horaHoy = Ext.Date.format(new Date(), "H:i:s"),
             margen = 120,
             params = {
@@ -212,7 +213,7 @@ Ext.define('APP.controller.phone.Login', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token"),
                 Usuario: localStorage.getItem("CodigoUsuario"),
-                FechaInicio: hoy,
+                FechaInicio: semanaPasada,
                 FechaFin: hoy,
                 CodigoCliente: ""
             };
@@ -258,7 +259,7 @@ Ext.define('APP.controller.phone.Login', {
                     for(var i = 0; i < resultados.length; i++) {
                         if(horaHoy < resultados[i].HoraInicio){
                             horaEvento = Ext.Date.parse(resultados[i].HoraInicio, "H:i:s");
-                            diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
+                            diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");                            
 
                             if(diferencia <= margen){
                                 eventos +=  "<div><p><b>Ruta: </b>" + resultados[i].Descripcion + "<br>" +
@@ -280,7 +281,7 @@ Ext.define('APP.controller.phone.Login', {
                         CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                         Token: localStorage.getItem("Token"),
                         Usuario: localStorage.getItem("CodigoUsuario"),
-                        FechaInicio: hoy,
+                        FechaInicio: semanaPasada,
                         FechaFin: hoy
                     },
 
@@ -293,8 +294,7 @@ Ext.define('APP.controller.phone.Login', {
                             var actividades = response.Data;
 
                             for(var i = 0; i < actividades.length; i++) { // Checamos si hay eventos vencidos.
-                                if(actividades[i].Estatus == 0){
-
+                                if(actividades[i].Estatus == 0){                                    
                                     eventos +=  "<font color = red><b>Actividad Vencida</b></font><br>" +
                                                 "<div><p><font color = red><b>Actividad: </b></font>" + actividades[i].Descripcion + "<br>" +
                                                 "<font color = red><b>Fecha: </b></font>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
@@ -312,7 +312,7 @@ Ext.define('APP.controller.phone.Login', {
                                     horaEvento = Ext.Date.parse(actividades[i].HoraInicio, "H:i:s");
                                     diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
 
-                                    //if(diferencia <= margen){
+                                    if(diferencia <= margen){
                                         eventos +=  "<div><p><b>Actividad: </b>" + actividades[i].Descripcion + "<br>" +
                                                     "<b>Fecha: </b>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
                                                     "<b>Hora Inicio: </b>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
@@ -320,7 +320,7 @@ Ext.define('APP.controller.phone.Login', {
                                                     "</div>";
 
                                         contadorEventos++;
-//                                    }
+                                    }
                                 }
                             }
 
@@ -386,7 +386,8 @@ Ext.define('APP.controller.phone.Login', {
     */ 
     revisaEventosPendientes: function(){
         var me = this;
-            hoy = new Date()
+            hoy = new Date(),            
+            semanaPasada = Ext.Date.add(hoy, Ext.Date.DAY, -7);
             rutaFechaHora = new Date(),
             task = Ext.Viewport.getActiveItem().getAt(0).task;
         //console.log("Revisando eventos");
@@ -399,7 +400,7 @@ Ext.define('APP.controller.phone.Login', {
                 CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                 Token: localStorage.getItem("Token"),
                 Usuario: localStorage.getItem("CodigoUsuario"),
-                FechaInicio: hoy,
+                FechaInicio: semanaPasada,
                 FechaFin: hoy,
                 CodigoCliente: ""
             },
@@ -433,7 +434,7 @@ Ext.define('APP.controller.phone.Login', {
                             CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                             Token: localStorage.getItem("Token"),
                             Usuario: localStorage.getItem("CodigoUsuario"),
-                            FechaInicio: hoy,
+                            FechaInicio: semanaPasada,
                             FechaFin: hoy
                         },
 
@@ -457,7 +458,7 @@ Ext.define('APP.controller.phone.Login', {
                                     }
                                 }
 
-                                me.calendariza();                    
+                                me.calendariza();
                                 //task.delay(10000, me.re.bind(me));
                                 task.delay(900000, me.revisaEventosPendientes.bind(me));
 
@@ -591,7 +592,7 @@ Ext.define('APP.controller.phone.Login', {
                 "Actividad.Estatus" : 0
             };
 
-            //console.log(params);
+            console.log(params);
 
             Ext.data.JsonP.request({
                 url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
@@ -601,10 +602,10 @@ Ext.define('APP.controller.phone.Login', {
                     var procesada = response.Procesada
 
                     if (procesada) {
-                        //console.log("Se cambió un estatus de actividad");
+                        console.log("Se cambió un estatus de actividad");
                     }
                     else {
-                        //console.log("No se cambió un estatus de actividad");
+                        console.log("No se cambió un estatus de actividad");
                     }
 
                 },
