@@ -21,8 +21,15 @@ Ext.define('APP.controller.phone.Menu', {
 
         }
     },
-    onMenuTap: function (list, index, target, record) {
 
+    /**
+    * Muestra la pantalla asociada a la selección realizada.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.    
+    */
+    onMenuTap: function (list, index, target, record) {
         var action = record.data.action;
         switch (action) {
             case 'ordenes':
@@ -36,7 +43,6 @@ Ext.define('APP.controller.phone.Menu', {
                             title: APP.core.config.Locale.config.lan.menu.Orden
                         }
                     ]
-
                 });
                 break;
             case 'rutas':
@@ -88,8 +94,7 @@ Ext.define('APP.controller.phone.Menu', {
                     Criterio: ''
                 });
 
-                store.load();
-                //this.agregaOpciones();
+                store.load();                
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -100,7 +105,7 @@ Ext.define('APP.controller.phone.Menu', {
             case 'salir':
                 Ext.Viewport.removeAll(true);
                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-/*                Ext.Viewport.removeAll();
+/*               Ext.Viewport.removeAll();
                 Ext.Viewport.add('APP.view.phone.login.LoginPanel');*/
                 break;
 
@@ -118,8 +123,12 @@ Ext.define('APP.controller.phone.Menu', {
         console.log(document, 'entra document');
     },
 
+    /**
+    * Responde al botón Back del navigationview. 
+    * Remueve el título con el nombre del cliente y recarga la lista de clientes.
+    * @param navigationview Éste navigationview.
+    */
     onBackMenu: function (navigationview) {
-
         var me = this,
             store,
             view = this.getMenuNav(),
@@ -144,49 +153,6 @@ Ext.define('APP.controller.phone.Menu', {
             store.getProxy().setUrl("http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerListaSociosiMobile");
             store.setParams(params);
             store.load();            
-        }
-    },
-
-    agregaOpciones: function(){
-        if(this.getMenuNav().estados == undefined){
-            var me = this,
-                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-                params = {
-                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                    Token: localStorage.getItem("Token")
-                };
-
-        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
-        Ext.Viewport.setMasked(true);
-
-            Ext.data.JsonP.request({
-                url: url,
-                params: params,
-                callbackKey: 'callback',
-                success: function (response) {
-
-                    if (response.Procesada) {
-                        var opciones = new Array(),
-                            datos = response.Data,
-                            i;
-
-                        for (i = 0; i < datos.length; i++){
-                            opciones[i] = {
-                                text: datos[i].NombreEstado,
-                                value: datos[i].CodigoEstado
-                            };
-                        }                    
-
-                        me.getMenuNav().estados = opciones;
-                        Ext.Viewport.setMasked(false);
-                    } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
-                        Ext.Viewport.setMasked(false);
-                    }
-                }
-            });
         }
     }
 });

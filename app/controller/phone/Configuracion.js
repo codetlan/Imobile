@@ -108,10 +108,8 @@ Ext.define('APP.controller.phone.Configuracion', {
                     ui: 'action'
                 }
             ],
-            fn: function (buttonId) {
-                //alert(buttonId);
-                if (buttonId == 'yes') {
-                    //alert('Entré a yes');
+            fn: function (buttonId) {                
+                if (buttonId == 'yes') {                    
                     if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
@@ -129,8 +127,7 @@ Ext.define('APP.controller.phone.Configuracion', {
                             CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                             Token: localStorage.getItem("Token")
                         };                    
-
-                    //alert(idioma);
+                    
                     switch (idioma){
                         case 'en':                            
                             params["Criterio"] =  'COK_JO_en_US';                            
@@ -140,45 +137,26 @@ Ext.define('APP.controller.phone.Configuracion', {
                             params["Criterio"] = 'COK_JO_es_MX';
                             break;
                     }
-console.log(params);
-//alert(params);
+
+                    //console.log(params);
                     Ext.data.JsonP.request({
-                    //Ext.Ajax.request({
-                        url: url, // Leemos del json
-                        //url: 'app/core/data/en_US.json',
+                        url: url, 
                         params: params,                        
                         
                         success: function(response){
                             if (response.Procesada) {
                                 var text = response.Data[0].Idioma,
-                                    pinta = "", i;  
-                                // console.log(text.length, 'elementos en cadena');
-                                // for(i = 0; i < text.length; i++){
-                                //     pinta += text.charCodeAt(i).toString() + " ";
-                                //     console.log(text.charCodeAt(i));
-                                // }
-
-
-                                //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
-                                var trans; // Las traducciones para el menú
-                                //alert(text);
-                                //alert(pinta);
-                                var idiomas = Ext.decode(text);  // Convertimos text en objeto
+                                    pinta = "", i,
+                                    trans, // Las traducciones para el menú
+                                    idiomas = Ext.decode(text);  // Convertimos text en objeto
                                 
                                 APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
                                 trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-                                APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
-
-                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                                //APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
-                                
-                                //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                                //APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
+                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                
+                                                                
                                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-
-    /*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
-                                    xtype: 'configuracionpanel'
-                                });   */
 
                                 Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
                                     Object.defineProperty(element.getData(), "name", {

@@ -1,5 +1,5 @@
 
-/* Created by th3gr4bb3r on 7/21/14.
+/* Created by Alí on 7/21/14.
  */
 Ext.define('APP.controller.phone.Prospectos', {
     extend: 'Ext.app.Controller',
@@ -40,9 +40,6 @@ Ext.define('APP.controller.phone.Prospectos', {
             'prospectoslist':{
                 activate: function(list){
                     list.getStore().resetCurrentPage();
-/*                    list.getStore().setParams({
-                        Criterio: localStorage.getItem("CodigoDispositivo")
-                    });*/
                     list.getStore().load();
                 },
                 itemtap: 'muestraProspectos'
@@ -57,6 +54,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega el prospecto.
+    * @param btn Éste button.
+    */
     onAgregarProspecto: function (btn) {
         var me = this,
             url =  "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerFolioSiguienteProspecto",            
@@ -101,6 +102,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         });        
     },
 
+    /**
+    * Busca el prospecto establecido en el searchfield
+    * @param btn Éste button.
+    */
     buscaProspectoBoton: function (btn){
         var me = this,
             store = me.getProspectosList().getStore(),
@@ -114,6 +119,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         store.load();
     },
 
+    /**
+    * Busca el prospecto establecido el searchfield.
+    * @param searchfield Éste searchfield
+    */
     buscaProspecto: function (searchfield){
         if(event.keyCode == 13){
             var me = this,
@@ -129,6 +138,9 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Limpia el searchfield de búsqueda de prospectos.
+    */
     limpiaBusquedaProspecto: function (){
         var me = this,
             store = me.getProspectosList().getStore();
@@ -141,15 +153,14 @@ Ext.define('APP.controller.phone.Prospectos', {
         store.load();    
     },
 
+    /**
+    * Oculta o aparece los items hermanos dependiendo si su primer hermano está chequeado o no.
+    * @param chk El primer textfield.
+    * @param value Booleano para determinar si el primer textfield están chequeado o no.
+    */
     toggleFieldSetItems: function (chk, value) {
         var items = chk.up('fieldset').getItems().items,
             textfield, fieldToFocus = undefined;
-
-        /*        if (!value) {
-         chk.uncheck();
-         console.log(false);
-         return false;
-         }*/
 
         Ext.each(items, function (item, index) {
             if (!value && index != 0) {
@@ -172,6 +183,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         });
     },
 
+    /**
+    * Calcula la suma de los tres elementos de la superficie.
+    * @param Éste numberfield.
+    */
     respondeAKeyUp: function (numberfield) {
         var padre = numberfield.getParent(),
             opcion = padre.getItemId();
@@ -191,6 +206,12 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Obtiene los conceptos y los muestra u oculta en función del valor que le pasen.
+    * @param checkboxfield Éste checkboxfield
+    * @param newValue El nuevo valor del checkboxfield.
+    * @param OldValue El valor anterior del checkboxfield.
+    */
     muestraConceptos: function (checkboxfield, newValue, OldValue){
         var me = this,
             i;
@@ -241,6 +262,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega la información del arreglo datos al arreglo checkboxfields.
+    * @param datos. Los datos a agregar.
+    * @param checkboxfields Un arreglo de checkboxfields.
+    */
     agregaCampos: function(datos, checkboxfields){
         var i;
 
@@ -255,6 +281,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },  
 
+    /**
+    * Verifica si el selectfield tiene opciones, en su defecto le establece el valor del arrelo estados.
+    * @param selectfield Éste selectfield.
+    */
     estableceOpciones: function (selectfield){
         var me = this;
 
@@ -264,6 +294,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Muestra la lista de países disponibles.
+    * @param selectfield Éste selectfield.
+    */
     muestraPaises: function(selectfield){
         if(selectfield.getOptions() == null){
             var me = this,
@@ -310,6 +344,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Obtiene la lista de estados en función del país elegido.
+    * @param selecfield Éste selectfield
+    * @param newValue El nuevo valor, represenpa un país.
+    */
     obtenEstados: function(selectfield, newValue){        
         if(!this.getMenuNav().esRecuperado){
             var me = this,
@@ -357,6 +396,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega un prospecto.
+    * @param button Éste botón.
+    */
     agregaProspecto: function (button) {
         var me = this,
             i, j, k, l = 1, m,
@@ -414,21 +457,20 @@ Ext.define('APP.controller.phone.Prospectos', {
                 m = 5;
 
             } else {
-                m = longitud + (6 - 2 * longitud);
-                //console.log(m);
+                m = longitud + (6 - 2 * longitud);                
             }
-            //console.log('Se seleccionó el servicio ', valores.servicio);
+
             for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
-                //console.log('El servicio es ', valores.servicio[i]);
+                
                 if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
                     campo = button.up('prospectosform').down('#conceptos' + (m+i+1)); // Esto es un Fieldset
                     elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
-                    //console.log(campo, elementos);
+                    
                     k = 0;
 
                     for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
                         if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
-                            //console.log('Mandando el código');
+                            
                             params["oProspecto.Conceptos" + (m+i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
                         }
                     }
@@ -479,7 +521,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             success: function (response) {
                 if (response.Procesada) {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);
                     view.pop();                    
                 } else {       
                     Ext.Viewport.setMasked(false);
@@ -490,6 +532,13 @@ Ext.define('APP.controller.phone.Prospectos', {
         });
     },
 
+    /**
+    * Muestra la lista de prospectos.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     muestraProspectos: function(list, index, target, record){
         var me = this,
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",
@@ -626,6 +675,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }); 
     },
 
+    /**
+    * Formatea la representación en cadena de la fecha que le pasan del modo dd-mm-yyyy
+    * @param fecha La representación en cadena de la fecha a formatear.
+    * @return La representación en cadena de la fecha formateada.
+    */
     daFormatoAFecha: function(fecha){
         anio = fecha.substring(0,4);
         mes = fecha.substring(5,7);
@@ -634,6 +688,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         return dia + '-' + mes + '-' + anio;
     },
 
+    /**
+    * Valida la longitud del RFC de acuerdo al tipo de persona.
+    * @param textfield Éste textfield
+    * @param newValue El tipo de persona.
+    */
     validaRFC: function(textfield, newValue){
         if(!this.getMenuNav().esRecuperado){
             var me = this;

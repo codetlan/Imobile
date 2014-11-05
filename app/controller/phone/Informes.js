@@ -15,15 +15,6 @@ Ext.define('APP.controller.phone.Informes', {
             'container[itemId = informes] list': {
                 itemsingletap: 'muestraOpcionElegida'
             },
-            // 'analisisventaslist':{
-            //     itemsingletap: 'muestraOpcionElegida'
-            // },
-            // 'informesgeneradoslist':{
-            //     itemsingletap: 'muestraOpcionElegida'
-            // },
-            // 'informelist':{
-            //     itemtap: 'muestraOpcionElegida'
-            // },
             'informesform #crearInforme':{
                 tap: 'generaInforme'
             },
@@ -36,6 +27,13 @@ Ext.define('APP.controller.phone.Informes', {
     	}
     },
 
+    /**
+    * Muestra la pantalla de acuerdo a la opción elegida.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El recor asociado al ítem.
+    */
     muestraOpcionElegida: function (list, index, target, record){
     	var me = this,
     		view = me.getMenuNav();
@@ -80,6 +78,10 @@ Ext.define('APP.controller.phone.Informes', {
         }
     },
 
+    /**
+    * Agrega las opciones al selectfield de clientes y/o artículos de acuerdo a la evaluación del criterio que le pasan.
+    * @param criterio El criterio a evaluar.
+    */
     agregaOpciones: function(criterio){
         if((criterio === 'clientes' && this.getMenuNav().clientes == undefined) || 
             (criterio === 'articulos' && this.getMenuNav().articulos == undefined)){
@@ -134,6 +136,10 @@ Ext.define('APP.controller.phone.Informes', {
         }
     },
 
+    /**
+    * Establece el arreglo de opciones del selectfield de acuerdo al criterio que le pasan.
+    * @param El criterio del selectfield, puede ser Clientes o Articulos
+    */
     ponCodigos: function(criterio){
         var me = this,
             view = me.getMenuNav(),
@@ -146,6 +152,10 @@ Ext.define('APP.controller.phone.Informes', {
         form.down('#codigoHasta').setValue(last);
     },
 
+    /**
+    * Genera el informe solicitado.
+    * @param button Éste botón.
+    */
     generaInforme: function(button){
         var me = this,
             view = me.getMenuNav(),
@@ -200,6 +210,10 @@ Ext.define('APP.controller.phone.Informes', {
         informes.load();
     },
 
+    /**
+    * Método auxiliar para establecer los códigos.
+    * @param criterio El criterio para establecer los códigos.
+    */
     auxiliarPonCodigos: function (criterio){
         var me = this,
             view = me.getMenuNav();
@@ -218,6 +232,10 @@ Ext.define('APP.controller.phone.Informes', {
         me.ponCodigos(criterio);
     },
 
+    /**
+    * Muestra la lista de códigos ya sea de artículos o productos dependiendo de la opción tapeada.
+    * @param textfield Éste textfield
+    */
     muestraCodigos: function (textfield){
         var me = this,
             view = me.getMenuNav(),

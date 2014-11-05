@@ -98,12 +98,15 @@ Ext.define('APP.controller.phone.Cobranza', {
 
     /**
     * Muestra la lista de facturas pendientes asociadas al cliente elegido en clienteslist.
+    * @param list Ésta lista.
+    * @param index El índice del item tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
     */
     onItemTapCobranzaList: function (list, index, target, record) {
         var me = this,
             view = me.getMenuNav(),            
-            idCliente = me.getNavigationCobranza().idCliente; //view.getActiveItem().idCliente,
-            //name = view.getActiveItem().name;
+            idCliente = me.getNavigationCobranza().idCliente; 
 
         switch(record.data.action){
             case 'cobranzaFacturas':            
@@ -114,9 +117,6 @@ Ext.define('APP.controller.phone.Cobranza', {
                 view.push({
                     xtype: 'facturascontainer',
                     title: idCliente
-                    //idCliente: idCliente,
-                    //name: name
-                    //opcion: record.data.action
                 });
 
                 params = {
@@ -138,9 +138,6 @@ Ext.define('APP.controller.phone.Cobranza', {
                 view.push({
                     xtype: 'facturascontainer',
                     title: idCliente
-                    //idCliente: idCliente,
-                    //name: name
-                    //opcion: record.data.action
                 });
 
                 anticiposlist = view.getActiveItem().down('facturaslist');
@@ -191,6 +188,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
     /**
      * Muestra la vista "totalapagarcontainer".
+    * @param btn Éste botón.
      */
     muestraCobranza: function (btn) {
         var me = this,
@@ -198,13 +196,13 @@ Ext.define('APP.controller.phone.Cobranza', {
             facturasContainer = view.getActiveItem().getActiveItem(),
             facturaslist = facturasContainer.down('facturaslist'),
             navigationCobranza = me.getNavigationCobranza(),
-            idCliente = navigationCobranza.idCliente, //facturasContainer.idCliente,
-            name = navigationCobranza.name,//facturasContainer.name,
+            idCliente = navigationCobranza.idCliente, 
+            name = navigationCobranza.name,
             i,
             total = 0,
             seleccion = facturaslist.getSelection(),            
-            moneda,// = seleccion[0].data.CodigoMoneda,
-            facturas = facturaslist.getStore(),//Ext.getStore('Facturas'),
+            moneda,
+            facturas = facturaslist.getStore(),
             aPagar,
             pagado = 0,
             boton = me.getNavigationCobranza().getNavigationBar().down('#agregarPago'),
@@ -217,14 +215,7 @@ Ext.define('APP.controller.phone.Cobranza', {
         if(seleccion.length > 0){ // Validamos que por lo menos se haya seleccionado una factura.
             moneda = seleccion[0].data.CodigoMoneda + ' ';
 
-/*            for (i = 0; i < seleccion.length; i++) {
-                //total += seleccion[i].data.Saldo;
-                total += seleccion[i].data.TotalDocumento;
-                seleccion[i].data.aPagar = true;
-            }            
-*/
             for (i = 0; i < seleccion.length; i++) {
-                //total += seleccion[i].data.Saldo;
 
                 if(moneda != seleccion[i].data.CodigoMoneda + ' '){
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesTitulo, APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesMensaje);
@@ -242,8 +233,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
             view.getAt(2).setMasked(false); // Desactivamos la máscara.
             boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
-            view.setActiveItem(2);
-            //navigationCobranza = view.getActiveItem();
+            view.setActiveItem(2);            
 
             navigationCobranza.getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
             navigationCobranza.add(barraTitulo);
@@ -271,8 +261,6 @@ Ext.define('APP.controller.phone.Cobranza', {
         view.push({
             xtype: 'formasdepagolist',
             title: idCliente
-            //idCliente: idCliente
-            //opcion: me.getMenu().getActiveItem().opcion
         });
         
         view.getActiveItem().getStore().load();
@@ -289,16 +277,12 @@ Ext.define('APP.controller.phone.Cobranza', {
      */
     agregaPago: function (list, index, target, record) {
         var me = this,
-            view = list.up('navigationcobranza'), //NavigationCobranza
+            view = list.up('navigationcobranza'), 
             idCliente = view.getNavigationBar().getTitle();
 
         view.push({
-            xtype: 'montoapagarform',
-            //xtype: 'montoapagarformcontainer',
+            xtype: 'montoapagarform',            
             title: idCliente
-            //idCliente: idCliente
-            //datos: record.data,
-            //opcion: list.opcion
         });
 
         me.determinaVistaMontoAPagar(record.data.TipoFormaPago, view);
@@ -362,20 +346,18 @@ Ext.define('APP.controller.phone.Cobranza', {
             opcion = me.getMenuNav().down('cobranzalist').getSelection()[0].data.action,
             aPagar = pagado = me.getTotales().down('#aCobrar').getAt(0).getHtml(),
             pagado = me.getTotales().down('#pagado').getAt(0).getHtml(),
-            pendiente, //me.aPagar - me.pagado,
+            pendiente, 
             forma = datos.Nombre,
             entrada = form.getValues().monto,
             codigo = datos.Codigo,
             tipo = datos.TipoFormaPago,
             esVacio = false,
             valores = form.getValues(),
-            numeroCheque = valores.numeroCheque,
-            //numeroCuenta = valores.numeroCuenta,
+            numeroCheque = valores.numeroCheque,            
             numeroTarjeta = valores.numeroTarjeta,
             banco = valores.banco,
             numeroAutorizacion = valores.numeroAutorizacion,
-            nombres = form.getInnerItems(),
-            //modoEdicion = form.modo === 'edicion' ? true : false,
+            nombres = form.getInnerItems(),            
             permiteCambio = datos.PermiteCambio;
 
         pagado = APP.core.FormatCurrency.formatCurrencytoNumber(pagado);
@@ -385,12 +367,8 @@ Ext.define('APP.controller.phone.Cobranza', {
          if(opcion == 'cobranzaFacturas'){
             moneda = Ext.getStore('Facturas').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
          } else {
-            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipoas, por eso se elige la primera.
+            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipos, por eso se elige la primera.
          }
-
-/*        console.log(moneda);
-        console.log(nombres[0].innerItems[0]._label);
-        console.log(Ext.getStore('Facturas').getAt(0));*/
 
         Ext.Object.each(valores, function (key, value, myself) { // Validamos que todos los campos estén llenos.            
 
@@ -407,13 +385,11 @@ Ext.define('APP.controller.phone.Cobranza', {
             if (permiteCambio === 'false') {
                 if (entrada > pendiente) {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinCambioTitulo, APP.core.config.Locale.config.lan.Cobranza.sinCambioMensaje);
-                } else {
-                    //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
+                } else {                    
                     me.sumaCobros(form, datos, moneda);
                     view.pop(2);
                 }
-            } else {
-                //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
+            } else {                
                 me.sumaCobros(form, datos, moneda);
                 view.pop(2);
             }
@@ -438,35 +414,26 @@ Ext.define('APP.controller.phone.Cobranza', {
             numeroTarjeta = valores.NumeroTarjeta,
             banco = valores.Banco,
             numeroAutorizacion = valores.NumeroAutorizacion,
-            nombres = form.getInnerItems(),
-            //modoEdicion = form.modo === 'edicion' ? true : false,
+            nombres = form.getInnerItems(),            
             permiteCambio = datos.PermiteCambio,
             monto,
             entradaMostrada = APP.core.FormatCurrency.currency(entrada, moneda),
             ind = form.ind,
             store = Ext.getStore('Totales');
 
-            store.add({
-                tipo: forma,
-                monto: entradaMostrada,
-                codigoFormaPago: codigo,
-                tipoFormaPago: tipo,
-                NumeroCheque: numeroCheque,
-                NumeroTarjeta: numeroTarjeta,
-                Banco: banco,
-                NumeroAutorizacion: numeroAutorizacion,
-                moneda: moneda
-            });
+        store.add({
+            tipo: forma,
+            monto: entradaMostrada,
+            codigoFormaPago: codigo,
+            tipoFormaPago: tipo,
+            NumeroCheque: numeroCheque,
+            NumeroTarjeta: numeroTarjeta,
+            Banco: banco,
+            NumeroAutorizacion: numeroAutorizacion,
+            moneda: moneda
+        });
 
-            monto = APP.core.FormatCurrency.formatCurrencytoNumber(store.getAt(store.getCount() - 1).get('monto'));
-        
-        //me.pagado += parseFloat(temp);
-
-        // store.each(function (item) {
-        //     temp = Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('monto'));
-        //     me.pagado += parseFloat(temp);
-        // });
-
+        monto = APP.core.FormatCurrency.formatCurrencytoNumber(store.getAt(store.getCount() - 1).get('monto'));
         me.actualizaCobranza(moneda, monto);
     },
 
@@ -518,20 +485,20 @@ Ext.define('APP.controller.phone.Cobranza', {
             view = me.getMainCard().getActiveItem(),
             idCliente = view.getNavigationBar().getTitle(),
             total = 0,
-            store = me.getFacturasList().getStore(),//Ext.getStore('Facturas'),
-            totales = view.down('totalapagarlist').getStore(),// Ext.getStore('Totales'),
+            store = me.getFacturasList().getStore(),
+            totales = view.down('totalapagarlist').getStore(),
             array = store.getData().items,
             fecha = new Date(Ext.Date.now()),
             hora = me.daFormatoAHora(fecha.getHours(), fecha.getMinutes(), fecha.getSeconds()),
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
             msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
-                                                                                                             //enviandoCobro        
+
+        //enviandoCobro        
         Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
         Ext.Viewport.setMasked(true);
         
         if (totales.getCount() > 0) {
-            //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
 
             var params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -551,36 +518,21 @@ Ext.define('APP.controller.phone.Cobranza', {
                 msg = 'Se realizó el anticipo exitosamente con folio ';
             } else {
                 Ext.Array.forEach(array, function (item, index, allItems) {
-                    //console.log(item, 'terminar cobranza');
-                    //total += (Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad')) + item.get('totalDeImpuesto');
-
-                    params["Cobranza.CobranzaFacturas[" + index + "].NumeroFactura"] = item.data.Folio;//get('NumeroDocumento');
-                    params["Cobranza.CobranzaFacturas[" + index + "].Monto"] = item.get('TotalDocumento');//item.get('Saldo');
+                    params["Cobranza.CobranzaFacturas[" + index + "].NumeroFactura"] = item.data.Folio;
+                    params["Cobranza.CobranzaFacturas[" + index + "].Monto"] = item.get('TotalDocumento');
                     params["Cobranza.CobranzaFacturas[" + index + "].NumeroLinea"] = index;
                 });
             }
-
-            //console.log(params);
-            //localStorage.setItem("FolioInterno", Folio);
 
             totales.each(function (item, index) {
                 //Limpiamos los valores que no aparecen en todas las formas de pago.
                 params["Cobranza.CobranzaDetalles[" + index + "].NumeroLinea"] = index;
                 params["Cobranza.CobranzaDetalles[" + index + "].CodigoFormaPago"] = item.data.codigoFormaPago;
                 params["Cobranza.CobranzaDetalles[" + index + "].MontoNeto"] = APP.core.FormatCurrency.formatCurrencytoNumber(item.data.monto);
-                //params["oCobranzaCobranzaDetalles[" + index + "].NoFacturaAplicada"] = 'Sin número'
-
-                //Limpiamos los valores que no aparecen en todas las formas de pago.
-/*                params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].Banco"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].Fecha"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].NumeroAutorizacion"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].NumeroTarjeta"] = '';*/
 
                 switch (item.data.tipoFormaPago) {
                     case "0": //Cheque
-                        params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = item.data.NumeroCheque;
-                        //params["Cobranza.CobranzaDetalles[" + index + "].NumeroCuenta"] = item.data.NumeroCuenta;
+                        params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = item.data.NumeroCheque;                        
                         params["Cobranza.CobranzaDetalles[" + index + "].Banco"] = item.data.Banco;
                         params["Cobranza.CobranzaDetalles[" + index + "].Fecha"] = fecha;
                         break;
@@ -591,8 +543,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                         params["Cobranza.CobranzaDetalles[" + index + "].NumeroAutorizacion"] = item.data.NumeroAutorizacion;
                         params["Cobranza.CobranzaDetalles[" + index + "].NumeroTarjeta"] = item.data.NumeroTarjeta; 
                         break;
-                }
-                
+                }                
             });
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
@@ -624,32 +575,46 @@ Ext.define('APP.controller.phone.Cobranza', {
             Ext.Viewport.setMasked(false);
             Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
             APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
-        }
-        //me.getMainCard().getActiveItem().setMasked(false);
+        }        
     },
 
+    /**
+    * Regresa la representación en cadena de la hora en formato hh:mm:ss
+    * @param horas Las horas.
+    * @param minutos Los minutos.
+    * @param segundos Los segundos.
+    * @return La representación en cadena de la hora en formato hh:mm:ss.
+    */
     daFormatoAHora: function(horas, minutos, segundos){
         var me = this,
             hr = me.agregaCero(horas),
             min = me.agregaCero(minutos),
-            seg = me.agregaCero(segundos);        
+            seg = me.agregaCero(segundos);
 
         return hr + ':' + min + ':' + seg;
     },
 
+    /*
+    * Agrega un cero a la izquierda a números de una sola cifra.
+    * @param n El número a evaluar.
+    * @return La representación en cadena del resultado de la evaluación.
+    */
     agregaCero: function (n){
         var m = (n < 10) ? '0' + n : n;
 
         return m;
     },
 
+    /*
+    * Responde al botón cancelar. Cancela la operación y regresa a la vista anterior.
+    * @param btn Éste botón.
+    */
     cancelaPago: function (btn) {
         var me = this,
             view = me.getMainCard(),
             navigationCobranza = view.getActiveItem(),
             titulo = navigationCobranza.down('toolbar'),
-            totales = Ext.getStore('Totales')
-        //    facturas = Ext.getStore('Facturas');
+            totales = Ext.getStore('Totales');        
 
         navigationCobranza.remove(titulo, true); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
         totales.removeAll();
@@ -663,6 +628,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         view.setActiveItem(0);
     },
 
+    /**
+    * Agrega el saldo a mostrar a cada una de las facturas.
+    * @param facturas El store que representa a las facturas.
+    */
     agregaSaldoAMostrar: function (facturas) {
         var me = this,
             moneda,
@@ -675,6 +644,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Busca la cobranza que le pasan.
+    * @param button Éste botón.
+    */
     onBuscarCobranza: function (button) {
         var me = this,
             store = Ext.getStore('Transacciones'),
@@ -699,6 +672,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Limpia el searchfield de búsqueda de transacciones.
+    * @param searchfield Éste searchfield.
+    */
     limpiaBusquedaTransacciones: function (searchfield) {
         var me = this,
             store = me.getVisualizacionCobranzaList().getStore(),
@@ -725,6 +702,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Recorre el store de transacciones y por cada una determina cuál poner, Cobranza de factura o Anticipo de pedido.
+    * @param store El store de transacciones.
+    */
     recorreVisualizacion: function (store){
         var me = this,
             tipo;
@@ -750,6 +731,13 @@ Ext.define('APP.controller.phone.Cobranza', {
         Ext.getStore('Anticipos').on('load', me.agregaSaldoAMostrar);
     },
 
+    /**
+    * Responde al cambio de opción del selectfield de tipo de transacción.
+    * @param t Éste selectfield.
+    * @param newValue El nuevo valor.
+    * @param oldValue El valor anterior
+    * @param eOpts 
+    */
     onChangeTipoCobranza: function (t, newValue, oldValue, eOpts) {
         var me = this,
             store = Ext.getStore('Transacciones'),
@@ -757,8 +745,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             value = t.up('toolbar').down('#buscarCobranzas').getValue(),
             tipo = newValue,
             list = t.up('visualizacioncobranzalist');
-        console.log(list);
-        console.log(value);
+        //console.log(list);
+        //console.log(value);
         list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();

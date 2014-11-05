@@ -1,9 +1,6 @@
 /**
  * Created by th3gr4bb3r on 7/23/14.
  */
-/**
- * Created by th3gr4bb3r on 7/21/14.
- */
 Ext.define('APP.controller.phone.Clientes', {
     extend: 'Ext.app.Controller',
 
@@ -27,8 +24,11 @@ Ext.define('APP.controller.phone.Clientes', {
         }
     },
 
-
-
+    /**
+    * Realiza una búsqueda de cliente basado en la cadena que le pasan
+    * @param t Éste textfield
+    * @param e El evento
+    */
     onBuscaClientes: function (t, e){
         var store = this.getClientesList().getStore(),
             value = t.up('toolbar').down('#buscarClientes').getValue();
@@ -39,6 +39,9 @@ Ext.define('APP.controller.phone.Clientes', {
         store.load();
     },
 
+    /**
+    * Limpia el textfield. 
+    */
     limpiaBusquedaClientes: function() {
         var store = this.getClientesList().getStore();
         store.resetCurrentPage();

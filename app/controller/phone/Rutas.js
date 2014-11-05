@@ -125,11 +125,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },
               'container[id=accionesParaRutas] button': {
                 tap:'determinaAccion'
-            }/*,
-              'container[xtype=rutascalendariocont] button[action = cancelarRuta]': {
-                tap:'prueba'
-            },*/
-
+            }
         }
     },
 
@@ -137,6 +133,13 @@ Ext.define('APP.controller.phone.Rutas', {
     // Primera vista para seleccionar actividades o rutas
     //#######################################################################
 
+    /**
+    * Muestra la pantalla de la opción elegida.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target el elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     onRutasActividadesTap:function(list, index, target, record){
         var opcion = record.get('action');
 
@@ -157,11 +160,6 @@ Ext.define('APP.controller.phone.Rutas', {
                 break;
             case 'rutas':
                 this.getMenuNav().push({
-                    // xtype:'rutascalendariocont',
-                    // layout:'fit',
-                    // items:[{
-                    //     xtype:'clienteslist'
-                    // }]
                     xtype: 'rutascalendario',
                     title: APP.core.config.Locale.config.lan.Actividades.rutas
                 });
@@ -181,6 +179,11 @@ Ext.define('APP.controller.phone.Rutas', {
     //Actividades
     //#######################################################################
 
+    /**
+    * Obtiene las actividades del intervalo de fechas ingresado.
+    * @param fechaInicio el primer día del intervalo.
+    * @param fechafin el último día del intervalo.
+    */
     loadActividadesCalendario: function(fechaInicio,fechaFin){
 
         var ac = this.getActividadesCalendario(),
@@ -212,6 +215,11 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Obtiene las actividades del día seleccionado en el calendario.
+    * @param calendar Éste calendar.
+    * @param nd El día seleccionado.
+    */
     onActividadesCalendarioTap:function(calendar, nd){
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
@@ -243,6 +251,12 @@ Ext.define('APP.controller.phone.Rutas', {
         this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
+    /**
+    * Filtra las actividades del día seleccionado, regresa pop pantallas y las muestra.
+    * @param calendar Éste calendar.
+    * @param nd El día elegido.
+    * @param pop el número de vistas que regresa.
+    */
     onActividadesCalendarioFormPop:function(calendar, nd, pop){
         nd = new Date(nd);
 
@@ -259,6 +273,10 @@ Ext.define('APP.controller.phone.Rutas', {
 
     },
 
+    /**
+    * Muestra el form de actividades.
+    * @param b Éste button.
+    */
     showFormActividades:function(b){
         var me = this,
             nd = me.getActividadesCalendarioContNd().getValue(),
@@ -286,6 +304,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Agrega una actividad.
+    * @param Éste button.
+    */
     onActividadesAdd:function(btn){
 
         var form = this.getActividadesForm(),
@@ -372,6 +394,13 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Edita una actividad.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DateItem tapeado
+    * @param record El record asociado al ítem.
+    */
     onActividadesEdit:function(list,index,target,record){
         var form = this.getActividadesForm();
         var items=[{
@@ -463,10 +492,12 @@ Ext.define('APP.controller.phone.Rutas', {
             form.down("checkboxfield[name=Domingo]").disable();
 
         }
-
-
     },
 
+    /**
+    * Actualiza una actividad.
+    * @param status El nuevo estatus de la actividad.
+    */
     onActividadesUpdate:function(status){
 
         var form = this.getActividadesForm(),
@@ -547,6 +578,15 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Valida la fecha y hora de inicio de un evento.
+    * @param fechaInicio La fecha de inicio.
+    * @param horaInicio La hora de inicio.
+    * @param fechaFin La fecha de término.
+    * @param horaFin La hora de término.
+    * @param esActualización Booleano para distinguir si es una actualización o no.
+    * @return verdadero si las fechas son válidas..
+    */    
     validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin, esActualizacion){
         var me = this;
 
@@ -589,6 +629,13 @@ Ext.define('APP.controller.phone.Rutas', {
     // Rutas
     //#######################################################################
 
+    /**
+    * Obtiene los datos del cliente seleccionado.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param El record asociado al ítem.
+    */
     onSeleccionarCliente:function(list, index, target, record){        
         var me = this,
             name = record.get('NombreSocio'),
@@ -622,20 +669,11 @@ Ext.define('APP.controller.phone.Rutas', {
                             docked: 'top',
                             title: titulo
                         });
-                        //console.log(direcciones);
-
 
                         this.showFormRutas(idCliente, direcciones);
 
                         this.getMenuNav().add(barraTitulo);
                         Ext.Viewport.setMasked(false);
-
-                        // var date = new Date();
-
-                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
-                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
-
-                        // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
@@ -651,6 +689,12 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Obtiene las rutas del intervalo de fechas y código de cliente ingresado.
+    * @param fechaInicio el primer día del intervalo.
+    * @param fechafin el último día del intervalo.
+    * @param codigoCliente El código del cliente.
+    */    
     loadRutasCalendario: function(fechaInicio,fechaFin, codigoCliente){
 
         var ac = this.getRutasCalendario(),
@@ -682,77 +726,24 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    onRutasCalendarioTap2:function(calendar, nd){
-        calendar.eventStore.clearFilter();
-        calendar.eventStore.filterBy(function(record){
-            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (startDate <= nd) && (endDate >= nd);
-        }, this);
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            id:'rutascalendarioshowform',
-            layout:{
-                type:'vbox',
-                align:'stretch'
-            },
-            items:[{
-                xtype:'container',
-                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
-            },{
-                xtype:'rutascalendariodia',
-                flex:1,
-                nd:nd,
-                idCliente: rc.idCliente,
-                direcciones:rc.direcciones
-            },{
-                xtype:'button',
-                action:'agregar',
-                text: 'Agregar',
-                margin:10
-            }]
-        });
-
-        this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
-    },
-
+    /**
+    * Obtiene las rutas del día seleccionado en el calendario.
+    * @param calendar Éste calendar.
+    * @param nd El día seleccionado.
+    */
     onRutasCalendarioTap:function(calendar, nd){        
         var me = this;
 
-        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){
-            //alert("error garrafal, se va a acabar el mundo");
+        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){            
             return;
         }
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
-/*            var dia = record.get('start').getDay(),
-                mes = record.get('start').getMonth(),
-                anio = record.get('start').getFullYear(),
-
-                seleccionDia = nd.getDay(),
-                seleccionMes = nd.getMonth(),
-                seleccionAnio = nd.getFullYear(),
-
-                fecha1 = dia + " " + mes + " " + anio,
-                fecha2 = seleccionDia + " " + seleccionMes + " " + seleccionAnio;
-
-                console.log(fecha1, fecha2);
-                //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
-                //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
-                //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (fecha1 == fecha2);// && (endDate >= nd);*/
-
-
 
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
         }, this);
-
-        // var rc = this.getRutasCalendario(),
-        //     rutas = rc.view.eventStore;
-
 
         this.getMenuNav().push({
             xtype:'container',
@@ -766,11 +757,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 xtype:'container',
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
-                xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
+                xtype: 'rutascalendariomapa',
                 flex:1
-                //nd:nd
-                // idCliente: rc.idCliente,
-                // direcciones:rc.direcciones
             },{
                 xtype:'button',
                 action:'agregar',
@@ -805,15 +793,17 @@ Ext.define('APP.controller.phone.Rutas', {
         me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
-        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
+    /**
+    * Muestra el form de rutas.
+    * @param idCliente el id del cliente.
+    * @param direcciones las direcciones del cliente.
+    */
     showFormRutas:function(idCliente, direcciones){        
         var rc = this.getRutasCalendario(),
             rutas = rc.view.eventStore,
-            nd = this.getRutasCalendarioMapa().config.nd;
-
-        //console.log(nd);
+            nd = this.getRutasCalendarioMapa().config.nd;      
 
         this.getMenuNav().push({
             xtype:'rutasform',
@@ -824,17 +814,22 @@ Ext.define('APP.controller.phone.Rutas', {
                     form.setValues({
                         CodigoCliente:idCliente,
                         FechaInicio:new Date(nd),
-                        FechaFin:new Date(nd)
-                        //direcciones: direcciones
+                        FechaFin:new Date(nd)                        
                     });
 
-                    this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
-                    //this.getRutasCalendarioDirecciones().element.redraw();
+                    this.getRutasCalendarioDirecciones().getStore().setData(direcciones);                    
                 }
             }
         })
     },
 
+    /**
+    * Intenta establecer la dirección seleccionada en el mapa.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     onSeleccionarDireccion:function(list,index,target,record){
         var data = record.data,
             form = this.getRutasForm();
@@ -867,14 +862,11 @@ Ext.define('APP.controller.phone.Rutas', {
 
 
         if(extMapa.marker){
-            extMapa.marker.setMap(null);
-            //console.log('Se elimina marcador');
+            extMapa.marker.setMap(null);            
         }
 
         geocoder.geocode( { 'address': direccion}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-
-                //console.log(results[0].geometry.location);
+            if (status == google.maps.GeocoderStatus.OK) {                
 
                 form.setValues({
                     LatitudOrigen:results[0].geometry.location.k,
@@ -891,9 +883,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
              bounds.extend(extMapa.marker.position); 
 
-            mapa.setCenter(bounds.getCenter());
-
-                //extMapa.setMapOptions({zoom:15});
+            mapa.setCenter(bounds.getCenter());                
 
                 google.maps.event.addListener(extMapa.marker,"dragend",function(){
                     var point = extMapa.marker.getPosition();
@@ -933,10 +923,9 @@ Ext.define('APP.controller.phone.Rutas', {
         
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
-                ruta = item.getData();  //rutas.getAt(0).getData();
+                ruta = item.getData();  
                 //console.log(ruta);
-                var nd = extMapa.config.nd,
-                //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
+                var nd = extMapa.config.nd,                
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
                 //console.log(nd);
@@ -955,24 +944,9 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 marcadoresArray.push(extMapa.marker);
 
-                // extMapa.marker = new google.maps.Marker({
-                //     map: mapa,
-                //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
-                //     icon: icono,
-                //     draggable:true
-                // });
-
-                // google.maps.event.addListener(extMapa.marker,"dragend",function(){
-                //     var point = extMapa.marker.getPosition();
-                //     mapa.panTo(point);
-                // });
-
-                //var marcador = item.getData()
-
                 if(ruta.Estatus == 0 || ruta.Estatus == 2){
                     google.maps.event.addListener(extMapa.marker, 'click', function(){
-                        //infowindow.open(mapa, extMapa.marker);
-                        //popup.showBy(extMapa.marker);
+
                         me.eligeEditarTrazar(APP.core.config.Locale.config.lan.Rutas.editarTrazarTitulo,
                          APP.core.config.Locale.config.lan.Rutas.editarTrazarMensaje, 300, 
                         function (buttonId) {
@@ -999,8 +973,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);
-                            infowindow.open(mapa, marcador);
-                            //infowindow.open(mapa, marcadoresArray[index]);
+                            infowindow.open(mapa, marcador);                            
                         });
                     }) (marcadoresArray[index]);
 
@@ -1010,38 +983,21 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
 
                 bounds.extend(extMapa.marker.position);            
-
-                //mapa.setCenter(bounds.getCenter());
-
-                //extMapa.setMapOptions({zoom:15});
                 mapa.fitBounds(bounds);
 
             });
 
             me.getRutasCalendario().marcadores = marcadoresArray;
-
-            // for(var i = 0; i < marcadoresArray.length; i++){
-            //     google.maps.event.addListener(marcadoresArray[i], 'click', function(){
-            //         //infowindow.open(mapa, extMapa.marker);
-            //         //popup.showBy(extMapa.marker);
-            //         me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
-            //         function (buttonId) {
-            //             if (buttonId == 'editar') {
-            //                 //rutas.find()
-            //                 console.log(rutas.getAt(i));
-            //                 //me.dameDirecciones(rutasArray[]);
-            //             } else {
-            //                 me.trazaRuta(ruta);
-            //             }
-            //         });
-            //     });
-            // }
-
         }
 
         Ext.Viewport.setMasked(false);
     },
 
+    /**
+    * Establece las opciones para la ruta
+    * @param acciones Booleano que indica si el container con id accionesParaRutas estará visible.
+    * @param boton Booleano que indica si el button con id botonAgregar estará visible.
+    */
     ponOpcionesDeRuta: function(acciones, boton){
         var me = this,
             view = me.getMenuNav();
@@ -1050,6 +1006,10 @@ Ext.define('APP.controller.phone.Rutas', {
         view.getActiveItem().down('button[id=botonAgregar]').setHidden(boton);
     },
 
+    /**
+    * Muestra la lista de clientes.
+    * @param Éste button.
+    */
     muestraClientes: function(button) {
         Ext.Viewport.setMasked(true);
         var me = this,
@@ -1076,6 +1036,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Agrega una ruta.
+    * @param btn Éste botón.
+    */
     onRutasAdd: function(btn) {
         var form = this.getRutasForm(),
             values = form.getValues(),
@@ -1132,8 +1096,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 "Ruta.HoraVisita": "00:00:00",
                 "Ruta.FechaVisita": Ext.util.Format.date(values.FechaFin,"Y-m-d")
             }
-
-        //Ext.Viewport.setMasked(true);
+        
         //console.log(params);
 
                     Ext.data.JsonP.request({
@@ -1159,8 +1122,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             else {
                                 Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
                                 response.Descripcion, Ext.emptyFn); 
-                                Ext.Viewport.setMasked(false);
-                                //view.pop();
+                                Ext.Viewport.setMasked(false);                                
                             }
 
                         },
@@ -1169,8 +1131,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                                 Ext.Viewport.setMasked(false);
                             });
-                            Ext.Viewport.setMasked(false);
-                            //view.pop();
+                            Ext.Viewport.setMasked(false);                            
                         },
                         scope: this                        
                     });
@@ -1183,11 +1144,17 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Viewport.setMasked(false);
-            //Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Viewport.setMasked(false);            
         }
     },
 
+    /**
+    * Filtra las rutas del día seleccionado.
+    * @param calendar Éste calendar.
+    * @param nd El día elegido.
+    * @param codigoCliente El código de cliente al que se la agregó la ruta.
+    * @param es Actualización Booleano que indica si es una actualización o no.
+    */
     onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);
         //console.log(nd);
@@ -1204,11 +1171,6 @@ Ext.define('APP.controller.phone.Rutas', {
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
-/*        console.log(codigoCliente, ' El código del cliente');
-        console.log(esActualizacion, ' Actualización');
-        console.log(calendar.eventStore.getCount(), ' Marcadores');*/
-
-
         if(!esActualizacion){          
              calendar.eventStore.filter('CodigoCliente', codigoCliente);
             me.getMenuNav().pop(2);
@@ -1222,127 +1184,21 @@ Ext.define('APP.controller.phone.Rutas', {
         me.ponOpcionesDeRuta(true, false);
         me.quitaMarcadores();
         me.colocaMarcadores();
-        Ext.Viewport.setMasked(false);
-
-        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
-
+        Ext.Viewport.setMasked(false);        
     },
 
-    onRutasEdit2:function(list,index,target,record){
-        var form = this.getRutasForm();
-        var direcciones = this.getRutasCalendarioDia().config.direcciones;
-
-        var items=[{
-            xtype:'rutasform',
-            flex:1//,
-            //nd:this.getActividadesCalendarioCont().nd
-        }];
-
-        if(record.data.Estatus != 1 && record.data.Estatus != 3){
-            items.push({
-                xtype:'container',
-                padding:'0 10px 10px 10px',
-                layout:{
-                    type:'hbox',
-                    align: 'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    text:'Realizada',
-                    action:'realizarruta',
-                    flex:1
-                },{
-                    xtype:'button',
-                    text:'Cancelar',
-                    action:'cancelarruta',
-                    flex:1
-                }]
-            });
-        }
-        else{
-            if(record.data.Estatus == 2){
-
-            }
-        }
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            layout:{
-                type:'vbox'
-            },
-            items:items
-        })
-
-        var form = this.getRutasForm();
-
-        var horaInicio = new Date();
-        horaInicio.setHours(record.data.HoraInicio.substr(0,2));
-        horaInicio.setMinutes(record.data.HoraInicio.substr(3,2));
-        horaInicio.setMilliseconds(record.data.HoraInicio.substr(6,2));
-
-        var horaFin = new Date();
-        horaFin.setHours(record.data.HoraFin.substr(0,2));
-        horaFin.setMinutes(record.data.HoraFin.substr(3,2));
-        horaFin.setMilliseconds(record.data.HoraFin.substr(6,2));
-
-        form.setValues({
-            CodigoRuta:record.data.CodigoRuta,
-            CodigoCliente : record.data.CodigoCliente,
-            CodigoDireccion : record.data.CodigoDireccion,
-            TipoDireccion : record.data.TipoDireccion,
-            Descripcion:record.data.title,
-            FechaInicio:record.data.start,
-            HoraInicio: horaInicio,
-            FechaFin:record.data.end,
-            HoraFin: horaFin,
-            Notas:record.data.Notas,
-            Repetir:record.data.Repetir,
-            Lunes:record.data.Lunes,
-            Martes:record.data.Martes,
-            Miercoles:record.data.Miercoles,
-            Jueves:record.data.Jueves,
-            Viernes:record.data.Viernes,
-            Sabado:record.data.Sabado,
-            Domingo:record.data.Domingo
-        });
-
-        this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
-
-        if(record.data.Estatus != 2){
-            var btnGuardar = form.down("button[action=guardar]").destroy();
-            form.down("textfield[name=Descripcion]").setReadOnly(true);
-            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
-            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
-            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
-            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-            form.down("checkboxfield[name=Repetir]").disable();
-            form.down("checkboxfield[name=Lunes]").disable();
-            form.down("checkboxfield[name=Martes]").disable();
-            form.down("checkboxfield[name=Miercoles]").disable();
-            form.down("checkboxfield[name=Jueves]").disable();
-            form.down("checkboxfield[name=Viernes]").disable();
-            form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();
-
-        }
-    },
-
-    onRutasEdit:function(ruta, direcciones, accion){
+    /**
+    * Edita una ruta.
+    * @param ruta La ruta a editar.
+    * @param direcciones Las direcciones asociadas a esa ruta.    
+    */
+    onRutasEdit:function(ruta, direcciones){
         var me = this, form,        
-            view = me.getMenuNav();
-            
-        //var direcciones = this.getRutasCalendarioDia().config.direcciones;
+            view = me.getMenuNav();        
 
         view.push({
             xtype: 'rutasform'
         });
-
-        // var items=[{
-        //     xtype:'rutasform',
-        //     flex:1//,
-        //     //nd:this.getActividadesCalendarioCont().nd
-        // }];
 
         form = me.getRutasForm();
 
@@ -1389,31 +1245,24 @@ Ext.define('APP.controller.phone.Rutas', {
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             mapa = extMapa.getMap();
 
-        this.recuperaMarcador(extMapa, ruta, true);
-
-        //console.log(extMapa.getMap().data)
+        this.recuperaMarcador(extMapa, ruta, true);        
 
         if(ruta.Estatus != 2){
-            //var btnGuardar = form.down("button[action=guardar]").destroy();
-            //form.down("textfield[name=Descripcion]").setReadOnly(true);
             form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
             form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
             form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
             form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-/*            form.down("checkboxfield[name=Repetir]").disable();
-            form.down("checkboxfield[name=Lunes]").disable();
-            form.down("checkboxfield[name=Martes]").disable();
-            form.down("checkboxfield[name=Miercoles]").disable();
-            form.down("checkboxfield[name=Jueves]").disable();
-            form.down("checkboxfield[name=Viernes]").disable();
-            form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();*/
         }        
 
         Ext.Viewport.setMasked(false);
     },
 
-    validaVisita: function(lat, lon, ruta){        
+    /**
+    * Valida si la visita puede marcarse como realizada.
+    * @lparam lat La latitud del destino.
+    * @param lon La longitud del destino.    
+    */
+    validaVisita: function(lat, lon){        
         var me = this;
 
         Ext.Viewport.setMasked(true);
@@ -1470,6 +1319,9 @@ Ext.define('APP.controller.phone.Rutas', {
         geo.updateLocation();*/
     },
 
+    /**
+    * Función auxiliar para validar la distancia entre el punto actual y la dirección destino.
+    */
     dameDistancia: function(response, status){
         //console.log(this);
         var me = this,
@@ -1494,6 +1346,13 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Muestra un mensaje para elegir si editar o trazar una ruta.
+    * @param titulo El título del mensaje
+    * @param mensaje El cuerpo del mensaje.
+    * @param ancho El ancho de la ventana.
+    * @param funcion La función a ejecutar dependiendo la opción elegida.    
+    */
     eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
         Ext.Msg.show({
             title: titulo,
@@ -1514,7 +1373,11 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    dameDirecciones: function(ruta, accion){
+    /**
+    * Obtiene las direcciones del cliente asociado a la ruta que le pasan.
+    * @param ruta La ruta a evaluar.    
+    */
+    dameDirecciones: function(ruta){
         Ext.Viewport.setMasked(true);
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
@@ -1541,7 +1404,7 @@ Ext.define('APP.controller.phone.Rutas', {
                         });
 
                         //console.log(direcciones);
-                        this.onRutasEdit(ruta, direcciones, accion);
+                        this.onRutasEdit(ruta, direcciones);
 
                     }
                     else{                    
@@ -1559,6 +1422,10 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Intenta trazar la ruta desde el punto actual a la dirección destino.
+    * @param ruta La ruta a trazar.
+    */
     trazaRuta: function(ruta){
         var me = this,
             view = me.getMenuNav(),
@@ -1655,6 +1522,12 @@ Ext.define('APP.controller.phone.Rutas', {
 
     },
 
+    /**
+    * Recupera el marcador y lo muestra en el mapa.
+    * @param extMapa El mapa.
+    * @param ruta La ruta a evaluar para obtener el marcador.
+    * @param draggaable Booleano que indica si el marcador es arrastrable o no.
+    */
     recuperaMarcador: function(extMapa, ruta, draggable){
         var me = this,
             map = extMapa.getMap(),
@@ -1680,6 +1553,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Define el color del marcador en función del estatus de la ruta que le pasan.
+    * @param ruta La ruta a evaluar.
+    */
     defineColorDeMarcador: function(ruta){
         switch(ruta.Estatus){
             case 0:
@@ -1705,51 +1582,10 @@ Ext.define('APP.controller.phone.Rutas', {
         return icono;
     },
 
-    // trazaRuta: function(lat, lng, map){
-    //     var me = this,
-    //         latitude,
-    //         longitude;
-
-    //     Ext.device.Geolocation.getCurrentPosition({
-    //         success: function(position) {
-    //             latitude = position.coords.latitude;
-    //             longitude = position.coords.longitude;
-
-    //             console.log(latitude, longitude);
-
-    //             var directionsService = new google.maps.DirectionsService();
-    //             var directionsDisplay = new google.maps.DirectionsRenderer();
-
-    //             directionsDisplay.setMap(map);
-
-    //             var origin = new google.maps.LatLng(latitude, longitude);
-    //             var destination = new google.maps.LatLng(lat, lng);
-
-    //             var request = {
-    //                 origin: origin,
-    //                 destination: destination,
-    //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
-    //             };
-
-    //             directionsService.route(request, function (result, status) {
-    //                 if (status == google.maps.DirectionsStatus.OK) {
-    //                     directionsDisplay.setMap(map);
-    //                     directionsDisplay.setDirections(result);
-    //                 }
-    //             });
-
-
-    //             //me.onLoadStores('Searchs', '', me.latitude + ',' + me.longitude);
-    //         },
-    //         failure: function() {
-    //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
-    //             /*me.latitude = geo.getLatitude();
-    //             me.longitude = geo.getLongitude();
-    //             me.onLoadStores(store, '', me.latitude + ',' + me.longitude);*/
-    //         }
-    //     });
-    // }
-
+    /**
+    * Determina que acción realizar en función del id del botón que le pasan.
+    * @param button El botón a evaluar.
+    */
     determinaAccion: function(button){
         var me = this,
             ruta = me.getMenuNav().ruta;
@@ -1767,6 +1603,9 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Cambia el estatus de la ruta.
+    */
     cambiaStatusRuta: function(){
         var me = this,
             ruta = me.getMenuNav().ruta,
@@ -1783,14 +1622,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
         horaFin.setHours(ruta.HoraFin.substr(0,2));
         horaFin.setMinutes(ruta.HoraFin.substr(3,2));
-        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));        
-
-       // if(ruta.start.getTime() < hoy.getTime()){
-       // fechaFin = hoy,            
-       //  horaFin.setHours(hoy.getHours());
-       //  horaFin.setMinutes(hoy.getMinutes());
-       //  horaFin.setMilliseconds(hoy.getMilliseconds());
-//       }        
+        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2)); 
 
         Ext.Viewport.setMasked(true);
 
@@ -1825,7 +1657,7 @@ Ext.define('APP.controller.phone.Rutas', {
             "Ruta.FechaVisita": Ext.util.Format.date(fechaVisita,"Y-m-d")
         }
 
-        console.log(params);
+        //console.log(params);
 
         Ext.data.JsonP.request({
             url: url,
@@ -1848,8 +1680,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
                 else {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn); 
-                    Ext.Viewport.setMasked(false);
-                    //view.pop();
+                    Ext.Viewport.setMasked(false);                    
                 }
 
             },
@@ -1858,12 +1689,14 @@ Ext.define('APP.controller.phone.Rutas', {
                 APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                     Ext.Viewport.setMasked(false);
                 });
-                Ext.Viewport.setMasked(false);
-                //view.pop();
+                Ext.Viewport.setMasked(false);                
             }
         });
     },
 
+    /**
+    * Elimina los marcadores del mapa.
+    */
     quitaMarcadores: function () {
         var me = this,
             marcadores = me.getRutasCalendario().marcadores;
@@ -1875,6 +1708,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Obtiene un formato de fecha dd mm yyyy.
+    * @param date La fecha que le pasan.
+    */
     dameFecha: function(date){
         var me = this,
             dia = date.getDay(),
@@ -1883,18 +1720,6 @@ Ext.define('APP.controller.phone.Rutas', {
             fecha = "" + dia + " "+ mes + " " + anio;
 
         return fecha;
-    },
-
-    calendariza: function(){
-        //create the delayed task instance with our callback
-        var task = Ext.create('Ext.util.DelayedTask', {
-             fn: function() {
-                console.log('callback!');
-             }
-        });
-
-        task.delay(10000); //the callback function will now be called after 1500ms
-
-        //task.cancel(); //the callback function will never be called now, unless we call delay() again
-    },
+    }
+    
 });

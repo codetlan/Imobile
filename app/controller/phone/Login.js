@@ -31,7 +31,10 @@ Ext.define('APP.controller.phone.Login', {
         }
     },
 
-
+    /**
+    * Loguea al usuario.
+    * btn Éste botón
+    */
     onLoginUser: function (btn) {
         var form = this.getLoginForm(),
             almacenes,
@@ -81,8 +84,7 @@ Ext.define('APP.controller.phone.Login', {
                     var task = Ext.Viewport.getActiveItem().getAt(0).task;
 
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
-
-                    //me.revisaEventosPendientes();
+                    
                     me.revisaEventosPendientes();
 
                 } else {
@@ -104,6 +106,9 @@ Ext.define('APP.controller.phone.Login', {
         });
     },
 
+    /**
+    * Muestra la pantalla de configuración.
+    */
     showConfigOptions: function (x) {
         var configForm = this.getConfiguracionForm();
 
@@ -139,6 +144,9 @@ Ext.define('APP.controller.phone.Login', {
         })
     },
 
+    /**
+    * Guarda la configuración establecida.
+    */
     onSaveConfiguration: function () {
         var me = this,
             configForm = me.getConfiguracionForm(),
@@ -159,6 +167,13 @@ Ext.define('APP.controller.phone.Login', {
         );
     },
 
+    /**
+    * Muestra un MsgBox y ejecuta la función de acuerdo a la opción elegida.
+    * @titulo El título del mensaje.
+    * @mensaje El mensaje.
+    * @ancho El ancho de la ventana del mensaje.
+    * @param funcion La función a ejecutarse de acuerdo a la opción elegida.
+    */
     confirma: function (titulo, mensaje, ancho, funcion){
         Ext.Msg.show({
             title: titulo,
@@ -176,10 +191,16 @@ Ext.define('APP.controller.phone.Login', {
         });
     },
 
+    /**
+    * Regresa a la vista de Login.
+    */
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
     },
 
+    /**
+    * Obtiene las rutas sin visitar y las actividades pendientes para mostrarlas en un aviso.
+    */
     calendariza: function (){
         var me = this,
             hoy = Ext.Date.format(new Date(), "Y-m-d"),
@@ -354,17 +375,15 @@ Ext.define('APP.controller.phone.Login', {
 
             failure: function () {
                 Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
-                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {
-                    //Ext.Viewport.setMasked(false);
-                });
-                //Ext.Viewport.setMasked(false);
-            },            
-        });
-
-        //console.log(nada);
-        //console.log(new Date());        
+                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {                    
+                });                
+            }
+        });        
     },
 
+    /**
+    * Obtiene los eventos pendientes (rutas y actividades) y les cambia el estatus a vencidos si ya ha pasado el tiempo de realización.
+    */ 
     revisaEventosPendientes: function(){
         var me = this;
             hoy = new Date()
@@ -457,6 +476,10 @@ Ext.define('APP.controller.phone.Login', {
         //task.delay(10000, me.revisaEventosPendientes.bind(me));
     },
 
+    /**
+    * Cambia el estatus a vencido de la ruta que le pasan.
+    * @param ruta La ruta a cambiar de estatus.
+    */
     cambiaStatusRuta: function(ruta){
         var me = this,
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",            
@@ -499,7 +522,7 @@ Ext.define('APP.controller.phone.Login', {
             "Ruta.LongitudOrigen": ruta.LongitudOrigen,
             "Ruta.Estatus" : 0,
             "Ruta.HoraVisita": "00:00:00",
-            "Ruta.FechaVisita": Ext.util.Format.date(ruta.end,"Y-m-d"),
+            "Ruta.FechaVisita": Ext.util.Format.date(ruta.end,"Y-m-d")
         };
 
         Ext.data.JsonP.request({
@@ -525,7 +548,11 @@ Ext.define('APP.controller.phone.Login', {
         });
     },
 
-    cambiaStatusActividad:function(actividad){        
+    /**
+    * Cambia el estatus a vencido de la actividad que le pasan.
+    * @param actividad La actividad a cambiar de estatus.
+    */
+    cambiaStatusActividad:function(actividad){
 
         if(actividad.Descripcion != ""){
 
@@ -585,7 +612,7 @@ Ext.define('APP.controller.phone.Login', {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
                     APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {                        
                     });                    
-                },
+                }
             });
         }
         else{
@@ -594,6 +621,11 @@ Ext.define('APP.controller.phone.Login', {
         }
     },    
 
+    /**
+    * Formatea la fecha  a dd mm aaaa con el separador que le pasan.
+    * @param La fecha a formatear.
+    * @param separador El separador a emplear.
+    */
     formateaFecha: function (fecha, separador){        
         var dia = fecha.substring(8,10),
             mes = fecha.substring(5,7),
@@ -601,25 +633,4 @@ Ext.define('APP.controller.phone.Login', {
 
         return dia + separador + mes + separador + anio;
     }
-
-/*    launch: function(){
-        var me = this;        
-        Ext.Ajax.request({
-            url: 'app/core/data/Prueba.json',
-            
-            success: function(response){
-                console.log(response);
-                var text = response.responseText,
-                    idiomas = Ext.decode(text);
-
-                APP.core.config.Locale.languages = idiomas;
-                console.log(idiomas);
-                localStorage.setItem('idioma', 'es_MX');
-//                APP.core.config.Locale.localize('en_US');
-            },
-            failure: function(response, opts) {
-                Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
-            }
-        });        
-    }*/
 });

@@ -65225,6 +65225,158 @@ Ext.define('Ext.device.Notification', {
     }
 });
 
+/**
+ * The DelayedTask class provides a convenient way to "buffer" the execution of a method,
+ * performing `setTimeout` where a new timeout cancels the old timeout. When called, the
+ * task will wait the specified time period before executing. If during that time period,
+ * the task is called again, the original call will be canceled. This continues so that
+ * the function is only called a single time for each iteration.
+ *
+ * This method is especially useful for things like detecting whether a user has finished
+ * typing in a text field. An example would be performing validation on a keypress. You can
+ * use this class to buffer the keypress events for a certain number of milliseconds, and
+ * perform only if they stop for that amount of time.
+ *
+ * Using {@link Ext.util.DelayedTask} is very simple:
+ *
+ *     //create the delayed task instance with our callback
+ *     var task = Ext.create('Ext.util.DelayedTask', {
+ *          fn: function() {
+ *             console.log('callback!');
+ *          }
+ *     });
+ *
+ *     task.delay(1500); //the callback function will now be called after 1500ms
+ *
+ *     task.cancel(); //the callback function will never be called now, unless we call delay() again
+ *
+ * ## Example
+ *
+ *     @example
+ *     //create a textfield where we can listen to text
+ *     var field = Ext.create('Ext.field.Text', {
+ *         xtype: 'textfield',
+ *         label: 'Length: 0'
+ *     });
+ *
+ *     //add the textfield into a fieldset
+ *     Ext.Viewport.add({
+ *         xtype: 'formpanel',
+ *         items: [{
+ *             xtype: 'fieldset',
+ *             items: [field],
+ *             instructions: 'Type into the field and watch the count go up after 500ms.'
+ *         }]
+ *     });
+ *
+ *     //create our delayed task with a function that returns the fields length as the fields label
+ *     var task = Ext.create('Ext.util.DelayedTask', function() {
+ *         field.setLabel('Length: ' + field.getValue().length);
+ *     });
+ *
+ *     // Wait 500ms before calling our function. If the user presses another key
+ *     // during that 500ms, it will be canceled and we'll wait another 500ms.
+ *     field.on('keyup', function() {
+ *         task.delay(500);
+ *     });
+ *
+ * @constructor
+ * The parameters to this constructor serve as defaults and are not required.
+ * @param {Function} fn The default function to call.
+ * @param {Object} scope The default scope (The `this` reference) in which the function is called. If
+ * not specified, `this` will refer to the browser window.
+ * @param {Array} args The default Array of arguments.
+ */
+Ext.define('Ext.util.DelayedTask', {
+    config: {
+        interval: null,
+        delay: null,
+        fn: null,
+        scope: null,
+        args: null
+    },
+
+    constructor: function(fn, scope, args) {
+        var config = {
+            fn: fn,
+            scope: scope,
+            args: args
+        };
+
+        this.initConfig(config);
+    },
+
+    /**
+     * Cancels any pending timeout and queues a new one.
+     * @param {Number} delay The milliseconds to delay
+     * @param {Function} newFn Overrides the original function passed when instantiated.
+     * @param {Object} newScope Overrides the original `scope` passed when instantiated. Remember that if no scope
+     * is specified, `this` will refer to the browser window.
+     * @param {Array} newArgs Overrides the original `args` passed when instantiated.
+     */
+    delay: function(delay, newFn, newScope, newArgs) {
+        var me = this;
+
+        //cancel any existing queued functions
+        me.cancel();
+
+        //set all the new configurations
+
+        if (Ext.isNumber(delay)) {
+            me.setDelay(delay);
+        }
+
+        if (Ext.isFunction(newFn)) {
+            me.setFn(newFn);
+        }
+
+        if (newScope) {
+            me.setScope(newScope);
+        }
+
+        if (newScope) {
+            me.setArgs(newArgs);
+        }
+
+        //create the callback method for this delayed task
+        var call = function() {
+            me.getFn().apply(me.getScope(), me.getArgs() || []);
+            me.cancel();
+        };
+
+        me.setInterval(setInterval(call, me.getDelay()));
+    },
+
+    /**
+     * Cancel the last queued timeout
+     */
+    cancel: function() {
+        this.setInterval(null);
+    },
+
+    /**
+     * @private
+     * Clears the old interval
+     */
+    updateInterval: function(newInterval, oldInterval) {
+        if (oldInterval) {
+            clearInterval(oldInterval);
+        }
+    },
+
+    /**
+     * @private
+     * Changes the value into an array if it isn't one.
+     */
+    applyArgs: function(config) {
+        if (!Ext.isArray(config)) {
+            config = [config];
+        }
+
+        return config;
+    }
+});
+
 // Using @mixins to include all members of Ext.event.Touch
 // into here to keep documentation simpler
 /**
@@ -83401,7 +83553,8 @@ Ext.define('APP.core.config.Locale', {
 
       AnalisisVentasList: {
         clientes: "Clientes",
-        articulos: "Artículos"
+        articulos: "Artículos",
+        clientesArticulos: "Clientes y Artículos"
       },
 
       InformesList: {
@@ -83573,7 +83726,7 @@ Ext.define('APP.core.config.Locale', {
       editarRuta: "Editar ruta",
       trazarRuta: "Trazar ruta"
     }
-  },
+  }
 },
 
   localize: function() {
@@ -84172,6 +84325,12 @@ Ext.define('APP.model.phone.Informe', {
             name: 'codigo',
             type: 'string'
         },{
+            name: 'nombre',
+            type: 'string'
+        },{
+            name: 'codigoArticulo',
+            type: 'string'
+        },{
             name: 'descripcion',
             type: 'string'
         },{
@@ -84466,11 +84625,15 @@ Ext.define('APP.controller.phone.Login', {
         }
     },
 
-
+    /**
+    * Loguea al usuario.
+    * btn Éste botón
+    */
     onLoginUser: function (btn) {
         var form = this.getLoginForm(),
-            almacenes,            
-            values = form.getValues();
+            almacenes,
+            me = this,
+            values = form.getValues();            
 
         //localStorage.setItem("dirIP", values.servidor);
         //localStorage.setItem("idioma", values.idioma);
@@ -84503,14 +84666,28 @@ Ext.define('APP.controller.phone.Login', {
                     Ext.Viewport.removeAll(true);                                        
                     Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));                    
                     Ext.Viewport.getActiveItem().getAt(0).almacenes = almacenes;
+                    Ext.Viewport.getActiveItem().getAt(0).task = Ext.create('Ext.util.DelayedTask', {
+                                                                                fn: function() {
+                                                                                    console.log('Calendariza');
+                                                                                }
+                                                                            });
+                    Ext.Viewport.getActiveItem().getAt(0).overlay = new Ext.Panel({
+                                                                            hidden: true
+                                                                        });
+
+                    var task = Ext.Viewport.getActiveItem().getAt(0).task;
 
                     APP.core.data.Store.ProxyUrlClient = localStorage.getItem("dirIP");
+                    
+                    me.revisaEventosPendientes();
 
                 } else {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
                                 response.Descripcion, Ext.emptyFn);
                 }
-                Ext.Viewport.setMasked(false);
+
+                Ext.Viewport.setMasked(false);                
+
             },
             failure: function () {
                 Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
@@ -84523,6 +84700,9 @@ Ext.define('APP.controller.phone.Login', {
         });
     },
 
+    /**
+    * Muestra la pantalla de configuración.
+    */
     showConfigOptions: function (x) {
         var configForm = this.getConfiguracionForm();
 
@@ -84558,6 +84738,9 @@ Ext.define('APP.controller.phone.Login', {
         })
     },
 
+    /**
+    * Guarda la configuración establecida.
+    */
     onSaveConfiguration: function () {
         var me = this,
             configForm = me.getConfiguracionForm(),
@@ -84578,6 +84761,13 @@ Ext.define('APP.controller.phone.Login', {
         );
     },
 
+    /**
+    * Muestra un MsgBox y ejecuta la función de acuerdo a la opción elegida.
+    * @titulo El título del mensaje.
+    * @mensaje El mensaje.
+    * @ancho El ancho de la ventana del mensaje.
+    * @param funcion La función a ejecutarse de acuerdo a la opción elegida.
+    */
     confirma: function (titulo, mensaje, ancho, funcion){
         Ext.Msg.show({
             title: titulo,
@@ -84595,30 +84785,448 @@ Ext.define('APP.controller.phone.Login', {
         });
     },
 
+    /**
+    * Regresa a la vista de Login.
+    */
     onConfigBackButton: function () {
         this.getLoginPanel().setActiveItem(0);
-    }
+    },
 
-/*    launch: function(){
-        var me = this;        
-        Ext.Ajax.request({
-            url: 'app/core/data/Prueba.json',
-            
-            success: function(response){
-                console.log(response);
-                var text = response.responseText,
-                    idiomas = Ext.decode(text);
+    /**
+    * Obtiene las rutas sin visitar y las actividades pendientes para mostrarlas en un aviso.
+    */
+    calendariza: function (){
+        var me = this,
+            hoy = Ext.Date.format(new Date(), "Y-m-d"),
+            horaHoy = Ext.Date.format(new Date(), "H:i:s"),
+            margen = 120,
+            params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                Usuario: localStorage.getItem("CodigoUsuario"),
+                FechaInicio: hoy,
+                FechaFin: hoy,
+                CodigoCliente: ""
+            };
 
-                APP.core.config.Locale.languages = idiomas;
-                console.log(idiomas);
-                localStorage.setItem('idioma', 'es_MX');
-//                APP.core.config.Locale.localize('en_US');
+        // console.log(hoy);
+        // console.log(horaHoy);
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ObtenerRutasSinVisitar",
+            params: params,
+
+            callbackKey: 'callback',
+            success: function (response) {
+                var procesada = response.Procesada
+
+                if (procesada) {
+                    var eventos = "",
+                        horaActual = new Date(),
+                        horaEvento = new Date(),
+                        diferencia,
+                        resultados = response.Data;
+                        
+                    contadorEventos = 0;
+                    horaActual = Ext.Date.parse(horaHoy, "H:i:s");
+                    
+                    //console.log(horaActual, horaEvento, horaHoy > resultados[0].HoraInicio.substring(0,5), 
+                    //    Ext.Date.diff(horaActual, horaEvento, "mi"));
+
+                    for(var i = 0; i < resultados.length; i++) { // Checamos si hay eventos vencidos.
+                        if(resultados[i].Estatus == 0){
+
+                            eventos +=  "<font color = red><b>Ruta Vencida</b></font><br>" +
+                                        "<div><p><font color = red><b>Ruta: </b></font>" + resultados[i].Descripcion + "<br>" +
+                                        "<font color = red><b>Fecha: </b></font>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                        "<font color = red><b>Hora Inicio: </b></font>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                        "<font color = red><b>Hora Fin: </b></font>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                        "</div>";
+
+                            contadorEventos++;
+                        }
+                    }                    
+
+                    for(var i = 0; i < resultados.length; i++) {
+                        if(horaHoy < resultados[i].HoraInicio){
+                            horaEvento = Ext.Date.parse(resultados[i].HoraInicio, "H:i:s");
+                            diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
+
+                            if(diferencia <= margen){
+                                eventos +=  "<div><p><b>Ruta: </b>" + resultados[i].Descripcion + "<br>" +
+                                            "<b>Fecha: </b>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                            "<b>Hora Inicio: </b>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                            "<b>Hora Fin: </b>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                            "</div>";
+
+                                contadorEventos++;
+                            }
+                        }
+                    }
+
+                Ext.data.JsonP.request({
+                    url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ObtenerActividades",
+                    params: {
+                        CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                        CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                        CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                        Token: localStorage.getItem("Token"),
+                        Usuario: localStorage.getItem("CodigoUsuario"),
+                        FechaInicio: hoy,
+                        FechaFin: hoy
+                    },
+
+                    
+                    callbackKey: 'callback',
+                    success: function (response) {
+                        var procesada = response.Procesada;
+
+                        if (procesada) {
+                            var actividades = response.Data;
+
+                            for(var i = 0; i < actividades.length; i++) { // Checamos si hay eventos vencidos.
+                                if(actividades[i].Estatus == 0){
+
+                                    eventos +=  "<font color = red><b>Actividad Vencida</b></font><br>" +
+                                                "<div><p><font color = red><b>Actividad: </b></font>" + actividades[i].Descripcion + "<br>" +
+                                                "<font color = red><b>Fecha: </b></font>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                                "<font color = red><b>Hora Inicio: </b></font>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                                "<font color = red><b>Hora Fin: </b></font>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                                "</div>";
+
+                                    contadorEventos++;
+                                }
+                            }                    
+
+                            for(var i = 0; i < actividades.length; i++) {
+                                //if(horaHoy < actividades[i].HoraInicio){
+                                if(actividades[i].Estatus == 2){
+                                    horaEvento = Ext.Date.parse(actividades[i].HoraInicio, "H:i:s");
+                                    diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
+
+                                    //if(diferencia <= margen){
+                                        eventos +=  "<div><p><b>Actividad: </b>" + actividades[i].Descripcion + "<br>" +
+                                                    "<b>Fecha: </b>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                                    "<b>Hora Inicio: </b>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                                    "<b>Hora Fin: </b>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                                    "</div>";
+
+                                        contadorEventos++;
+//                                    }
+                                }
+                            }
+
+                            if(contadorEventos > 0){
+                                if(Ext.Viewport.getActiveItem().getAt(0).overlay.getHidden()){
+                                    Ext.Viewport.getActiveItem().getAt(0).overlay = Ext.Viewport.add({
+                                        xtype: 'panel',
+                                        modal: true,
+                                        hideOnMaskTap: true,
+                                        showAnimation:{
+                                            type: 'popIn',
+                                            duration: 250,
+                                            easing: 'ease-out'
+                                        },
+                                        hideAnimation: {
+                                            type: 'popOut',
+                                            duration: 250,
+                                            easing: 'ease-out'
+                                        },
+                                        centered: true,
+                                        width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
+                                        height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 400,
+                                        styleHtmlContent: true,
+                                        html: eventos,
+                                        items: [
+                                        {
+                                            docked: 'top',
+                                            xtype: 'toolbar',
+                                            title: contadorEventos == 1 ? contadorEventos + ' evento pendiente' : contadorEventos + ' eventos pendientes'
+                                        }],
+                                        scrollable: true
+                                    });
+
+                                    Ext.Viewport.getActiveItem().getAt(0).overlay.show();
+                                }
+                            } else {
+                                //console.log("No hay eventos pendientes");
+                            }
+
+                        } else {
+                            Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                        }
+                    }
+                });                    
+
+                    //Ext.Msg.alert("Eventos pendientes", eventos);
+                } else {
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSeleccionarCliente, 
+                                response.Descripcion, Ext.emptyFn);
+                }
             },
-            failure: function(response, opts) {
-                Ext.Msg.alert("Error", "No se encontró el archivo de configuración de idioma");
+
+            failure: function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
+                    APP.core.config.Locale.config.lan.Login.problemasConexionMsg, function () {                    
+                });                
             }
         });        
-    }*/
+    },
+
+    /**
+    * Obtiene los eventos pendientes (rutas y actividades) y les cambia el estatus a vencidos si ya ha pasado el tiempo de realización.
+    */ 
+    revisaEventosPendientes: function(){
+        var me = this;
+            hoy = new Date()
+            rutaFechaHora = new Date(),
+            task = Ext.Viewport.getActiveItem().getAt(0).task;
+        //console.log("Revisando eventos");
+
+        Ext.data.JsonP.request({
+            url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ObtenerRutasSinVisitar",
+            params: {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                Usuario: localStorage.getItem("CodigoUsuario"),
+                FechaInicio: hoy,
+                FechaFin: hoy,
+                CodigoCliente: ""
+            },
+
+            callbackKey: 'callback',
+            success: function (response) {
+                var procesada = response.Procesada;                    
+
+                if (procesada) {
+                    var rutas = response.Data;
+
+                    for(var i = 0; i < rutas.length; i++){
+                        var formatoFecha = rutas[i].FechaInicio.substring(0,10),
+                            formatoHora = rutas[i].HoraInicio;
+
+                        rutaFechaHora = Ext.Date.parse(formatoFecha + " " + formatoHora, "Y-m-d H:i:s");
+                        
+
+                        if(hoy > rutaFechaHora){
+                            if(rutas[i].Estatus == 2){                                
+                                me.cambiaStatusRuta(rutas[i]);
+                            }
+                        }
+                    }
+
+                    Ext.data.JsonP.request({
+                        url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ObtenerActividades",
+                        params: {
+                            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                            Token: localStorage.getItem("Token"),
+                            Usuario: localStorage.getItem("CodigoUsuario"),
+                            FechaInicio: hoy,
+                            FechaFin: hoy
+                        },
+
+                        callbackKey: 'callback',
+                        success: function (response) {
+                            var procesada = response.Procesada;
+
+                            if (procesada) {
+                                var actividades = response.Data;
+
+                                for(var i = 0; i < actividades.length; i++){
+                                    var formatoFecha = actividades[i].FechaInicio.substring(0,10),
+                                        formatoHora = actividades[i].HoraInicio;
+
+                                    rutaFechaHora = Ext.Date.parse(formatoFecha + " " + formatoHora, "Y-m-d H:i:s");                                    
+
+                                    if(hoy > rutaFechaHora){
+                                        if(actividades[i].Estatus == 2){                                            
+                                            me.cambiaStatusActividad(actividades[i]);
+                                        }
+                                    }
+                                }
+
+                                me.calendariza();                    
+                                //task.delay(10000, me.re.bind(me));
+                                task.delay(900000, me.revisaEventosPendientes.bind(me));
+
+                            } else {
+                                Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                            }
+                        }
+                    });
+
+                } else {
+                    Ext.Msg.alert('Datos Incorrectos', response.Descripcion, Ext.emptyFn);
+                }
+            }
+        });
+        //console.log(nada);
+        //task.delay(10000, me.revisaEventosPendientes.bind(me));
+    },
+
+    /**
+    * Cambia el estatus a vencido de la ruta que le pasan.
+    * @param ruta La ruta a cambiar de estatus.
+    */
+    cambiaStatusRuta: function(ruta){
+        var me = this,
+            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/ActualizarRuta",            
+            horaInicio = new Date(),
+            horaFin = new Date();
+        
+        horaInicio.setHours(ruta.HoraInicio.substr(0,2));
+        horaInicio.setMinutes(ruta.HoraInicio.substr(3,2));
+        horaInicio.setMilliseconds(ruta.HoraInicio.substr(6,2));
+
+        horaFin.setHours(ruta.HoraFin.substr(0,2));
+        horaFin.setMinutes(ruta.HoraFin.substr(3,2));
+        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));        
+
+         var params = {
+            CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+            CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+            CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+            Token: localStorage.getItem("Token"),
+            "Ruta.CodigoRuta" : ruta.CodigoRuta,
+            "Ruta.CodigoCliente" : ruta.CodigoCliente,
+            "Ruta.CodigoDireccion" : ruta.CodigoDireccion,
+            "Ruta.TipoDireccion" : ruta.TipoDireccion,
+            "Ruta.FechaInicio" : Ext.util.Format.date(ruta.start,"Y-m-d"),
+            "Ruta.HoraInicio" : Ext.util.Format.date(horaInicio,"H:i:s"),
+            "Ruta.FechaFin" : Ext.util.Format.date(ruta.end,"Y-m-d"),
+            "Ruta.HoraFin" : Ext.util.Format.date(horaFin,"H:i:s"),
+            "Ruta.Descripcion" : ruta.Descripcion,
+            "Ruta.Notas" : ruta.Notas,
+            "Ruta.Repetir" : ruta.Repetir?true:false,
+            "Ruta.Lunes" : ruta.Lunes?true:false,
+            "Ruta.Martes" : ruta.Martes?true:false,
+            "Ruta.Miercoles" : ruta.Miercoles?true:false,
+            "Ruta.Jueves" : ruta.Jueves?true:false,
+            "Ruta.Viernes" : ruta.Viernes?true:false,
+            "Ruta.Sabado" : ruta.Sabado?true:false,
+            "Ruta.Domingo" : ruta.Domingo?true:false,
+            "Ruta.Notas"   : ruta.Notas,
+            "Ruta.LatitudOrigen": ruta.LatitudOrigen,
+            "Ruta.LongitudOrigen": ruta.LongitudOrigen,
+            "Ruta.Estatus" : 0,
+            "Ruta.HoraVisita": "00:00:00",
+            "Ruta.FechaVisita": Ext.util.Format.date(ruta.end,"Y-m-d")
+        };
+
+        Ext.data.JsonP.request({
+            url: url,
+            params: params,
+
+            callbackKey: 'callback',
+            success: function (response) {
+                var procesada = response.Procesada
+
+                if (procesada) {
+                    //console.log("Se cambió un estatus de ruta");
+                }
+                else {
+                    //console.log("No se cambió un estatus de ruta");                    
+                }
+            },
+            failure: function () {
+                Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {                    
+                });
+            }
+        });
+    },
+
+    /**
+    * Cambia el estatus a vencido de la actividad que le pasan.
+    * @param actividad La actividad a cambiar de estatus.
+    */
+    cambiaStatusActividad:function(actividad){
+
+        if(actividad.Descripcion != ""){
+
+            var horaInicio = new Date(),
+                horaFin = new Date();
+            
+            horaInicio.setHours(actividad.HoraInicio.substr(0,2));
+            horaInicio.setMinutes(actividad.HoraInicio.substr(3,2));
+            horaInicio.setMilliseconds(actividad.HoraInicio.substr(6,2));
+
+            horaFin.setHours(actividad.HoraFin.substr(0,2));
+            horaFin.setMinutes(actividad.HoraFin.substr(3,2));
+            horaFin.setMilliseconds(actividad.HoraFin.substr(6,2));
+
+            var params = {
+                CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                Token: localStorage.getItem("Token"),
+                "Actividad.CodigoActividad":actividad.CodigoActividad,
+                "Actividad.FechaInicio" : actividad.FechaInicio.substring(0,10),
+                "Actividad.HoraInicio" : Ext.util.Format.date(horaInicio,"H:i:s"),
+                "Actividad.FechaFin" : actividad.FechaFin.substring(0,10),
+                "Actividad.HoraFin" : Ext.util.Format.date(horaFin,"H:i:s"),
+                "Actividad.Descripcion" : actividad.Descripcion,
+                "Actividad.Notas" : actividad.Notas,
+                "Actividad.Repetir" : actividad.Repetir?true:false,
+                "Actividad.Lunes" : actividad.Lunes?true:false,
+                "Actividad.Martes" : actividad.Martes?true:false,
+                "Actividad.Miercoles" : actividad.Miercoles?true:false,
+                "Actividad.Jueves" : actividad.Jueves?true:false,
+                "Actividad.Viernes" : actividad.Viernes?true:false,
+                "Actividad.Sabado" : actividad.Sabado?true:false,
+                "Actividad.Domingo" : actividad.Domingo?true:false,
+                "Actividad.Notas"   : actividad.Notas,
+                "Actividad.Estatus" : 0
+            };
+
+            //console.log(params);
+
+            Ext.data.JsonP.request({
+                url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/ActualizarActividad",
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+                    var procesada = response.Procesada
+
+                    if (procesada) {
+                        //console.log("Se cambió un estatus de actividad");
+                    }
+                    else {
+                        //console.log("No se cambió un estatus de actividad");
+                    }
+
+                },
+                failure: function () {
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                    APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {                        
+                    });                    
+                }
+            });
+        }
+        else{
+            Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, 
+                APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);            
+        }
+    },    
+
+    /**
+    * Formatea la fecha  a dd mm aaaa con el separador que le pasan.
+    * @param La fecha a formatear.
+    * @param separador El separador a emplear.
+    */
+    formateaFecha: function (fecha, separador){        
+        var dia = fecha.substring(8,10),
+            mes = fecha.substring(5,7),
+            anio = fecha.substring(0,4);
+
+        return dia + separador + mes + separador + anio;
+    }
 });
 
 /**
@@ -84644,8 +85252,15 @@ Ext.define('APP.controller.phone.Menu', {
 
         }
     },
-    onMenuTap: function (list, index, target, record) {
 
+    /**
+    * Muestra la pantalla asociada a la selección realizada.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.    
+    */
+    onMenuTap: function (list, index, target, record) {
         var action = record.data.action;
         switch (action) {
             case 'ordenes':
@@ -84659,7 +85274,6 @@ Ext.define('APP.controller.phone.Menu', {
                             title: APP.core.config.Locale.config.lan.menu.Orden
                         }
                     ]
-
                 });
                 break;
             case 'rutas':
@@ -84711,8 +85325,7 @@ Ext.define('APP.controller.phone.Menu', {
                     Criterio: ''
                 });
 
-                store.load();
-                //this.agregaOpciones();
+                store.load();                
                 break;
             case 'favoritos':
                 this.getMenuNav().push({
@@ -84723,7 +85336,7 @@ Ext.define('APP.controller.phone.Menu', {
             case 'salir':
                 Ext.Viewport.removeAll(true);
                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-/*                Ext.Viewport.removeAll();
+/*               Ext.Viewport.removeAll();
                 Ext.Viewport.add('APP.view.phone.login.LoginPanel');*/
                 break;
 
@@ -84741,8 +85354,12 @@ Ext.define('APP.controller.phone.Menu', {
         console.log(document, 'entra document');
     },
 
+    /**
+    * Responde al botón Back del navigationview. 
+    * Remueve el título con el nombre del cliente y recarga la lista de clientes.
+    * @param navigationview Éste navigationview.
+    */
     onBackMenu: function (navigationview) {
-
         var me = this,
             store,
             view = this.getMenuNav(),
@@ -84768,57 +85385,11 @@ Ext.define('APP.controller.phone.Menu', {
             store.setParams(params);
             store.load();            
         }
-    },
-
-    agregaOpciones: function(){
-        if(this.getMenuNav().estados == undefined){
-            var me = this,
-                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Catalogos/ObtenerListaEstados",
-                params = {
-                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
-                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
-                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
-                    Token: localStorage.getItem("Token")
-                };
-
-        Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
-        Ext.Viewport.setMasked(true);
-
-            Ext.data.JsonP.request({
-                url: url,
-                params: params,
-                callbackKey: 'callback',
-                success: function (response) {
-
-                    if (response.Procesada) {
-                        var opciones = new Array(),
-                            datos = response.Data,
-                            i;
-
-                        for (i = 0; i < datos.length; i++){
-                            opciones[i] = {
-                                text: datos[i].NombreEstado,
-                                value: datos[i].CodigoEstado
-                            };
-                        }                    
-
-                        me.getMenuNav().estados = opciones;
-                        Ext.Viewport.setMasked(false);
-                    } else {                    
-                        Ext.Msg.alert("No se pudieron obtener los estados", "Se presentó un problema al intentar obtener los estados: " + response.Descripcion);
-                        Ext.Viewport.setMasked(false);
-                    }
-                }
-            });
-        }
     }
 });
 
 /**
  * Created by th3gr4bb3r on 7/23/14.
- */
-/**
- * Created by th3gr4bb3r on 7/21/14.
  */
 Ext.define('APP.controller.phone.Clientes', {
     extend: 'Ext.app.Controller',
@@ -84843,8 +85414,11 @@ Ext.define('APP.controller.phone.Clientes', {
         }
     },
 
-
-
+    /**
+    * Realiza una búsqueda de cliente basado en la cadena que le pasan
+    * @param t Éste textfield
+    * @param e El evento
+    */
     onBuscaClientes: function (t, e){
         var store = this.getClientesList().getStore(),
             value = t.up('toolbar').down('#buscarClientes').getValue();
@@ -84855,6 +85429,9 @@ Ext.define('APP.controller.phone.Clientes', {
         store.load();
     },
 
+    /**
+    * Limpia el textfield. 
+    */
     limpiaBusquedaClientes: function() {
         var store = this.getClientesList().getStore();
         store.resetCurrentPage();
@@ -85095,6 +85672,7 @@ Ext.define('APP.controller.phone.Ordenes', {
      *   Hace aparecer un toolbar con el nombre del cliente.
      *
      * Visualizar:
+     *  Muestra la lista de las transacciones realizadas.
      *
      * @param list Ésta lista.
      * @param index El índice del ítem tapeado.
@@ -85159,7 +85737,6 @@ Ext.define('APP.controller.phone.Ordenes', {
                     title: idCliente
                 });
 
-//                me.dameMonedaPredeterminada();
                 me.getOpcionesOrden().down('#moneda').setDisabled(true);
 
                 break;
@@ -85250,6 +85827,9 @@ Ext.define('APP.controller.phone.Ordenes', {
         });
     },
 
+    /**
+    * Actualiza los totales de la lista de productos del pedido.
+    */
     actualizarTotales: function () {
         var me = this,
             store = Ext.getStore('Ordenes'),
@@ -85260,9 +85840,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
 
         store.each(function (item) {
-            precioTotal += APP.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad');
-
-            // descuentoTotal += Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('descuento')) * item.get('cantidad');
+            precioTotal += APP.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad');            
             tax += item.get('totalDeImpuesto');
 
         });
@@ -85296,8 +85874,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                     ordenes.removeAll();
                     me.getMainCard().setActiveItem(0);
-                    view.remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
-                    //me.getMenuNav().down('toolbar').setTitle(name);
+                    view.remove(titulo, false); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.                    
                     me.getMenuNav().remove(me.getMenuNav().down('toolbar'));
                     me.getMenuNav().add(titulo);
                     me.actualizarTotales();
@@ -85410,8 +85987,6 @@ Ext.define('APP.controller.phone.Ordenes', {
                      codigoMonedaPredeterminada + APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaMsg2);
                 } else {
                     me.obtenerTipoCambio(moneda, record);
-                    //                me.estableceMonedaPredeterminada(record);
-                    //                me.actualizaOrden(moneda);
                 }
             } else {
 
@@ -85429,8 +86004,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                         });
                         me.estableceMonedaPredeterminada(record); // Para pintar la palomita.
                     }
-                }
-                //me.actualizarTotales();
+                }                
             }
         } else {
             me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaNoMultimonedaTitle,
@@ -85511,16 +86085,11 @@ Ext.define('APP.controller.phone.Ordenes', {
                         }
 
                         me.estableceMonedaPredeterminada(record); // Para pintar la palomita                        
-                        //me.actualizarTotales();
                     }
 
                 } else {
                     var error = response.Descripcion;
                     me.mandaMensaje(APP.core.config.Locale.config.lan.Ordenes.seleccionarMonedaError, error);
-                    // form.setValues({
-                    //     CodigoMoneda: me.codigoMonedaSeleccionada,
-                    //     tipoCambio: me.tipoCambio
-                    // });
                 }
             }
         });
@@ -85545,8 +86114,7 @@ Ext.define('APP.controller.phone.Ordenes', {
      */
     actualizaOrden: function (moneda) {
         var me = this, precio, importe,
-            codigoMonedaPredeterminada = me.getOpcionesOrden().codigoMonedaPredeterminada,
-        //tipoCambio = me.getOpcionesOrden().tipoCambio,
+            codigoMonedaPredeterminada = me.getOpcionesOrden().codigoMonedaPredeterminada,        
             ordenes = Ext.getStore('Ordenes');
 
         if (moneda == codigoMonedaPredeterminada) {
@@ -85609,12 +86177,6 @@ Ext.define('APP.controller.phone.Ordenes', {
                     ordenes.removeAt(ind);
 
                     me.actualizarTotales();
-
-                    if (ordenes.getData().items.length < 2) {
-                        //me.getPartidaContainer().down('list').emptyTextCmp.show();
-                    } else {
-                        //me.getPartidaContainer().down('list').emptyTextCmp.hide();
-                    }
                 }
             }
         );
@@ -85689,6 +86251,12 @@ Ext.define('APP.controller.phone.Ordenes', {
         }, 100)
     },
 
+    /**
+    * Obtiene un número aleatorio entre inferior y superior.
+    * @param inferior El límite inferior.
+    * @param superior El límite superior.
+    * @return El número aleatorio obtenido.
+    */
     aleatorio: function (inferior, superior) {
         var numPosibilidades = superior - inferior,
             aleat = Math.random() * numPosibilidades,
@@ -85697,6 +86265,10 @@ Ext.define('APP.controller.phone.Ordenes', {
         return parseInt(inferior) + aleat;
     },
 
+    /**
+    * Obtiene la representación Hexadecimal de un color de manera aleatoria.
+    * @return La representación Hexadecimal del color obtenido.
+    */
     dameColorAleatorio: function () {
         var hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"),
             color_aleatorio = "#",
@@ -85863,7 +86435,11 @@ Ext.define('APP.controller.phone.Ordenes', {
         Ext.getStore('Ordenes').load();
     },
 
-    onBuscaProductos: function (t, e, eOpts) {
+    /**
+    * Busca el producto que le pasan al selectfield asociado.
+    * @param t Éste botón
+    */
+    onBuscaProductos: function (t) {
         var me = this,
             store = Ext.getStore('Productos'),
             idCliente = me.getNavigationOrden().getNavigationBar().getTitle(),
@@ -85880,7 +86456,11 @@ Ext.define('APP.controller.phone.Ordenes', {
         store.load();
     },
 
-    limpiaBusquedaProductos: function (t, e, eOpts) {
+    /**
+    * Limpia el textfield de la búsqueda de productos.
+    * @param t Éste botón.
+    */
+    limpiaBusquedaProductos: function (t) {
         var me = this,
             idCliente = me.getNavigationOrden().getNavigationBar().getTitle(),
             store = Ext.getStore('Productos');
@@ -85949,7 +86529,7 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                     productoSeleccionado.set(response.Data[0]);
 
-                    me.llenaAgregarProductos(response.Data[0]); // Hacer un
+                    me.llenaAgregarProductos(response.Data[0]); 
                 } else {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.alSelecionarCliente, response.Descripcion, Ext.emptyFn);
                 }
@@ -85978,8 +86558,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             totalDeImPuesto = me.getOpcionesOrden().totalDeImpuesto,
             tasaImpuesto = me.getOpcionesOrden().tasaImpuesto,
             moneda = valores.ListaPrecios[0].CodigoMoneda + ' ';
-
-        //valores.Disponible = Ext.Number.toFixed(valores.Disponible, 2);
+        
         valores.Disponible = APP.core.FormatCurrency.formatValue(valores.Disponible);
 
         if (view.getActiveItem().xtype == 'agregarproductosform') {
@@ -86010,8 +86589,6 @@ Ext.define('APP.controller.phone.Ordenes', {
         precio = APP.core.FormatCurrency.currency(valores.ListaPrecios[0].Precio, moneda);
         cantidad = 1;
 
-        //view.setMasked({xtype: 'loadmask', message: 'Cargando Datos...'});
-        //Ext.Viewport.setMasked({xtype: 'loadmask', message: APP.core.config.Locale.config.lan.ClientesList.cargando});
         Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.ClientesList.cargando);
         Ext.Viewport.setMasked(true);
 
@@ -86176,9 +86753,6 @@ Ext.define('APP.controller.phone.Ordenes', {
             if (moneda != codigoMonedaPredeterminada && codigoMonedaSeleccionada == codigoMonedaPredeterminada) {
                 descuento = APP.core.FormatCurrency.formatCurrencytoNumber(values.PorcentajeDescuento);
                 precio = APP.core.FormatCurrency.formatCurrencytoNumber(values.Precio);
-                //precio = precio * 100 / (100 - descuento);
-                //precio = precio / values.TipoCambio;
-                //precio = parseFloat(precio.toFixed(2));
 
                 importe = APP.core.FormatCurrency.formatCurrencytoNumber(values.importe) / tipoCambio;//values.TipoCambio;
                 precioConDescuento = APP.core.FormatCurrency.formatCurrencytoNumber(values.precioConDescuento) / tipoCambio; // values.TipoCambio;
@@ -86190,8 +86764,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             precio = APP.core.FormatCurrency.formatCurrencytoNumber(values.Precio);
             precioConDescuento = APP.core.FormatCurrency.formatCurrencytoNumber(values.precioConDescuento) / tipoCambio; //values.TipoCambio;
             importe = APP.core.FormatCurrency.formatCurrencytoNumber(values.importe) / tipoCambio; //values.TipoCambio; //precioConDescuento * values.cantidad; 
-
-            //newObject.importe = APP.core.FormatCurrency.currency(importe, moneda);
+            
             newObject.precioConDescuento = APP.core.FormatCurrency.currency(precioConDescuento, moneda);
         }
 
@@ -86235,16 +86808,6 @@ Ext.define('APP.controller.phone.Ordenes', {
         var me = this,
             valor = numberfield.getValue();
 
-        /*console.log(valor);
-         if(valor < 1){
-
-         if(valor == null){
-         numberfield.setValue(0.);
-         } else {
-         numberfield.setValue(valor);
-         }
-         }*/
-
         me.actualizaCantidad(valor);
     },
 
@@ -86268,15 +86831,11 @@ Ext.define('APP.controller.phone.Ordenes', {
                 CardCode: idCliente,
                 Criterio: ""
             });
-            store.load();
-            //store.clearFilter();
+            store.load();            
             view.push({
                 xtype: 'productosorden',
                 title: idCliente
-            });
-
-
-            //store.load();
+            });            
 
             view.getNavigationBar().down('#agregarProductos').hide()
         } else {
@@ -86327,25 +86886,7 @@ Ext.define('APP.controller.phone.Ordenes', {
             idCliente = tabPanel.idCliente,
             store = Ext.getStore('Ordenes');
 
-
-        // if (itemActivo.isXType('clientecontainer') || itemActivo.isXType('editarpedidoform')) {
-        //     t.getNavigationBar().down('#agregarProductos').show();
-        //
-        // }
-
-        // if (itemActivo.isXType('partidacontainer') && v.isXType('agregarproductosform')) {
-        //     t.getNavigationBar().down('#agregarProductos').show();
-        //
-        // }
-
-        if (store.getData().items.length <= 1) {
-            //me.getPartidaContainer().down('list').emptyTextCmp.show();
-        } else {
-            //me.getPartidaContainer().down('list').emptyTextCmp.hide();
-        }
-
-        if (itemActivo.isXType('partidacontainer') || itemActivo.isXType('clientecontainer') || itemActivo.isXType('editarpedidoform')) {
-            //t.getActiveItem().setActiveItem(0);
+        if (itemActivo.isXType('partidacontainer') || itemActivo.isXType('clientecontainer') || itemActivo.isXType('editarpedidoform')) {            
             t.getNavigationBar().down('#agregarProductos').show();
             t.getNavigationBar().setTitle(idCliente);
         }
@@ -86401,8 +86942,6 @@ Ext.define('APP.controller.phone.Ordenes', {
             direccionFiscal = me.getOpcionesOrden().direccionFiscal,
             tipoCambio = me.getOpcionesOrden().tipoCambio;
 
-        // me.getMainCard().getActiveItem().getMasked().setMessage('Enviando orden...');
-        // me.getMainCard().getActiveItem().setMasked(true);
         Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Ordenes.enviandoOrden);
         Ext.Viewport.setMasked(true);
 
@@ -86429,19 +86968,10 @@ Ext.define('APP.controller.phone.Ordenes', {
                     precio = APP.core.FormatCurrency.formatCurrencytoNumber(item.get('Precio')),
                     precioConDescuento = APP.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')),
                     importe;
-                //importe = Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad');
 
-
-                /*                if(moneda != codigoMonedaSeleccionada){ // Si la moneda del artículo es diferente a la predeterminada hay que hacer una conversión.
-                 //precioConDescuento /= tipoCambio;
-                 //precio /= tipoCambio;
-                 precio = parseFloat(precio.toFixed(2));*/
-
-                if (moneda != codigoMonedaSeleccionada) { // Si la moneda del artículo es diferente a la predeterminada hay que hacer una conversión.
-                    //precioConDescuento *= tipoCambio;
+                if (moneda != codigoMonedaSeleccionada) { // Si la moneda del artículo es diferente a la predeterminada hay que hacer una conversión.                    
                     precio *= tipoCambio;
-                    moneda = codigoMonedaSeleccionada;
-                    //precio = parseFloat(precio.toFixed(2));
+                    moneda = codigoMonedaSeleccionada;                    
                 }
 
                 importe = precioConDescuento * item.get('cantidad');
@@ -86450,13 +86980,12 @@ Ext.define('APP.controller.phone.Ordenes', {
                 params["Orden.Partidas[" + index + "].CodigoArticulo"] = item.get('CodigoArticulo');
                 params["Orden.Partidas[" + index + "].NombreArticulo"] = item.get('NombreArticulo');
                 params["Orden.Partidas[" + index + "].Cantidad"] = item.get('cantidad');
-                params["Orden.Partidas[" + index + "].Precio"] = precio;//Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('Precio'));
+                params["Orden.Partidas[" + index + "].Precio"] = precio;
                 params["Orden.Partidas[" + index + "].CodigoAlmacen"] = item.get('CodigoAlmacen');
                 params["Orden.Partidas[" + index + "].Linea"] = index;
-                params["Orden.Partidas[" + index + "].Moneda"] = moneda.trim();//item.get('moneda').trim();
-                params["Orden.Partidas[" + index + "].Importe"] = parseFloat(importe.toFixed(2));//Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad');
+                params["Orden.Partidas[" + index + "].Moneda"] = moneda.trim();
+                params["Orden.Partidas[" + index + "].Importe"] = parseFloat(importe.toFixed(2));
                 params["Orden.Partidas[" + index + "].PorcentajeDescuento"] = APP.core.FormatCurrency.formatCurrencytoNumber(item.get('PorcentajeDescuento'));
-                //params["Orden.Partidas[" + index + "].TipoCambio"] = item.get('TipoCambio');
             });
 
             params["Orden.TotalDocumento"] = parseFloat(total.toFixed(2));
@@ -86470,15 +86999,14 @@ Ext.define('APP.controller.phone.Ordenes', {
                 msg = APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenActualizar;
             }
 
-            console.log(params);
+            //console.log(params);
 
             Ext.data.JsonP.request({
                 url: url,
                 params: params,
                 callbackKey: 'callback',
                 success: function (response) {
-                    if (response.Procesada) {
-                        //me.getMainCard().getActiveItem().setMasked(false);                                
+                    if (response.Procesada) {                        
                         Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenProcesada, msg + response.CodigoUnicoDocumento);
@@ -86492,8 +87020,7 @@ Ext.define('APP.controller.phone.Ordenes', {
                             me.getMainCard().getActiveItem().pop(2);
                         }
 
-                    } else {
-                        //me.getMainCard().getActiveItem().setMasked(false);
+                    } else {                        
                         Ext.Viewport.setMasked(false);
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaTitle, 
                             APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenNoProcesadaMsg + response.Descripcion);
@@ -86503,15 +87030,13 @@ Ext.define('APP.controller.phone.Ordenes', {
 
                 failure: function () {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloTitle, 
-                        APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloMsg, function () {
-                        //me.getMainCard().getActiveItem().setMasked(false);
+                        APP.core.config.Locale.config.lan.Ordenes.onTerminarOrdenFalloMsg, function () {                        
                         Ext.Viewport.setMasked(false);
                         me.getOpcionesOrden().setActiveItem(0);
                     });
                 }
             });
-        } else {
-            //me.getMainCard().getActiveItem().setMasked(false);
+        } else {            
             Ext.Viewport.setMasked(false);
             setTimeout(function(){
                 me.getOpcionesOrden().setActiveItem(0);
@@ -86520,10 +87045,18 @@ Ext.define('APP.controller.phone.Ordenes', {
         }
     },
 
-    onSeleccionarTransaccion: function (t, index, target, record, e, eOpts) {
+    /**
+    * Responde al seleccionar una transacción de la lista de transacciones.
+    * Recupera la orden de venta asociada a la transacción elegida.
+    * @param t Éste list
+    * @param index El índice asociado al ítem.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
+    onSeleccionarTransaccion: function (t, index, target, record) {
         var me = this,
             view = me.getMenuNav(),
-            codigoMonedaSeleccionada, //= me.getOpcionesOrden().codigoMonedaSeleccionada,
+            codigoMonedaSeleccionada,
             codigoMonedaPredeterminada = me.getOpcionesOrden().codigoMonedaPredeterminada,
             idCliente = me.getMenuNav().getNavigationBar().getTitle(),
             store = Ext.getStore('Ordenes'),
@@ -86558,14 +87091,6 @@ Ext.define('APP.controller.phone.Ordenes', {
                 codigoMonedaSeleccionada = me.getOpcionesOrden().codigoMonedaSeleccionada;
                 me.getOpcionesOrden().NumeroDocumento = record.get('NumeroDocumento');
 
-                if (partidas.length < 2) {
-                    //me.getPartidaContainer().down('list').emptyTextCmp.show();
-                } else {
-                    //me.getPartidaContainer().down('list').emptyTextCmp.hide();
-                }
-
-
-//                partidas.forEach(function (item, index) {
                 for (index = 0; index < partidas.length; index++) {
 
                     var item = partidas[index],
@@ -86575,21 +87100,11 @@ Ext.define('APP.controller.phone.Ordenes', {
                         importe = item.Importe,
                         tipoCambio = item.TipoCambio;
 
-
-                    if (codigoMonedaSeleccionada == codigoMonedaPredeterminada && moneda != codigoMonedaPredeterminada) { //Si Orden viene en MXP y producto en USD. El importe siempre venía en MXP
-                    }
-
-                    /*                    if(codigoMonedaSeleccionada != codigoMonedaPredeterminada && moneda != codigoMonedaPredeterminada){ // Si orden viene en USD y producto en USD
-                     console.log('Orden en USD y producto en USD');
-                     }*/
-
                     if (codigoMonedaSeleccionada != codigoMonedaPredeterminada && moneda == codigoMonedaPredeterminada) { // Si orden viene en USD y producto en MXP
                         me.mandaMensaje(APP.core.config.Locale.config.lan.onSeleccionarTransaccionTitle,
                         APP.core.config.Locale.config.lan.onSeleccionarTransaccionMsg);
                         return;
-                    }
-
-                    //importe = precioConDescuento * item.Cantidad,
+                    }                    
 
                     partidas[index].cantidad = partidas[index].Cantidad;
                     partidas[index].importe = APP.core.FormatCurrency.currency(importe, codigoMonedaSeleccionada);
@@ -86599,24 +87114,19 @@ Ext.define('APP.controller.phone.Ordenes', {
                     partidas[index].precioConDescuento = APP.core.FormatCurrency.currency(precioConDescuento, codigoMonedaSeleccionada);
                     partidas[index].Precio = APP.core.FormatCurrency.currency(precio, codigoMonedaSeleccionada);
                     partidas[index].nombreMostrado = Ext.String.ellipsis(partidas[index].NombreArticulo, 25, false);
-                    //partidas[index].sujetoImpuesto = partidas[index]getOpcionesOrden().sujetoImpuesto
-                    //partidas[index].CodigoAlmacen = partidas[index].CodigoAlmacen;
                     partidas[index].PorcentajeDescuento = partidas[index].PorcentajeDescuento + '%';
                     partidas[index].esOrdenRecuperada = true;
                 }
 
-//                if(codigoMonedaSeleccionada != codigoMonedaPredeterminada){
                 var monedas = Ext.getStore('Monedas'),
                     indMoneda = monedas.find('CodigoMoneda', codigoMonedaSeleccionada.trim());
 
                 me.estableceMonedaPredeterminada(monedas.getAt(indMoneda));
-//                }
 
                 store.setData(partidas);
 
                 store.each(function (item, index, length) {
-                    codigo = item.get('CodigoArticulo');
-                    //cantidad = item.get('cantidad');
+                    codigo = item.get('CodigoArticulo');                    
                     ind = productos.find('CodigoArticulo', codigo);
                     if (ind != -1) { // Validamos que el elemento de la orden esté en los elementos actuales del store.
                     } else {
@@ -86636,6 +87146,10 @@ Ext.define('APP.controller.phone.Ordenes', {
 
     },
 
+    /**
+    * Busca la transacción representada por la cadena establecida en el textfield.
+    * @param button Éste botón.
+    */
     onBuscarTransaccion: function (button) {
         var me = this,
             store = Ext.getStore('Transacciones'),
@@ -86651,6 +87165,9 @@ Ext.define('APP.controller.phone.Ordenes', {
         store.load();
     },
 
+    /**
+    * LImpia el textfield asociado a las transacciones.
+    */
     limpiaBusquedaTransacciones: function () {
         var me = this,
             store = me.getTransaccionList().getStore(),
@@ -86687,7 +87204,15 @@ Ext.define('APP.controller.phone.Ordenes', {
         view.down('almacenlist').setData(almacenes);
     },
 
-    onSeleccionarAlmacen: function (t, index, target, record, e, eOpts) {
+    /**
+    * Reacciona al seleccionar un ítem de la lista de almacenes.
+    * Obtiene el disponible del almacén recuperado y lo establece en la form.
+    * @param t Ésta list.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param El record asociado al ítem.
+    */
+    onSeleccionarAlmacen: function (t, index, target, record) {
         var me = this,
             view = me.getMainCard().getActiveItem(),
             almacenes = me.getMenuNav().almacenes;
@@ -86735,15 +87260,8 @@ Ext.define('APP.controller.phone.Ordenes', {
         Ext.getStore('Productos').on('load', me.estableceCantidadAProductos);
     },
 
-    onKeyupActualizaCantidad: function (t) {
-        var me = this;
-
-        me.actualizaCantidad(null, t.getValue(), null);
-    },
-
     onShowMenu: function () {
-        var me = this;
-        //back button logic
+        var me = this;        
         document.addEventListener("backbutton", function () {
             me.back = this;
             me.getMainCard().setActiveItem(0);
@@ -86784,6 +87302,7 @@ Ext.define('APP.controller.phone.Ordenes', {
  */
 Ext.define('APP.controller.phone.Rutas', {
     extend: 'Ext.app.Controller',
+                                       
     config:{
         refs:{
             menuNav:'menunav',
@@ -86905,11 +87424,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },
               'container[id=accionesParaRutas] button': {
                 tap:'determinaAccion'
-            }/*,
-              'container[xtype=rutascalendariocont] button[action = cancelarRuta]': {
-                tap:'prueba'
-            },*/
-
+            }
         }
     },
 
@@ -86917,6 +87432,13 @@ Ext.define('APP.controller.phone.Rutas', {
     // Primera vista para seleccionar actividades o rutas
     //#######################################################################
 
+    /**
+    * Muestra la pantalla de la opción elegida.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target el elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     onRutasActividadesTap:function(list, index, target, record){
         var opcion = record.get('action');
 
@@ -86937,11 +87459,6 @@ Ext.define('APP.controller.phone.Rutas', {
                 break;
             case 'rutas':
                 this.getMenuNav().push({
-                    // xtype:'rutascalendariocont',
-                    // layout:'fit',
-                    // items:[{
-                    //     xtype:'clienteslist'
-                    // }]
                     xtype: 'rutascalendario',
                     title: APP.core.config.Locale.config.lan.Actividades.rutas
                 });
@@ -86953,7 +87470,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 this.loadRutasCalendario(firstDay,lastDay, "");
 
-                break;
+                break;            
         }
     },
 
@@ -86961,6 +87478,11 @@ Ext.define('APP.controller.phone.Rutas', {
     //Actividades
     //#######################################################################
 
+    /**
+    * Obtiene las actividades del intervalo de fechas ingresado.
+    * @param fechaInicio el primer día del intervalo.
+    * @param fechafin el último día del intervalo.
+    */
     loadActividadesCalendario: function(fechaInicio,fechaFin){
 
         var ac = this.getActividadesCalendario(),
@@ -86992,6 +87514,11 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Obtiene las actividades del día seleccionado en el calendario.
+    * @param calendar Éste calendar.
+    * @param nd El día seleccionado.
+    */
     onActividadesCalendarioTap:function(calendar, nd){
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
@@ -87023,6 +87550,12 @@ Ext.define('APP.controller.phone.Rutas', {
         this.getActividadesCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
+    /**
+    * Filtra las actividades del día seleccionado, regresa pop pantallas y las muestra.
+    * @param calendar Éste calendar.
+    * @param nd El día elegido.
+    * @param pop el número de vistas que regresa.
+    */
     onActividadesCalendarioFormPop:function(calendar, nd, pop){
         nd = new Date(nd);
 
@@ -87039,6 +87572,10 @@ Ext.define('APP.controller.phone.Rutas', {
 
     },
 
+    /**
+    * Muestra el form de actividades.
+    * @param b Éste button.
+    */
     showFormActividades:function(b){
         var me = this,
             nd = me.getActividadesCalendarioContNd().getValue(),
@@ -87066,6 +87603,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Agrega una actividad.
+    * @param Éste button.
+    */
     onActividadesAdd:function(btn){
 
         var form = this.getActividadesForm(),
@@ -87152,6 +87693,13 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Edita una actividad.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DateItem tapeado
+    * @param record El record asociado al ítem.
+    */
     onActividadesEdit:function(list,index,target,record){
         var form = this.getActividadesForm();
         var items=[{
@@ -87243,10 +87791,12 @@ Ext.define('APP.controller.phone.Rutas', {
             form.down("checkboxfield[name=Domingo]").disable();
 
         }
-
-
     },
 
+    /**
+    * Actualiza una actividad.
+    * @param status El nuevo estatus de la actividad.
+    */
     onActividadesUpdate:function(status){
 
         var form = this.getActividadesForm(),
@@ -87327,6 +87877,15 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Valida la fecha y hora de inicio de un evento.
+    * @param fechaInicio La fecha de inicio.
+    * @param horaInicio La hora de inicio.
+    * @param fechaFin La fecha de término.
+    * @param horaFin La hora de término.
+    * @param esActualización Booleano para distinguir si es una actualización o no.
+    * @return verdadero si las fechas son válidas..
+    */    
     validarFechas:function(fechaInicio,horaInicio,fechaFin,horaFin, esActualizacion){
         var me = this;
 
@@ -87369,6 +87928,13 @@ Ext.define('APP.controller.phone.Rutas', {
     // Rutas
     //#######################################################################
 
+    /**
+    * Obtiene los datos del cliente seleccionado.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param El record asociado al ítem.
+    */
     onSeleccionarCliente:function(list, index, target, record){        
         var me = this,
             name = record.get('NombreSocio'),
@@ -87402,20 +87968,11 @@ Ext.define('APP.controller.phone.Rutas', {
                             docked: 'top',
                             title: titulo
                         });
-                        //console.log(direcciones);
-
 
                         this.showFormRutas(idCliente, direcciones);
 
                         this.getMenuNav().add(barraTitulo);
                         Ext.Viewport.setMasked(false);
-
-                        // var date = new Date();
-
-                        // var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
-                        // var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
-
-                        // //this.loadRutasCalendario(firstDay,lastDay);
                     }
                     else{
                         Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.sinDireccionTitulo,
@@ -87431,6 +87988,12 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Obtiene las rutas del intervalo de fechas y código de cliente ingresado.
+    * @param fechaInicio el primer día del intervalo.
+    * @param fechafin el último día del intervalo.
+    * @param codigoCliente El código del cliente.
+    */    
     loadRutasCalendario: function(fechaInicio,fechaFin, codigoCliente){
 
         var ac = this.getRutasCalendario(),
@@ -87462,77 +88025,24 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    onRutasCalendarioTap2:function(calendar, nd){
-        calendar.eventStore.clearFilter();
-        calendar.eventStore.filterBy(function(record){
-            var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (startDate <= nd) && (endDate >= nd);
-        }, this);
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            id:'rutascalendarioshowform',
-            layout:{
-                type:'vbox',
-                align:'stretch'
-            },
-            items:[{
-                xtype:'container',
-                html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
-            },{
-                xtype:'rutascalendariodia',
-                flex:1,
-                nd:nd,
-                idCliente: rc.idCliente,
-                direcciones:rc.direcciones
-            },{
-                xtype:'button',
-                action:'agregar',
-                text: 'Agregar',
-                margin:10
-            }]
-        });
-
-        this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
-    },
-
+    /**
+    * Obtiene las rutas del día seleccionado en el calendario.
+    * @param calendar Éste calendar.
+    * @param nd El día seleccionado.
+    */
     onRutasCalendarioTap:function(calendar, nd){        
         var me = this;
 
-        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){
-            //alert("error garrafal, se va a acabar el mundo");
+        if(me.getMenuNav().getActiveItem().getId() == "rutascalendarioshowform"){            
             return;
         }
 
         calendar.eventStore.clearFilter();
         calendar.eventStore.filterBy(function(record){
-/*            var dia = record.get('start').getDay(),
-                mes = record.get('start').getMonth(),
-                anio = record.get('start').getFullYear(),
-
-                seleccionDia = nd.getDay(),
-                seleccionMes = nd.getMonth(),
-                seleccionAnio = nd.getFullYear(),
-
-                fecha1 = dia + " " + mes + " " + anio,
-                fecha2 = seleccionDia + " " + seleccionMes + " " + seleccionAnio;
-
-                console.log(fecha1, fecha2);
-                //horaInicio.setHours(ruta.HoraInicio.substr(0,2));
-                //startDate = Ext.Date.clearTime(record.get('start'), true).getTime();
-                //endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
-            return (fecha1 == fecha2);// && (endDate >= nd);*/
-
-
 
             var startDate = Ext.Date.clearTime(record.get('start'), true).getTime(), endDate = Ext.Date.clearTime(record.get('end'), true).getTime();
             return (startDate <= nd) && (endDate >= nd);
         }, this);
-
-        // var rc = this.getRutasCalendario(),
-        //     rutas = rc.view.eventStore;
-
 
         this.getMenuNav().push({
             xtype:'container',
@@ -87546,11 +88056,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 xtype:'container',
                 html:"<div style='text-align:center; padding:3px; color:#1F83FB;'>" + Ext.util.Format.date(nd,"l d/m/y") + "</div>"
             },{
-                xtype: 'rutascalendariomapa',//rutas.getCount() > 0 ? 'rutascalendariomapa' : 'rutascalendariodia',
+                xtype: 'rutascalendariomapa',
                 flex:1
-                //nd:nd
-                // idCliente: rc.idCliente,
-                // direcciones:rc.direcciones
             },{
                 xtype:'button',
                 action:'agregar',
@@ -87585,15 +88092,17 @@ Ext.define('APP.controller.phone.Rutas', {
         me.getRutasCalendarioMapa().config.nd = nd;
 
         this.colocaMarcadores();
-        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
     },
 
+    /**
+    * Muestra el form de rutas.
+    * @param idCliente el id del cliente.
+    * @param direcciones las direcciones del cliente.
+    */
     showFormRutas:function(idCliente, direcciones){        
         var rc = this.getRutasCalendario(),
             rutas = rc.view.eventStore,
-            nd = this.getRutasCalendarioMapa().config.nd;
-
-        //console.log(nd);
+            nd = this.getRutasCalendarioMapa().config.nd;      
 
         this.getMenuNav().push({
             xtype:'rutasform',
@@ -87604,17 +88113,22 @@ Ext.define('APP.controller.phone.Rutas', {
                     form.setValues({
                         CodigoCliente:idCliente,
                         FechaInicio:new Date(nd),
-                        FechaFin:new Date(nd)
-                        //direcciones: direcciones
+                        FechaFin:new Date(nd)                        
                     });
 
-                    this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
-                    //this.getRutasCalendarioDirecciones().element.redraw();
+                    this.getRutasCalendarioDirecciones().getStore().setData(direcciones);                    
                 }
             }
         })
     },
 
+    /**
+    * Intenta establecer la dirección seleccionada en el mapa.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     onSeleccionarDireccion:function(list,index,target,record){
         var data = record.data,
             form = this.getRutasForm();
@@ -87647,14 +88161,11 @@ Ext.define('APP.controller.phone.Rutas', {
 
 
         if(extMapa.marker){
-            extMapa.marker.setMap(null);
-            //console.log('Se elimina marcador');
+            extMapa.marker.setMap(null);            
         }
 
         geocoder.geocode( { 'address': direccion}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-
-                //console.log(results[0].geometry.location);
+            if (status == google.maps.GeocoderStatus.OK) {                
 
                 form.setValues({
                     LatitudOrigen:results[0].geometry.location.k,
@@ -87671,9 +88182,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
              bounds.extend(extMapa.marker.position); 
 
-            mapa.setCenter(bounds.getCenter());
-
-                //extMapa.setMapOptions({zoom:15});
+            mapa.setCenter(bounds.getCenter());                
 
                 google.maps.event.addListener(extMapa.marker,"dragend",function(){
                     var point = extMapa.marker.getPosition();
@@ -87713,10 +88222,9 @@ Ext.define('APP.controller.phone.Rutas', {
         
             rutas.each(function (item, index, length) {
                 //console.log(item.get('firstName'), index);
-                ruta = item.getData();  //rutas.getAt(0).getData();
+                ruta = item.getData();  
                 //console.log(ruta);
-                var nd = extMapa.config.nd,
-                //var nd = me.getMenuNav().getActiveItem().down('rutascalendariomapa').config.nd,
+                var nd = extMapa.config.nd,                
                     today = new Date(),
                     horaInicio = ruta.HoraInicio.split(":", 2);
                 //console.log(nd);
@@ -87725,6 +88233,9 @@ Ext.define('APP.controller.phone.Rutas', {
                 if(nd < today){
                     if(ruta.Estatus == 2){
                         ruta.Estatus = 0;
+                        me.getMenuNav().ruta = ruta;
+                        me.getRutasCalendario().accion = 0;  
+                        me.cambiaStatusRuta();
                     }                    
                 }
 
@@ -87732,24 +88243,9 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 marcadoresArray.push(extMapa.marker);
 
-                // extMapa.marker = new google.maps.Marker({
-                //     map: mapa,
-                //     position: new google.maps.LatLng(ruta.lat, ruta.lon),
-                //     icon: icono,
-                //     draggable:true
-                // });
-
-                // google.maps.event.addListener(extMapa.marker,"dragend",function(){
-                //     var point = extMapa.marker.getPosition();
-                //     mapa.panTo(point);
-                // });
-
-                //var marcador = item.getData()
-
                 if(ruta.Estatus == 0 || ruta.Estatus == 2){
                     google.maps.event.addListener(extMapa.marker, 'click', function(){
-                        //infowindow.open(mapa, extMapa.marker);
-                        //popup.showBy(extMapa.marker);
+
                         me.eligeEditarTrazar(APP.core.config.Locale.config.lan.Rutas.editarTrazarTitulo,
                          APP.core.config.Locale.config.lan.Rutas.editarTrazarMensaje, 300, 
                         function (buttonId) {
@@ -87776,8 +88272,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
                         google.maps.event.addListener(marcador, 'click', function(){
                             infowindow.setContent(contenido);
-                            infowindow.open(mapa, marcador);
-                            //infowindow.open(mapa, marcadoresArray[index]);
+                            infowindow.open(mapa, marcador);                            
                         });
                     }) (marcadoresArray[index]);
 
@@ -87787,38 +88282,21 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
 
                 bounds.extend(extMapa.marker.position);            
-
-                //mapa.setCenter(bounds.getCenter());
-
-                //extMapa.setMapOptions({zoom:15});
                 mapa.fitBounds(bounds);
 
             });
 
             me.getRutasCalendario().marcadores = marcadoresArray;
-
-            // for(var i = 0; i < marcadoresArray.length; i++){
-            //     google.maps.event.addListener(marcadoresArray[i], 'click', function(){
-            //         //infowindow.open(mapa, extMapa.marker);
-            //         //popup.showBy(extMapa.marker);
-            //         me.eligeEditarTrazar('Elija una opción', '¿Qué desea hacer?', 300, 
-            //         function (buttonId) {
-            //             if (buttonId == 'editar') {
-            //                 //rutas.find()
-            //                 console.log(rutas.getAt(i));
-            //                 //me.dameDirecciones(rutasArray[]);
-            //             } else {
-            //                 me.trazaRuta(ruta);
-            //             }
-            //         });
-            //     });
-            // }
-
         }
 
         Ext.Viewport.setMasked(false);
     },
 
+    /**
+    * Establece las opciones para la ruta
+    * @param acciones Booleano que indica si el container con id accionesParaRutas estará visible.
+    * @param boton Booleano que indica si el button con id botonAgregar estará visible.
+    */
     ponOpcionesDeRuta: function(acciones, boton){
         var me = this,
             view = me.getMenuNav();
@@ -87827,6 +88305,10 @@ Ext.define('APP.controller.phone.Rutas', {
         view.getActiveItem().down('button[id=botonAgregar]').setHidden(boton);
     },
 
+    /**
+    * Muestra la lista de clientes.
+    * @param Éste button.
+    */
     muestraClientes: function(button) {
         Ext.Viewport.setMasked(true);
         var me = this,
@@ -87853,6 +88335,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Agrega una ruta.
+    * @param btn Éste botón.
+    */
     onRutasAdd: function(btn) {
         var form = this.getRutasForm(),
             values = form.getValues(),
@@ -87909,8 +88395,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 "Ruta.HoraVisita": "00:00:00",
                 "Ruta.FechaVisita": Ext.util.Format.date(values.FechaFin,"Y-m-d")
             }
-
-        //Ext.Viewport.setMasked(true);
+        
         //console.log(params);
 
                     Ext.data.JsonP.request({
@@ -87936,8 +88421,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             else {
                                 Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
                                 response.Descripcion, Ext.emptyFn); 
-                                Ext.Viewport.setMasked(false);
-                                //view.pop();
+                                Ext.Viewport.setMasked(false);                                
                             }
 
                         },
@@ -87946,8 +88430,7 @@ Ext.define('APP.controller.phone.Rutas', {
                             APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                                 Ext.Viewport.setMasked(false);
                             });
-                            Ext.Viewport.setMasked(false);
-                            //view.pop();
+                            Ext.Viewport.setMasked(false);                            
                         },
                         scope: this                        
                     });
@@ -87960,11 +88443,17 @@ Ext.define('APP.controller.phone.Rutas', {
             }
         }
         else{
-            Ext.Viewport.setMasked(false);
-            //Ext.Msg.alert('Datos Incorrectos', "Las fechas son inválidas", Ext.emptyFn);
+            Ext.Viewport.setMasked(false);            
         }
     },
 
+    /**
+    * Filtra las rutas del día seleccionado.
+    * @param calendar Éste calendar.
+    * @param nd El día elegido.
+    * @param codigoCliente El código de cliente al que se la agregó la ruta.
+    * @param es Actualización Booleano que indica si es una actualización o no.
+    */
     onRutasCalendarioFormPop:function(calendar, nd, codigoCliente, esActualizacion){
         nd.setHours(0, 0);
         //console.log(nd);
@@ -87981,11 +88470,6 @@ Ext.define('APP.controller.phone.Rutas', {
             return (startDate <= nd) && (endDate >= nd);
         }, this);
 
-/*        console.log(codigoCliente, ' El código del cliente');
-        console.log(esActualizacion, ' Actualización');
-        console.log(calendar.eventStore.getCount(), ' Marcadores');*/
-
-
         if(!esActualizacion){          
              calendar.eventStore.filter('CodigoCliente', codigoCliente);
             me.getMenuNav().pop(2);
@@ -87999,127 +88483,21 @@ Ext.define('APP.controller.phone.Rutas', {
         me.ponOpcionesDeRuta(true, false);
         me.quitaMarcadores();
         me.colocaMarcadores();
-        Ext.Viewport.setMasked(false);
-
-        //this.getRutasCalendarioDia().getStore().setData(calendar.eventStore.getRange());
-
+        Ext.Viewport.setMasked(false);        
     },
 
-    onRutasEdit2:function(list,index,target,record){
-        var form = this.getRutasForm();
-        var direcciones = this.getRutasCalendarioDia().config.direcciones;
-
-        var items=[{
-            xtype:'rutasform',
-            flex:1//,
-            //nd:this.getActividadesCalendarioCont().nd
-        }];
-
-        if(record.data.Estatus != 1 && record.data.Estatus != 3){
-            items.push({
-                xtype:'container',
-                padding:'0 10px 10px 10px',
-                layout:{
-                    type:'hbox',
-                    align: 'stretch'
-                },
-                items:[{
-                    xtype:'button',
-                    text:'Realizada',
-                    action:'realizarruta',
-                    flex:1
-                },{
-                    xtype:'button',
-                    text:'Cancelar',
-                    action:'cancelarruta',
-                    flex:1
-                }]
-            });
-        }
-        else{
-            if(record.data.Estatus == 2){
-
-            }
-        }
-
-
-        this.getMenuNav().push({
-            xtype:'container',
-            layout:{
-                type:'vbox'
-            },
-            items:items
-        })
-
-        var form = this.getRutasForm();
-
-        var horaInicio = new Date();
-        horaInicio.setHours(record.data.HoraInicio.substr(0,2));
-        horaInicio.setMinutes(record.data.HoraInicio.substr(3,2));
-        horaInicio.setMilliseconds(record.data.HoraInicio.substr(6,2));
-
-        var horaFin = new Date();
-        horaFin.setHours(record.data.HoraFin.substr(0,2));
-        horaFin.setMinutes(record.data.HoraFin.substr(3,2));
-        horaFin.setMilliseconds(record.data.HoraFin.substr(6,2));
-
-        form.setValues({
-            CodigoRuta:record.data.CodigoRuta,
-            CodigoCliente : record.data.CodigoCliente,
-            CodigoDireccion : record.data.CodigoDireccion,
-            TipoDireccion : record.data.TipoDireccion,
-            Descripcion:record.data.title,
-            FechaInicio:record.data.start,
-            HoraInicio: horaInicio,
-            FechaFin:record.data.end,
-            HoraFin: horaFin,
-            Notas:record.data.Notas,
-            Repetir:record.data.Repetir,
-            Lunes:record.data.Lunes,
-            Martes:record.data.Martes,
-            Miercoles:record.data.Miercoles,
-            Jueves:record.data.Jueves,
-            Viernes:record.data.Viernes,
-            Sabado:record.data.Sabado,
-            Domingo:record.data.Domingo
-        });
-
-        this.getRutasCalendarioDirecciones().getStore().setData(direcciones);
-
-        if(record.data.Estatus != 2){
-            var btnGuardar = form.down("button[action=guardar]").destroy();
-            form.down("textfield[name=Descripcion]").setReadOnly(true);
-            form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
-            form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
-            form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
-            form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-            form.down("checkboxfield[name=Repetir]").disable();
-            form.down("checkboxfield[name=Lunes]").disable();
-            form.down("checkboxfield[name=Martes]").disable();
-            form.down("checkboxfield[name=Miercoles]").disable();
-            form.down("checkboxfield[name=Jueves]").disable();
-            form.down("checkboxfield[name=Viernes]").disable();
-            form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();
-
-        }
-    },
-
-    onRutasEdit:function(ruta, direcciones, accion){
+    /**
+    * Edita una ruta.
+    * @param ruta La ruta a editar.
+    * @param direcciones Las direcciones asociadas a esa ruta.    
+    */
+    onRutasEdit:function(ruta, direcciones){
         var me = this, form,        
-            view = me.getMenuNav();
-            
-        //var direcciones = this.getRutasCalendarioDia().config.direcciones;
+            view = me.getMenuNav();        
 
         view.push({
             xtype: 'rutasform'
         });
-
-        // var items=[{
-        //     xtype:'rutasform',
-        //     flex:1//,
-        //     //nd:this.getActividadesCalendarioCont().nd
-        // }];
 
         form = me.getRutasForm();
 
@@ -88166,31 +88544,24 @@ Ext.define('APP.controller.phone.Rutas', {
         var extMapa = this.getMenuNav().getActiveItem().down('rutascalendariomapa'),
             mapa = extMapa.getMap();
 
-        this.recuperaMarcador(extMapa, ruta, true);
-
-        //console.log(extMapa.getMap().data)
+        this.recuperaMarcador(extMapa, ruta, true);        
 
         if(ruta.Estatus != 2){
-            //var btnGuardar = form.down("button[action=guardar]").destroy();
-            //form.down("textfield[name=Descripcion]").setReadOnly(true);
             form.down("datepickerfield[name=FechaInicio]").setReadOnly(true);
             form.down("timepickerfield[name=HoraInicio]").setReadOnly(true);
             form.down("datepickerfield[name=FechaFin]").setReadOnly(true);
             form.down("timepickerfield[name=HoraFin]").setReadOnly(true);
-/*            form.down("checkboxfield[name=Repetir]").disable();
-            form.down("checkboxfield[name=Lunes]").disable();
-            form.down("checkboxfield[name=Martes]").disable();
-            form.down("checkboxfield[name=Miercoles]").disable();
-            form.down("checkboxfield[name=Jueves]").disable();
-            form.down("checkboxfield[name=Viernes]").disable();
-            form.down("checkboxfield[name=Sabado]").disable();
-            form.down("checkboxfield[name=Domingo]").disable();*/
         }        
 
         Ext.Viewport.setMasked(false);
     },
 
-    validaVisita: function(lat, lon, ruta){        
+    /**
+    * Valida si la visita puede marcarse como realizada.
+    * @lparam lat La latitud del destino.
+    * @param lon La longitud del destino.    
+    */
+    validaVisita: function(lat, lon){        
         var me = this;
 
         Ext.Viewport.setMasked(true);
@@ -88247,6 +88618,9 @@ Ext.define('APP.controller.phone.Rutas', {
         geo.updateLocation();*/
     },
 
+    /**
+    * Función auxiliar para validar la distancia entre el punto actual y la dirección destino.
+    */
     dameDistancia: function(response, status){
         //console.log(this);
         var me = this,
@@ -88271,6 +88645,13 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Muestra un mensaje para elegir si editar o trazar una ruta.
+    * @param titulo El título del mensaje
+    * @param mensaje El cuerpo del mensaje.
+    * @param ancho El ancho de la ventana.
+    * @param funcion La función a ejecutar dependiendo la opción elegida.    
+    */
     eligeEditarTrazar: function (titulo, mensaje, ancho, funcion) {
         Ext.Msg.show({
             title: titulo,
@@ -88291,7 +88672,11 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
-    dameDirecciones: function(ruta, accion){
+    /**
+    * Obtiene las direcciones del cliente asociado a la ruta que le pasan.
+    * @param ruta La ruta a evaluar.    
+    */
+    dameDirecciones: function(ruta){
         Ext.Viewport.setMasked(true);
         Ext.data.JsonP.request({
             url: "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerSocioiMobile",
@@ -88318,7 +88703,7 @@ Ext.define('APP.controller.phone.Rutas', {
                         });
 
                         //console.log(direcciones);
-                        this.onRutasEdit(ruta, direcciones, accion);
+                        this.onRutasEdit(ruta, direcciones);
 
                     }
                     else{                    
@@ -88336,6 +88721,10 @@ Ext.define('APP.controller.phone.Rutas', {
         });
     },
 
+    /**
+    * Intenta trazar la ruta desde el punto actual a la dirección destino.
+    * @param ruta La ruta a trazar.
+    */
     trazaRuta: function(ruta){
         var me = this,
             view = me.getMenuNav(),
@@ -88432,6 +88821,12 @@ Ext.define('APP.controller.phone.Rutas', {
 
     },
 
+    /**
+    * Recupera el marcador y lo muestra en el mapa.
+    * @param extMapa El mapa.
+    * @param ruta La ruta a evaluar para obtener el marcador.
+    * @param draggaable Booleano que indica si el marcador es arrastrable o no.
+    */
     recuperaMarcador: function(extMapa, ruta, draggable){
         var me = this,
             map = extMapa.getMap(),
@@ -88457,6 +88852,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Define el color del marcador en función del estatus de la ruta que le pasan.
+    * @param ruta La ruta a evaluar.
+    */
     defineColorDeMarcador: function(ruta){
         switch(ruta.Estatus){
             case 0:
@@ -88482,51 +88881,10 @@ Ext.define('APP.controller.phone.Rutas', {
         return icono;
     },
 
-    // trazaRuta: function(lat, lng, map){
-    //     var me = this,
-    //         latitude,
-    //         longitude;
-
-    //     Ext.device.Geolocation.getCurrentPosition({
-    //         success: function(position) {
-    //             latitude = position.coords.latitude;
-    //             longitude = position.coords.longitude;
-
-    //             console.log(latitude, longitude);
-
-    //             var directionsService = new google.maps.DirectionsService();
-    //             var directionsDisplay = new google.maps.DirectionsRenderer();
-
-    //             directionsDisplay.setMap(map);
-
-    //             var origin = new google.maps.LatLng(latitude, longitude);
-    //             var destination = new google.maps.LatLng(lat, lng);
-
-    //             var request = {
-    //                 origin: origin,
-    //                 destination: destination,
-    //                 travelMode: google.maps.DirectionsTravelMode.DRIVING
-    //             };
-
-    //             directionsService.route(request, function (result, status) {
-    //                 if (status == google.maps.DirectionsStatus.OK) {
-    //                     directionsDisplay.setMap(map);
-    //                     directionsDisplay.setDirections(result);
-    //                 }
-    //             });
-
-
-    //             //me.onLoadStores('Searchs', '', me.latitude + ',' + me.longitude);
-    //         },
-    //         failure: function() {
-    //             Ext.Msg.alert('Error', 'Error mientras se obtenía la localización');
-    //             /*me.latitude = geo.getLatitude();
-    //             me.longitude = geo.getLongitude();
-    //             me.onLoadStores(store, '', me.latitude + ',' + me.longitude);*/
-    //         }
-    //     });
-    // }
-
+    /**
+    * Determina que acción realizar en función del id del botón que le pasan.
+    * @param button El botón a evaluar.
+    */
     determinaAccion: function(button){
         var me = this,
             ruta = me.getMenuNav().ruta;
@@ -88544,6 +88902,9 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Cambia el estatus de la ruta.
+    */
     cambiaStatusRuta: function(){
         var me = this,
             ruta = me.getMenuNav().ruta,
@@ -88560,14 +88921,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
         horaFin.setHours(ruta.HoraFin.substr(0,2));
         horaFin.setMinutes(ruta.HoraFin.substr(3,2));
-        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2));        
-
-       // if(ruta.start.getTime() < hoy.getTime()){
-       // fechaFin = hoy,            
-       //  horaFin.setHours(hoy.getHours());
-       //  horaFin.setMinutes(hoy.getMinutes());
-       //  horaFin.setMilliseconds(hoy.getMilliseconds());
-//       }        
+        horaFin.setMilliseconds(ruta.HoraFin.substr(6,2)); 
 
         Ext.Viewport.setMasked(true);
 
@@ -88602,7 +88956,7 @@ Ext.define('APP.controller.phone.Rutas', {
             "Ruta.FechaVisita": Ext.util.Format.date(fechaVisita,"Y-m-d")
         }
 
-        console.log(params);
+        //console.log(params);
 
         Ext.data.JsonP.request({
             url: url,
@@ -88625,8 +88979,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 }
                 else {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos, response.Descripcion, Ext.emptyFn); 
-                    Ext.Viewport.setMasked(false);
-                    //view.pop();
+                    Ext.Viewport.setMasked(false);                    
                 }
 
             },
@@ -88635,12 +88988,14 @@ Ext.define('APP.controller.phone.Rutas', {
                 APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
                     Ext.Viewport.setMasked(false);
                 });
-                Ext.Viewport.setMasked(false);
-                //view.pop();
+                Ext.Viewport.setMasked(false);                
             }
         });
     },
 
+    /**
+    * Elimina los marcadores del mapa.
+    */
     quitaMarcadores: function () {
         var me = this,
             marcadores = me.getRutasCalendario().marcadores;
@@ -88652,6 +89007,10 @@ Ext.define('APP.controller.phone.Rutas', {
         }
     },
 
+    /**
+    * Obtiene un formato de fecha dd mm yyyy.
+    * @param date La fecha que le pasan.
+    */
     dameFecha: function(date){
         var me = this,
             dia = date.getDay(),
@@ -88661,6 +89020,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
         return fecha;
     }
+    
 });
 
 /**
@@ -88763,12 +89123,15 @@ Ext.define('APP.controller.phone.Cobranza', {
 
     /**
     * Muestra la lista de facturas pendientes asociadas al cliente elegido en clienteslist.
+    * @param list Ésta lista.
+    * @param index El índice del item tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
     */
     onItemTapCobranzaList: function (list, index, target, record) {
         var me = this,
             view = me.getMenuNav(),            
-            idCliente = me.getNavigationCobranza().idCliente; //view.getActiveItem().idCliente,
-            //name = view.getActiveItem().name;
+            idCliente = me.getNavigationCobranza().idCliente; 
 
         switch(record.data.action){
             case 'cobranzaFacturas':            
@@ -88779,9 +89142,6 @@ Ext.define('APP.controller.phone.Cobranza', {
                 view.push({
                     xtype: 'facturascontainer',
                     title: idCliente
-                    //idCliente: idCliente,
-                    //name: name
-                    //opcion: record.data.action
                 });
 
                 params = {
@@ -88803,9 +89163,6 @@ Ext.define('APP.controller.phone.Cobranza', {
                 view.push({
                     xtype: 'facturascontainer',
                     title: idCliente
-                    //idCliente: idCliente,
-                    //name: name
-                    //opcion: record.data.action
                 });
 
                 anticiposlist = view.getActiveItem().down('facturaslist');
@@ -88856,6 +89213,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
     /**
      * Muestra la vista "totalapagarcontainer".
+    * @param btn Éste botón.
      */
     muestraCobranza: function (btn) {
         var me = this,
@@ -88863,13 +89221,13 @@ Ext.define('APP.controller.phone.Cobranza', {
             facturasContainer = view.getActiveItem().getActiveItem(),
             facturaslist = facturasContainer.down('facturaslist'),
             navigationCobranza = me.getNavigationCobranza(),
-            idCliente = navigationCobranza.idCliente, //facturasContainer.idCliente,
-            name = navigationCobranza.name,//facturasContainer.name,
+            idCliente = navigationCobranza.idCliente, 
+            name = navigationCobranza.name,
             i,
             total = 0,
             seleccion = facturaslist.getSelection(),            
-            moneda,// = seleccion[0].data.CodigoMoneda,
-            facturas = facturaslist.getStore(),//Ext.getStore('Facturas'),
+            moneda,
+            facturas = facturaslist.getStore(),
             aPagar,
             pagado = 0,
             boton = me.getNavigationCobranza().getNavigationBar().down('#agregarPago'),
@@ -88882,14 +89240,7 @@ Ext.define('APP.controller.phone.Cobranza', {
         if(seleccion.length > 0){ // Validamos que por lo menos se haya seleccionado una factura.
             moneda = seleccion[0].data.CodigoMoneda + ' ';
 
-/*            for (i = 0; i < seleccion.length; i++) {
-                //total += seleccion[i].data.Saldo;
-                total += seleccion[i].data.TotalDocumento;
-                seleccion[i].data.aPagar = true;
-            }            
-*/
             for (i = 0; i < seleccion.length; i++) {
-                //total += seleccion[i].data.Saldo;
 
                 if(moneda != seleccion[i].data.CodigoMoneda + ' '){
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesTitulo, APP.core.config.Locale.config.lan.Cobranza.monedasDiferentesMensaje);
@@ -88907,8 +89258,7 @@ Ext.define('APP.controller.phone.Cobranza', {
 
             view.getAt(2).setMasked(false); // Desactivamos la máscara.
             boton.setText(APP.core.config.Locale.config.lan.NavigationOrden.agregar);
-            view.setActiveItem(2);
-            //navigationCobranza = view.getActiveItem();
+            view.setActiveItem(2);            
 
             navigationCobranza.getNavigationBar().setTitle(idCliente); //Establecemos el title del menu principal como el mismo del menu de opciones
             navigationCobranza.add(barraTitulo);
@@ -88936,8 +89286,6 @@ Ext.define('APP.controller.phone.Cobranza', {
         view.push({
             xtype: 'formasdepagolist',
             title: idCliente
-            //idCliente: idCliente
-            //opcion: me.getMenu().getActiveItem().opcion
         });
         
         view.getActiveItem().getStore().load();
@@ -88954,16 +89302,12 @@ Ext.define('APP.controller.phone.Cobranza', {
      */
     agregaPago: function (list, index, target, record) {
         var me = this,
-            view = list.up('navigationcobranza'), //NavigationCobranza
+            view = list.up('navigationcobranza'), 
             idCliente = view.getNavigationBar().getTitle();
 
         view.push({
-            xtype: 'montoapagarform',
-            //xtype: 'montoapagarformcontainer',
+            xtype: 'montoapagarform',            
             title: idCliente
-            //idCliente: idCliente
-            //datos: record.data,
-            //opcion: list.opcion
         });
 
         me.determinaVistaMontoAPagar(record.data.TipoFormaPago, view);
@@ -89027,20 +89371,18 @@ Ext.define('APP.controller.phone.Cobranza', {
             opcion = me.getMenuNav().down('cobranzalist').getSelection()[0].data.action,
             aPagar = pagado = me.getTotales().down('#aCobrar').getAt(0).getHtml(),
             pagado = me.getTotales().down('#pagado').getAt(0).getHtml(),
-            pendiente, //me.aPagar - me.pagado,
+            pendiente, 
             forma = datos.Nombre,
             entrada = form.getValues().monto,
             codigo = datos.Codigo,
             tipo = datos.TipoFormaPago,
             esVacio = false,
             valores = form.getValues(),
-            numeroCheque = valores.numeroCheque,
-            //numeroCuenta = valores.numeroCuenta,
+            numeroCheque = valores.numeroCheque,            
             numeroTarjeta = valores.numeroTarjeta,
             banco = valores.banco,
             numeroAutorizacion = valores.numeroAutorizacion,
-            nombres = form.getInnerItems(),
-            //modoEdicion = form.modo === 'edicion' ? true : false,
+            nombres = form.getInnerItems(),            
             permiteCambio = datos.PermiteCambio;
 
         pagado = APP.core.FormatCurrency.formatCurrencytoNumber(pagado);
@@ -89050,12 +89392,8 @@ Ext.define('APP.controller.phone.Cobranza', {
          if(opcion == 'cobranzaFacturas'){
             moneda = Ext.getStore('Facturas').getAt(0).data.CodigoMoneda + ' '; //Estamos asumiendo que el código de moneda de todas las facturas es la local.
          } else {
-            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipoas, por eso se elige la primera.
+            moneda = Ext.getStore('Anticipos').getAt(0).data.CodigoMoneda + ' '; //Ya no, ya se validó, pero la moneda es la misma para todas las facturas o anticipos, por eso se elige la primera.
          }
-
-/*        console.log(moneda);
-        console.log(nombres[0].innerItems[0]._label);
-        console.log(Ext.getStore('Facturas').getAt(0));*/
 
         Ext.Object.each(valores, function (key, value, myself) { // Validamos que todos los campos estén llenos.            
 
@@ -89072,13 +89410,11 @@ Ext.define('APP.controller.phone.Cobranza', {
             if (permiteCambio === 'false') {
                 if (entrada > pendiente) {
                     Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinCambioTitulo, APP.core.config.Locale.config.lan.Cobranza.sinCambioMensaje);
-                } else {
-                    //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
+                } else {                    
                     me.sumaCobros(form, datos, moneda);
                     view.pop(2);
                 }
-            } else {
-                //me.sumaCobros(forma, entrada, moneda, codigo, tipo, numeroCheque, numeroCuenta, banco, numeroAutorizacion, form);
+            } else {                
                 me.sumaCobros(form, datos, moneda);
                 view.pop(2);
             }
@@ -89103,35 +89439,26 @@ Ext.define('APP.controller.phone.Cobranza', {
             numeroTarjeta = valores.NumeroTarjeta,
             banco = valores.Banco,
             numeroAutorizacion = valores.NumeroAutorizacion,
-            nombres = form.getInnerItems(),
-            //modoEdicion = form.modo === 'edicion' ? true : false,
+            nombres = form.getInnerItems(),            
             permiteCambio = datos.PermiteCambio,
             monto,
             entradaMostrada = APP.core.FormatCurrency.currency(entrada, moneda),
             ind = form.ind,
             store = Ext.getStore('Totales');
 
-            store.add({
-                tipo: forma,
-                monto: entradaMostrada,
-                codigoFormaPago: codigo,
-                tipoFormaPago: tipo,
-                NumeroCheque: numeroCheque,
-                NumeroTarjeta: numeroTarjeta,
-                Banco: banco,
-                NumeroAutorizacion: numeroAutorizacion,
-                moneda: moneda
-            });
+        store.add({
+            tipo: forma,
+            monto: entradaMostrada,
+            codigoFormaPago: codigo,
+            tipoFormaPago: tipo,
+            NumeroCheque: numeroCheque,
+            NumeroTarjeta: numeroTarjeta,
+            Banco: banco,
+            NumeroAutorizacion: numeroAutorizacion,
+            moneda: moneda
+        });
 
-            monto = APP.core.FormatCurrency.formatCurrencytoNumber(store.getAt(store.getCount() - 1).get('monto'));
-        
-        //me.pagado += parseFloat(temp);
-
-        // store.each(function (item) {
-        //     temp = Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('monto'));
-        //     me.pagado += parseFloat(temp);
-        // });
-
+        monto = APP.core.FormatCurrency.formatCurrencytoNumber(store.getAt(store.getCount() - 1).get('monto'));
         me.actualizaCobranza(moneda, monto);
     },
 
@@ -89183,20 +89510,20 @@ Ext.define('APP.controller.phone.Cobranza', {
             view = me.getMainCard().getActiveItem(),
             idCliente = view.getNavigationBar().getTitle(),
             total = 0,
-            store = me.getFacturasList().getStore(),//Ext.getStore('Facturas'),
-            totales = view.down('totalapagarlist').getStore(),// Ext.getStore('Totales'),
+            store = me.getFacturasList().getStore(),
+            totales = view.down('totalapagarlist').getStore(),
             array = store.getData().items,
             fecha = new Date(Ext.Date.now()),
             hora = me.daFormatoAHora(fecha.getHours(), fecha.getMinutes(), fecha.getSeconds()),
             fecha = Ext.Date.format(fecha, "d-m-Y"),            
             url,
             msg = APP.core.config.Locale.config.lan.Cobranza.cobroExitoso;
-                                                                                                             //enviandoCobro        
+
+        //enviandoCobro        
         Ext.Viewport.getMasked().setMessage(APP.core.config.Locale.config.lan.Cobranza.enviandoCobro);
         Ext.Viewport.setMasked(true);
         
         if (totales.getCount() > 0) {
-            //var Folio = parseInt(localStorage.getItem("FolioInterno")) + 100;
 
             var params = {
                 CodigoUsuario: localStorage.getItem("CodigoUsuario"),
@@ -89216,36 +89543,21 @@ Ext.define('APP.controller.phone.Cobranza', {
                 msg = 'Se realizó el anticipo exitosamente con folio ';
             } else {
                 Ext.Array.forEach(array, function (item, index, allItems) {
-                    //console.log(item, 'terminar cobranza');
-                    //total += (Imobile.core.FormatCurrency.formatCurrencytoNumber(item.get('precioConDescuento')) * item.get('cantidad')) + item.get('totalDeImpuesto');
-
-                    params["Cobranza.CobranzaFacturas[" + index + "].NumeroFactura"] = item.data.Folio;//get('NumeroDocumento');
-                    params["Cobranza.CobranzaFacturas[" + index + "].Monto"] = item.get('TotalDocumento');//item.get('Saldo');
+                    params["Cobranza.CobranzaFacturas[" + index + "].NumeroFactura"] = item.data.Folio;
+                    params["Cobranza.CobranzaFacturas[" + index + "].Monto"] = item.get('TotalDocumento');
                     params["Cobranza.CobranzaFacturas[" + index + "].NumeroLinea"] = index;
                 });
             }
-
-            //console.log(params);
-            //localStorage.setItem("FolioInterno", Folio);
 
             totales.each(function (item, index) {
                 //Limpiamos los valores que no aparecen en todas las formas de pago.
                 params["Cobranza.CobranzaDetalles[" + index + "].NumeroLinea"] = index;
                 params["Cobranza.CobranzaDetalles[" + index + "].CodigoFormaPago"] = item.data.codigoFormaPago;
                 params["Cobranza.CobranzaDetalles[" + index + "].MontoNeto"] = APP.core.FormatCurrency.formatCurrencytoNumber(item.data.monto);
-                //params["oCobranzaCobranzaDetalles[" + index + "].NoFacturaAplicada"] = 'Sin número'
-
-                //Limpiamos los valores que no aparecen en todas las formas de pago.
-/*                params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].Banco"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].Fecha"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].NumeroAutorizacion"] = '';
-                params["Cobranza.CobranzaDetalles[" + index + "].NumeroTarjeta"] = '';*/
 
                 switch (item.data.tipoFormaPago) {
                     case "0": //Cheque
-                        params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = item.data.NumeroCheque;
-                        //params["Cobranza.CobranzaDetalles[" + index + "].NumeroCuenta"] = item.data.NumeroCuenta;
+                        params["Cobranza.CobranzaDetalles[" + index + "].NumeroCheque"] = item.data.NumeroCheque;                        
                         params["Cobranza.CobranzaDetalles[" + index + "].Banco"] = item.data.Banco;
                         params["Cobranza.CobranzaDetalles[" + index + "].Fecha"] = fecha;
                         break;
@@ -89256,8 +89568,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                         params["Cobranza.CobranzaDetalles[" + index + "].NumeroAutorizacion"] = item.data.NumeroAutorizacion;
                         params["Cobranza.CobranzaDetalles[" + index + "].NumeroTarjeta"] = item.data.NumeroTarjeta; 
                         break;
-                }
-                
+                }                
             });
 
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Cobranza/AgregarCobranza";
@@ -89289,32 +89600,46 @@ Ext.define('APP.controller.phone.Cobranza', {
             Ext.Viewport.setMasked(false);
             Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.sinPagoTitulo,
             APP.core.config.Locale.config.lan.Cobranza.sinPagoMensaje);
-        }
-        //me.getMainCard().getActiveItem().setMasked(false);
+        }        
     },
 
+    /**
+    * Regresa la representación en cadena de la hora en formato hh:mm:ss
+    * @param horas Las horas.
+    * @param minutos Los minutos.
+    * @param segundos Los segundos.
+    * @return La representación en cadena de la hora en formato hh:mm:ss.
+    */
     daFormatoAHora: function(horas, minutos, segundos){
         var me = this,
             hr = me.agregaCero(horas),
             min = me.agregaCero(minutos),
-            seg = me.agregaCero(segundos);        
+            seg = me.agregaCero(segundos);
 
         return hr + ':' + min + ':' + seg;
     },
 
+    /*
+    * Agrega un cero a la izquierda a números de una sola cifra.
+    * @param n El número a evaluar.
+    * @return La representación en cadena del resultado de la evaluación.
+    */
     agregaCero: function (n){
         var m = (n < 10) ? '0' + n : n;
 
         return m;
     },
 
+    /*
+    * Responde al botón cancelar. Cancela la operación y regresa a la vista anterior.
+    * @param btn Éste botón.
+    */
     cancelaPago: function (btn) {
         var me = this,
             view = me.getMainCard(),
             navigationCobranza = view.getActiveItem(),
             titulo = navigationCobranza.down('toolbar'),
-            totales = Ext.getStore('Totales')
-        //    facturas = Ext.getStore('Facturas');
+            totales = Ext.getStore('Totales');        
 
         navigationCobranza.remove(titulo, true); // Remueve el título de la vista, si no, al volver a entrar aparecerá sobre el actual.
         totales.removeAll();
@@ -89328,6 +89653,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         view.setActiveItem(0);
     },
 
+    /**
+    * Agrega el saldo a mostrar a cada una de las facturas.
+    * @param facturas El store que representa a las facturas.
+    */
     agregaSaldoAMostrar: function (facturas) {
         var me = this,
             moneda,
@@ -89340,6 +89669,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Busca la cobranza que le pasan.
+    * @param button Éste botón.
+    */
     onBuscarCobranza: function (button) {
         var me = this,
             store = Ext.getStore('Transacciones'),
@@ -89364,6 +89697,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Limpia el searchfield de búsqueda de transacciones.
+    * @param searchfield Éste searchfield.
+    */
     limpiaBusquedaTransacciones: function (searchfield) {
         var me = this,
             store = me.getVisualizacionCobranzaList().getStore(),
@@ -89390,6 +89727,10 @@ Ext.define('APP.controller.phone.Cobranza', {
         });
     },
 
+    /**
+    * Recorre el store de transacciones y por cada una determina cuál poner, Cobranza de factura o Anticipo de pedido.
+    * @param store El store de transacciones.
+    */
     recorreVisualizacion: function (store){
         var me = this,
             tipo;
@@ -89415,6 +89756,13 @@ Ext.define('APP.controller.phone.Cobranza', {
         Ext.getStore('Anticipos').on('load', me.agregaSaldoAMostrar);
     },
 
+    /**
+    * Responde al cambio de opción del selectfield de tipo de transacción.
+    * @param t Éste selectfield.
+    * @param newValue El nuevo valor.
+    * @param oldValue El valor anterior
+    * @param eOpts 
+    */
     onChangeTipoCobranza: function (t, newValue, oldValue, eOpts) {
         var me = this,
             store = Ext.getStore('Transacciones'),
@@ -89422,8 +89770,8 @@ Ext.define('APP.controller.phone.Cobranza', {
             value = t.up('toolbar').down('#buscarCobranzas').getValue(),
             tipo = newValue,
             list = t.up('visualizacioncobranzalist');
-        console.log(list);
-        console.log(value);
+        //console.log(list);
+        //console.log(value);
         list.setEmptyText(APP.core.config.Locale.config.lan.Cobranza.noCobrosCliente);
 
         store.resetCurrentPage();
@@ -89458,15 +89806,6 @@ Ext.define('APP.controller.phone.Informes', {
             'container[itemId = informes] list': {
                 itemsingletap: 'muestraOpcionElegida'
             },
-            // 'analisisventaslist':{
-            //     itemsingletap: 'muestraOpcionElegida'
-            // },
-            // 'informesgeneradoslist':{
-            //     itemsingletap: 'muestraOpcionElegida'
-            // },
-            // 'informelist':{
-            //     itemtap: 'muestraOpcionElegida'
-            // },
             'informesform #crearInforme':{
                 tap: 'generaInforme'
             },
@@ -89479,6 +89818,13 @@ Ext.define('APP.controller.phone.Informes', {
     	}
     },
 
+    /**
+    * Muestra la pantalla de acuerdo a la opción elegida.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target El elemento o DataItem tapeado.
+    * @param record El recor asociado al ítem.
+    */
     muestraOpcionElegida: function (list, index, target, record){
     	var me = this,
     		view = me.getMenuNav();
@@ -89493,17 +89839,6 @@ Ext.define('APP.controller.phone.Informes', {
 
         } else {
             switch (record.data.action){
-                case 'bitacoraVendedores':
-                    if(view.getActiveItem().isXType('container')){
-                        return;
-                    }
-                    
-                    view.push({
-                        html: 'Bitácora de vendedores'
-                    });
-
-                    break;
-
                 case 'analisisVentas':
 
                     if(view.getActiveItem().isXType('analisisventaslist')){
@@ -89526,10 +89861,18 @@ Ext.define('APP.controller.phone.Informes', {
                 case 'analisisArticulos':
                     me.auxiliarPonCodigos('Articulos');
                     break;
+
+                case 'clientesArticulos':
+                    me.auxiliarPonCodigos('Clientes');
+                    break;
             }
         }
     },
 
+    /**
+    * Agrega las opciones al selectfield de clientes y/o artículos de acuerdo a la evaluación del criterio que le pasan.
+    * @param criterio El criterio a evaluar.
+    */
     agregaOpciones: function(criterio){
         if((criterio === 'clientes' && this.getMenuNav().clientes == undefined) || 
             (criterio === 'articulos' && this.getMenuNav().articulos == undefined)){
@@ -89584,6 +89927,10 @@ Ext.define('APP.controller.phone.Informes', {
         }
     },
 
+    /**
+    * Establece el arreglo de opciones del selectfield de acuerdo al criterio que le pasan.
+    * @param El criterio del selectfield, puede ser Clientes o Articulos
+    */
     ponCodigos: function(criterio){
         var me = this,
             view = me.getMenuNav(),
@@ -89596,6 +89943,10 @@ Ext.define('APP.controller.phone.Informes', {
         form.down('#codigoHasta').setValue(last);
     },
 
+    /**
+    * Genera el informe solicitado.
+    * @param button Éste botón.
+    */
     generaInforme: function(button){
         var me = this,
             view = me.getMenuNav(),
@@ -89650,6 +90001,10 @@ Ext.define('APP.controller.phone.Informes', {
         informes.load();
     },
 
+    /**
+    * Método auxiliar para establecer los códigos.
+    * @param criterio El criterio para establecer los códigos.
+    */
     auxiliarPonCodigos: function (criterio){
         var me = this,
             view = me.getMenuNav();
@@ -89668,6 +90023,10 @@ Ext.define('APP.controller.phone.Informes', {
         me.ponCodigos(criterio);
     },
 
+    /**
+    * Muestra la lista de códigos ya sea de artículos o productos dependiendo de la opción tapeada.
+    * @param textfield Éste textfield
+    */
     muestraCodigos: function (textfield){
         var me = this,
             view = me.getMenuNav(),
@@ -89807,10 +90166,8 @@ Ext.define('APP.controller.phone.Configuracion', {
                     ui: 'action'
                 }
             ],
-            fn: function (buttonId) {
-                //alert(buttonId);
-                if (buttonId == 'yes') {
-                    //alert('Entré a yes');
+            fn: function (buttonId) {                
+                if (buttonId == 'yes') {                    
                     if (imagecmp.getInnerHtmlElement() && imagecmp.getInnerHtmlElement().down('#imagen_background')) {
                         localStorage.setItem("imagenorden", imagecmp.getInnerHtmlElement().down('#imagen_background').getAttribute('src'));
                         list.down('#datos_orden img').dom.setAttribute("src", localStorage.getItem('imagenorden'));
@@ -89828,8 +90185,7 @@ Ext.define('APP.controller.phone.Configuracion', {
                             CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
                             Token: localStorage.getItem("Token")
                         };                    
-
-                    //alert(idioma);
+                    
                     switch (idioma){
                         case 'en':                            
                             params["Criterio"] =  'COK_JO_en_US';                            
@@ -89839,45 +90195,26 @@ Ext.define('APP.controller.phone.Configuracion', {
                             params["Criterio"] = 'COK_JO_es_MX';
                             break;
                     }
-console.log(params);
-//alert(params);
+
+                    //console.log(params);
                     Ext.data.JsonP.request({
-                    //Ext.Ajax.request({
-                        url: url, // Leemos del json
-                        //url: 'app/core/data/en_US.json',
+                        url: url, 
                         params: params,                        
                         
                         success: function(response){
                             if (response.Procesada) {
                                 var text = response.Data[0].Idioma,
-                                    pinta = "", i;  
-                                // console.log(text.length, 'elementos en cadena');
-                                // for(i = 0; i < text.length; i++){
-                                //     pinta += text.charCodeAt(i).toString() + " ";
-                                //     console.log(text.charCodeAt(i));
-                                // }
-
-
-                                //var text = response.responseText,  // Recuperamos el contenido del json en una cadena text
-                                var trans; // Las traducciones para el menú
-                                //alert(text);
-                                //alert(pinta);
-                                var idiomas = Ext.decode(text);  // Convertimos text en objeto
+                                    pinta = "", i,
+                                    trans, // Las traducciones para el menú
+                                    idiomas = Ext.decode(text);  // Convertimos text en objeto
                                 
                                 APP.core.config.Locale.config.lan = idiomas.lan;  // Seteamos la propiedad lan
                                 trans = Ext.Object.getValues(idiomas.lan.menu); // Establecemos las cadenas del menú
 
-                                APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
-
-                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                                                    
-                                //APP.core.config.Locale.localize();  // Recargamos los componentes con su traducción
-                                
-                                //Ext.Viewport.add(Ext.create('APP.view.phone.MainCard')); // Agregamos la vista del main                                    
+                                //APP.core.config.Locale.almacenes = Ext.Viewport.getAt(1).almacenes;
+                                Ext.Viewport.removeAll(true);  // Removemos todos los elementos del viewport                                
+                                                                
                                 Ext.Viewport.add(Ext.create('APP.view.phone.login.LoginPanel'));
-
-    /*                                    Ext.Viewport.getActiveItem().getActiveItem().push({   // Pusheamos la vista de configuración
-                                    xtype: 'configuracionpanel'
-                                });   */
 
                                 Ext.getStore('Menu').getData().items.forEach(function(element, index, array){ // Cambiamos la propiedad name de cada elemento del store Menu
                                     Object.defineProperty(element.getData(), "name", {
@@ -89915,7 +90252,7 @@ console.log(params);
 });
 
 
-/* Created by th3gr4bb3r on 7/21/14.
+/* Created by Alí on 7/21/14.
  */
 Ext.define('APP.controller.phone.Prospectos', {
     extend: 'Ext.app.Controller',
@@ -89956,9 +90293,6 @@ Ext.define('APP.controller.phone.Prospectos', {
             'prospectoslist':{
                 activate: function(list){
                     list.getStore().resetCurrentPage();
-/*                    list.getStore().setParams({
-                        Criterio: localStorage.getItem("CodigoDispositivo")
-                    });*/
                     list.getStore().load();
                 },
                 itemtap: 'muestraProspectos'
@@ -89973,6 +90307,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega el prospecto.
+    * @param btn Éste button.
+    */
     onAgregarProspecto: function (btn) {
         var me = this,
             url =  "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerFolioSiguienteProspecto",            
@@ -90017,6 +90355,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         });        
     },
 
+    /**
+    * Busca el prospecto establecido en el searchfield
+    * @param btn Éste button.
+    */
     buscaProspectoBoton: function (btn){
         var me = this,
             store = me.getProspectosList().getStore(),
@@ -90030,6 +90372,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         store.load();
     },
 
+    /**
+    * Busca el prospecto establecido el searchfield.
+    * @param searchfield Éste searchfield
+    */
     buscaProspecto: function (searchfield){
         if(event.keyCode == 13){
             var me = this,
@@ -90045,6 +90391,9 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Limpia el searchfield de búsqueda de prospectos.
+    */
     limpiaBusquedaProspecto: function (){
         var me = this,
             store = me.getProspectosList().getStore();
@@ -90057,15 +90406,14 @@ Ext.define('APP.controller.phone.Prospectos', {
         store.load();    
     },
 
+    /**
+    * Oculta o aparece los items hermanos dependiendo si su primer hermano está chequeado o no.
+    * @param chk El primer textfield.
+    * @param value Booleano para determinar si el primer textfield están chequeado o no.
+    */
     toggleFieldSetItems: function (chk, value) {
         var items = chk.up('fieldset').getItems().items,
             textfield, fieldToFocus = undefined;
-
-        /*        if (!value) {
-         chk.uncheck();
-         console.log(false);
-         return false;
-         }*/
 
         Ext.each(items, function (item, index) {
             if (!value && index != 0) {
@@ -90088,6 +90436,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         });
     },
 
+    /**
+    * Calcula la suma de los tres elementos de la superficie.
+    * @param Éste numberfield.
+    */
     respondeAKeyUp: function (numberfield) {
         var padre = numberfield.getParent(),
             opcion = padre.getItemId();
@@ -90107,6 +90459,12 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Obtiene los conceptos y los muestra u oculta en función del valor que le pasen.
+    * @param checkboxfield Éste checkboxfield
+    * @param newValue El nuevo valor del checkboxfield.
+    * @param OldValue El valor anterior del checkboxfield.
+    */
     muestraConceptos: function (checkboxfield, newValue, OldValue){
         var me = this,
             i;
@@ -90157,6 +90515,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega la información del arreglo datos al arreglo checkboxfields.
+    * @param datos. Los datos a agregar.
+    * @param checkboxfields Un arreglo de checkboxfields.
+    */
     agregaCampos: function(datos, checkboxfields){
         var i;
 
@@ -90171,6 +90534,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },  
 
+    /**
+    * Verifica si el selectfield tiene opciones, en su defecto le establece el valor del arrelo estados.
+    * @param selectfield Éste selectfield.
+    */
     estableceOpciones: function (selectfield){
         var me = this;
 
@@ -90180,6 +90547,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Muestra la lista de países disponibles.
+    * @param selectfield Éste selectfield.
+    */
     muestraPaises: function(selectfield){
         if(selectfield.getOptions() == null){
             var me = this,
@@ -90226,6 +90597,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Obtiene la lista de estados en función del país elegido.
+    * @param selecfield Éste selectfield
+    * @param newValue El nuevo valor, represenpa un país.
+    */
     obtenEstados: function(selectfield, newValue){        
         if(!this.getMenuNav().esRecuperado){
             var me = this,
@@ -90273,6 +90649,10 @@ Ext.define('APP.controller.phone.Prospectos', {
         }
     },
 
+    /**
+    * Agrega un prospecto.
+    * @param button Éste botón.
+    */
     agregaProspecto: function (button) {
         var me = this,
             i, j, k, l = 1, m,
@@ -90330,21 +90710,20 @@ Ext.define('APP.controller.phone.Prospectos', {
                 m = 5;
 
             } else {
-                m = longitud + (6 - 2 * longitud);
-                //console.log(m);
+                m = longitud + (6 - 2 * longitud);                
             }
-            //console.log('Se seleccionó el servicio ', valores.servicio);
+
             for(i = 0; i < valores.servicio.length; i++){ //Recorremos cada uno de los servicios
-                //console.log('El servicio es ', valores.servicio[i]);
+                
                 if(valores.servicio[i] != null){ // Si se seleccionó algún elemento del servicio
                     campo = button.up('prospectosform').down('#conceptos' + (m+i+1)); // Esto es un Fieldset
                     elementos = campo.getItems().items; // Obtenemos los items del fieldset en un arreglo
-                    //console.log(campo, elementos);
+                    
                     k = 0;
 
                     for(j = 1; j < elementos.length; j++){ // Recorremos el arreglo desde la posición 1 puesto que el 0 es el checkboxfield
                         if(elementos[j].getChecked()){ //Si está seleccionado mandamos el código
-                            //console.log('Mandando el código');
+                            
                             params["oProspecto.Conceptos" + (m+i+1) + "[" + (k++) + "].Codigo"] = elementos[j].getValue();
                         }
                     }
@@ -90395,7 +90774,7 @@ Ext.define('APP.controller.phone.Prospectos', {
             success: function (response) {
                 if (response.Procesada) {
                     Ext.Viewport.setMasked(false);
-                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);//+ response.CodigoUnicoDocumento + ".");
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Prospectos.prospectoAgregado, msg + valores.CodigoSocio);
                     view.pop();                    
                 } else {       
                     Ext.Viewport.setMasked(false);
@@ -90406,6 +90785,13 @@ Ext.define('APP.controller.phone.Prospectos', {
         });
     },
 
+    /**
+    * Muestra la lista de prospectos.
+    * @param list Ésta lista.
+    * @param index El índice del ítem tapeado.
+    * @param target elemento o DataItem tapeado.
+    * @param record El record asociado al ítem.
+    */
     muestraProspectos: function(list, index, target, record){
         var me = this,
             url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Socio/ObtenerProspectoiMobile",
@@ -90542,6 +90928,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         }); 
     },
 
+    /**
+    * Formatea la representación en cadena de la fecha que le pasan del modo dd-mm-yyyy
+    * @param fecha La representación en cadena de la fecha a formatear.
+    * @return La representación en cadena de la fecha formateada.
+    */
     daFormatoAFecha: function(fecha){
         anio = fecha.substring(0,4);
         mes = fecha.substring(5,7);
@@ -90550,6 +90941,11 @@ Ext.define('APP.controller.phone.Prospectos', {
         return dia + '-' + mes + '-' + anio;
     },
 
+    /**
+    * Valida la longitud del RFC de acuerdo al tipo de persona.
+    * @param textfield Éste textfield
+    * @param newValue El tipo de persona.
+    */
     validaRFC: function(textfield, newValue){
         if(!this.getMenuNav().esRecuperado){
             var me = this;
@@ -90584,7 +90980,7 @@ Ext.define('APP.view.phone.menu.MenuList', {
     extend: 'Ext.dataview.DataView',
     xtype:'menulist',
     config: {
-        scrollable: true,
+        scrollable: true,        
         inline: true,
         store: 'Menu',
         itemTpl: [
@@ -92162,9 +92558,8 @@ Ext.define('APP.view.phone.informes.InformesList', {
     initialize: function(){
         var me = this;
 
-        me.setData([
-            //{title: APP.core.config.Locale.config.lan.InformesList.bitacoraVendedores, action: 'bitacoraVendedores'},
-            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}            
+        me.setData([            
+            {title: APP.core.config.Locale.config.lan.InformesList.analisisVentas, action: 'analisisVentas'}
         ]);
 
         me.callParent(arguments);
@@ -92190,7 +92585,8 @@ Ext.define('APP.view.phone.informes.AnalisisVentasList', {
 
         me.setData([
             {title: APP.core.config.Locale.config.lan.AnalisisVentasList.clientes, action: 'analisisClientes'},
-            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.articulos, action: 'analisisArticulos'}
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.articulos, action: 'analisisArticulos'},
+            {title: APP.core.config.Locale.config.lan.AnalisisVentasList.clientesArticulos, action: 'clientesArticulos'}
         ]);
 
         me.callParent(arguments);
@@ -92343,7 +92739,7 @@ Ext.define('APP.view.phone.rutas.OpcionRutasActividades', {
 
         me.setData([        			
             {title: APP.core.config.Locale.config.lan.Actividades.rutas, action: 'rutas'},
-            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}
+            {title: APP.core.config.Locale.config.lan.Actividades.actividades, action: 'actividades'}            
         ]);
 
         me.callParent(arguments);
