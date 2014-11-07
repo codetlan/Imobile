@@ -1,6 +1,10 @@
 /**
- * Created by Alí García on 9/20/14.
- */
+* @class APP.model.phone.Informe
+* @extends Ext.data.Model
+* El modelo para representar un informe
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Informe', {
     extend: 'Ext.data.Model',
     config: {
@@ -11,7 +15,7 @@ Ext.define('APP.model.phone.Informe', {
             name: 'nombre',
             type: 'string'
         },{
-            name: 'codigoArticulo',
+            name: 'codigoArticulo', // Sólo se usa para el informe de Cliente-Artículos
             type: 'string'
         },{
             name: 'descripcion',

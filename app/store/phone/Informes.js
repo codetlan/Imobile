@@ -1,8 +1,10 @@
 /**
- * @class APP.store.phone.Informes
- * @extends Ext.data.Store
- * Este es el store para los anticipos.
- */
+* @class APP.store.phone.Informes
+* @extends Ext.data.Store
+* El store para los informes
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Informes', {
     extend: 'APP.core.data.Store',    
 

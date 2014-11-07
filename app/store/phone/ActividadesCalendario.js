@@ -1,8 +1,10 @@
 /**
- * @class Imobile.store.Clientes
- * @extends Ext.data.Store
- * Este es el store para los clientes
- */
+* @class APP.store.phone.ActividadesCalendario
+* @extends Ext.data.Store
+* El store para las actividades
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.ActividadesCalendario', {
     extend: 'APP.core.data.Store',
     //extend: 'Ext.data.Store',

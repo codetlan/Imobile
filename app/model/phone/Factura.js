@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model..Factura
- * @extends Ext.data.Model
- * El modelo de la factura
- */
+* @class APP.model.phone.Factura
+* @extends Ext.data.Model
+* El modelo para representar una factura
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Factura', {
     extend: 'Ext.data.Model',
     config: {

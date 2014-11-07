@@ -1,11 +1,12 @@
 /**
- * @class Imobile.store.Productos
- * @extends Ext.data.Store
- * Este es el store para los productos
- */
+* @class APP.store.phone.Transacciones
+* @extends Ext.data.Store
+* El store para las transacciones
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Transacciones', {
-    extend: 'APP.core.data.Store',
-    //requires:['Imobile.model.Transaccion'],
+    extend: 'APP.core.data.Store',    
 
     config: {
         model:'APP.model.phone.Transaccion',

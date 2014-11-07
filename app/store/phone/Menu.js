@@ -1,6 +1,10 @@
 /**
- * Created by th3gr4bb3r on 7/21/14.
- */
+* @class APP.store.phone.Menu
+* @extends Ext.data.Store
+* El store para el menú principal
+* @author temerario28@codetlan.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Menu',{
     extend:'Ext.data.Store',
     config:{

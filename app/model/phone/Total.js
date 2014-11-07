@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model.Total
- * @extends Ext.data.Model
- * El modelo del total para realizar el pago
- */
+* @class APP.model.phone.Total
+* @extends Ext.data.Model
+* El modelo para representar el total de un pago.
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Total', {
     extend: 'Ext.data.Model',
     config: {

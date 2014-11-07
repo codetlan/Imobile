@@ -1,8 +1,10 @@
 /**
- * @class Imobile.store.Facturas
- * @extends Ext.data.Store
- * Este es el store para las facturas
- */
+* @class APP.store.phone.Facturas
+* @extends Ext.data.Store
+* El store para las faturas
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Facturas', {
     extend: 'APP.core.data.Store',
 

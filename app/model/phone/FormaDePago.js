@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model.FormaDePago
- * @extends Ext.data.Model
- * El modelo de la forma de pago
- */
+* @class APP.model.phone.FormaDePago
+* @extends Ext.data.Model
+* El modelo para representar una forma de pago
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.FormaDePago', {
     extend: 'Ext.data.Model',
     config: {

@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model.Direccion
- * @extends Ext.data.Model
- * El modelo de la direccion
- */
+* @class APP.model.phone.Direccion
+* @extends Ext.data.Model
+* El modelo para representar una dirección
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Direccion', {
     extend: 'Ext.data.Model',
     config: {

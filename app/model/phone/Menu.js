@@ -1,6 +1,10 @@
 /**
- * Created by th3gr4bb3r on 7/21/14.
- */
+* @class APP.model.phone.Menu
+* @extends Ext.data.Model
+* El modelo para representar el menú principal
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Menu', {
     extend: 'Ext.data.Model',
     config: {

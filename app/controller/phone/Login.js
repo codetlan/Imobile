@@ -245,11 +245,11 @@ Ext.define('APP.controller.phone.Login', {
                     for(var i = 0; i < resultados.length; i++) { // Checamos si hay eventos vencidos.
                         if(resultados[i].Estatus == 0){
 
-                            eventos +=  "<font color = red><b>Ruta Vencida</b></font><br>" +
-                                        "<div><p><font color = red><b>Ruta: </b></font>" + resultados[i].Descripcion + "<br>" +
-                                        "<font color = red><b>Fecha: </b></font>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
-                                        "<font color = red><b>Hora Inicio: </b></font>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
-                                        "<font color = red><b>Hora Fin: </b></font>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                            eventos +=  "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.rutaVencida + "</b></font><br>" +
+                                        "<div><p><font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.ruta + "</b></font>" + resultados[i].Descripcion + "<br>" +
+                                        "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.fecha + "</b></font>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                        "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.horaInicio + "</b></font>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                        "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.horaFin + "</b></font>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
                                         "</div>";
 
                             contadorEventos++;
@@ -257,15 +257,16 @@ Ext.define('APP.controller.phone.Login', {
                     }                    
 
                     for(var i = 0; i < resultados.length; i++) {
-                        if(horaHoy < resultados[i].HoraInicio){
+                        //if(horaHoy < resultados[i].HoraInicio){
+                        if(resultados[i].Estatus == 2){
                             horaEvento = Ext.Date.parse(resultados[i].HoraInicio, "H:i:s");
                             diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");                            
 
                             if(diferencia <= margen){
-                                eventos +=  "<div><p><b>Ruta: </b>" + resultados[i].Descripcion + "<br>" +
-                                            "<b>Fecha: </b>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
-                                            "<b>Hora Inicio: </b>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
-                                            "<b>Hora Fin: </b>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                eventos +=  "<div><p><b>" + APP.core.config.Locale.config.lan.Rutas.ruta + "</b>" + resultados[i].Descripcion + "<br>" +
+                                            "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + "</b>" + me.formateaFecha(resultados[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                            "<b>" + APP.core.config.Locale.config.lan.Rutas.horaInicio + "</b>" + resultados[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                            "<b>" + APP.core.config.Locale.config.lan.Rutas.horaFin + "</b>" + resultados[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
                                             "</div>";
 
                                 contadorEventos++;
@@ -295,11 +296,11 @@ Ext.define('APP.controller.phone.Login', {
 
                             for(var i = 0; i < actividades.length; i++) { // Checamos si hay eventos vencidos.
                                 if(actividades[i].Estatus == 0){                                    
-                                    eventos +=  "<font color = red><b>Actividad Vencida</b></font><br>" +
-                                                "<div><p><font color = red><b>Actividad: </b></font>" + actividades[i].Descripcion + "<br>" +
-                                                "<font color = red><b>Fecha: </b></font>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
-                                                "<font color = red><b>Hora Inicio: </b></font>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
-                                                "<font color = red><b>Hora Fin: </b></font>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                    eventos +=  "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.actvidadVencida + "</b></font><br>" +
+                                                "<div><p><font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.actividad + "</b></font>" + actividades[i].Descripcion + "<br>" +
+                                                "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.fecha + "</b></font>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                                "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.horaInicio + "</b></font>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                                "<font color = red><b>" + APP.core.config.Locale.config.lan.Rutas.horaFin + "</b></font>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
                                                 "</div>";
 
                                     contadorEventos++;
@@ -313,10 +314,10 @@ Ext.define('APP.controller.phone.Login', {
                                     diferencia = Ext.Date.diff(horaActual, horaEvento, "mi");
 
                                     if(diferencia <= margen){
-                                        eventos +=  "<div><p><b>Actividad: </b>" + actividades[i].Descripcion + "<br>" +
-                                                    "<b>Fecha: </b>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
-                                                    "<b>Hora Inicio: </b>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
-                                                    "<b>Hora Fin: </b>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
+                                        eventos +=  "<div><p><b>" + APP.core.config.Locale.config.lan.Rutas.actividad + "</b>" + actividades[i].Descripcion + "<br>" +
+                                                    "<b>" + APP.core.config.Locale.config.lan.Rutas.fecha + "</b>" + me.formateaFecha(actividades[i].FechaInicio.substring(0,10), "-") + "<br>" +
+                                                    "<b>" + APP.core.config.Locale.config.lan.Rutas.horaInicio + "</b>" + actividades[i].HoraInicio.substring(0,5) + " Hrs." + "<br>" + 
+                                                    "<b>" + APP.core.config.Locale.config.lan.Rutas.horaFin + "</b>" + actividades[i].HoraFin.substring(0,5) + " Hrs." + "<br>" + "</p>" +
                                                     "</div>";
 
                                         contadorEventos++;
@@ -349,7 +350,7 @@ Ext.define('APP.controller.phone.Login', {
                                         {
                                             docked: 'top',
                                             xtype: 'toolbar',
-                                            title: contadorEventos == 1 ? contadorEventos + ' evento pendiente' : contadorEventos + ' eventos pendientes'
+                                            title: contadorEventos == 1 ? contadorEventos + APP.core.config.Locale.config.lan.Rutas.eventoPendiente : contadorEventos + APP.core.config.Locale.config.lan.Rutas.eventosPendientes
                                         }],
                                         scrollable: true
                                     });

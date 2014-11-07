@@ -1,11 +1,12 @@
 /**
- * @class Imobile.store.Clientes
- * @extends Ext.data.Store
- * Este es el store para los clientes
- */
+* @class APP.store.phone.Clientes
+* @extends Ext.data.Store
+* El store para los clientes
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Clientes', {
-    extend: 'APP.core.data.Store',
-    //requires: ['Imobile.model.Cliente'],
+    extend: 'APP.core.data.Store',    
 
     config: {
         model: 'APP.model.phone.Cliente',

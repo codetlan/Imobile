@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model.Moneda
- * @extends Ext.data.Model
- * El modelo de la moneda
- */
+* @class APP.model.phone.Moneda
+* @extends Ext.data.Model
+* El modelo para representar una moneda
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Moneda', {
     extend: 'Ext.data.Model',
     config: {

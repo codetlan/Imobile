@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model..Cliente
- * @extends Ext.data.Model
- * El modelo del cliente
- */
+* @class APP.model.phone.ActividadCalendario
+* @extends Ext.data.Model
+* El modelo para una actividad.
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.ActividadCalendario', {
     extend: 'Ext.data.Model',
     config: {

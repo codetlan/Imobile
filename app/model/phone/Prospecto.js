@@ -1,8 +1,10 @@
 /**
- * @class Imobile.model.Prospecto
- * @extends Ext.data.Model
- * El modelo del prospecto
- */
+* @class APP.model.phone.Prospecto
+* @extends Ext.data.Model
+* El modelo para representar a un prospecto.
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Prospecto', {
     extend: 'Ext.data.Model',
     config: {

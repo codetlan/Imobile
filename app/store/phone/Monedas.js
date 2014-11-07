@@ -1,8 +1,10 @@
 /**
- * @class Imobile.store.Monedas
- * @extends Ext.data.Store
- * Este es el store para las monedas
- */
+* @class APP.store.phone.Monedas
+* @extends Ext.data.Store
+* El store para las monedas
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Monedas', {
     extend: 'APP.core.data.Store',
 

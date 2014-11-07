@@ -1,11 +1,12 @@
 /**
- * @class Imobile.store.FormasDePago
- * @extends Ext.data.Store
- * Este es el store para las formas de pago
- */
+* @class APP.store.phone.FormasDePago
+* @extends Ext.data.Store
+* El store para las formas de pago
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.FormasDePago', {
     extend: 'APP.core.data.Store',
-    //requires: ['Imobile.model.FormaDePago'],
 
     config: {
         model: 'APP.model.phone.FormaDePago',

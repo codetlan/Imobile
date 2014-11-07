@@ -271,6 +271,10 @@ Ext.define('APP.core.config.Locale', {
 
       InformesGeneradosList: {
         codigo: "Código",
+        codigoCliente: "Código del cliente",
+        nombreCliente: "Nombre del cliente",
+        codigoArticulo: "Código del artículo",
+        nombreArticulo: "Nombre del artículo",
         descripcion: "Descripción",
         moneda: "Moneda",
         cantidad: "Cantidad",
@@ -307,6 +311,7 @@ Ext.define('APP.core.config.Locale', {
       codigoMayorMensaje2: " es mayor que ",
       clientes: "Clientes",
       articulos: "Artículos",
+      clientesArticulos: "Clientes-Artículos",
       analisisVentas: "Análisis de Ventas"
     },
 
@@ -453,21 +458,29 @@ Ext.define('APP.core.config.Locale', {
       errorCalculoDistanciaTitulo: "Error",
       errorCalculoDistanciaMensaje: "No fue posible calcular la distancia: ",
       editarRuta: "Editar ruta",
-      trazarRuta: "Trazar ruta"
+      trazarRuta: "Trazar ruta",
+      rutaVencida: "Ruta Vencida",
+      actvidadVencida: "Actividad Vencida",
+      ruta: "Ruta: ",
+      actividad: "Actividad: ",
+      horaInicio: "Hora inicio: ",
+      horaFin: "Hora fin: ",
+      eventoPendiente: " evento pendiente",
+      eventosPendientes: " eventos pendientes"
     }
   }
-},
+}
 
-  localize: function() {
-    console.log(this.config);
-    var translations = this.config.lan;
-        me = this,      
+  // localize: function() {
+  //   console.log(this.config);
+  //   var translations = this.config.lan;
+  //       me = this,      
 
-    console.log(translations);
+  //   console.log(translations);
       
-    for (var view in translations) {
-      console.log(view);
-    }
-  }
+  //   for (var view in translations) {
+  //     console.log(view);
+  //   }
+  // }
 
 });

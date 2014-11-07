@@ -1,11 +1,12 @@
 /**
- * @class Imobile.store.Productos
- * @extends Ext.data.Store
- * Este es el store para los productos
- */
+* @class APP.store.phone.Productos
+* @extends Ext.data.Store
+* El store para los productos
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Productos', {
-    extend: 'APP.core.data.Store',    
-    //requires:['Imobile.model.Producto'],
+    extend: 'APP.core.data.Store',        
     config: {
         model:'APP.model.phone.Producto',
         proxy: {            

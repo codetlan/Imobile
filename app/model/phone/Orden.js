@@ -1,10 +1,10 @@
 /**
- * Created with JetBrains PhpStorm.
- * User: Waldix
- * Date: 16/04/14
- * Time: 13:54
- * To change this template use File | Settings | File Templates.
- */
+* @class APP.model.phone.Orden
+* @extends Ext.data.Model
+* El modelo para representar una orden de venta
+* @temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.model.phone.Orden', {
     extend: 'Ext.data.Model',
 

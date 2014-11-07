@@ -72,7 +72,7 @@ Ext.define('APP.controller.phone.Informes', {
                     break;
 
                 case 'clientesArticulos':
-                    me.auxiliarPonCodigos('Clientes');
+                    me.auxiliarPonCodigos('ClientesArticulos');
                     break;
             }
         }
@@ -180,25 +180,43 @@ Ext.define('APP.controller.phone.Informes', {
 
         view.push({            
             xtype: 'informesgeneradoslist',
-            title: view.titulo  == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
+            title: view.titulo == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: view.titulo == 'Articulos' ? APP.core.config.Locale.config.lan.Informes.articulos : APP.core.config.Locale.config.lan.Informes.clientesArticulos
         });
 
         console.log(view.titulo == 'Articulos');
 
-        if(view.titulo == 'Articulos'){
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeArticulos";
-            
-            informes.getProxy().setUrl(url);
-            view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
-            ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.descripcion +
-            ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +  
-            ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +  
-             ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
-                      '<div style="font-size: 90%"> <div><p> </div>',
-                '</div>'].join(''));
-        } else{
-            url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeClientes";
-            informes.getProxy().setUrl(url);
+        switch(view.titulo){
+            case "Articulos":
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeArticulos";
+                
+                informes.getProxy().setUrl(url);
+                view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
+                ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.descripcion +
+                ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +  
+                ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +  
+                 ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
+                          '<div style="font-size: 90%"> <div><p> </div>',
+                    '</div>'].join(''));
+                    break;
+
+            case "Clientes":
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeClientes";
+                informes.getProxy().setUrl(url);
+            break;
+
+            case "ClientesArticulos":
+                url = "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Informes/obtenerInformeClienteArticulos";
+                
+                informes.getProxy().setUrl(url);
+                view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigoCliente +
+                ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombreCliente +
+                ': <b>{nombre}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigoArticulo +
+                ': <b>{codigoArticulo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombreArticulo +  
+                ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +
+                ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
+                          '<div style="font-size: 90%"> <div><p> </div>',
+                    '</div>'].join(''));
+                break;
         }
 
         informes.setParams({
@@ -226,9 +244,12 @@ Ext.define('APP.controller.phone.Informes', {
 
         view.push({
             xtype: 'informesform',
-            title: criterio == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: APP.core.config.Locale.config.lan.Informes.articulos
+            title: criterio == 'Clientes' ? APP.core.config.Locale.config.lan.Informes.clientes: criterio == 'Articulos' ? APP.core.config.Locale.config.lan.Informes.articulos : APP.core.config.Locale.config.lan.Informes.clientesArticulos
         });
 
+        if(criterio == 'ClientesArticulos'){
+            criterio = 'Clientes'
+        }
         me.ponCodigos(criterio);
     },
 
@@ -243,13 +264,14 @@ Ext.define('APP.controller.phone.Informes', {
             store;
             //codigos = Object.getOwnPropertyDescriptor(me.getMenuNav(), criterio.substring(0,1).toLowerCase() + criterio.substring(1, criterio.length)).value;
 
-        if(view.titulo == 'Clientes'){
-            codigos = 'clienteslist'
-        } else {
+        if(view.titulo == 'Articulos'){            
             codigos = 'productoslist'
             store = Ext.getStore('Productos');
             store.load();
+        } else {
+            codigos = 'clienteslist'
         }
+
 console.log(textfield.getItemId());
         view.push({
             xtype: 'container',

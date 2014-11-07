@@ -1,11 +1,12 @@
 /**
- * @class Imobile.store.Prospectos
- * @extends Ext.data.Store
- * Este es el store para prospectos
- */
+* @class APP.store.phone.Prospectos
+* @extends Ext.data.Store
+* El store para los prospectos
+* @author temerario28@gmail.com
+* @codetlan
+*/
 Ext.define('APP.store.phone.Prospectos', {
-    extend: 'APP.core.data.Store',
-    //requires: ['Imobile.model.Prospecto'],
+    extend: 'APP.core.data.Store',    
 
     config: {
         model: 'APP.model.phone.Prospecto',
