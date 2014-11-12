@@ -1,5 +1,5 @@
 /**
- * @class Imobile.view.clientes.OpcionClienteList
+ * @class APP.view.phone.rutas.OpcionRutasActividades
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */

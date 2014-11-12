@@ -42,7 +42,9 @@ Ext.define('APP.controller.phone.Rutas', {
             'actividadescalendario':{
                 periodchange:function(calendar,mindate,maxdate,direction){
 
-                    var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");
+                    //mindate = Ext.Date.add(mindate, Ext.Date.MONTH, -1);
+
+                    var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");                        
                     var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(maxdate),"Y-m-d");
 
                     this.loadActividadesCalendario(firstDay,lastDay);
@@ -75,7 +77,7 @@ Ext.define('APP.controller.phone.Rutas', {
                 itemtap:'onActividadesEdit'
             },
             'button[action=realizaractividad]':{
-                tap:function(){
+                tap:function(){                    
                     this.onActividadesUpdate(1);
                 }
             },
@@ -94,6 +96,7 @@ Ext.define('APP.controller.phone.Rutas', {
             },
             'rutascalendario':{
                 periodchange:function(calendar,mindate,maxdate,direction){
+                    //mindate = Ext.Date.add(mindate, Ext.Date.MONTH, -1);
 
                     var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(mindate),"Y-m-d");
                     var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(maxdate),"Y-m-d");
@@ -151,9 +154,13 @@ Ext.define('APP.controller.phone.Rutas', {
                 });
 
                 var date = new Date();
-
+                    
+                    //date = Ext.Date.add(date, Ext.Date.MONTH, -1);
                 var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                
+                    //date = Ext.Date.add(date, Ext.Date.MONTH, 1);
                 var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+                
 
                 this.loadActividadesCalendario(firstDay,lastDay);
 
@@ -166,8 +173,12 @@ Ext.define('APP.controller.phone.Rutas', {
 
                 var date = new Date();
 
+                    //date = Ext.Date.add(date, Ext.Date.MONTH, -1);
                 var firstDay = Ext.util.Format.date(Ext.Date.getFirstDateOfMonth(date),"Y-m-d");
+                
+                    //date = Ext.Date.add(date, Ext.Date.MONTH, 1);
                 var lastDay = Ext.util.Format.date(Ext.Date.getLastDateOfMonth(date),"Y-m-d");
+                
 
                 this.loadRutasCalendario(firstDay,lastDay, "");
 
@@ -186,7 +197,8 @@ Ext.define('APP.controller.phone.Rutas', {
     */
     loadActividadesCalendario: function(fechaInicio,fechaFin){
 
-        var ac = this.getActividadesCalendario(),
+        var me = this,
+            ac = this.getActividadesCalendario(),
             store = ac.view.eventStore;
 
         var params = {
@@ -205,7 +217,10 @@ Ext.define('APP.controller.phone.Rutas', {
         store.setParams(params);
         store.load({
             callback:function(){
-                Ext.Viewport.setMasked(false);
+                Ext.Viewport.setMasked(false);                
+
+                //me.revisaRepeticiones(records, store);
+
                 if(ac.element){
                     ac.element.redraw();
                 }
@@ -213,6 +228,114 @@ Ext.define('APP.controller.phone.Rutas', {
             },
             scope:this
         });
+    },
+
+    revisaRepeticiones: function(values){
+        var me = this,
+            eventos = new Array();
+
+        if(values.Repetir){
+            if(values.Lunes){
+                me.agregaEvento(values, 1, eventos);
+            }
+
+            if(values.Martes){
+                me.agregaEvento(values, 2, eventos);
+            }
+
+            if(values.Miercoles){
+                me.agregaEvento(values, 3, eventos);
+            }
+
+            if(values.Jueves){
+                me.agregaEvento(values, 4, eventos);
+            }
+
+            if(values.Viernes){
+                me.agregaEvento(values, 5, eventos);
+            }
+
+            if(values.Sabado){
+                me.agregaEvento(values, 6, eventos);
+            }
+
+            if(values.Domingo){
+                me.agregaEvento(values, 0, eventos);
+            }
+        }
+
+        return eventos;
+    },
+
+    /**
+    * Agrega una repetición de evento al store.
+    * @param record El record de la instancia del modelo que representa el evento a agregar.
+    * @param diaRepeticion El día de la repetición del evento. Debe ser un entero del 0 al 6.
+    * @param store El store donde se agregará el evento.
+    */
+    agregaEvento: function(values, diaRepeticion, eventos){
+        var me = this,
+            repeticiones = 3,
+            diaEvento = values.FechaInicio.getUTCDay(), // El día de la semana del evento.
+            diferenciaInicio = Ext.Date.add(values.FechaInicio, Ext.Date.DAY, me.dameDiaRepeticion(diaEvento, diaRepeticion)),
+            diferenciaFin = Ext.Date.add(values.FechaFin, Ext.Date.DAY, me.dameDiaRepeticion(diaEvento, diaRepeticion));
+
+        eventos.push({
+            CodigoActividad: 0,
+            CodigoRuta: 0,
+            Descripcion: values.Descripcion,
+            Notas: values.Notas,
+            FechaInicio: diferenciaInicio,
+            FechaFin: diferenciaFin,
+            HoraInicio: values.HoraInicio,//Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+            HoraFin: values.HoraFin,//Ext.util.Format.date(values.HoraFin,"H:i:s"),
+            Estatus: 2,
+            /**  Parámetros para rutas **/
+            LatitudOrigen: values.LatitudOrigen,
+            LongitudOrigen: values.LongitudOrigen,
+            HoraVisita: "00:00:00",
+            FechaVisita: diferenciaFin
+        });
+
+        for (var i = 0; i < repeticiones; i++){
+            diferenciaInicio = Ext.Date.add(diferenciaInicio, Ext.Date.DAY, 7);
+            diferenciaFin = Ext.Date.add(diferenciaFin, Ext.Date.DAY, 7);
+
+            eventos.push({
+                CodigoActividad: 0,
+                CodigoRuta: 0,
+                Descripcion: values.Descripcion,
+                Notas: values.Notas,
+                FechaInicio: diferenciaInicio,
+                FechaFin: diferenciaFin,
+                HoraInicio: values.HoraInicio,//Ext.util.Format.date(values.HoraInicio,"H:i:s"),
+                HoraFin: values.HoraFin,//Ext.util.Format.date(values.HoraFin,"H:i:s"),
+                Estatus: 2,
+                /**  Parámetros para rutas **/
+                LatitudOrigen: values.LatitudOrigen,
+                LongitudOrigen: values.LongitudOrigen,
+                HoraVisita: "00:00:00",
+                FechaVisita: diferenciaFin
+            });
+        }
+
+        return eventos;
+    },
+
+    /**
+    * Obtiene el número de días de diferencia entre el día de la semana del evento y el día de la semana de la repetición de éste.
+    * @param diaEvento El día del evento. Debe ser un entero entre 0 y 6.
+    * @param diaRepeticion El día de la repetición del evento. Debe ser un entero entre 0 y 6.
+    * @return El número de días de diferencia entre el día de la semana del evento y el día de la semana de la repetición de éste.
+    */
+    dameDiaRepeticion: function(diaEvento, diaRepeticion){
+        var diferencia = diaEvento - diaRepeticion;
+
+        if(diferencia >= 0){
+            return 7 - diferencia
+        } else {
+            return Math.abs(diaEvento - diaRepeticion);    
+        }        
     },
 
     /**
@@ -309,8 +432,8 @@ Ext.define('APP.controller.phone.Rutas', {
     * @param Éste button.
     */
     onActividadesAdd:function(btn){
-
-        var form = this.getActividadesForm(),
+        var me = this,
+            form = this.getActividadesForm(),
             values = form.getValues();
 
         if(values.Descripcion != ""){
@@ -358,8 +481,10 @@ Ext.define('APP.controller.phone.Rutas', {
                             var ac = this.getActividadesCalendario(),
                                 store = ac.view.eventStore;
 
+                            me.agregaRepeticiones(me.revisaRepeticiones(values), "actividad");
+
                             store.load({
-                                callback:function(){
+                                callback:function(){                                    
                                     ac.element.redraw();
                                     this.onActividadesCalendarioFormPop(ac.view,this.getActividadesCalendarioContNd().getValue(),1);
                                     Ext.Viewport.setMasked(false);
@@ -391,6 +516,96 @@ Ext.define('APP.controller.phone.Rutas', {
         else{
             Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
             APP.core.config.Locale.config.lan.Rutas.tituloObligatorio, Ext.emptyFn);            
+        }
+    },
+
+    agregaRepeticiones: function(eventos, nombreEvento){
+        var form = this.getActividadesForm(),            
+            params,
+            url = nombreEvento == "actividad" ? "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Actividades/AgregarActividad"
+                                              : "http://" + localStorage.getItem("dirIP") + "/iMobile/COK1_CL_Rutas/AgregarRuta"
+
+        for(var i = 0; i < eventos.length; i++){
+            params = nombreEvento == "actividad" ? 
+                {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token"),
+                    "Actividad.CodigoActividad" : "",
+                    "Actividad.FechaInicio" : Ext.util.Format.date(eventos[i].FechaInicio,"Y-m-d"),
+                    "Actividad.HoraInicio" : Ext.util.Format.date(eventos[i].HoraInicio,"H:i:s"),
+                    "Actividad.FechaFin" : Ext.util.Format.date(eventos[i].FechaFin,"Y-m-d"),
+                    "Actividad.HoraFin" : Ext.util.Format.date(eventos[i].HoraFin,"H:i:s"),
+                    "Actividad.Descripcion" : eventos[i].Descripcion,
+                    "Actividad.Notas" : eventos[i].Notas,
+                    "Actividad.Repetir" : eventos[i].Repetir?true:false,
+                    "Actividad.Lunes" : eventos[i].Lunes?true:false,
+                    "Actividad.Martes" : eventos[i].Martes?true:false,
+                    "Actividad.Miercoles" : eventos[i].Miercoles?true:false,
+                    "Actividad.Jueves" : eventos[i].Jueves?true:false,
+                    "Actividad.Viernes" : eventos[i].Viernes?true:false,
+                    "Actividad.Sabado" : eventos[i].Sabado?true:false,
+                    "Actividad.Domingo" : eventos[i].Domingo?true:false,
+                    "Actividad.Notas"   : eventos[i].Notas,
+                    "Actividad.Estatus" : 2                
+                } :
+                {
+                    CodigoUsuario: localStorage.getItem("CodigoUsuario"),
+                    CodigoSociedad: localStorage.getItem("CodigoSociedad"),
+                    CodigoDispositivo: localStorage.getItem("CodigoDispositivo"),
+                    Token: localStorage.getItem("Token"),
+                    "Ruta.CodigoRuta" : "",
+                    "Ruta.FechaInicio" : Ext.util.Format.date(eventos[i].FechaInicio,"Y-m-d"),
+                    "Ruta.HoraInicio" : Ext.util.Format.date(eventos[i].HoraInicio,"H:i:s"),
+                    "Ruta.FechaFin" : Ext.util.Format.date(eventos[i].FechaFin,"Y-m-d"),
+                    "Ruta.HoraFin" : Ext.util.Format.date(eventos[i].HoraFin,"H:i:s"),
+                    "Ruta.Descripcion" : eventos[i].Descripcion,
+                    "Ruta.Notas" : eventos[i].Notas,
+                    "Ruta.Repetir" : eventos[i].Repetir?true:false,
+                    "Ruta.Lunes" : eventos[i].Lunes?true:false,
+                    "Ruta.Martes" : eventos[i].Martes?true:false,
+                    "Ruta.Miercoles" : eventos[i].Miercoles?true:false,
+                    "Ruta.Jueves" : eventos[i].Jueves?true:false,
+                    "Ruta.Viernes" : eventos[i].Viernes?true:false,
+                    "Ruta.Sabado" : eventos[i].Sabado?true:false,
+                    "Ruta.Domingo" : eventos[i].Domingo?true:false,
+                    "Ruta.Notas"   : eventos[i].Notas,
+                    "Ruta.Estatus" : 2,
+                    "Ruta.LatitudOrigen": eventos[i].LatitudOrigen,
+                    "Ruta.LongitudOrigen": eventos[i].LongitudOrigen,                    
+                    "Ruta.HoraVisita": "00:00:00",
+                    "Ruta.FechaVisita": Ext.util.Format.date(eventos[i].FechaVisita,"Y-m-d")
+                }
+
+            console.log(params);
+
+            Ext.data.JsonP.request({
+                url: url,
+                params: params,
+                callbackKey: 'callback',
+                success: function (response) {
+                    var procesada = response.Procesada
+
+                    if (procesada) {
+                        console.log("Se agrega evento");
+                    }
+                    else {
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.datosIncorrectos,
+                        response.Descripcion, Ext.emptyFn);
+                        Ext.Viewport.setMasked(false);
+                    }
+
+                },
+                failure: function () {
+                    Ext.Msg.alert(APP.core.config.Locale.config.lan.Rutas.problemasConexion,
+                     APP.core.config.Locale.config.lan.Rutas.sinServidor, function () {
+                        Ext.Viewport.setMasked(false);
+                    });
+                    Ext.Viewport.setMasked(false);
+                },
+                scope: this
+            });
         }
     },
 
@@ -540,6 +755,8 @@ Ext.define('APP.controller.phone.Rutas', {
                         if (procesada) {
                             var ac = this.getActividadesCalendario(),
                                 store = ac.view.eventStore;
+
+                            console.log('el nuevo estatus es ' + status);
 
                             store.load({
                                 callback:function(){
@@ -696,8 +913,8 @@ Ext.define('APP.controller.phone.Rutas', {
     * @param codigoCliente El código del cliente.
     */    
     loadRutasCalendario: function(fechaInicio,fechaFin, codigoCliente){
-
-        var ac = this.getRutasCalendario(),
+        var me = this,
+            ac = this.getRutasCalendario(),
             store = ac.view.eventStore;
 
         var params = {
@@ -716,8 +933,11 @@ Ext.define('APP.controller.phone.Rutas', {
         store.clearFilter();
         store.setParams(params);
         store.load({
-            callback:function(){
+            callback:function(records){
                 Ext.Viewport.setMasked(false);
+
+                //me.revisaRepeticiones(records, store);
+
                 if(ac.element){
                     ac.element.redraw();
                 }
@@ -1041,7 +1261,8 @@ Ext.define('APP.controller.phone.Rutas', {
     * @param btn Éste botón.
     */
     onRutasAdd: function(btn) {
-        var form = this.getRutasForm(),
+        var me = this,
+            form = this.getRutasForm(),
             values = form.getValues(),
             view = this.getMenuNav(),
             esActualizacion = values.CodigoRuta > 0,
@@ -1110,6 +1331,8 @@ Ext.define('APP.controller.phone.Rutas', {
                             if (procesada) {
                                 var rc = this.getRutasCalendario(),
                                     store = rc.view.eventStore;
+
+                                me.agregaRepeticiones(me.revisaRepeticiones(values), "ruta");
 
                                 store.load({
                                     callback:function(){
@@ -1259,7 +1482,7 @@ Ext.define('APP.controller.phone.Rutas', {
 
     /**
     * Valida si la visita puede marcarse como realizada.
-    * @lparam lat La latitud del destino.
+    * @param lat La latitud del destino.
     * @param lon La longitud del destino.    
     */
     validaVisita: function(lat, lon){        

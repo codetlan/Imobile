@@ -1,5 +1,5 @@
 /**
- * @class Imobile.view.clientes.OpcionClienteList
+ * @class APP.view.phone.rutas.actividades.ActividadesCalendarioDia
  * @extends Ext.dataview.List
  * Esta es la lista de las opciones que tiene un cliente
  */
@@ -21,19 +21,19 @@ Ext.define('APP.view.phone.rutas.actividades.ActividadesCalendarioDia', {
                     return data.substr(0,data.length - 3);
                 },
                 backColor:function(status){
-
+                    console.log(status);
                     switch(status){
                         case 0:
-                            return "lightred";
+                            return "#F90000";//"lightred";
                             break;
                         case 1:
-                            return "lightblue";
+                            return "#1D7A28";//"lightblue";
                             break;
                         case 2:
-                            return "lightgreen";
+                            return "#FFFF00"//"lightgreen";
                             break;
                         case 3:
-                            return "#ff6600";
+                            return "#C0C0C0";
                             break;
 
                     }
