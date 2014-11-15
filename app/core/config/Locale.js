@@ -271,6 +271,7 @@ Ext.define('APP.core.config.Locale', {
 
       InformesGeneradosList: {
         codigo: "Código",
+        nombre: "Nombre",
         codigoCliente: "Código del cliente",
         nombreCliente: "Nombre del cliente",
         codigoArticulo: "Código del artículo",
@@ -470,17 +471,4 @@ Ext.define('APP.core.config.Locale', {
     }
   }
 }
-
-  // localize: function() {
-  //   console.log(this.config);
-  //   var translations = this.config.lan;
-  //       me = this,      
-
-  //   console.log(translations);
-      
-  //   for (var view in translations) {
-  //     console.log(view);
-  //   }
-  // }
-
 });

@@ -211,8 +211,9 @@ Ext.define('APP.controller.phone.Informes', {
                 view.getActiveItem().setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigoCliente +
                 ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombreCliente +
                 ': <b>{nombre}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigoArticulo +
-                ': <b>{codigoArticulo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombreArticulo +  
-                ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +
+                ': <b>{codigoArticulo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombreArticulo +
+                ': <b>{descripcion}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.cantidad +
+                ': <b>{cantidad}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.importe +
                 ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
                           '<div style="font-size: 90%"> <div><p> </div>',
                     '</div>'].join(''));

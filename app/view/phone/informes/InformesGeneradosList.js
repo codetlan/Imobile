@@ -7,18 +7,14 @@ Ext.define('APP.view.phone.informes.InformesGeneradosList', {
         store: 'Informes',
         disableSelection: true,
         modulo: 'informes'
-
-//         itemTpl: ['<div class="factura">', '<div> <p>Código: <b>{codigo}</b> Total: <b>{cantidad}</b></div> <i style="font-size: 30px;float: right;margin-top: -25px;" class="fa fa-check"></i>',
-//                   '<div style="font-size: 90%"> <div><p>Fecha: <b>{FechaCreacion}</b> Vencimiento: <b>{FechaFin}</b> </div>',
-// /*            '<p style="margin: 0px; color: red;">Quantity: <b>{cantidad}</b></p>',            */
-//             '</div>'].join(''),
     },
 
     initialize: function (){
         var me = this;
 
         me.setItemTpl(['<div class="factura">', '<div> <p>' + APP.core.config.Locale.config.lan.InformesGeneradosList.codigo +
-         ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
+         ': <b>{codigo}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.nombre +
+         ': <b>{nombre}</b><br> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.total +  
          ': <b>{moneda} {importe}</b><br></div> <i style="font-size: 30px;float: right;margin-top: -25px;"></i>',
                   '<div style="font-size: 90%"> <div><p> ' + APP.core.config.Locale.config.lan.InformesGeneradosList.articulos + 
                   ': <b>{cantidad}</b> </div>',
