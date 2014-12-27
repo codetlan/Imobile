@@ -558,7 +558,7 @@ Ext.define('APP.controller.phone.Cobranza', {
                     if (response.Procesada) {
                         Ext.Viewport.setMasked(false);
                         me.getMainCard().setActiveItem(0);
-                        Ext.Msg.alert("Cobro procesado", msg + response.CodigoUnicoDocumento + ".");
+                        Ext.Msg.alert(APP.core.config.Locale.config.lan.Cobranza.cobroProcesadoTitulo, msg + response.CodigoUnicoDocumento + ".");
                         store.removeAll();
                         totales.removeAll();                        
                         view.remove(view.down('toolbar'), true);

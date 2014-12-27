@@ -1089,8 +1089,8 @@ Ext.define('APP.controller.phone.Rutas', {
             if (status == google.maps.GeocoderStatus.OK) {                
 
                 form.setValues({
-                    LatitudOrigen:results[0].geometry.location.k,
-                    LongitudOrigen:results[0].geometry.location.B
+                    LatitudOrigen:results[0].geometry.location.lat(),
+                    LongitudOrigen:results[0].geometry.location.lng()
                 });
 
                 mapa.setCenter(results[0].geometry.location);
@@ -1110,8 +1110,8 @@ Ext.define('APP.controller.phone.Rutas', {
                     mapa.panTo(point);
 
                     form.setValues({
-                        LatitudOrigen:point.k,
-                        LongitudOrigen:point.B
+                        LatitudOrigen:point.lat(),
+                        LongitudOrigen:point.lng()
                     });
                 });
 
@@ -1769,8 +1769,8 @@ Ext.define('APP.controller.phone.Rutas', {
                 map.panTo(point);
 
                 me.getMenuNav().getActiveItem().setValues({
-                    LatitudOrigen: extMapa.marker.getPosition().k,
-                    LongitudOrigen: extMapa.marker.getPosition().B
+                    LatitudOrigen: extMapa.marker.getPosition().lat(),
+                    LongitudOrigen: extMapa.marker.getPosition().lng()
                 })
             });
         }

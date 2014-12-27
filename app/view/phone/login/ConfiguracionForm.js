@@ -32,12 +32,12 @@ Ext.define('APP.view.phone.login.ConfiguracionForm', {
                         xtype: 'textfield',
                         name: 'cod_soc',
                         label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoSociedad
-                    },
+                    },/*
                     {
                         xtype: 'textfield',
                         name: 'cod_dis',
                         label: APP.core.config.Locale.config.lan.ConfiguracionForm.codigoDispositivo
-                    },
+                    },*/
                     {
                         xtype: 'textfield',
                         name: 'servidor',

@@ -68,11 +68,11 @@ Ext.define('APP.view.phone.configuracion.ConfiguracionPanel', {
                 options: [
                     {
                         text: 'Español',
-                        value: 'es'
+                        value: 'es-MX'
                     },
                     {
                         text: 'English',
-                        value: 'en'
+                        value: 'en-US'
                     }
                 ],
 

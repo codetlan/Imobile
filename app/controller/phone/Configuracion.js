@@ -129,11 +129,11 @@ Ext.define('APP.controller.phone.Configuracion', {
                         };                    
                     
                     switch (idioma){
-                        case 'en':                            
+                        case 'en-US':                            
                             params["Criterio"] =  'COK_JO_en_US';                            
                             break;
 
-                        case 'es':
+                        case 'es-MX':
                             params["Criterio"] = 'COK_JO_es_MX';
                             break;
                     }

@@ -5,7 +5,7 @@ Ext.define('APP.core.config.Locale', {
 
     lan: {
       Lenguaje:{
-        idioma: "es"
+        idioma: "es-MX"
       },
 
       LoginForm: {
@@ -262,6 +262,7 @@ Ext.define('APP.core.config.Locale', {
         sinCambioMensaje: "Esta forma de pago no permite dar cambio, disminuya la canticad.",
         cobroExitoso: "Se realizó el cobro exitosamente con folio ",
         enviandoCobro: "Enviando cobro...",
+        cobroProcesadoTitulo: "Cobro procesado",
         cobroNoProcesadoTitulo: "Cobro no procesado",
         cobroNoProcesadoMensaje: "No se procesó el cobro correctamente: ",
         sinPagoTitulo: "Sin pago",

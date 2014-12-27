@@ -52,7 +52,7 @@ Ext.define('APP.controller.phone.Login', {
             params: {
                 CodigoUsuario: values.usuario,
                 CodigoSociedad: localStorage.getItem('CodigoSociedad'),
-                CodigoDispositivo: localStorage.getItem('CodigoDispositivo'),
+                ///CodigoDispositivo: localStorage.getItem('CodigoDispositivo'),
                 Contrasenia: values.password,
                 idioma: localStorage.getItem('idioma')
             },
@@ -66,8 +66,9 @@ Ext.define('APP.controller.phone.Login', {
                     localStorage.setItem("NombreUsuario", response.Usuario.Nombre);
                     localStorage.setItem("Contrasenia", response.Usuario.Contrasenia);
                     localStorage.setItem("NombreDispositivo", response.ConfiguracionDispositivo.Nombre);
+                    localStorage.setItem("CodigoDispositivo", response.ConfiguracionDispositivo.Codigo);
                     //localStorage.setItem("Almacenes", response.ConfiguracionDispositivo.Almacenes);
-                    //console.log(response.ConfiguracionDispositivo.Almacenes);
+                    //console.log(response.ConfiguracionDispositivo.Almacenes);                    
                     almacenes = response.ConfiguracionDispositivo.Almacenes;
                     Ext.Viewport.removeAll(true);                                        
                     Ext.Viewport.add(Ext.create('APP.view.phone.MainCard'));                    
